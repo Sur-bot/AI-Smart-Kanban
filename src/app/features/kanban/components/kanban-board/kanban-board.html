@@ -1,0 +1,54 @@
+<div class="min-h-screen bg-deep-navy text-slate-200 flex flex-col font-sans">
+  
+  <header class="h-16 border-b border-slate-800 flex items-center justify-between px-8 bg-slate-900/50 shrink-0">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-ai-purple to-tech-teal flex items-center justify-center text-white font-bold">
+        AI
+      </div>
+      <h1 class="text-xl font-bold tracking-tight">SmartKanban <span class="text-tech-teal font-medium">Board</span></h1>
+    </div>
+    
+    <div class="flex items-center gap-4">
+      <div class="relative">
+        <input type="text" placeholder="Tìm kiếm task..." class="bg-slate-800 border border-slate-700 text-sm rounded-full pl-4 pr-10 py-1.5 focus:outline-none focus:border-ai-purple focus:ring-1 focus:ring-ai-purple transition-all w-64">
+      </div>
+      <div class="w-8 h-8 rounded-full bg-slate-700 border-2 border-slate-600 overflow-hidden cursor-pointer">
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User Avatar">
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 overflow-x-auto overflow-y-hidden p-8">
+    
+    <div class="flex gap-6 items-start h-full w-max" cdkDropListGroup>
+      
+      <app-kanban-column 
+        columnId="todo" 
+        title="To Do" 
+        [tasks]="todoTasks" 
+        [connectedTo]="['inprogress', 'done']"
+        (taskDropped)="onTaskDropped($event)"
+        (selectTask)="onTaskSelected($event)">
+      </app-kanban-column>
+
+      <app-kanban-column 
+        columnId="inprogress" 
+        title="In Progress" 
+        [tasks]="inProgressTasks" 
+        [connectedTo]="['todo', 'done']"
+        (taskDropped)="onTaskDropped($event)"
+        (selectTask)="onTaskSelected($event)">
+      </app-kanban-column>
+
+      <app-kanban-column 
+        columnId="done" 
+        title="Done" 
+        [tasks]="doneTasks" 
+        [connectedTo]="['todo', 'inprogress']"
+        (taskDropped)="onTaskDropped($event)"
+        (selectTask)="onTaskSelected($event)">
+      </app-kanban-column>
+
+    </div>
+  </main>
+</div>
