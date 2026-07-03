@@ -1,0 +1,11 @@
+.main-layout {
+  @apply flex flex-col h-screen w-full overflow-hidden bg-[#18153c];
+}
+
+.layout-body {
+  @apply flex flex-1 overflow-hidden;
+}
+
+.content-area {
+  @apply flex-1 overflow-auto bg-[#0f0d24];
+}

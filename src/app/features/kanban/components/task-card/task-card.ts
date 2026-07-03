@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-task-card',
   templateUrl: './task-card.html',
   styleUrl: './task-card.scss',
-  standalone: false,
+  standalone: true
 })
 export class TaskCard {}

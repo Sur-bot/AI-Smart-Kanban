@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-task-detail-modal',
   templateUrl: './task-detail-modal.html',
   styleUrl: './task-detail-modal.scss',
-  standalone: false,
+  standalone: true,
 })
 export class TaskDetailModal {}

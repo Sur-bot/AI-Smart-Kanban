@@ -9,14 +9,12 @@ import { TaskCard } from './components/task-card/task-card';
 import { TaskDetailModal } from './components/task-detail-modal/task-detail-modal';
 
 @NgModule({
-  declarations: [
+  imports: [
     KanbanBoardComponent,
     KanbanColumn,
     TaskCard,
-    TaskDetailModal
-  ],
-  imports: [
-    CommonModule,
+    TaskDetailModal,
+     CommonModule,
     KanbanRoutingModule,
     DragDropModule
   ]

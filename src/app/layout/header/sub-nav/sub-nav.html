@@ -1,0 +1,30 @@
+<nav class="flex items-center h-12 px-4 bg-transparent border-b border-white/5 overflow-x-auto select-none">
+  <ul class="flex items-center gap-1 text-[14px] text-black font-medium whitespace-nowrap">
+    
+    <li *ngFor="let item of menuList" class="relative">
+      
+      <a *ngIf="!item.hasDropdown"
+         [routerLink]="item.route"
+         routerLinkActive="bg-white/15 text-black font-semibold" 
+         [routerLinkActiveOptions]="{exact: true}"
+         class="px-3 py-1.5 rounded-[4px] hover:text-white hover:bg-emerald-400 transition-all block relative">
+        
+        {{ item.label }}
+
+        <span *ngIf="item.badge" class="absolute -top-1.5 left-1/2 -translate-x-1/2 text-[9px] font-bold text-black scale-90">
+          {{ item.badge }}
+        </span>
+      </a>
+
+      <button *ngIf="item.hasDropdown"
+              (click)="openMenu(item.id)"
+              class="flex items-center gap-1 px-3 py-1.5 rounded-[4px] hover:text-white hover:bg-emerald-400 transition-all cursor-pointer">
+        <span>{{ item.label }}</span>
+        <svg class="w-3 h-3 opacity-60" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+        </svg>
+      </button>
+
+    </li>
+  </ul>
+</nav>

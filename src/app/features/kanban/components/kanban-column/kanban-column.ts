@@ -6,6 +6,6 @@ import { Task } from '../../models/kanban.model';
   selector: 'app-kanban-column',
   templateUrl: './kanban-column.html',
   styleUrls: ['./kanban-column.scss'],
-  standalone: false
+  standalone: true
 })
 export class KanbanColumn {}
