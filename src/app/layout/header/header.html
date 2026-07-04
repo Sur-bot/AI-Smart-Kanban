@@ -5,14 +5,33 @@
 
   <div class="header-center">
     <app-expandable-search></app-expandable-search>
-    <span class="logo-text">Digit</span>
-    <span class="logo-number">24</span>
-  </div>
+    <div class="flex items-center leading-none -translate-y-[1px]">
+      <span class="logo-text">Digit</span>
+      <span class="logo-number ml-1">24</span>
+    </div>
 
-  <div class="header-right"></div>
+    <div class="setting-wrapper" style="position: relative; display: flex; align-items: center">
+      <button
+        (click)="togglePopup($event)"
+        class="p-1.5 flex items-center justify-center rounded-full text-[#8C5960]/70 hover:text-[#8C5960] transition-colors cursor-pointer"
+      >
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="16" cy="8" r="2.5" />
+          <path d="M3 8h10.5M18.5 8H21" />
+          <circle cx="8" cy="16" r="2.5" />
+          <path d="M3 16h2.5M10.5 16H21" />
+        </svg>
+      </button>
 
-  <div class="user-profile">
-    <div class="avatar-timer"></div>
-    <div class="profile"></div>
+      <app-setting-slider [isOpen]="isPopupOpen" (close)="isPopupOpen = false"></app-setting-slider>
+    </div>
   </div>
 </div>
