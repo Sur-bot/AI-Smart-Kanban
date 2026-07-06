@@ -33,5 +33,31 @@
 
       <app-setting-slider [isOpen]="isPopupOpen" (close)="isPopupOpen = false"></app-setting-slider>
     </div>
+
+    <div class="flex items-center gap-1.5">
+      <div class="relative">
+        <button
+          (click)="toggleInvite($event)"
+          class="flex h-6 items-center justify-center px-3 leading-none rounded-full border border-emerald-400 text-black text-xs font-medium hover:bg-emerald-400 hover:text-white transition-colors duration-200"
+        >
+          Mời
+        </button>
+
+        <app-invite-dropdown [isOpen]="isInviteOpen" (close)="isInviteOpen = false">
+        </app-invite-dropdown>
+      </div>
+
+      <button
+        class="flex h-6 items-center justify-center px-3 leading-none rounded-full border border-transparent bg-emerald-400 text-white text-xs font-medium hover:bg-[#059669] shadow-sm transition-colors duration-200"
+      >
+        Mua ngay
+      </button>
+
+      <button
+        class="flex h-6 items-center justify-center px-3 leading-none rounded-full border border-emerald-400 text-black text-xs font-medium hover:bg-emerald-400 hover:text-white transition-colors duration-200"
+      >
+        Trợ giúp
+      </button>
+    </div>
   </div>
 </div>

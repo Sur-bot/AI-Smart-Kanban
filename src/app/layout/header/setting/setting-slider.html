@@ -2,12 +2,12 @@
   <div
     *ngIf="isOpen"
     @fadeInOut
-    class="w-[420px] bg-white/90 backdrop-blur-xl rounded-[28px] shadow-2xl border border-white/20 overflow-hidden text-slate-800"
+    class="w-[360px] bg-white/90 backdrop-blur-xl rounded-[20px] shadow-2xl border border-white/20 overflow-hidden text-slate-800"
   >
-    <div class="p-6 bg-gradient-to-b from-indigo-600/20 to-transparent">
-      <div class="flex items-center gap-2 text-indigo-900 font-medium text-lg">
-        <span>b24-efr2se.bitrix24.vn</span>
-        <button class="hover:bg-black/5 p-1 rounded-full transition-colors">
+    <div class="p-4 bg-gradient-to-b from-indigo-600/20 to-transparent">
+      <div class="flex items-center justify-between text-indigo-900 font-medium text-base">
+        <span class="truncate">b24-efr2se.bitrix24.vn</span>
+        <button class="hover:bg-black/5 p-1.5 rounded-full transition-colors flex-shrink-0">
           <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
@@ -20,88 +20,76 @@
       </div>
     </div>
 
-    <div class="px-6 pb-8 space-y-3">
+    <div class="px-4 pb-5 space-y-2">
+      
       <div
-        class="flex items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:border-indigo-200 transition-all cursor-pointer group"
+        class="flex items-center justify-between bg-white p-3 rounded-xl shadow-sm border border-slate-100 hover:border-indigo-200 transition-all cursor-pointer group"
       >
-        <div class="flex items-center gap-3">
-          <div
-            class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-500"
-          >
-            <i class="fa-solid fa-address-card text-lg"></i>
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500">
+            <i class="fa-solid fa-address-card text-base"></i>
           </div>
-          <span class="font-medium">Thông tin công ty</span>
+          <span class="font-medium text-sm">Thông tin công ty</span>
         </div>
-        <button class="text-xs border border-slate-200 px-3 py-1.5 rounded-full hover:bg-slate-50">
-          Chỉnh sửa chi tiết công ty
+        <button class="text-[11px] border border-slate-200 px-2.5 py-1 rounded-full hover:bg-slate-50 whitespace-nowrap">
+          Chỉnh sửa
         </button>
       </div>
 
       <div
-        class="flex items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:border-indigo-200 transition-all cursor-pointer"
+        class="flex items-center justify-between bg-white p-3 rounded-xl shadow-sm border border-slate-100 hover:border-indigo-200 transition-all cursor-pointer"
       >
-        <div class="flex items-center gap-3">
-          <div
-            class="w-10 h-10 bg-lime-100 text-lime-600 rounded-xl flex items-center justify-center"
-          >
-            <i class="fa-solid fa-house text-lg"></i>
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 bg-lime-100 text-lime-600 rounded-lg flex items-center justify-center">
+            <i class="fa-solid fa-house text-base"></i>
           </div>
-          <span class="font-medium">Trang bắt đầu</span>
+          <span class="font-medium text-sm">Trang bắt đầu</span>
         </div>
-        <i class="fa-solid fa-arrow-right text-slate-300"></i>
+        <i class="fa-solid fa-arrow-right text-slate-300 text-xs"></i>
       </div>
 
-      <div class="grid grid-cols-2 gap-3">
-        <div
-          class="flex items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:border-indigo-200 cursor-pointer"
-        >
-          <div class="flex items-center gap-3">
-            <i class="fa-solid fa-shield-halved text-orange-400"></i>
-            <span class="font-medium">Bảo mật</span>
+      <div class="grid grid-cols-2 gap-2">
+        <div class="flex items-center justify-between bg-white p-3 rounded-xl shadow-sm border border-slate-100 hover:border-indigo-200 cursor-pointer">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-shield-halved text-orange-400 text-base"></i>
+            <span class="font-medium text-sm">Bảo mật</span>
           </div>
-          <i class="fa-solid fa-arrow-right text-slate-300 text-xs"></i>
+          <i class="fa-solid fa-arrow-right text-slate-300 text-[10px]"></i>
         </div>
-        <div
-          class="flex items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:border-indigo-200 cursor-pointer"
-        >
-          <div class="flex items-center gap-3">
-            <i class="fa-solid fa-gear text-slate-400"></i>
-            <span class="font-medium">Cài đặt</span>
+        <div class="flex items-center justify-between bg-white p-3 rounded-xl shadow-sm border border-slate-100 hover:border-indigo-200 cursor-pointer">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-gear text-slate-400 text-base"></i>
+            <span class="font-medium text-sm">Cài đặt</span>
           </div>
-          <i class="fa-solid fa-arrow-right text-slate-300 text-xs"></i>
+          <i class="fa-solid fa-arrow-right text-slate-300 text-[10px]"></i>
         </div>
       </div>
 
-      <div
-        class="flex items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-slate-100"
-      >
-        <div class="flex items-center gap-3">
-          <div
-            class="w-10 h-10 bg-slate-100 text-slate-400 rounded-xl flex items-center justify-center relative"
-          >
-            <i class="fa-solid fa-circle-nodes text-lg"></i>
-            <i
-              class="fa-solid fa-lock absolute -top-1 -right-1 text-[10px] bg-white p-0.5 rounded-full"
-            ></i>
+      <div class="flex items-center justify-between bg-white p-3 rounded-xl shadow-sm border border-slate-100 hover:border-indigo-200 transition-all cursor-pointer">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 bg-slate-100 text-slate-400 rounded-lg flex items-center justify-center relative">
+            <i class="fa-solid fa-circle-nodes text-base"></i>
+            <i class="fa-solid fa-lock absolute -top-1 -right-1 text-[9px] bg-white p-0.5 rounded-full shadow-sm"></i>
           </div>
-          <span class="font-medium">Mạng lưới chi nhánh</span>
+          <span class="font-medium text-sm">Mạng lưới chi nhánh</span>
         </div>
-        <button class="text-xs border border-slate-200 px-4 py-1.5 rounded-full hover:bg-slate-50">
+        <button class="text-[11px] border border-slate-200 px-3 py-1 rounded-full hover:bg-slate-50">
           Sửa
         </button>
       </div>
 
-      <div class="flex justify-center gap-4 pt-4 text-[13px] text-slate-400 font-medium">
-        <button class="hover:text-indigo-600 border-b border-dotted border-slate-300">
+      <div class="flex justify-center gap-3 pt-3 text-xs text-slate-400 font-medium">
+        <button class="hover:text-indigo-600 border-b border-dotted border-slate-300 transition-colors">
           Yêu cầu triển khai
         </button>
-        <button class="hover:text-indigo-600 border-b border-dotted border-slate-300">
+        <button class="hover:text-indigo-600 border-b border-dotted border-slate-300 transition-colors">
           Bắt đầu nhanh
         </button>
-        <button class="hover:text-indigo-600 border-b border-dotted border-slate-300">
+        <button class="hover:text-indigo-600 border-b border-dotted border-slate-300 transition-colors">
           Hỗ trợ
         </button>
       </div>
+      
     </div>
   </div>
 </div>
