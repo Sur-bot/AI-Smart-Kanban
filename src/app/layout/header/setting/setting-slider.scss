@@ -1,0 +1,91 @@
+.setting-slider-container {
+  @apply absolute top-full left-1/2 -translate-x-1/2 mt-2 z-50;
+
+  .setting-slider-dropdown {
+    @apply w-[360px] bg-white/90 backdrop-blur-xl rounded-[20px] shadow-2xl border border-white/20 overflow-hidden text-slate-800;
+  }
+
+  .setting-slider-header {
+    @apply p-4 bg-gradient-to-b from-indigo-600/20 to-transparent;
+
+    &-content {
+      @apply flex items-center justify-between text-indigo-900 font-medium text-base;
+    }
+
+    .domain-name {
+      @apply truncate;
+    }
+
+    .edit-btn {
+      @apply hover:bg-black/5 p-1.5 rounded-full transition-colors flex-shrink-0;
+      
+      svg {
+        @apply w-4 h-4 opacity-60;
+      }
+    }
+  }
+
+  .setting-slider-body {
+    @apply px-4 pb-5 space-y-2;
+  }
+
+  .setting-card {
+    @apply flex items-center justify-between bg-white p-3 rounded-xl shadow-sm border border-slate-100 hover:border-indigo-200 transition-all cursor-pointer;
+
+    &-left {
+      @apply flex items-center gap-2.5;
+    }
+
+    &-title {
+      @apply font-medium text-sm;
+    }
+
+    &-action-btn {
+      @apply text-[11px] border border-slate-200 px-3 py-1 rounded-full hover:bg-slate-50 whitespace-nowrap;
+    }
+
+    &-arrow {
+      @apply text-slate-300 text-xs;
+      
+      &.small {
+        @apply text-[10px];
+      }
+    }
+  }
+
+  .icon-company {
+    @apply w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500;
+    i { @apply text-base; }
+  }
+
+  .icon-home {
+    @apply w-8 h-8 bg-lime-100 text-lime-600 rounded-lg flex items-center justify-center;
+    i { @apply text-base; }
+  }
+
+  .icon-security {
+    i { @apply text-orange-400 text-base; }
+  }
+
+  .icon-config {
+    i { @apply text-slate-400 text-base; }
+  }
+
+  .icon-network {
+    @apply w-8 h-8 bg-slate-100 text-slate-400 rounded-lg flex items-center justify-center relative;
+    i.main { @apply text-base; }
+    i.lock { @apply absolute -top-1 -right-1 text-[9px] bg-white p-0.5 rounded-full shadow-sm; }
+  }
+
+  .setting-grid {
+    @apply grid grid-cols-2 gap-2;
+  }
+
+  .setting-footer {
+    @apply flex justify-center gap-3 pt-3 text-xs text-slate-400 font-medium;
+
+    &-link {
+      @apply hover:text-indigo-600 border-b border-dotted border-slate-300 transition-colors bg-transparent p-0 m-0 cursor-pointer;
+    }
+  }
+}

@@ -7,6 +7,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './setting-slider.html',
+  styleUrl: './setting-slider.scss',
   animations: [
     trigger('fadeInOut', [
       transition(':enter', [

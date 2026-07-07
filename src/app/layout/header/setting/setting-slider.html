@@ -1,14 +1,14 @@
-<div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-50">
+<div class="setting-slider-container">
   <div
     *ngIf="isOpen"
     @fadeInOut
-    class="w-[360px] bg-white/90 backdrop-blur-xl rounded-[20px] shadow-2xl border border-white/20 overflow-hidden text-slate-800"
+    class="setting-slider-dropdown"
   >
-    <div class="p-4 bg-gradient-to-b from-indigo-600/20 to-transparent">
-      <div class="flex items-center justify-between text-indigo-900 font-medium text-base">
-        <span class="truncate">b24-efr2se.bitrix24.vn</span>
-        <button class="hover:bg-black/5 p-1.5 rounded-full transition-colors flex-shrink-0">
-          <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="setting-slider-header">
+      <div class="setting-slider-header-content">
+        <span class="domain-name">b24-efr2se.bitrix24.vn</span>
+        <button class="edit-btn">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
               stroke-width="2"
@@ -20,72 +20,68 @@
       </div>
     </div>
 
-    <div class="px-4 pb-5 space-y-2">
+    <div class="setting-slider-body">
       
-      <div
-        class="flex items-center justify-between bg-white p-3 rounded-xl shadow-sm border border-slate-100 hover:border-indigo-200 transition-all cursor-pointer group"
-      >
-        <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500">
-            <i class="fa-solid fa-address-card text-base"></i>
+      <div class="setting-card group">
+        <div class="setting-card-left">
+          <div class="icon-company">
+            <i class="fa-solid fa-address-card"></i>
           </div>
-          <span class="font-medium text-sm">Thông tin công ty</span>
+          <span class="setting-card-title">Thông tin công ty</span>
         </div>
-        <button class="text-[11px] border border-slate-200 px-2.5 py-1 rounded-full hover:bg-slate-50 whitespace-nowrap">
+        <button class="setting-card-action-btn">
           Chỉnh sửa
         </button>
       </div>
 
-      <div
-        class="flex items-center justify-between bg-white p-3 rounded-xl shadow-sm border border-slate-100 hover:border-indigo-200 transition-all cursor-pointer"
-      >
-        <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 bg-lime-100 text-lime-600 rounded-lg flex items-center justify-center">
-            <i class="fa-solid fa-house text-base"></i>
+      <div class="setting-card">
+        <div class="setting-card-left">
+          <div class="icon-home">
+            <i class="fa-solid fa-house"></i>
           </div>
-          <span class="font-medium text-sm">Trang bắt đầu</span>
+          <span class="setting-card-title">Trang bắt đầu</span>
         </div>
-        <i class="fa-solid fa-arrow-right text-slate-300 text-xs"></i>
+        <i class="fa-solid fa-arrow-right setting-card-arrow"></i>
       </div>
 
-      <div class="grid grid-cols-2 gap-2">
-        <div class="flex items-center justify-between bg-white p-3 rounded-xl shadow-sm border border-slate-100 hover:border-indigo-200 cursor-pointer">
-          <div class="flex items-center gap-2.5">
-            <i class="fa-solid fa-shield-halved text-orange-400 text-base"></i>
-            <span class="font-medium text-sm">Bảo mật</span>
+      <div class="setting-grid">
+        <div class="setting-card">
+          <div class="setting-card-left icon-security">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span class="setting-card-title">Bảo mật</span>
           </div>
-          <i class="fa-solid fa-arrow-right text-slate-300 text-[10px]"></i>
+          <i class="fa-solid fa-arrow-right setting-card-arrow small"></i>
         </div>
-        <div class="flex items-center justify-between bg-white p-3 rounded-xl shadow-sm border border-slate-100 hover:border-indigo-200 cursor-pointer">
-          <div class="flex items-center gap-2.5">
-            <i class="fa-solid fa-gear text-slate-400 text-base"></i>
-            <span class="font-medium text-sm">Cài đặt</span>
+        <div class="setting-card">
+          <div class="setting-card-left icon-config">
+            <i class="fa-solid fa-gear"></i>
+            <span class="setting-card-title">Cài đặt</span>
           </div>
-          <i class="fa-solid fa-arrow-right text-slate-300 text-[10px]"></i>
+          <i class="fa-solid fa-arrow-right setting-card-arrow small"></i>
         </div>
       </div>
 
-      <div class="flex items-center justify-between bg-white p-3 rounded-xl shadow-sm border border-slate-100 hover:border-indigo-200 transition-all cursor-pointer">
-        <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 bg-slate-100 text-slate-400 rounded-lg flex items-center justify-center relative">
-            <i class="fa-solid fa-circle-nodes text-base"></i>
-            <i class="fa-solid fa-lock absolute -top-1 -right-1 text-[9px] bg-white p-0.5 rounded-full shadow-sm"></i>
+      <div class="setting-card">
+        <div class="setting-card-left">
+          <div class="icon-network">
+            <i class="fa-solid fa-circle-nodes main"></i>
+            <i class="fa-solid fa-lock lock"></i>
           </div>
-          <span class="font-medium text-sm">Mạng lưới chi nhánh</span>
+          <span class="setting-card-title">Mạng lưới chi nhánh</span>
         </div>
-        <button class="text-[11px] border border-slate-200 px-3 py-1 rounded-full hover:bg-slate-50">
+        <button class="setting-card-action-btn px-3">
           Sửa
         </button>
       </div>
 
-      <div class="flex justify-center gap-3 pt-3 text-xs text-slate-400 font-medium">
-        <button class="hover:text-indigo-600 border-b border-dotted border-slate-300 transition-colors">
+      <div class="setting-footer">
+        <button class="setting-footer-link">
           Yêu cầu triển khai
         </button>
-        <button class="hover:text-indigo-600 border-b border-dotted border-slate-300 transition-colors">
+        <button class="setting-footer-link">
           Bắt đầu nhanh
         </button>
-        <button class="hover:text-indigo-600 border-b border-dotted border-slate-300 transition-colors">
+        <button class="setting-footer-link">
           Hỗ trợ
         </button>
       </div>
