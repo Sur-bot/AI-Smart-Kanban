@@ -1,15 +1,32 @@
 .main-layout {
-  @apply flex flex-col h-screen w-full overflow-hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
   background: rgba(24, 21, 60, 0.7);
   backdrop-filter: blur(10px);
 }
 
 .layout-body {
-  @apply flex flex-1 overflow-hidden;
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0; /* Ngăn overflow khi sidebar thay đổi */
+  overflow: hidden;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .content-area {
-  @apply flex-1 overflow-auto;
+  flex: 1;
+  overflow: auto;
   background: rgba(15, 13, 36, 0.5);
   backdrop-filter: blur(8px);
 }

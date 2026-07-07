@@ -1,0 +1,36 @@
+<!-- Wrapper dùng CSS Grid để animate height mượt mà -->
+<div class="submenu-wrapper" [class.submenu-open]="isOpen && isExpanded">
+  <div class="submenu-inner">
+    <ul class="submenu-list">
+      <li *ngFor="let child of children">
+        <a [routerLink]="child.route || null" routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: false }"
+          class="submenu-item"
+          [title]="child.label">
+
+          <div class="submenu-item-left">
+            <!-- Child Icon -->
+            <div class="submenu-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-[16px] h-[16px]">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  [attr.d]="child.iconSvg || 'M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33'" />
+              </svg>
+            </div>
+
+            <!-- Child Label -->
+            <span class="submenu-label">
+              {{ child.label }}
+            </span>
+
+            <!-- Child Badge -->
+            <span *ngIf="child.badge" class="submenu-badge">
+              {{ child.badge }}
+            </span>
+          </div>
+
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

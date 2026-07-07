@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
 import { HeaderComponent } from '../header/header';
+import { SidebarComponent } from '../sidebar/sidebar';
 import { CommonModule } from '@angular/common';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-main-layout',
   templateUrl: './main-layout.html',
   styleUrls: ['./main-layout.scss'],
   standalone: true,
-  imports: [CommonModule, HeaderComponent]
+  imports: [CommonModule, HeaderComponent, SidebarComponent, RouterOutlet]
 })
 export class MainLayoutComponent {
   sidebarOpen = true;

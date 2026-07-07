@@ -1,14 +1,303 @@
-/* CSS Tùy chỉnh thanh cuộn cho Sidebar */
+/* ===== Host Element ===== */
+:host {
+  display: block;
+  flex-shrink: 0;
+  height: 100vh;
+  position: relative;
+  z-index: 40;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== Wrapper (hover zone) ===== */
+.sidebar-wrapper {
+  height: 100%;
+  position: relative;
+}
+
+/* ===== Sidebar Container ===== */
+.sidebar-container {
+  width: 260px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  background: rgba(24, 21, 60, 0.92);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+
+  &.collapsed {
+    width: 68px;
+  }
+
+  &.hover-expanded {
+    width: 260px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    box-shadow: 8px 0 40px rgba(0, 0, 0, 0.5), 2px 0 12px rgba(0, 0, 0, 0.25);
+    z-index: 50;
+  }
+}
+
+/* ===== Header ===== */
+.sidebar-header {
+  height: 64px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+
+  .collapsed & {
+    justify-content: center;
+    padding: 0 14px;
+  }
+}
+
+.toggle-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.65);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: fadeSlideIn 0.25s ease forwards;
+}
+
+/* ===== Menu ===== */
+.sidebar-menu {
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: overlay;
+  overflow-y: auto; /* Fallback */
+  padding: 8px 12px;
+
+  .collapsed & {
+    padding: 8px 12px;
+    overflow-y: hidden;
+  }
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-decoration: none;
+
+  .collapsed & {
+    padding: 10px 0;
+    justify-content: center;
+  }
+}
+
+.menu-item-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+
+  .collapsed & {
+    gap: 0;
+    overflow: visible;
+  }
+}
+
+.menu-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.8;
+  flex-shrink: 0;
+  transition: opacity 0.2s ease;
+
+  .menu-item:hover & {
+    opacity: 1;
+  }
+}
+
+.menu-label {
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  animation: fadeSlideIn 0.25s ease forwards;
+}
+
+/* ===== SubMenu Arrow ===== */
+.submenu-arrow {
+  width: 14px;
+  height: 14px;
+  opacity: 0.4;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  flex-shrink: 0;
+
+  .group:hover & {
+    opacity: 1;
+  }
+
+  &.submenu-arrow-expanded {
+    transform: rotate(180deg);
+    opacity: 0.7;
+  }
+}
+
+/* ===== Badge ===== */
+.menu-badge {
+  background: #ff5752;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  line-height: 1;
+  border-radius: 9999px;
+  border: 2px solid rgba(24, 21, 60, 0.92);
+}
+
+.badge-expanded {
+  position: absolute;
+  top: -6px;
+  left: 14px;
+  padding: 1px 5px;
+}
+
+.badge-collapsed {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  padding: 1px 4px;
+  font-size: 9px;
+}
+
+/* ===== Footer ===== */
+.sidebar-footer {
+  padding: 16px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+  background: rgba(24, 21, 60, 0.92);
+  backdrop-filter: blur(20px);
+
+  .collapsed & {
+    padding: 16px 12px;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.upgrade-btn {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: white;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ff8c72 0%, #e56ab3 50%, #b36af5 100%);
+  box-shadow: 0 4px 15px rgba(229, 106, 179, 0.3);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  animation: fadeSlideIn 0.25s ease forwards;
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(229, 106, 179, 0.4);
+  }
+}
+
+.upgrade-btn-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ff8c72 0%, #e56ab3 50%, #b36af5 100%);
+  box-shadow: 0 4px 15px rgba(229, 106, 179, 0.3);
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 20px rgba(229, 106, 179, 0.4);
+  }
+}
+
+/* ===== Animations ===== */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ===== Scrollbar ===== */
 .custom-scrollbar::-webkit-scrollbar {
   width: 4px;
 }
+
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
+
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: transparent;
   border-radius: 10px;
 }
+
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+}
+
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.25);
 }

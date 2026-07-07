@@ -1,0 +1,67 @@
+/* ===== Host Element ===== */
+:host {
+  @apply block overflow-hidden;
+}
+
+/* Khi sidebar collapsed, ẩn hoàn toàn component */
+:host-context(.collapsed) {
+  @apply hidden;
+}
+
+/* ===== SubMenu Wrapper (CSS Grid height animation) ===== */
+/* Tailwind không hỗ trợ grid-template-rows: 0fr/1fr transition */
+.submenu-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.submenu-open {
+    grid-template-rows: 1fr;
+  }
+
+  /* Khi mở, submenu-list hiện ra */
+  &.submenu-open .submenu-list {
+    @apply opacity-100;
+  }
+}
+
+.submenu-inner {
+  @apply overflow-hidden;
+}
+
+/* ===== SubMenu List ===== */
+.submenu-list {
+  @apply list-none my-0.5 mb-1 pl-4 opacity-0 transition-opacity duration-500 ease-in-out delay-200;
+}
+
+/* ===== SubMenu Item ===== */
+.submenu-item {
+  @apply flex items-center py-2 px-2.5 rounded-lg cursor-pointer transition-all duration-200 ease-in-out whitespace-nowrap overflow-hidden no-underline text-white/60 hover:bg-white/[0.08] hover:text-white;
+
+  &.active {
+    @apply bg-white/[0.12] text-white;
+  }
+}
+
+.submenu-item-left {
+  @apply flex items-center gap-3 relative overflow-hidden min-w-0;
+}
+
+/* ===== SubMenu Icon ===== */
+.submenu-icon {
+  @apply w-[18px] h-[18px] flex items-center justify-center opacity-70 shrink-0 transition-opacity duration-200 ease-in-out;
+
+  .submenu-item:hover & {
+    @apply opacity-100;
+  }
+}
+
+/* ===== SubMenu Label ===== */
+.submenu-label {
+  @apply text-[13px] whitespace-nowrap overflow-hidden text-ellipsis;
+}
+
+/* ===== SubMenu Badge ===== */
+.submenu-badge {
+  @apply absolute -top-1.5 left-3.5 bg-[#ff5752] text-white text-[10px] font-bold leading-none rounded-full border-2 border-[rgba(24,21,60,0.92)] px-[5px] py-[1px];
+}

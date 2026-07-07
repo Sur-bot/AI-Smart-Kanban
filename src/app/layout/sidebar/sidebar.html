@@ -1,55 +1,89 @@
-<aside class="w-[260px] h-screen border-r border-white/5 flex flex-col shrink-0 text-white font-sans transition-all duration-300" style="background: rgba(24, 21, 60, 0.7); backdrop-filter: blur(10px);">
-  
-  <div class="h-16 px-4 flex items-center gap-3 shrink-0">
-    <button class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-white/10 text-white/70 hover:text-white transition-colors">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
-    </button>
-    <div class="flex items-center gap-1 cursor-pointer">
-      <span class="text-[17px] font-semibold tracking-wide">Bitrix24</span>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 text-white/50 mt-0.5"><path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-13a.75.75 0 0 0-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 0 0 0-1.5h-3.25V5Z" clip-rule="evenodd" /></svg>
+<div class="sidebar-wrapper" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+
+  <aside class="sidebar-container" [class.collapsed]="isCollapsed && !isHoverExpanded"
+    [class.hover-expanded]="isCollapsed && isHoverExpanded">
+
+    <!-- Header: Logo + Toggle Button -->
+    <div class="sidebar-header">
+      <button class="toggle-btn" (click)="onToggleCollapse()" title="Thu gọn / Mở rộng">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+          class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+      </button>
+      <div class="logo-area" *ngIf="isExpanded">
+        <span class="text-[17px] font-semibold tracking-wide">Mở rộng menu</span>
+      </div>
     </div>
-  </div>
 
-  <div class="flex-1 overflow-y-auto px-3 py-2 custom-scrollbar">
-    <ul class="flex flex-col gap-0.5">
-      <li *ngFor="let item of menuItems">
-        <a [routerLink]="item.route"
-           routerLinkActive="active"
-           [routerLinkActiveOptions]="{ exact: false }"
-           class="group flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-all duration-200"
-           [ngClass]="item.isActive ? 'bg-white/20 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white'">
-          
-          <div class="flex items-center gap-3 relative">
-            
-            <div class="w-5 h-5 flex items-center justify-center opacity-80 group-hover:opacity-100">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-[18px] h-[18px]">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
-              </svg>
+    <!-- Menu Items -->
+    <div class="sidebar-menu custom-scrollbar">
+      <ul class="flex flex-col gap-0.5">
+        <li *ngFor="let item of menuItems">
+          <!-- Menu item chính -->
+          <a [routerLink]="item.route || null" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }"
+            class="menu-item group"
+            [ngClass]="item.isActive ? 'bg-white/20 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white'"
+            [title]="!isExpanded ? item.label : ''" (click)="item.children ? toggleSubMenu(item, $event) : null">
+
+            <div class="menu-item-left">
+              <!-- Icon -->
+              <div class="menu-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="w-[18px] h-[18px]">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
+                </svg>
+              </div>
+
+              <!-- Label -->
+              <span class="menu-label" *ngIf="isExpanded" [ngClass]="item.isActive ? 'font-medium' : 'font-normal'">
+                {{ item.label }}
+              </span>
+
+              <!-- Badge -->
+              <span *ngIf="item.badge" class="menu-badge" [ngClass]="isExpanded ? 'badge-expanded' : 'badge-collapsed'">
+                {{ item.badge }}
+              </span>
             </div>
-            
-            <span class="text-[14px]" [ngClass]="item.isActive ? 'font-medium' : 'font-normal'">
-              {{ item.label }}
-            </span>
 
-            <span *ngIf="item.badge" class="absolute -top-1.5 left-3.5 bg-[#ff5752] text-white text-[10px] font-bold px-[5px] py-[1px] rounded-full border-[2px] border-[#18153c] leading-none">
-              {{ item.badge }}
-            </span>
-          </div>
+            <!-- SubMenu Arrow -->
+            <svg *ngIf="item.hasSubMenu && isExpanded" xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="submenu-arrow"
+              [class.submenu-arrow-expanded]="isMenuExpanded(item.id)">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+            </svg>
 
-          <svg *ngIf="item.hasSubMenu" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 opacity-40 group-hover:opacity-100">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-          </svg>
+          </a>
 
-        </a>
-      </li>
-    </ul>
-  </div>
+          <!-- Sub Menu Items (Component con) -->
+          <app-collaboration *ngIf="item.children" [children]="item.children" [isOpen]="isMenuExpanded(item.id)"
+            [isExpanded]="isExpanded">
+          </app-collaboration>
+        </li>
+      </ul>
+    </div>
 
-  <div class="px-4 py-4 shrink-0 relative z-10" style="background: rgba(24, 21, 60, 0.7); backdrop-filter: blur(10px);">
-    <button class="w-full py-2.5 px-3 rounded-lg flex items-center justify-center gap-2 text-[13px] font-medium text-white shadow-lg transition-transform hover:scale-[1.02] bg-gradient-to-r from-[#ff8c72] via-[#e56ab3] to-[#b36af5]">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.452.15.148 0 0 0-.056-.312m2.814-.298a14.926 14.926 0 0 0-2.58-5.84m-2.58 5.84a14.927 14.927 0 0 1-5.84-2.58" /></svg>
-      Nâng cấp kế hoạch của bạn
-    </button>
-  </div>
+    <!-- Bottom CTA -->
+    <div class="sidebar-footer">
+      <button class="upgrade-btn" *ngIf="isExpanded">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+          class="w-4 h-4">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.452.15.148 0 0 0-.056-.312m2.814-.298a14.926 14.926 0 0 0-2.58-5.84m-2.58 5.84a14.927 14.927 0 0 1-5.84-2.58" />
+        </svg>
+        Nâng cấp kế hoạch của bạn
+      </button>
+      <!-- Icon nhỏ khi thu gọn -->
+      <button class="upgrade-btn-icon" *ngIf="!isExpanded" title="Nâng cấp kế hoạch">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+          class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.452.15.148 0 0 0-.056-.312m2.814-.298a14.926 14.926 0 0 0-2.58-5.84m-2.58 5.84a14.927 14.927 0 0 1-5.84-2.58" />
+        </svg>
+      </button>
+    </div>
 
-</aside>
+  </aside>
+
+</div>
