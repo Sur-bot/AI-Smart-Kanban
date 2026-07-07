@@ -1,61 +1,61 @@
-<div class="absolute top-full left-1/2 -translate-x-1/2 mt-3 z-50">
-  <div *ngIf="isOpen" class="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[8px] border-b-[#20b2c9] mx-auto"></div>
+<div class="invite-container">
+  <div *ngIf="isOpen" class="invite-arrow"></div>
 
-  <div *ngIf="isOpen" @fadeInOut class="w-[360px] bg-white/95 backdrop-blur-xl rounded-[20px] shadow-2xl overflow-hidden text-slate-700">
+  <div *ngIf="isOpen" @fadeInOut class="invite-dropdown">
     
-    <div class="p-4 bg-[#20b2c9] text-white flex items-center justify-between">
-      <div class="flex items-center gap-2.5">
-        <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-xl">
+    <div class="invite-header">
+      <div class="invite-header-info">
+        <div class="invite-header-icon">
           <i class="fa-solid fa-user-plus"></i>
         </div>
-        <div>
-          <div class="font-bold text-base leading-tight">Mời người dùng</div>
-          <a href="#" class="text-[11px] text-white/70 border-b border-dotted border-white/50 hover:text-white">ví sao cần mời?</a>
+        <div class="invite-header-text">
+          <div class="title">Mời người dùng</div>
+          <a href="#" class="link">ví sao cần mời?</a>
         </div>
       </div>
-      <button class="bg-white text-[#20b2c9] px-3 py-1.5 rounded-full font-bold text-xs shadow-sm hover:bg-slate-50 transition-colors">
+      <button class="invite-header-button">
         + Mời
       </button>
     </div>
 
-    <div class="p-3 space-y-3">
-      <div class="grid grid-cols-2 gap-2">
+    <div class="invite-body">
+      <div class="invite-grid">
         
-        <div class="bg-white border border-slate-100 rounded-xl p-3 flex flex-col items-center shadow-sm">
-          <i class="fa-solid fa-sitemap text-2xl text-sky-400 mb-1.5"></i>
-          <span class="font-bold text-sm text-slate-600">Cấu trúc</span>
-          <button class="mt-1.5 text-[11px] border border-slate-200 px-3 py-1 rounded-full hover:bg-slate-50">Sửa</button>
+        <div class="invite-card">
+          <i class="fa-solid fa-sitemap icon-sitemap"></i>
+          <span class="title">Cấu trúc</span>
+          <button class="edit-btn">Sửa</button>
         </div>
         
-        <div class="bg-white border border-slate-100 rounded-xl p-3 flex flex-col items-center shadow-sm">
-          <div class="w-10 h-10 bg-lime-100 text-lime-500 rounded-full flex items-center justify-center text-lg mb-1">
+        <div class="invite-card">
+          <div class="icon-users">
             <i class="fa-solid fa-user-group"></i>
           </div>
-          <span class="font-bold text-sm text-slate-600">Người dùng</span>
-          <span class="text-[11px] text-slate-400">Số nhân viên: 1</span>
-          <div class="mt-2 pt-1.5 border-t border-slate-50 w-full text-center text-[9px] text-slate-300">Không giới hạn</div>
+          <span class="title">Người dùng</span>
+          <span class="subtitle">Số nhân viên: 1</span>
+          <div class="footer">Không giới hạn</div>
         </div>
       </div>
 
-      <div class="border-2 border-lime-400/50 bg-lime-50/30 rounded-xl p-3 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <div class="w-8 h-8 bg-lime-400 text-white rounded-lg flex items-center justify-center text-sm">
+      <div class="invite-project">
+        <div class="invite-project-info">
+          <div class="invite-project-icon">
             <i class="fa-solid fa-hexagon-nodes"></i>
           </div>
-          <div>
-            <div class="font-bold text-slate-600 text-[13px] leading-tight">Dự án hợp tác</div>
-            <a href="#" class="text-[10px] text-slate-400 border-b border-dotted border-slate-300">đây là gì?</a>
+          <div class="invite-project-text">
+            <div class="title">Dự án hợp tác</div>
+            <a href="#" class="link">đây là gì?</a>
           </div>
         </div>
-        <button class="text-[10px] border border-slate-200 bg-white px-2 py-1 rounded-full hover:bg-slate-50 font-medium whitespace-nowrap">Tạo dự án</button>
+        <button class="invite-project-button">Tạo dự án</button>
       </div>
 
-      <div class="bg-slate-50/50 rounded-xl p-3 flex items-center gap-2">
-        <div class="w-10 h-10 rounded-full border-[3px] border-sky-300 flex items-center justify-center bg-sky-100 font-bold text-sky-600 text-sm">1</div>
-        <div class="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center text-slate-400">
-          <i class="fa-solid fa-user text-sm"></i>
+      <div class="invite-users">
+        <div class="invite-users-count">1</div>
+        <div class="invite-users-avatar">
+          <i class="fa-solid fa-user"></i>
         </div>
       </div>
     </div>
   </div>
-</div>
+</div>

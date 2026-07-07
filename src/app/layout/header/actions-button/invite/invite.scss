@@ -1,0 +1,114 @@
+.invite-container {
+  @apply absolute top-full left-1/2 -translate-x-1/2 mt-3 z-50;
+
+  .invite-arrow {
+    @apply w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[8px] border-b-[#20b2c9] mx-auto;
+  }
+
+  .invite-dropdown {
+    @apply w-[360px] bg-white/95 backdrop-blur-xl rounded-[20px] shadow-2xl overflow-hidden text-slate-700;
+  }
+
+  .invite-header {
+    @apply p-4 bg-[#20b2c9] text-white flex items-center justify-between;
+
+    &-info {
+      @apply flex items-center gap-2.5;
+    }
+
+    &-icon {
+      @apply w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-xl;
+    }
+
+    &-text {
+      .title {
+        @apply font-bold text-base leading-tight;
+      }
+      .link {
+        @apply text-[11px] text-white/70 border-b border-dotted border-white/50 hover:text-white;
+      }
+    }
+
+    &-button {
+      @apply bg-white text-[#20b2c9] px-3 py-1.5 rounded-full font-bold text-xs shadow-sm hover:bg-slate-50 transition-colors;
+    }
+  }
+
+  .invite-body {
+    @apply p-3 space-y-3;
+  }
+
+  .invite-grid {
+    @apply grid grid-cols-2 gap-2;
+  }
+
+  .invite-card {
+    @apply bg-white border border-slate-100 rounded-xl p-3 flex flex-col items-center shadow-sm;
+
+    .icon-sitemap {
+      @apply text-2xl text-sky-400 mb-1.5;
+    }
+
+    .icon-users {
+      @apply w-10 h-10 bg-lime-100 text-lime-500 rounded-full flex items-center justify-center text-lg mb-1;
+    }
+
+    .title {
+      @apply font-bold text-sm text-slate-600;
+    }
+
+    .edit-btn {
+      @apply mt-1.5 text-[11px] border border-slate-200 px-3 py-1 rounded-full hover:bg-slate-50;
+    }
+
+    .subtitle {
+      @apply text-[11px] text-slate-400;
+    }
+
+    .footer {
+      @apply mt-2 pt-1.5 border-t border-slate-50 w-full text-center text-[9px] text-slate-300;
+    }
+  }
+
+  .invite-project {
+    @apply border-2 border-lime-400/50 bg-lime-50/30 rounded-xl p-3 flex items-center justify-between;
+
+    &-info {
+      @apply flex items-center gap-2;
+    }
+
+    &-icon {
+      @apply w-8 h-8 bg-lime-400 text-white rounded-lg flex items-center justify-center text-sm;
+    }
+
+    &-text {
+      .title {
+        @apply font-bold text-slate-600 text-[13px] leading-tight;
+      }
+
+      .link {
+        @apply text-[10px] text-slate-400 border-b border-dotted border-slate-300;
+      }
+    }
+
+    &-button {
+      @apply text-[10px] border border-slate-200 bg-white px-2 py-1 rounded-full hover:bg-slate-50 font-medium whitespace-nowrap;
+    }
+  }
+
+  .invite-users {
+    @apply bg-slate-50/50 rounded-xl p-3 flex items-center gap-2;
+
+    &-count {
+      @apply w-10 h-10 rounded-full border-[3px] border-sky-300 flex items-center justify-center bg-sky-100 font-bold text-sky-600 text-sm;
+    }
+
+    &-avatar {
+      @apply w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center text-slate-400;
+
+      i {
+        @apply text-sm;
+      }
+    }
+  }
+}

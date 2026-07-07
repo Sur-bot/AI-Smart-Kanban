@@ -7,6 +7,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './invite.html',
+  styleUrl: './invite.scss',
   animations: [
     trigger('fadeInOut', [
       transition(':enter', [
