@@ -1,5 +1,7 @@
 .main-layout {
-  @apply flex flex-col h-screen w-full overflow-hidden bg-[#18153c];
+  @apply flex flex-col h-screen w-full overflow-hidden;
+  background: rgba(24, 21, 60, 0.7);
+  backdrop-filter: blur(10px);
 }
 
 .layout-body {
@@ -7,5 +9,7 @@
 }
 
 .content-area {
-  @apply flex-1 overflow-auto bg-[#0f0d24];
+  @apply flex-1 overflow-auto;
+  background: rgba(15, 13, 36, 0.5);
+  backdrop-filter: blur(8px);
 }

@@ -4,13 +4,14 @@ import { SubNavComponent } from './sub-nav/sub-nav';
 import { SearchComponent } from './search/expandable-search';
 import { SettingSliderComponent } from './setting/setting-slider';
 import { InviteComponent } from './actions-button/invite/invite'; // Import popup mới
+import { UserTimeWidgetComponent } from './user-time-widget/user-time-widget';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
   standalone: true,
-  imports: [CommonModule, SubNavComponent, SearchComponent, SettingSliderComponent, InviteComponent],
+  imports: [CommonModule, SubNavComponent, SearchComponent, SettingSliderComponent, InviteComponent, UserTimeWidgetComponent],
 })
 export class HeaderComponent {
   currentView = signal<'list' | 'board'>('board');

@@ -1,25 +1,47 @@
 .header-wrapper {
   display: flex;
   flex-direction: row;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  
+  /* 1. Xóa bỏ màu nền đen đặc này */
+  /* background: rgba(0, 0, 0, 0.8); */ 
+
+  /* 2. Giảm opacity của Gradient xuống 0.15 (15%) để nhìn xuyên thấu */
+  background-image: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+  
+  /* 3. Giữ nguyên hiệu ứng kính mờ (Nên thêm -webkit- để hỗ trợ Safari) */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  
+  width: 100%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .header-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
   padding: 1rem 2rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   height: 60px;
   color: #fff;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  gap: 1rem;
 }
 
-.header-center {
+.header-left {
   display: flex;
   align-items: center;
-  flex: 1;
-  min-width: 0;
+  gap: 1rem;
+  flex: 0 1 auto;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 0 1 auto;
+  white-space: nowrap;
 }
 
 .logo-text {
@@ -34,12 +56,6 @@
   font-weight: bold;
   color: #8C5960;
   margin-left: 0.25rem;
-}
-
-.divider {
-  width: 1px;
-  height: 24px;
-  background: rgba(214, 10, 10, 0.2);
 }
 
 // User Profile Menu

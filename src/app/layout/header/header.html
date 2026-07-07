@@ -1,63 +1,71 @@
-<div class="header-container">
-  <div class="header-left flex items-center gap-4 flex-1 min-w-0">
-    <app-sub-nav class="block flex-1 min-w-0"></app-sub-nav>
-  </div>
-
-  <div class="header-center">
-    <app-expandable-search></app-expandable-search>
-    <div class="flex items-center leading-none -translate-y-[1px]">
-      <span class="logo-text">Digit</span>
-      <span class="logo-number ml-1">24</span>
+<div class="header-wrapper">
+  <div class="header-container">
+    <div class="header-left flex items-center gap-4 flex-1 min-w-0">
+      <app-sub-nav class="block flex-1 min-w-0"></app-sub-nav>
     </div>
 
-    <div class="setting-wrapper" style="position: relative; display: flex; align-items: center">
-      <button
-        (click)="togglePopup($event)"
-        class="p-1.5 flex items-center justify-center rounded-full text-[#8C5960]/70 hover:text-[#8C5960] transition-colors cursor-pointer"
-      >
-        <svg
-          class="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <circle cx="16" cy="8" r="2.5" />
-          <path d="M3 8h10.5M18.5 8H21" />
-          <circle cx="8" cy="16" r="2.5" />
-          <path d="M3 16h2.5M10.5 16H21" />
-        </svg>
-      </button>
-
-      <app-setting-slider [isOpen]="isPopupOpen" (close)="isPopupOpen = false"></app-setting-slider>
-    </div>
-
-    <div class="flex items-center gap-1.5">
-      <div class="relative">
-        <button
-          (click)="toggleInvite($event)"
-          class="flex h-6 items-center justify-center px-3 leading-none rounded-full border border-emerald-400 text-black text-xs font-medium hover:bg-emerald-400 hover:text-white transition-colors duration-200"
-        >
-          Mời
-        </button>
-
-        <app-invite-dropdown [isOpen]="isInviteOpen" (close)="isInviteOpen = false">
-        </app-invite-dropdown>
+    <div class="header-right">
+      <app-expandable-search></app-expandable-search>
+      <div class="flex items-center leading-none -translate-y-[1px]">
+        <span class="logo-text">Digit</span>
+        <span class="logo-number ml-1">24</span>
       </div>
 
-      <button
-        class="flex h-6 items-center justify-center px-3 leading-none rounded-full border border-transparent bg-emerald-400 text-white text-xs font-medium hover:bg-[#059669] shadow-sm transition-colors duration-200"
-      >
-        Mua ngay
-      </button>
+      <div class="setting-wrapper" style="position: relative; display: flex; align-items: center">
+        <button
+          (click)="togglePopup($event)"
+          class="p-1.5 flex items-center justify-center rounded-full text-[#8C5960]/70 hover:text-[#8C5960] transition-colors cursor-pointer"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="16" cy="8" r="2.5" />
+            <path d="M3 8h10.5M18.5 8H21" />
+            <circle cx="8" cy="16" r="2.5" />
+            <path d="M3 16h2.5M10.5 16H21" />
+          </svg>
+        </button>
 
-      <button
-        class="flex h-6 items-center justify-center px-3 leading-none rounded-full border border-emerald-400 text-black text-xs font-medium hover:bg-emerald-400 hover:text-white transition-colors duration-200"
-      >
-        Trợ giúp
-      </button>
+        <app-setting-slider
+          [isOpen]="isPopupOpen"
+          (close)="isPopupOpen = false"
+        ></app-setting-slider>
+      </div>
+
+      <div class="flex items-center gap-1.5">
+        <div class="relative">
+          <button
+            (click)="toggleInvite($event)"
+            class="flex h-6 items-center justify-center px-3 leading-none rounded-full border border-emerald-400 text-black text-xs font-medium hover:bg-emerald-400 hover:text-white transition-colors duration-200"
+          >
+            Mời
+          </button>
+
+          <app-invite-dropdown [isOpen]="isInviteOpen" (close)="isInviteOpen = false">
+          </app-invite-dropdown>
+        </div>
+
+        <button
+          class="flex h-6 items-center justify-center px-3 leading-none rounded-full border border-transparent bg-emerald-400 text-white text-xs font-medium hover:bg-[#059669] shadow-sm transition-colors duration-200"
+        >
+          Mua ngay
+        </button>
+
+        <button
+          class="flex h-6 items-center justify-center px-3 leading-none rounded-full border border-emerald-400 text-black text-xs font-medium hover:bg-emerald-400 hover:text-white transition-colors duration-200"
+        >
+          Trợ giúp
+        </button>
+      </div>
+      <div>
+      <app-user-time-widget></app-user-time-widget>
+    </div>
     </div>
   </div>
 </div>
