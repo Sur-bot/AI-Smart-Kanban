@@ -31,7 +31,8 @@
 }
 
 .toggle-btn {
-  @apply w-9 h-9 flex items-center justify-center rounded-[10px] text-white/65 transition-all duration-200 ease-in-out shrink-0 cursor-pointer bg-transparent border-none hover:bg-white/10 hover:text-white hover:scale-105 active:scale-95;
+  @apply w-9 h-9 flex items-center justify-center rounded-[10px] text-white/65 shrink-0 cursor-pointer bg-transparent border-none hover:bg-white/10 hover:text-white hover:scale-105 active:scale-95;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
 .logo-area {
@@ -40,8 +41,8 @@
 
 /* ===== Menu ===== */
 .sidebar-menu {
-  @apply flex-1 overflow-x-hidden overflow-y-auto py-2 px-3;
-  overflow-y: overlay; /* Fallback cho trình duyệt hỗ trợ overlay */
+  @apply flex-1 overflow-x-hidden py-2 px-3;
+  overflow-y: scroll; /* Luôn giữ chỗ cho scrollbar, tránh layout shift */
 
   .collapsed & {
     @apply py-2 px-3 overflow-y-hidden;
@@ -49,7 +50,8 @@
 }
 
 .menu-item {
-  @apply flex items-center justify-between py-2.5 px-3 rounded-[10px] cursor-pointer transition-colors duration-200 ease-in-out whitespace-nowrap overflow-hidden no-underline;
+  @apply flex items-center justify-between py-2.5 px-3 rounded-[10px] cursor-pointer whitespace-nowrap overflow-hidden no-underline;
+  transition: background-color 0.2s ease, color 0.2s ease;
 
   .collapsed & {
     @apply py-2.5 px-0 justify-center;
@@ -60,12 +62,14 @@
   @apply flex items-center gap-3 relative overflow-hidden min-w-0;
 
   .collapsed & {
-    @apply gap-0 overflow-visible;
+    gap: 0;
+    overflow: visible;
   }
 }
 
 .menu-icon {
-  @apply w-5 h-5 flex items-center justify-center opacity-80 shrink-0 transition-opacity duration-200 ease-in-out;
+  @apply w-5 h-5 flex items-center justify-center opacity-80 shrink-0;
+  transition: opacity 0.2s ease;
 
   .menu-item:hover & {
     @apply opacity-100;
@@ -141,7 +145,7 @@
 }
 
 /* ===== Scrollbar ===== */
-/* Tailwind không hỗ trợ pseudo-elements của WebKit scrollbar nên giữ nguyên CSS thuần */
+/* Luôn 4px cố định, thumb trong suốt mặc định, chỉ hiện khi hover */
 .custom-scrollbar::-webkit-scrollbar {
   width: 4px;
 }
