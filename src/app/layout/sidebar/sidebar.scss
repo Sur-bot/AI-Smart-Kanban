@@ -1,269 +1,129 @@
 /* ===== Host Element ===== */
 :host {
-  display: block;
-  flex-shrink: 0;
-  height: 100vh;
-  position: relative;
-  z-index: 40;
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  @apply block shrink-0 h-screen relative z-40 transition-[width] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)];
 }
 
 /* ===== Wrapper (hover zone) ===== */
 .sidebar-wrapper {
-  height: 100%;
-  position: relative;
+  @apply h-full relative;
 }
 
 /* ===== Sidebar Container ===== */
 .sidebar-container {
-  width: 260px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  color: white;
-  font-family: 'Inter', sans-serif;
-  background: rgba(24, 21, 60, 0.92);
-  backdrop-filter: blur(20px);
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
+  @apply w-[260px] h-full flex flex-col text-white font-['Inter',sans-serif] bg-[rgba(24,21,60,0.92)] backdrop-blur-[20px] border-r border-white/5 transition-[width] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] overflow-hidden;
 
   &.collapsed {
-    width: 68px;
+    @apply w-[68px];
   }
 
   &.hover-expanded {
-    width: 260px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    box-shadow: 8px 0 40px rgba(0, 0, 0, 0.5), 2px 0 12px rgba(0, 0, 0, 0.25);
-    z-index: 50;
+    @apply w-[260px] absolute top-0 left-0 h-screen shadow-[8px_0_40px_rgba(0,0,0,0.5),2px_0_12px_rgba(0,0,0,0.25)] z-50;
   }
 }
 
 /* ===== Header ===== */
 .sidebar-header {
-  height: 64px;
-  padding: 0 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-shrink: 0;
+  @apply h-16 px-4 flex items-center gap-3 shrink-0;
 
   .collapsed & {
-    justify-content: center;
-    padding: 0 14px;
+    @apply justify-center px-3.5;
   }
 }
 
 .toggle-btn {
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  color: rgba(255, 255, 255, 0.65);
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-  cursor: pointer;
-  background: transparent;
-  border: none;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: white;
-    transform: scale(1.05);
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
+  @apply w-9 h-9 flex items-center justify-center rounded-[10px] text-white/65 transition-all duration-200 ease-in-out shrink-0 cursor-pointer bg-transparent border-none hover:bg-white/10 hover:text-white hover:scale-105 active:scale-95;
 }
 
 .logo-area {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  animation: fadeSlideIn 0.25s ease forwards;
+  @apply flex items-center gap-1 cursor-pointer whitespace-nowrap overflow-hidden animate-[fadeSlideIn_0.25s_ease_forwards];
 }
 
 /* ===== Menu ===== */
 .sidebar-menu {
-  flex: 1;
-  overflow-x: hidden;
-  overflow-y: overlay;
-  overflow-y: auto; /* Fallback */
-  padding: 8px 12px;
+  @apply flex-1 overflow-x-hidden overflow-y-auto py-2 px-3;
+  overflow-y: overlay; /* Fallback cho trình duyệt hỗ trợ overlay */
 
   .collapsed & {
-    padding: 8px 12px;
-    overflow-y: hidden;
+    @apply py-2 px-3 overflow-y-hidden;
   }
 }
 
 .menu-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 12px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
-  white-space: nowrap;
-  overflow: hidden;
-  text-decoration: none;
+  @apply flex items-center justify-between py-2.5 px-3 rounded-[10px] cursor-pointer transition-colors duration-200 ease-in-out whitespace-nowrap overflow-hidden no-underline;
 
   .collapsed & {
-    padding: 10px 0;
-    justify-content: center;
+    @apply py-2.5 px-0 justify-center;
   }
 }
 
 .menu-item-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  position: relative;
-  overflow: hidden;
-  min-width: 0;
+  @apply flex items-center gap-3 relative overflow-hidden min-w-0;
 
   .collapsed & {
-    gap: 0;
-    overflow: visible;
+    @apply gap-0 overflow-visible;
   }
 }
 
 .menu-icon {
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.8;
-  flex-shrink: 0;
-  transition: opacity 0.2s ease;
+  @apply w-5 h-5 flex items-center justify-center opacity-80 shrink-0 transition-opacity duration-200 ease-in-out;
 
   .menu-item:hover & {
-    opacity: 1;
+    @apply opacity-100;
   }
 }
 
 .menu-label {
-  font-size: 14px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  animation: fadeSlideIn 0.25s ease forwards;
+  @apply text-sm whitespace-nowrap overflow-hidden text-ellipsis animate-[fadeSlideIn_0.25s_ease_forwards];
 }
 
 /* ===== SubMenu Arrow ===== */
 .submenu-arrow {
-  width: 14px;
-  height: 14px;
-  opacity: 0.4;
-  transition: transform 0.25s ease, opacity 0.25s ease;
-  flex-shrink: 0;
+  @apply w-[14px] h-[14px] opacity-40 shrink-0 transition duration-300 ease-in-out;
 
   .group:hover & {
-    opacity: 1;
+    @apply opacity-100;
   }
 
   &.submenu-arrow-expanded {
-    transform: rotate(180deg);
-    opacity: 0.7;
+    @apply rotate-180 opacity-70;
   }
 }
 
 /* ===== Badge ===== */
 .menu-badge {
-  background: #ff5752;
-  color: white;
-  font-size: 10px;
-  font-weight: bold;
-  line-height: 1;
-  border-radius: 9999px;
-  border: 2px solid rgba(24, 21, 60, 0.92);
+  @apply bg-[#ff5752] text-white text-[10px] font-bold leading-none rounded-full border-2 border-[rgba(24,21,60,0.92)];
 }
 
 .badge-expanded {
-  position: absolute;
-  top: -6px;
-  left: 14px;
-  padding: 1px 5px;
+  @apply absolute -top-1.5 left-3.5 px-[5px] py-[1px];
 }
 
 .badge-collapsed {
-  position: absolute;
-  top: -4px;
-  right: -6px;
-  padding: 1px 4px;
-  font-size: 9px;
+  @apply absolute -top-1 -right-1.5 px-1 py-[1px] text-[9px];
 }
 
 /* ===== Footer ===== */
 .sidebar-footer {
-  padding: 16px;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 10;
-  background: rgba(24, 21, 60, 0.92);
-  backdrop-filter: blur(20px);
+  @apply p-4 shrink-0 relative z-10 bg-[rgba(24,21,60,0.92)] backdrop-blur-[20px];
 
   .collapsed & {
-    padding: 16px 12px;
-    display: flex;
-    justify-content: center;
+    @apply py-4 px-3 flex justify-center;
   }
 }
 
 .upgrade-btn {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  color: white;
-  border: none;
-  cursor: pointer;
-  background: linear-gradient(135deg, #ff8c72 0%, #e56ab3 50%, #b36af5 100%);
-  box-shadow: 0 4px 15px rgba(229, 106, 179, 0.3);
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  animation: fadeSlideIn 0.25s ease forwards;
+  @apply w-full py-2.5 px-3 rounded-[10px] flex items-center justify-center gap-2 text-[13px] font-medium text-white border-none cursor-pointer bg-gradient-to-br from-[#ff8c72] via-[#e56ab3] to-[#b36af5] shadow-[0_4px_15px_rgba(229,106,179,0.3)] transition-all duration-200 ease-in-out whitespace-nowrap animate-[fadeSlideIn_0.25s_ease_forwards];
 
   &:hover {
-    transform: scale(1.02);
-    box-shadow: 0 6px 20px rgba(229, 106, 179, 0.4);
+    @apply scale-[1.02] shadow-[0_6px_20px_rgba(229,106,179,0.4)];
   }
 }
 
 .upgrade-btn-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  border: none;
-  cursor: pointer;
-  background: linear-gradient(135deg, #ff8c72 0%, #e56ab3 50%, #b36af5 100%);
-  box-shadow: 0 4px 15px rgba(229, 106, 179, 0.3);
-  transition: all 0.2s ease;
+  @apply w-11 h-11 rounded-xl flex items-center justify-center text-white border-none cursor-pointer bg-gradient-to-br from-[#ff8c72] via-[#e56ab3] to-[#b36af5] shadow-[0_4px_15px_rgba(229,106,179,0.3)] transition-all duration-200 ease-in-out;
 
   &:hover {
-    transform: scale(1.08);
-    box-shadow: 0 6px 20px rgba(229, 106, 179, 0.4);
+    @apply scale-[1.08] shadow-[0_6px_20px_rgba(229,106,179,0.4)];
   }
 }
 
@@ -281,6 +141,7 @@
 }
 
 /* ===== Scrollbar ===== */
+/* Tailwind không hỗ trợ pseudo-elements của WebKit scrollbar nên giữ nguyên CSS thuần */
 .custom-scrollbar::-webkit-scrollbar {
   width: 4px;
 }
