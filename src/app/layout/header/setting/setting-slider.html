@@ -1,91 +1,84 @@
 <div class="setting-slider-container">
-  <div
-    *ngIf="isOpen"
-    @fadeInOut
-    class="setting-slider-dropdown"
-  >
-    <div class="setting-slider-header">
-      <div class="setting-slider-header-content">
-        <span class="domain-name">b24-efr2se.bitrix24.vn</span>
-        <button class="edit-btn">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </button>
+  <ng-container *ngIf="isOpen">
+    <!-- Arrow indicator -->
+    <div class="setting-slider-arrow"></div>
+
+    <!-- Dropdown panel -->
+    <div @fadeInOut class="setting-slider-dropdown">
+
+      <div class="setting-slider-header">
+        <div class="setting-slider-header-content">
+          <span class="domain-name">b24-efr2se.bitrix24.vn</span>
+          <button class="edit-btn" title="Chỉnh sửa domain">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="setting-slider-body">
+
+        <div class="setting-card group">
+          <div class="setting-card-left">
+            <div class="icon-company">
+              <i class="fa-solid fa-address-card"></i>
+            </div>
+            <span class="setting-card-title">Thông tin công ty</span>
+          </div>
+          <button class="setting-card-action-btn">Chỉnh sửa</button>
+        </div>
+
+        <div class="setting-card">
+          <div class="setting-card-left">
+            <div class="icon-home">
+              <i class="fa-solid fa-house"></i>
+            </div>
+            <span class="setting-card-title">Trang bắt đầu</span>
+          </div>
+          <i class="fa-solid fa-chevron-right setting-card-arrow"></i>
+        </div>
+
+        <div class="setting-grid">
+          <div class="setting-card">
+            <div class="setting-card-left icon-security">
+              <i class="fa-solid fa-shield-halved"></i>
+              <span class="setting-card-title">Bảo mật</span>
+            </div>
+            <i class="fa-solid fa-chevron-right setting-card-arrow small"></i>
+          </div>
+          <div class="setting-card">
+            <div class="setting-card-left icon-config">
+              <i class="fa-solid fa-gear"></i>
+              <span class="setting-card-title">Cài đặt</span>
+            </div>
+            <i class="fa-solid fa-chevron-right setting-card-arrow small"></i>
+          </div>
+        </div>
+
+        <div class="setting-card">
+          <div class="setting-card-left">
+            <div class="icon-network">
+              <i class="fa-solid fa-circle-nodes main"></i>
+              <i class="fa-solid fa-lock lock"></i>
+            </div>
+            <span class="setting-card-title">Mạng lưới chi nhánh</span>
+          </div>
+          <button class="setting-card-action-btn">Sửa</button>
+        </div>
+
+        <div class="setting-footer">
+          <button class="setting-footer-link">Yêu cầu triển khai</button>
+          <button class="setting-footer-link">Bắt đầu nhanh</button>
+          <button class="setting-footer-link">Hỗ trợ</button>
+        </div>
+
       </div>
     </div>
-
-    <div class="setting-slider-body">
-      
-      <div class="setting-card group">
-        <div class="setting-card-left">
-          <div class="icon-company">
-            <i class="fa-solid fa-address-card"></i>
-          </div>
-          <span class="setting-card-title">Thông tin công ty</span>
-        </div>
-        <button class="setting-card-action-btn">
-          Chỉnh sửa
-        </button>
-      </div>
-
-      <div class="setting-card">
-        <div class="setting-card-left">
-          <div class="icon-home">
-            <i class="fa-solid fa-house"></i>
-          </div>
-          <span class="setting-card-title">Trang bắt đầu</span>
-        </div>
-        <i class="fa-solid fa-arrow-right setting-card-arrow"></i>
-      </div>
-
-      <div class="setting-grid">
-        <div class="setting-card">
-          <div class="setting-card-left icon-security">
-            <i class="fa-solid fa-shield-halved"></i>
-            <span class="setting-card-title">Bảo mật</span>
-          </div>
-          <i class="fa-solid fa-arrow-right setting-card-arrow small"></i>
-        </div>
-        <div class="setting-card">
-          <div class="setting-card-left icon-config">
-            <i class="fa-solid fa-gear"></i>
-            <span class="setting-card-title">Cài đặt</span>
-          </div>
-          <i class="fa-solid fa-arrow-right setting-card-arrow small"></i>
-        </div>
-      </div>
-
-      <div class="setting-card">
-        <div class="setting-card-left">
-          <div class="icon-network">
-            <i class="fa-solid fa-circle-nodes main"></i>
-            <i class="fa-solid fa-lock lock"></i>
-          </div>
-          <span class="setting-card-title">Mạng lưới chi nhánh</span>
-        </div>
-        <button class="setting-card-action-btn px-3">
-          Sửa
-        </button>
-      </div>
-
-      <div class="setting-footer">
-        <button class="setting-footer-link">
-          Yêu cầu triển khai
-        </button>
-        <button class="setting-footer-link">
-          Bắt đầu nhanh
-        </button>
-        <button class="setting-footer-link">
-          Hỗ trợ
-        </button>
-      </div>
-      
-    </div>
-  </div>
+  </ng-container>
 </div>

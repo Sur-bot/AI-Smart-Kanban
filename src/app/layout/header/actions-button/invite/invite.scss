@@ -1,114 +1,150 @@
 .invite-container {
-  @apply absolute top-full left-1/2 -translate-x-1/2 mt-3 z-50;
+  @apply absolute top-[calc(100%+8px)] left-0 z-[9999] pointer-events-none min-w-max;
+}
 
-  .invite-arrow {
-    @apply w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[8px] border-b-[#20b2c9] mx-auto;
+.invite-arrow {
+  @apply w-0 h-0 ml-4 mb-0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #0ea5e9;
+  filter: drop-shadow(0 -2px 3px rgba(0, 0, 0, 0.12));
+}
+
+/* Dropdown panel */
+.invite-dropdown {
+  @apply pointer-events-auto w-[340px] rounded-2xl overflow-hidden text-slate-700;
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.5),
+    0 8px 32px rgba(0, 0, 0, 0.28),
+    0 2px 8px rgba(0, 0, 0, 0.1);
+  animation: inviteSlideIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes inviteSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
   }
 
-  .invite-dropdown {
-    @apply w-[360px] bg-white/95 backdrop-blur-xl rounded-[20px] shadow-2xl overflow-hidden text-slate-700;
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ===== Header ===== */
+.invite-header {
+  @apply px-4 py-3 flex items-center justify-between text-white;
+  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+
+  &-info {
+    @apply flex items-center gap-2.5;
   }
 
-  .invite-header {
-    @apply p-4 bg-[#20b2c9] text-white flex items-center justify-between;
-
-    &-info {
-      @apply flex items-center gap-2.5;
-    }
-
-    &-icon {
-      @apply w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-xl;
-    }
-
-    &-text {
-      .title {
-        @apply font-bold text-base leading-tight;
-      }
-      .link {
-        @apply text-[11px] text-white/70 border-b border-dotted border-white/50 hover:text-white;
-      }
-    }
-
-    &-button {
-      @apply bg-white text-[#20b2c9] px-3 py-1.5 rounded-full font-bold text-xs shadow-sm hover:bg-slate-50 transition-colors;
-    }
+  &-icon {
+    @apply w-9 h-9 rounded-full flex items-center justify-center text-lg;
+    background: rgba(255, 255, 255, 0.2);
   }
 
-  .invite-body {
-    @apply p-3 space-y-3;
-  }
-
-  .invite-grid {
-    @apply grid grid-cols-2 gap-2;
-  }
-
-  .invite-card {
-    @apply bg-white border border-slate-100 rounded-xl p-3 flex flex-col items-center shadow-sm;
-
-    .icon-sitemap {
-      @apply text-2xl text-sky-400 mb-1.5;
-    }
-
-    .icon-users {
-      @apply w-10 h-10 bg-lime-100 text-lime-500 rounded-full flex items-center justify-center text-lg mb-1;
-    }
-
+  &-text {
     .title {
-      @apply font-bold text-sm text-slate-600;
+      @apply font-bold text-[15px] leading-tight;
     }
 
-    .edit-btn {
-      @apply mt-1.5 text-[11px] border border-slate-200 px-3 py-1 rounded-full hover:bg-slate-50;
-    }
-
-    .subtitle {
-      @apply text-[11px] text-slate-400;
-    }
-
-    .footer {
-      @apply mt-2 pt-1.5 border-t border-slate-50 w-full text-center text-[9px] text-slate-300;
+    .link {
+      @apply text-[11px] text-white/70 border-b border-dotted border-white/50 no-underline hover:text-white transition-colors cursor-pointer;
     }
   }
 
-  .invite-project {
-    @apply border-2 border-lime-400/50 bg-lime-50/30 rounded-xl p-3 flex items-center justify-between;
+  &-button {
+    @apply bg-white text-sky-600 px-3.5 py-1.5 rounded-full font-bold text-xs border-none cursor-pointer shadow-sm hover:bg-sky-50 transition-colors whitespace-nowrap;
+  }
+}
 
-    &-info {
-      @apply flex items-center gap-2;
+/* ===== Body ===== */
+.invite-body {
+  @apply p-3 flex flex-col gap-2.5;
+}
+
+.invite-grid {
+  @apply grid grid-cols-2 gap-2;
+}
+
+/* ===== Card ===== */
+.invite-card {
+  @apply bg-white border border-slate-100 rounded-xl p-3 flex flex-col items-center shadow-sm cursor-pointer transition-all duration-150 hover:border-sky-200 hover:shadow-md;
+
+  .icon-sitemap {
+    @apply text-2xl text-sky-400 mb-2;
+  }
+
+  .icon-users {
+    @apply w-10 h-10 rounded-full flex items-center justify-center text-lg mb-2;
+    background: #dcfce7;
+    color: #16a34a;
+  }
+
+  .title {
+    @apply font-bold text-[13px] text-slate-600;
+  }
+
+  .subtitle {
+    @apply text-[11px] text-slate-400 mt-0.5;
+  }
+
+  .edit-btn {
+    @apply mt-2 text-[11px] border border-slate-200 px-3 py-1 rounded-full bg-transparent cursor-pointer text-slate-500 hover:bg-slate-50 transition-colors;
+  }
+
+  .footer {
+    @apply mt-2 pt-1.5 border-t border-slate-100 w-full text-center text-[10px] text-slate-300;
+  }
+}
+
+/* ===== Project row ===== */
+.invite-project {
+  @apply flex items-center justify-between p-3 rounded-xl border-2 border-lime-300/50 bg-lime-50/40 cursor-pointer transition-all duration-150 hover:border-lime-400/70 hover:bg-lime-50/60;
+
+  &-info {
+    @apply flex items-center gap-2;
+  }
+
+  &-icon {
+    @apply w-8 h-8 rounded-lg flex items-center justify-center text-sm text-white;
+    background: #a3e635;
+  }
+
+  &-text {
+    .title {
+      @apply font-bold text-[13px] text-slate-600 leading-tight;
     }
 
-    &-icon {
-      @apply w-8 h-8 bg-lime-400 text-white rounded-lg flex items-center justify-center text-sm;
-    }
-
-    &-text {
-      .title {
-        @apply font-bold text-slate-600 text-[13px] leading-tight;
-      }
-
-      .link {
-        @apply text-[10px] text-slate-400 border-b border-dotted border-slate-300;
-      }
-    }
-
-    &-button {
-      @apply text-[10px] border border-slate-200 bg-white px-2 py-1 rounded-full hover:bg-slate-50 font-medium whitespace-nowrap;
+    .link {
+      @apply text-[10px] text-slate-400 border-b border-dotted border-slate-300 no-underline cursor-pointer;
     }
   }
 
-  .invite-users {
-    @apply bg-slate-50/50 rounded-xl p-3 flex items-center gap-2;
+  &-button {
+    @apply text-[11px] border border-slate-200 bg-white px-2.5 py-1 rounded-full cursor-pointer font-medium text-slate-500 whitespace-nowrap hover:bg-slate-50 transition-colors;
+  }
+}
 
-    &-count {
-      @apply w-10 h-10 rounded-full border-[3px] border-sky-300 flex items-center justify-center bg-sky-100 font-bold text-sky-600 text-sm;
-    }
+/* ===== Users row ===== */
+.invite-users {
+  @apply flex items-center gap-2 p-2.5 rounded-xl bg-slate-50/60;
 
-    &-avatar {
-      @apply w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center text-slate-400;
+  &-count {
+    @apply w-9 h-9 rounded-full border-[2.5px] border-sky-300 bg-sky-100 flex items-center justify-center font-bold text-sky-600 text-sm;
+  }
 
-      i {
-        @apply text-sm;
-      }
+  &-avatar {
+    @apply w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-400;
+
+    i {
+      @apply text-sm;
     }
   }
 }
