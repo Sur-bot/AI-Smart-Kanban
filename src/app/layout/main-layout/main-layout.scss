@@ -21,14 +21,17 @@
   flex-direction: column;
   flex: 1;
   min-width: 0;
-  overflow: hidden;
+  /* overflow: visible để popup trong header không bị clip */
+  overflow: visible;
   transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 1;
 }
 
 .content-area {
   flex: 1;
   overflow: auto;
-  background: rgba(15, 13, 36, 0.15);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(15, 13, 36, 0.12);
+  /* KHÔNG dùng backdrop-filter ở đây — nó tạo stacking context mới
+     khiến popup fixed/absolute của header bị blur/clip */
 }
