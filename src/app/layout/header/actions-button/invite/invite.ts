@@ -1,4 +1,4 @@
-import { Component, HostListener, ElementRef, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
 
@@ -23,13 +23,4 @@ import { trigger, transition, style, animate } from '@angular/animations';
 export class InviteComponent {
   @Input() isOpen = false;
   @Output() close = new EventEmitter<void>();
-
-  constructor(private eRef: ElementRef) {}
-
-  @HostListener('document:click', ['$event'])
-  clickout(event: any) {
-    if (this.isOpen && !this.eRef.nativeElement.contains(event.target)) {
-      this.close.emit();
-    }
-  }
 }

@@ -1,4 +1,4 @@
-import { Component, HostListener, ElementRef, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
 
@@ -37,16 +37,6 @@ import { trigger, transition, style, animate } from '@angular/animations';
   ],
 })
 export class SettingSliderComponent {
-  @Input() isOpen = false; // Nhận trạng thái từ Header
+  @Input() isOpen = false;
   @Output() close = new EventEmitter<void>();
-
-  constructor(private eRef: ElementRef) {}
-
-  @HostListener('document:click', ['$event'])
-  clickout(event: any) {
-    // Chỉ xử lý đóng khi popup đang mở
-    if (this.isOpen && !this.eRef.nativeElement.contains(event.target)) {
-      this.close.emit();
-    }
-  }
 }
