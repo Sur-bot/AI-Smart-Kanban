@@ -4,8 +4,9 @@
   height: 100vh;
   width: 100%;
   overflow: hidden;
-  background: rgba(24, 21, 60, 0.7);
-  backdrop-filter: blur(10px);
+  background: rgba(24, 21, 60, 0.25);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .layout-body {
@@ -19,7 +20,7 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  min-width: 0; /* Ngăn overflow khi sidebar thay đổi */
+  min-width: 0;
   overflow: hidden;
   transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -27,6 +28,7 @@
 .content-area {
   flex: 1;
   overflow: auto;
-  background: rgba(15, 13, 36, 0.5);
-  backdrop-filter: blur(8px);
+  background: rgba(15, 13, 36, 0.15);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }

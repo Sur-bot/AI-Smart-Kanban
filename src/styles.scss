@@ -1,46 +1,35 @@
-// 1. CHÌA KHÓA: @use LUÔN LUÔN phải nằm ở dòng đầu tiên của file Sass
 @use '@angular/material' as mat;
 
-// 2. Các directive của Tailwind đặt ngay phía dưới
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 html {
   height: 100%;
-  @include mat.theme(
-    (
-      color: (
-        primary: mat.$azure-palette,
+  @include mat.theme((color: (primary: mat.$azure-palette,
         tertiary: mat.$blue-palette,
       ),
       typography: Roboto,
       density: 0,
-    )
-  );
+    ));
 }
 
 body {
   color-scheme: light;
 
-  /* --- Cài đặt Font và Text mặc định --- */
   font-family: 'Inter', sans-serif;
   color: var(--mat-sys-on-surface);
 
-  /* --- Cài đặt Box Model --- */
   margin: 0;
   padding: 0;
   min-height: 100vh;
 
   /* --- CÀI ĐẶT BACKGROUND --- */
-  background-image: url('assets/images/main-bg-6.jpg'); 
-  background-size: cover;              /* Giữ tỷ lệ ảnh, phủ kín toàn bộ */
-  background-position: center center;  /* Căn ảnh ở giữa */
+  background-image: url('assets/images/main-bg-6.jpg');
+  background-size: cover;
+  background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
 
-  /* 🌟 TUYỆT CHIÊU CHỐNG BỂ ẢNH */
-  image-rendering: -webkit-optimize-contrast; /* Tối ưu độ tương phản cho Chrome/Safari */
-  image-rendering: crisp-edges;               /* Giữ sắc nét các đường cạnh */
-  transform: translate3d(0, 0, 0);
+  image-rendering: auto;
 }
