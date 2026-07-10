@@ -26,7 +26,7 @@ export class SidebarComponent {
   expandedMenuIds = new Set<string>(['collaboration']);
 
   /** Trạng thái thu gọn (chỉ hiện icon) */
-  isCollapsed = false;
+  isCollapsed = true;
 
   /** Trạng thái hover mở rộng tạm thời khi sidebar đang thu gọn */
   isHoverExpanded = false;
