@@ -1,15 +1,31 @@
+:host {
+    @apply flex flex-1 p-4 pb-5 overflow-hidden;
+}
+
 .tasks-table-wrapper {
     @apply flex flex-col flex-1 overflow-hidden;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 /* ===== Table Header ===== */
 .table-header {
     @apply sticky top-0 z-10;
-    background: rgba(24, 21, 60, 0.50);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: #ffffff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
+
+.table-header .table-cell {
+    border-right: 1px solid rgba(0, 0, 0, 0.06);
+    height: 38px;
+    
+    &:last-child {
+        border-right: none;
+    }
+}
+
+
 
 /* ===== Row layout ===== */
 .table-row {
@@ -17,24 +33,24 @@
 }
 
 .header-row {
-    @apply text-white/50 text-xs font-medium uppercase tracking-wider select-none;
+    @apply text-slate-500 text-[10px] font-semibold select-none uppercase tracking-normal whitespace-nowrap;
 }
 
 .data-row {
-    @apply text-white/75 text-sm border-b border-white/5 cursor-pointer;
+    @apply text-slate-700 text-sm border-b border-black/5 cursor-pointer;
     transition: background-color 0.15s ease;
 
     &:hover {
-        background: rgba(255, 255, 255, 0.04);
+        background: rgba(0, 0, 0, 0.02);
     }
 }
 
 /* ===== Table Cell ===== */
 .table-cell {
-    @apply flex items-center py-3 px-4 shrink-0;
+    @apply flex items-center py-2 px-4 shrink-0;
 }
 
-.cell-checkbox {
+.cell-settings {
     @apply w-12 justify-center;
 }
 
@@ -68,7 +84,7 @@
 
 /* ===== Column Label ===== */
 .col-label {
-    @apply flex items-center gap-1;
+    @apply flex items-center gap-1 whitespace-nowrap;
 }
 
 /* ===== Checkbox ===== */
@@ -79,10 +95,13 @@
 
 /* ===== Tag Badge ===== */
 .tag-badge {
-    @apply text-[10px] px-1.5 py-0.5 rounded-full bg-white/10 text-white/60 mr-1;
+    @apply text-[10px] px-1.5 py-0.5 rounded-full bg-black/5 text-slate-600 mr-1;
 }
 
 /* ===== Table Body ===== */
 .table-body {
     @apply flex-1 overflow-y-auto;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }

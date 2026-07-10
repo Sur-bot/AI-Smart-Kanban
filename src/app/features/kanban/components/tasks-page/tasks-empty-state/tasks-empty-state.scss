@@ -11,9 +11,9 @@
 }
 
 .empty-title {
-  @apply text-xl font-semibold text-white/80 mb-3 tracking-wide;
+  @apply text-lg font-normal text-slate-700 mb-2 tracking-wide;
 }
 
 .empty-description {
-  @apply text-sm text-white/45 leading-relaxed max-w-sm;
+  @apply text-xs text-slate-400 leading-relaxed max-w-sm;
 }
