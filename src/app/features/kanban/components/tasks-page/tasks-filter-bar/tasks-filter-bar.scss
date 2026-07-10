@@ -1,0 +1,82 @@
+.filter-bar {
+  @apply flex items-center justify-between px-5 py-1.5 select-none;
+  background: rgba(24, 21, 60, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ===== Left Section ===== */
+.filter-left {
+  @apply flex items-center gap-1 overflow-x-auto whitespace-nowrap;
+}
+
+/* ===== View Tabs ===== */
+.view-tabs {
+  @apply flex items-center gap-0.5;
+}
+
+.view-tab {
+  @apply px-3 py-1.5 rounded-md text-xs font-medium text-white/55 bg-transparent border-none cursor-pointer whitespace-nowrap;
+  transition: all 0.15s ease;
+
+  &:hover {
+    @apply text-white/80 bg-white/10;
+  }
+
+  &.active {
+    @apply text-white bg-white/15 font-semibold;
+  }
+}
+
+/* ===== Divider ===== */
+.filter-divider {
+  @apply w-px h-4 mx-2 shrink-0;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ===== Quick Filters ===== */
+.quick-filters {
+  @apply flex items-center gap-1;
+}
+
+.quick-filter-btn {
+  @apply flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium text-white/50 bg-transparent border border-white/10 cursor-pointer whitespace-nowrap;
+  transition: all 0.15s ease;
+
+  &:hover {
+    @apply text-white/75 bg-white/5 border-white/20;
+  }
+
+  &.active {
+    @apply text-white bg-indigo-500/20 border-indigo-400/40;
+  }
+}
+
+/* ===== Mark Read ===== */
+.mark-read-btn {
+  @apply px-2.5 py-1 rounded-md text-[11px] font-medium text-white/45 bg-transparent border-none cursor-pointer whitespace-nowrap;
+  transition: all 0.15s ease;
+
+  &:hover {
+    @apply text-white/70 bg-white/5;
+  }
+}
+
+/* ===== Right Section ===== */
+.filter-right {
+  @apply flex items-center gap-1 shrink-0;
+}
+
+.filter-action-btn {
+  @apply flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[11px] font-medium text-white/50 bg-transparent border-none cursor-pointer whitespace-nowrap;
+  transition: all 0.15s ease;
+
+  &:hover {
+    @apply text-white/80 bg-white/10;
+  }
+
+  &.has-dropdown {
+    @apply pr-2;
+  }
+}
