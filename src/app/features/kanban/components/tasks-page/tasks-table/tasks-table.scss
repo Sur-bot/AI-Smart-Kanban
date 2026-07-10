@@ -1,0 +1,88 @@
+.tasks-table-wrapper {
+    @apply flex flex-col flex-1 overflow-hidden;
+}
+
+/* ===== Table Header ===== */
+.table-header {
+    @apply sticky top-0 z-10;
+    background: rgba(24, 21, 60, 0.50);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ===== Row layout ===== */
+.table-row {
+    @apply flex items-center w-full;
+}
+
+.header-row {
+    @apply text-white/50 text-xs font-medium uppercase tracking-wider select-none;
+}
+
+.data-row {
+    @apply text-white/75 text-sm border-b border-white/5 cursor-pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.04);
+    }
+}
+
+/* ===== Table Cell ===== */
+.table-cell {
+    @apply flex items-center py-3 px-4 shrink-0;
+}
+
+.cell-checkbox {
+    @apply w-12 justify-center;
+}
+
+.cell-name {
+    @apply flex-1 min-w-[180px];
+}
+
+.cell-activity {
+    @apply w-[120px];
+}
+
+.cell-due {
+    @apply w-[120px];
+}
+
+.cell-creator {
+    @apply w-[130px];
+}
+
+.cell-assignee {
+    @apply w-[180px];
+}
+
+.cell-project {
+    @apply w-[120px];
+}
+
+.cell-tags {
+    @apply w-[100px];
+}
+
+/* ===== Column Label ===== */
+.col-label {
+    @apply flex items-center gap-1;
+}
+
+/* ===== Checkbox ===== */
+.task-checkbox {
+    @apply w-4 h-4 rounded cursor-pointer accent-indigo-500;
+    appearance: auto;
+}
+
+/* ===== Tag Badge ===== */
+.tag-badge {
+    @apply text-[10px] px-1.5 py-0.5 rounded-full bg-white/10 text-white/60 mr-1;
+}
+
+/* ===== Table Body ===== */
+.table-body {
+    @apply flex-1 overflow-y-auto;
+}

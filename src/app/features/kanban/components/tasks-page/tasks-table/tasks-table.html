@@ -1,0 +1,50 @@
+<div class="tasks-table-wrapper">
+    <!-- Table Header -->
+    <div class="table-header">
+        <div class="table-row header-row">
+            <!-- Checkbox cột -->
+            <div class="table-cell cell-checkbox">
+                <input type="checkbox" class="task-checkbox" disabled />
+            </div>
+            <!-- Các cột dữ liệu -->
+            <div *ngFor="let col of columns" class="table-cell" [ngClass]="{
+          'cell-name': col.id === 'name',
+          'cell-activity': col.id === 'activity',
+          'cell-due': col.id === 'dueDate',
+          'cell-creator': col.id === 'creator',
+          'cell-assignee': col.id === 'assignee',
+          'cell-project': col.id === 'project',
+          'cell-tags': col.id === 'tags'
+        }">
+                <span class="col-label">{{ col.label }}</span>
+                <!-- Sort / Dropdown arrow -->
+                <svg *ngIf="col.hasDropdown" class="w-3 h-3 opacity-40 ml-1" fill="none" viewBox="0 0 24 24"
+                    stroke-width="2.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                </svg>
+            </div>
+        </div>
+    </div>
+    <!-- Table Body -->
+    <div class="table-body">
+        <!-- Nếu có dữ liệu -->
+        <div *ngIf="tasks.length > 0" class="table-rows">
+            <div *ngFor="let task of tasks" class="table-row data-row">
+                <div class="table-cell cell-checkbox">
+                    <input type="checkbox" class="task-checkbox" />
+                </div>
+                <div class="table-cell cell-name">{{ task.title }}</div>
+                <div class="table-cell cell-activity">{{ task.activity }}</div>
+                <div class="table-cell cell-due">{{ task.dueDate }}</div>
+                <div class="table-cell cell-creator">{{ task.creator }}</div>
+                <div class="table-cell cell-assignee">{{ task.assignee }}</div>
+                <div class="table-cell cell-project">{{ task.project }}</div>
+                <div class="table-cell cell-tags">
+                    <span *ngFor="let tag of task.tags" class="tag-badge">{{ tag }}</span>
+                </div>
+            </div>
+        </div>
+        <!-- Nếu không có dữ liệu → Empty State -->
+        <app-tasks-empty-state *ngIf="tasks.length === 0" />
+    </div>
+</div>
