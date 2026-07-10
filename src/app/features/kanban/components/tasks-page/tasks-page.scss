@@ -1,0 +1,8 @@
+:host {
+  @apply block h-full;
+}
+
+.tasks-page {
+  @apply flex flex-col h-full overflow-hidden;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
