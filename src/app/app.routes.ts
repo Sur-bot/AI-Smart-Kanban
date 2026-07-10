@@ -14,6 +14,13 @@ export const routes: Routes = [
         title: 'Bảng Kanban - Tác vụ và Dự án'
       },
 
+      // Trang Tác vụ (Tasks Page)
+      {
+        path: 'kanban/tasks',
+        loadComponent: () => import('./features/kanban/components/tasks-page/tasks-page').then(m => m.TasksPageComponent),
+        title: 'Tác vụ của tôi - AI Smart Kanban'
+      },
+
       // Các trang khác (CRM, Booking, Inventory, Marketing, etc.)
       // Để mở rộng sau này:
       // {
