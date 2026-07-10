@@ -1,0 +1,19 @@
+.empty-state-wrapper {
+  @apply flex items-center justify-center py-24 px-6;
+}
+
+.empty-state-content {
+  @apply flex flex-col items-center text-center max-w-md;
+}
+
+.empty-icon {
+  @apply mb-6 text-white/20;
+}
+
+.empty-title {
+  @apply text-xl font-semibold text-white/80 mb-3 tracking-wide;
+}
+
+.empty-description {
+  @apply text-sm text-white/45 leading-relaxed max-w-sm;
+}
