@@ -9,15 +9,13 @@ html {
   @include mat.theme((color: (primary: mat.$azure-palette,
         tertiary: mat.$blue-palette,
       ),
-      typography: Roboto,
+      typography: 'Plus Jakarta Sans',
       density: 0,
     ));
 }
 
 body {
   color-scheme: light;
-
-  font-family: 'Inter', sans-serif;
   color: var(--mat-sys-on-surface);
 
   margin: 0;
