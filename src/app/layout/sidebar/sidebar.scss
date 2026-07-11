@@ -10,7 +10,7 @@
 
 /* ===== Sidebar Container ===== */
 .sidebar-container {
-  @apply w-[260px] h-full flex flex-col text-white font-['Inter',sans-serif] bg-[rgba(24,21,60,0.45)] backdrop-blur-[16px] border-r border-white/10 transition-[width] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] overflow-hidden;
+  @apply w-[260px] h-full flex flex-col text-white font-['Inter',sans-serif] bg-transparent border-r border-white/10 transition-[width] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] overflow-hidden;
 
   &.collapsed {
     @apply w-[68px];
@@ -108,7 +108,7 @@
 
 /* ===== Footer ===== */
 .sidebar-footer {
-  @apply p-4 shrink-0 relative z-10 bg-[rgba(24,21,60,0.45)] backdrop-blur-[16px];
+  @apply p-4 shrink-0 relative z-10 bg-transparent;
 
   .collapsed & {
     @apply py-4 px-3 flex justify-center;

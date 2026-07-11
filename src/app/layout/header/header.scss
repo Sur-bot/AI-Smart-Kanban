@@ -5,12 +5,7 @@
   position: relative;
   z-index: 200;
   overflow: visible;
-  background: linear-gradient(135deg,
-      rgba(30, 27, 75, 0.55) 0%,
-      rgba(20, 18, 55, 0.50) 100%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: transparent;
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04), 0 4px 24px rgba(0, 0, 0, 0.2);
 }
 
@@ -48,13 +43,6 @@
   /* CRITICAL */
 }
 
-/* ===== DIVIDER tinh tế ===== */
-.header-divider {
-  width: 1px;
-  height: 20px;
-  background: rgba(255, 255, 255, 0.12);
-  flex-shrink: 0;
-}
 
 /* ===== LOGO "Digit 24" ===== */
 .logo-text {
