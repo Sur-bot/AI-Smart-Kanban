@@ -1,5 +1,6 @@
 .tasks-toolbar {
-    @apply flex items-center justify-between px-5 py-2.5 select-none;
+    @apply flex items-center justify-between select-none;
+    padding: 22px 0px 22px 22px;
     background: transparent;
 }
 
@@ -10,7 +11,8 @@
 
 /* ===== Title ===== */
 .toolbar-title {
-    @apply text-base font-bold text-white tracking-wide whitespace-nowrap shrink-0;
+    @apply font-bold text-white tracking-wide whitespace-nowrap shrink-0;
+    font-size: 25px;
 }
 
 /* ===== Create Button ===== */
