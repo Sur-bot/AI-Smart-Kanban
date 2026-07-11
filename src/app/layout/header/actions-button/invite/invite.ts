@@ -1,11 +1,12 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-invite-dropdown',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './invite.html',
   styleUrl: './invite.scss',
   animations: [

@@ -3,7 +3,7 @@
     type="text" 
     #searchInput
     class="search-input" 
-    placeholder="Tìm nhân viên, tài liệu, nội dung khác ..." 
+    [placeholder]="'HEADER.SEARCH_PLACEHOLDER' | translate" 
   />
   
   <button class="search-btn" type="button" (click)="toggleSearch()">

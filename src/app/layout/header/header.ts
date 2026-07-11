@@ -1,5 +1,6 @@
 import { Component, HostListener, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 import { SubNavComponent } from './sub-nav/sub-nav';
 import { SearchComponent } from './search/expandable-search';
 import { SettingSliderComponent } from './setting/setting-slider';
@@ -11,7 +12,15 @@ import { UserTimeWidgetComponent } from './user-time-widget/user-time-widget';
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
   standalone: true,
-  imports: [CommonModule, SubNavComponent, SearchComponent, SettingSliderComponent, InviteComponent, UserTimeWidgetComponent],
+  imports: [
+    CommonModule,
+    TranslatePipe,
+    SubNavComponent,
+    SearchComponent,
+    SettingSliderComponent,
+    InviteComponent,
+    UserTimeWidgetComponent,
+  ],
 })
 export class HeaderComponent {
   currentView = signal<'list' | 'board'>('board');
@@ -20,27 +29,23 @@ export class HeaderComponent {
   userName = 'John Doe';
   userInitial = 'JD';
 
-  // Chỉ một popup được mở tại một thời điểm
   activePopup: 'setting' | 'invite' | null = null;
 
-  get isPopupOpen()  { return this.activePopup === 'setting'; }
-  get isInviteOpen() { return this.activePopup === 'invite'; }
+  get isPopupOpen() {
+    return this.activePopup === 'setting';
+  }
+  get isInviteOpen() {
+    return this.activePopup === 'invite';
+  }
 
-  /**
-   * Document click handler — đóng popup khi click bên ngoài.
-   * Bỏ stopPropagation() hoàn toàn. Thay vào đó dùng target.closest()
-   * để phân biệt click bên trong popup vs bên ngoài.
-   */
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event) {
     const target = event.target as HTMLElement;
 
-    // Nếu click vào bên trong popup panel → giữ popup mở
     if (target.closest('.setting-slider-dropdown') || target.closest('.invite-dropdown')) {
       return;
     }
 
-    // Nếu click vào nút toggle → để togglePopup/toggleInvite xử lý
     if (target.closest('#header-settings-btn')) {
       return;
     }
@@ -48,7 +53,6 @@ export class HeaderComponent {
       return;
     }
 
-    // Mọi click khác → đóng popup
     this.activePopup = null;
   }
 

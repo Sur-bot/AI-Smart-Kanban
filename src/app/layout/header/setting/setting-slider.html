@@ -9,7 +9,7 @@
       <div class="setting-slider-header">
         <div class="setting-slider-header-content">
           <span class="domain-name">b24-efr2se.bitrix24.vn</span>
-          <button class="edit-btn" title="Chỉnh sửa domain">
+          <button class="edit-btn" [title]="'SETTINGS.EDIT_DOMAIN' | translate">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
@@ -29,9 +29,9 @@
             <div class="icon-company">
               <i class="fa-solid fa-address-card"></i>
             </div>
-            <span class="setting-card-title">Thông tin công ty</span>
+            <span class="setting-card-title">{{ 'SETTINGS.COMPANY_DETAILS' | translate }}</span>
           </div>
-          <button class="setting-card-action-btn">Chỉnh sửa</button>
+          <button class="setting-card-action-btn">{{ 'SETTINGS.EDIT_COMPANY_DETAILS' | translate }}</button>
         </div>
 
         <div class="setting-card">
@@ -39,7 +39,7 @@
             <div class="icon-home">
               <i class="fa-solid fa-house"></i>
             </div>
-            <span class="setting-card-title">Trang bắt đầu</span>
+            <span class="setting-card-title">{{ 'SETTINGS.START_PAGE' | translate }}</span>
           </div>
           <i class="fa-solid fa-chevron-right setting-card-arrow"></i>
         </div>
@@ -48,14 +48,14 @@
           <div class="setting-card">
             <div class="setting-card-left icon-security">
               <i class="fa-solid fa-shield-halved"></i>
-              <span class="setting-card-title">Bảo mật</span>
+              <span class="setting-card-title">{{ 'SETTINGS.SECURITY' | translate }}</span>
             </div>
             <i class="fa-solid fa-chevron-right setting-card-arrow small"></i>
           </div>
           <div class="setting-card">
             <div class="setting-card-left icon-config">
               <i class="fa-solid fa-gear"></i>
-              <span class="setting-card-title">Cài đặt</span>
+              <span class="setting-card-title">{{ 'SETTINGS.SETTINGS' | translate }}</span>
             </div>
             <i class="fa-solid fa-chevron-right setting-card-arrow small"></i>
           </div>
@@ -67,15 +67,15 @@
               <i class="fa-solid fa-circle-nodes main"></i>
               <i class="fa-solid fa-lock lock"></i>
             </div>
-            <span class="setting-card-title">Mạng lưới chi nhánh</span>
+            <span class="setting-card-title">{{ 'SETTINGS.BRANCH_NETWORK' | translate }}</span>
           </div>
-          <button class="setting-card-action-btn">Sửa</button>
+          <button class="setting-card-action-btn">{{ 'SETTINGS.EDIT' | translate }}</button>
         </div>
 
         <div class="setting-footer">
-          <button class="setting-footer-link">Yêu cầu triển khai</button>
-          <button class="setting-footer-link">Bắt đầu nhanh</button>
-          <button class="setting-footer-link">Hỗ trợ</button>
+          <button class="setting-footer-link">{{ 'SETTINGS.DEPLOYMENT_REQUEST' | translate }}</button>
+          <button class="setting-footer-link">{{ 'SETTINGS.QUICK_START' | translate }}</button>
+          <button class="setting-footer-link">{{ 'SETTINGS.SUPPORT' | translate }}</button>
         </div>
 
       </div>
