@@ -1,0 +1,12 @@
+<div class="lang-popup-wrapper">
+  <button class="footer-btn" (click)="toggleLangPopup($event)">
+    {{ currentLangLabel }}
+  </button>
+
+  <div *ngIf="isLangPopupOpen()" class="lang-popup-menu">
+    <button *ngFor="let lang of languages" class="lang-popup-item" [class.active]="lang.code === currentLang()"
+      (click)="changeLanguage(lang.code)">
+      {{ lang.label }}
+    </button>
+  </div>
+</div>
