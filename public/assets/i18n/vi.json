@@ -1,0 +1,57 @@
+{
+  "HEADER": {
+    "SEARCH": "Tìm kiếm...",
+    "SETTINGS": "Cài đặt",
+    "INVITE": "Mời",
+    "UPGRADE": "Mua ngay",
+    "HELP": "Trợ giúp",
+    "HELP_TITLE": "Trợ giúp & tài liệu",
+    "SEARCH_PLACEHOLDER": "Tìm nhân viên, tài liệu, nội dung khác ..."
+  },
+  "SUBNAV": {
+    "TASKS": "Tác vụ",
+    "PROJECTS": "Dự án",
+    "STREAM": "Luồng",
+    "SCRUM": "Scrum",
+    "PERFORMANCE": "Hiệu suất",
+    "ANALYTICS": "Analytics",
+    "TEMPLATES": "Khuôn mẫu",
+    "RECYCLE_BIN": "Thùng rác",
+    "MORE": "Thêm"
+  },
+  "SETTINGS": {
+    "EDIT_DOMAIN": "Chỉnh sửa domain",
+    "COMPANY_DETAILS": "Thông tin công ty",
+    "EDIT_COMPANY_DETAILS": "Chỉnh sửa",
+    "START_PAGE": "Trang bắt đầu",
+    "SECURITY": "Bảo mật",
+    "SETTINGS": "Cài đặt",
+    "BRANCH_NETWORK": "Mạng lưới chi nhánh",
+    "EDIT": "Sửa",
+    "DEPLOYMENT_REQUEST": "Yêu cầu triển khai",
+    "QUICK_START": "Bắt đầu nhanh",
+    "SUPPORT": "Hỗ trợ"
+  },
+  "INVITE_POPUP": {
+    "INVITE_USERS": "Mời người dùng",
+    "WHY_INVITE": "ví sao cần mời?",
+    "INVITE_BTN": "+ Mời",
+    "STRUCTURE": "Cấu trúc",
+    "USERS": "Người dùng",
+    "EMPLOYEES": "Số nhân viên",
+    "UNLIMITED": "Không giới hạn",
+    "COLLAB_PROJECT": "Dự án hợp tác",
+    "WHAT_IS_THIS": "đây là gì?",
+    "CREATE_PROJECT": "Tạo dự án"
+  },
+  "SIDEBAR": {
+    "HOME": "Trang chủ",
+    "TASKS": "Tác vụ",
+    "PROJECTS": "Dự án"
+  },
+  "TASKS_PAGE": {
+    "TITLE": "Tác vụ của tôi",
+    "CREATE": "Tạo",
+    "ROLE_ALL": "Tất cả các vai trò"
+  }
+}

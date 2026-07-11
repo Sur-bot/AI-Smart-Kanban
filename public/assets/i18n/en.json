@@ -1,0 +1,57 @@
+{
+  "HEADER": {
+    "SEARCH": "Search...",
+    "SETTINGS": "Settings",
+    "INVITE": "Invite",
+    "UPGRADE": "Buy Now",
+    "HELP": "Help",
+    "HELP_TITLE": "Help & Documentation",
+    "SEARCH_PLACEHOLDER": "Search members, documents, or content ..."
+  },
+  "SUBNAV": {
+    "TASKS": "Tasks",
+    "PROJECTS": "Projects",
+    "STREAM": "Stream",
+    "SCRUM": "Scrum",
+    "PERFORMANCE": "Performance",
+    "ANALYTICS": "Analytics",
+    "TEMPLATES": "Templates",
+    "RECYCLE_BIN": "Recycle Bin",
+    "MORE": "More"
+  },
+  "SETTINGS": {
+    "EDIT_DOMAIN": "Edit Domain",
+    "COMPANY_DETAILS": "Company details",
+    "EDIT_COMPANY_DETAILS": "Edit company details",
+    "START_PAGE": "Start Page",
+    "SECURITY": "Security",
+    "SETTINGS": "Settings",
+    "BRANCH_NETWORK": "Branch Network",
+    "EDIT": "Edit",
+    "DEPLOYMENT_REQUEST": "Deployment Request",
+    "QUICK_START": "Quick Start",
+    "SUPPORT": "Support"
+  },
+  "INVITE_POPUP": {
+    "INVITE_USERS": "Invite Users",
+    "WHY_INVITE": "Why invite?",
+    "INVITE_BTN": "+ Invite",
+    "STRUCTURE": "Structure",
+    "USERS": "Users",
+    "EMPLOYEES": "Employees",
+    "UNLIMITED": "Unlimited",
+    "COLLAB_PROJECT": "Collaborative Project",
+    "WHAT_IS_THIS": "What is this?",
+    "CREATE_PROJECT": "Create Project"
+  },
+  "SIDEBAR": {
+    "HOME": "Home",
+    "TASKS": "Tasks",
+    "PROJECTS": "Projects"
+  },
+  "TASKS_PAGE": {
+    "TITLE": "My Tasks",
+    "CREATE": "Create",
+    "ROLE_ALL": "All Roles"
+  }
+}
