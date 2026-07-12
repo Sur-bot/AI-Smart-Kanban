@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MenuItem } from '../../../core/config/menu.config';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-collaboration',
@@ -11,7 +12,8 @@ import { MenuItem } from '../../../core/config/menu.config';
   imports: [
     CommonModule,
     RouterLink,
-    RouterLinkActive
+    RouterLinkActive,
+    MatIconModule
   ],
 })
 export class CollaborationComponent {

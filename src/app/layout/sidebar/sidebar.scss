@@ -10,10 +10,10 @@
 
 /* ===== Sidebar Container ===== */
 .sidebar-container {
-  @apply w-[260px] h-full flex flex-col text-white font-['Inter',sans-serif] bg-transparent border-r border-white/10 transition-[width] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] overflow-hidden;
+  @apply w-[260px] h-full flex flex-col text-white font-['Inter',sans-serif] bg-[#2a3c53] border-r border-white/10 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] overflow-hidden;
 
   &.collapsed {
-    @apply w-[68px];
+    @apply w-[68px] bg-white/10 backdrop-blur-md;
   }
 
   &.hover-expanded {
@@ -24,10 +24,6 @@
 /* ===== Header ===== */
 .sidebar-header {
   @apply h-16 px-4 flex items-center gap-3 shrink-0;
-
-  .collapsed & {
-    @apply justify-center px-3.5;
-  }
 }
 
 .toggle-btn {
@@ -36,7 +32,7 @@
 }
 
 .logo-area {
-  @apply flex items-center gap-1 cursor-pointer whitespace-nowrap overflow-hidden animate-[fadeSlideIn_0.25s_ease_forwards];
+  @apply flex items-center gap-1 cursor-pointer whitespace-nowrap overflow-hidden;
 }
 
 /* ===== Menu ===== */
@@ -50,21 +46,36 @@
 }
 
 .menu-item {
-  @apply flex items-center justify-between py-2.5 px-3 rounded-[10px] cursor-pointer whitespace-nowrap overflow-hidden no-underline;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  @apply flex items-center py-2.5 px-3 rounded-[10px] cursor-pointer whitespace-nowrap overflow-hidden no-underline relative;
+  transition: background-color 0.2s ease, color 0.2s ease, border-radius 0.2s ease;
 
-  .collapsed & {
-    @apply py-2.5 px-0 justify-center;
+  &.expanded-parent {
+    @apply rounded-b-none;
+
+    .menu-label {
+      @apply text-[13.5px] text-white/40 font-normal;
+      transition: all 0.2s ease;
+    }
+
+    .menu-icon {
+      @apply opacity-40;
+      transform: scale(0.85);
+      transition: all 0.2s ease;
+    }
+
+    &:hover {
+      .menu-label {
+        @apply text-white/80;
+      }
+      .menu-icon {
+        @apply opacity-80;
+      }
+    }
   }
 }
 
 .menu-item-left {
-  @apply flex items-center gap-3 relative overflow-hidden min-w-0;
-
-  .collapsed & {
-    gap: 0;
-    overflow: visible;
-  }
+  @apply flex items-center gap-3 relative min-w-0;
 }
 
 .menu-icon {
@@ -77,12 +88,12 @@
 }
 
 .menu-label {
-  @apply text-sm whitespace-nowrap overflow-hidden text-ellipsis animate-[fadeSlideIn_0.25s_ease_forwards];
+  @apply text-sm whitespace-nowrap overflow-hidden text-ellipsis;
 }
 
 /* ===== SubMenu Arrow ===== */
 .submenu-arrow {
-  @apply w-[14px] h-[14px] opacity-40 shrink-0 transition duration-300 ease-in-out;
+  @apply absolute left-[210px] w-[14px] h-[14px] opacity-40 shrink-0 transition duration-300 ease-in-out;
 
   .group:hover & {
     @apply opacity-100;
@@ -95,39 +106,33 @@
 
 /* ===== Badge ===== */
 .menu-badge {
-  @apply bg-[#ff5752] text-white text-[10px] font-bold leading-none rounded-full border-2 border-[rgba(24,21,60,0.92)];
-}
-
-.badge-expanded {
-  @apply absolute -top-1.5 left-3.5 px-[5px] py-[1px];
-}
-
-.badge-collapsed {
-  @apply absolute -top-1 -right-1.5 px-1 py-[1px] text-[9px];
+  @apply absolute -top-1.5 left-3.5 bg-[#ff5752] text-white text-[10px] font-bold leading-none rounded-full px-1 py-[2px] min-w-[16px] h-[16px] flex items-center justify-center;
 }
 
 /* ===== Footer ===== */
 .sidebar-footer {
-  @apply p-4 shrink-0 relative z-10 bg-transparent;
-
-  .collapsed & {
-    @apply py-4 px-3 flex justify-center;
-  }
+  @apply px-3 py-4 shrink-0 relative z-10 bg-transparent flex justify-start;
 }
 
 .upgrade-btn {
-  @apply w-full py-2.5 px-3 rounded-[10px] flex items-center justify-center gap-2 text-[13px] font-medium text-white border-none cursor-pointer bg-gradient-to-br from-[#ff8c72] via-[#e56ab3] to-[#b36af5] shadow-[0_4px_15px_rgba(229,106,179,0.3)] transition-all duration-200 ease-in-out whitespace-nowrap animate-[fadeSlideIn_0.25s_ease_forwards];
+  @apply flex items-center justify-start gap-3 py-2.5 px-3 rounded-[10px] w-[236px] h-[44px] text-[13px] font-medium text-white border-none cursor-pointer bg-gradient-to-br from-[#ff8c72] via-[#e56ab3] to-[#b36af5] shadow-[0_4px_15px_rgba(229,106,179,0.3)] whitespace-nowrap overflow-hidden;
+  transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 200ms ease, filter 200ms ease, transform 200ms ease;
 
   &:hover {
-    @apply scale-[1.02] shadow-[0_6px_20px_rgba(229,106,179,0.4)];
+    @apply shadow-[0_6px_20px_rgba(229,106,179,0.4)] brightness-110;
+    transform: scale(1.02);
+  }
+
+  .collapsed & {
+    @apply w-[44px];
   }
 }
 
-.upgrade-btn-icon {
-  @apply w-11 h-11 rounded-xl flex items-center justify-center text-white border-none cursor-pointer bg-gradient-to-br from-[#ff8c72] via-[#e56ab3] to-[#b36af5] shadow-[0_4px_15px_rgba(229,106,179,0.3)] transition-all duration-200 ease-in-out;
+.upgrade-text {
+  @apply opacity-100 transition-opacity duration-200 ease-in-out;
 
-  &:hover {
-    @apply scale-[1.08] shadow-[0_6px_20px_rgba(229,106,179,0.4)];
+  .collapsed & {
+    @apply opacity-0;
   }
 }
 

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { BITRIX_SIDEBAR_MENU, MenuItem } from '../../core/config/menu.config';
 import { CollaborationComponent } from './collaboration/collaboration';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,17 +14,18 @@ import { CollaborationComponent } from './collaboration/collaboration';
     CommonModule, 
     RouterLink,
     RouterLinkActive,
-    CollaborationComponent
+    CollaborationComponent,
+    MatIconModule
   ],
 })
 export class SidebarComponent {
   @Input() isOpen = true;
-  @Output() toggleSidebar = new EventEmitter<void>();
+  @Output() toggleSidebar = new EventEmitter<boolean>();
   
   menuItems: MenuItem[] = BITRIX_SIDEBAR_MENU;
 
   /** Các menu có submenu đang được mở rộng */
-  expandedMenuIds = new Set<string>(['collaboration']);
+  expandedMenuIds = new Set<string>();
 
   /** Trạng thái thu gọn (chỉ hiện icon) */
   isCollapsed = true;
@@ -51,6 +53,7 @@ export class SidebarComponent {
     if (!this.isCollapsed) {
       this.isHoverExpanded = false;
     }
+    this.toggleSidebar.emit(this.isCollapsed);
   }
 
   /** Khi di chuột vào sidebar đang thu gọn → mở rộng tạm (overlay) */
@@ -91,6 +94,6 @@ export class SidebarComponent {
   }
 
   onToggle() {
-    this.toggleSidebar.emit();
+    this.toggleSidebar.emit(this.isCollapsed);
   }
 }
