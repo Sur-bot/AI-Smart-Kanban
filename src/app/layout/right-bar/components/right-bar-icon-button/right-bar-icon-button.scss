@@ -1,0 +1,13 @@
+:host {
+  @apply block;
+}
+
+.icon-btn {
+  @apply p-2.5 rounded-xl text-white/60 hover:text-white hover:bg-white/10 transition-all duration-300 flex items-center justify-center cursor-pointer transform hover:scale-110 active:scale-95 border-none bg-transparent;
+}
+
+.icon-btn-icon {
+  width: 22px !important;
+  height: 22px !important;
+  font-size: 22px !important;
+}

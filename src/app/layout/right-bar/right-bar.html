@@ -1,0 +1,28 @@
+<div class="right-bar-container">
+  <!-- Top section -->
+  <div class="icon-group">
+    @for (item of topIcons; track item.icon) {
+      <app-right-bar-icon-button 
+        [icon]="item.icon || ''" 
+        [tooltip]="item.tooltip || ''"
+        (onClick)="onFeatureClick(item.id)">
+      </app-right-bar-icon-button>
+    }
+  </div>
+
+  <!-- Horizontal Divider -->
+  <div class="divider"></div>
+
+  <!-- Bottom section -->
+  <div class="icon-group">
+    @for (item of bottomIcons; track item.icon) {
+      <app-right-bar-icon-button 
+        [icon]="item.icon || ''" 
+        [tooltip]="item.tooltip || ''"
+        (onClick)="onFeatureClick(item.id)">
+      </app-right-bar-icon-button>
+    }
+  </div>
+</div>
+
+

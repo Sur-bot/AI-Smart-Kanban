@@ -1,0 +1,185 @@
+:host {
+  @apply fixed inset-0 z-[500] block pointer-events-none;
+}
+
+.popup-overlay {
+  @apply absolute inset-0 bg-gradient-to-b from-[#0c1438]/85 via-[#182654]/50 to-[#2a3c75]/20 backdrop-blur-md transition-opacity duration-300 pointer-events-auto;
+}
+
+.popup-container {
+  @apply absolute inset-0 flex flex-col overflow-hidden pointer-events-none pl-[68px];
+}
+
+.popup-wrapper {
+  @apply flex-1 w-full h-full flex flex-col pointer-events-auto;
+}
+
+.popup-navbar {
+  @apply h-12 mt-1 bg-transparent flex items-center px-4 justify-between shrink-0;
+}
+
+.navbar-tabs-container {
+  @apply flex items-center gap-1 overflow-x-auto flex-1;
+}
+
+.navbar-tab {
+  @apply px-3.5 py-[5px] flex items-center gap-2 rounded-md border border-transparent transition-all cursor-pointer text-[15px] font-medium text-white/70 hover:bg-white/10 hover:border-white/20 hover:text-white;
+}
+
+.navbar-tab-active {
+  @apply bg-[#566e8e] text-white hover:bg-[#566e8e];
+}
+
+.navbar-tab-add {
+  @apply px-3.5 py-[5px] flex items-center gap-0.5 rounded-md transition-colors cursor-pointer text-[15px] font-medium text-white/70 hover:bg-white/10 hover:text-white;
+}
+
+.navbar-tab-add-icon {
+  width: 14px !important;
+  height: 14px !important;
+  font-size: 14px !important;
+}
+
+.navbar-close-btn {
+  display: none;
+}
+
+.navbar-close-icon {
+  width: 18px !important;
+  height: 18px !important;
+  font-size: 18px !important;
+}
+
+.popup-content {
+  @apply flex-1 bg-white rounded-t-2xl mt-4 shadow-2xl flex flex-col relative;
+}
+
+.popup-inner {
+  @apply flex-1 w-full flex flex-col overflow-hidden rounded-t-2xl;
+}
+
+.content-close-btn {
+  @apply absolute -left-12 top-6 w-12 h-10 bg-[#3ca3f1] rounded-l-full flex items-center justify-center pl-2 text-white/90 cursor-pointer transition-all hover:bg-[#4eaef5] hover:text-white z-10;
+  box-shadow: 0 3px 0 rgba(15, 65, 95, 0.7);
+}
+
+.content-close-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 rgba(15, 65, 95, 0.7);
+}
+
+.content-close-icon {
+  width: 20px !important;
+  height: 20px !important;
+  font-size: 20px !important;
+}
+
+.popup-header {
+  @apply h-14 border-b border-gray-100 flex items-center px-6 bg-white shrink-0;
+}
+
+.popup-title {
+  @apply text-gray-800 font-semibold text-lg;
+}
+
+.popup-body {
+  @apply flex-1 overflow-y-auto bg-white;
+}
+
+.empty-state {
+  @apply p-6 flex flex-col items-center justify-center h-full;
+}
+
+.empty-icon-wrapper {
+  @apply w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-4;
+}
+
+.empty-icon {
+  @apply text-blue-500;
+  width: 32px !important;
+  height: 32px !important;
+  font-size: 32px !important;
+}
+
+.empty-title {
+  @apply text-gray-800 font-medium text-lg mb-2;
+}
+
+.empty-desc {
+  @apply text-gray-500 text-center max-w-sm;
+}
+
+.popup-slide-down {
+  animation: slideDown 0.35s cubic-bezier(0.4, 0, 0.2, 1) 0.35s both;
+}
+
+.popup-slide-up {
+  animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.popup-slide-up-out {
+  animation: slideUpOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.popup-slide-down-out {
+  animation: slideDownOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUpOut {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideDownOut {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+/* Custom scrollbar for navbar tabs */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}

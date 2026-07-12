@@ -1,15 +1,28 @@
 <div class="main-layout">
-  <div class="layout-body">
+  <div class="layout-body" [class.sidebar-open]="!sidebarCollapsed" [class.sidebar-closed]="sidebarCollapsed">
     <app-sidebar 
-      [isOpen]="sidebarOpen" 
-      (toggleSidebar)="toggleSidebar()">
+      [isOpen]="!sidebarCollapsed" 
+      (toggleSidebar)="toggleSidebar($event)">
     </app-sidebar>
     <div class="content-wrapper">
       <app-header></app-header>
-      <div class="content-area">
-        <router-outlet></router-outlet>
+      <div class="flex flex-1 min-h-0 overflow-hidden">
+        <div class="flex flex-col flex-1 min-w-0 overflow-hidden">
+          <div class="content-area">
+            <router-outlet></router-outlet>
+          </div>
+          <app-footer></app-footer>
+        </div>
+        <app-right-bar (openFeature)="onRightBarFeatureClick($event)"></app-right-bar>
       </div>
-      <app-footer></app-footer>
     </div>
   </div>
+
+  @if (activeRightBarFeature) {
+    <app-right-bar-popup
+      [activeFeature]="activeRightBarFeature"
+      (close)="onRightBarPopupClose()"
+      (selectFeature)="onRightBarFeatureClick($event)">
+    </app-right-bar-popup>
+  }
 </div>

@@ -1,0 +1,15 @@
+:host {
+  @apply block h-full shrink-0 z-20;
+}
+
+.right-bar-container {
+  @apply w-[64px] h-full flex flex-col items-center py-5 bg-transparent relative;
+}
+
+.icon-group {
+  @apply flex flex-col gap-3 w-full items-center;
+}
+
+.divider {
+  @apply w-8 h-[1px] bg-white/10 my-4 rounded-full;
+}

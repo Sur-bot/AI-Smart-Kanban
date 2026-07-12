@@ -1,0 +1,82 @@
+<!-- Background Overlay (gradient dark at top to light at bottom) -->
+<div class="popup-overlay"
+     [class.opacity-0]="isClosing"
+     [class.opacity-100]="!isClosing"
+     (click)="onOverlayClick($event)"></div>
+
+<!-- Content Container (fixed position relative to closed sidebar) -->
+<div class="popup-container">
+  
+  <div class="popup-wrapper">
+    <!-- Navbar (slides down) -->
+    <div class="popup-navbar"
+         [class.popup-slide-down]="!isClosing"
+         [class.popup-slide-up-out]="isClosing">
+      <div class="navbar-tabs-container custom-scrollbar">
+        <!-- Tabs -->
+        @for (item of menuItems; track item.id) {
+          <button 
+            class="navbar-tab"
+            [class.navbar-tab-active]="getFeatureName() === item.label"
+            (click)="selectFeature.emit(item.id)">
+            <span class="whitespace-nowrap">{{ item.label }}</span>
+          </button>
+        }
+
+        <button class="navbar-tab-add">
+          <span class="whitespace-nowrap">Thêm</span>
+          <mat-icon class="navbar-tab-add-icon">expand_more</mat-icon>
+        </button>
+      </div>
+      
+      <!-- Close button -->
+      <button class="navbar-close-btn" (click)="triggerClose()">
+        <mat-icon class="navbar-close-icon">close</mat-icon>
+      </button>
+    </div>
+
+    <!-- Main Content (slides up) -->
+    <div class="popup-content"
+         [class.popup-slide-up]="!isClosing"
+         [class.popup-slide-down-out]="isClosing">
+         
+      <!-- Close Button (sticks out to the left) -->
+      <button class="content-close-btn" (click)="triggerClose()">
+        <mat-icon class="content-close-icon">close</mat-icon>
+      </button>
+
+      <!-- Inner wrapper to clip rounded corners -->
+      <div class="popup-inner">
+        <!-- Header -->
+        <div class="popup-header">
+          <h2 class="popup-title">{{ getFeatureName() }}</h2>
+        </div>
+
+        <!-- Dynamic Content Body -->
+        <div class="popup-body">
+        @switch (activeFeature) {
+          @case ('chat') { <app-chat-feature></app-chat-feature> }
+          @case ('task_chat') { <app-task-chat-feature></app-task-chat-feature> }
+          @case ('copilot') { <app-copilot-feature></app-copilot-feature> }
+          @case ('collab') { <app-collab-feature></app-collab-feature> }
+          @case ('channel') { <app-channel-feature></app-channel-feature> }
+          @case ('open_channel') { <app-open-channel-feature></app-open-channel-feature> }
+          @case ('notifications') { <app-notifications-feature></app-notifications-feature> }
+          @case ('telephony') { <app-telephony-feature></app-telephony-feature> }
+          @case ('apps') { <app-apps-feature></app-apps-feature> }
+          @case ('settings') { <app-settings-feature></app-settings-feature> }
+          @default {
+            <div class="empty-state">
+              <div class="empty-icon-wrapper">
+                <mat-icon class="empty-icon">{{ activeFeature }}</mat-icon>
+              </div>
+              <h3 class="empty-title">{{ getFeatureName() }}</h3>
+              <p class="empty-desc">Vui lòng chọn một tính năng để hiển thị nội dung.</p>
+            </div>
+          }
+        }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
