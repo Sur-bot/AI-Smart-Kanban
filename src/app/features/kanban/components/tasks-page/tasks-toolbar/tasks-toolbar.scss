@@ -15,66 +15,196 @@
     font-size: 25px;
 }
 
-/* ===== Create Button ===== */
-.btn-create {
-    @apply flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-semibold text-white border-none cursor-pointer whitespace-nowrap shrink-0;
+/* ===== Create Button Group ===== */
+.btn-create-group {
+    @apply flex items-center h-8 rounded-lg text-sm font-semibold text-white whitespace-nowrap shrink-0 overflow-hidden;
     background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
-    transition: all 0.15s ease;
+    box-shadow: 0 2px 6px rgba(34, 197, 94, 0.25);
+}
 
+.btn-create-main {
+    @apply flex items-center h-full gap-1 px-3.5 bg-transparent border-none cursor-pointer text-white transition-colors duration-150;
+    
     &:hover {
-        background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
-        box-shadow: 0 3px 12px rgba(34, 197, 94, 0.45);
-        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.06);
     }
-
+    
     &:active {
-        transform: translateY(0);
+        background: rgba(255, 255, 255, 0.15);
+    }
+}
+
+.btn-create-divider {
+    @apply w-[1px] h-4 bg-white/10;
+}
+
+.btn-create-dropdown {
+    @apply flex items-center justify-center h-full px-2 bg-transparent border-none cursor-pointer text-white transition-colors duration-150;
+    
+    &:hover {
+        background: rgba(255, 255, 255, 0.06);
+    }
+    
+    &:active {
+        background: rgba(255, 255, 255, 0.15);
     }
 }
 
 /* ===== Role Dropdown ===== */
 .btn-role {
-    @apply flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium text-white/70 border border-white/10 bg-white/5 cursor-pointer whitespace-nowrap shrink-0;
+    @apply flex items-center h-8 gap-1.5 px-3.5 rounded-lg text-sm font-medium text-white bg-white/10 cursor-pointer whitespace-nowrap shrink-0;
     transition: all 0.15s ease;
 
-    &:hover {
-        @apply text-white bg-white/10 border-white/20;
+    &:hover, &.active {
+        @apply text-white bg-white/20;
     }
 }
 
-/* ===== Filter Tags ===== */
-.filter-tags {
-    @apply flex items-center gap-1.5;
+.role-dropdown-menu {
+    @apply absolute top-[calc(100%+8px)] left-0 w-[200px] bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.15)] py-2 z-50 overflow-hidden flex flex-col;
+    border: 1px solid rgba(0,0,0,0.05);
+    animation: dropdownFadeIn 0.15s ease-out forwards;
 }
 
-.filter-tag {
-    @apply flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium text-white whitespace-nowrap;
-    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-    box-shadow: 0 2px 6px rgba(99, 102, 241, 0.25);
-}
-
-.tag-remove {
-    @apply flex items-center justify-center w-4 h-4 rounded-full bg-white/15 border-none cursor-pointer text-white/70;
-    transition: all 0.15s ease;
-
+.role-dropdown-item {
+    @apply flex items-center justify-between px-4 py-2.5 text-[14px] text-gray-700 cursor-pointer transition-colors duration-150;
+    
     &:hover {
-        @apply bg-white/30 text-white;
+        @apply bg-gray-50 text-gray-900;
     }
 }
 
-/* ===== Search ===== */
-.toolbar-search {
-    @apply flex items-center gap-2 px-3 py-1.5 rounded-md text-xs text-white/50 border border-white/10 bg-white/5 cursor-pointer whitespace-nowrap;
-    transition: all 0.15s ease;
-
-    &:hover {
-        @apply bg-white/10 border-white/20 text-white/60;
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-.search-label {
-    @apply text-white/40;
+/* ===== Search & Filter Combo ===== */
+.search-filter-container {
+    @apply relative flex items-center h-8;
+}
+
+.search-input-box {
+    @apply flex items-center gap-3 h-8 pl-3 pr-3 rounded-lg border border-white/20 bg-white/10 text-white cursor-text overflow-hidden;
+    transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out, border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    width: 22vw;
+
+    &.has-filter {
+        @apply pl-0.5;
+    }
+
+    &.has-role-filter {
+        width: 32vw;
+    }
+
+    .search-filter-container.expanded & {
+        width: 42vw;
+        @apply border-white/40 bg-white/20 shadow-[0_4px_12px_rgba(0,0,0,0.1)];
+    }
+}
+
+.search-active-tag {
+    @apply flex items-center gap-1.5 px-3 py-1 rounded-md text-[13px] font-medium whitespace-nowrap bg-white/20 text-white shrink-0;
+    
+    .tag-remove {
+        @apply flex items-center justify-center bg-transparent border-none cursor-pointer text-white/70 hover:text-white transition-colors;
+    }
+}
+
+.search-real-input {
+    @apply flex-1 bg-transparent border-none outline-none text-[14px] text-white placeholder-white/50 min-w-0;
+}
+
+.search-icons {
+    @apply flex items-center gap-1.5 shrink-0;
+}
+
+/* ===== Search Popup Panel ===== */
+.search-popup-panel {
+    @apply absolute top-[calc(100%+12px)] left-0 h-[340px] bg-white rounded-xl shadow-[0_12px_40px_rgba(0,0,0,0.15)] z-50 flex overflow-hidden border border-gray-100;
+    width: 42vw;
+    animation: searchSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transform-origin: top left;
+    
+    &.closing {
+        animation: searchSlideDown 0.2s ease-in forwards;
+    }
+}
+
+.search-popup-sidebar {
+    @apply w-[220px] bg-[#f8fafc] border-r border-gray-100 p-3 flex flex-col;
+}
+
+.search-preset-item {
+    @apply flex items-center gap-2 px-3 py-2.5 rounded-lg text-[13px] text-gray-700 cursor-pointer transition-colors font-medium;
+    
+    &:hover {
+        @apply bg-gray-200/50 text-gray-900;
+    }
+    
+    &.active {
+        @apply text-[#0066cc] bg-[#eef5fe];
+    }
+}
+
+.search-popup-content {
+    @apply flex-1 p-6 flex flex-col bg-white;
+}
+
+.filter-group {
+    @apply flex flex-col gap-2.5;
+    
+    label {
+        @apply text-[13px] text-gray-400 font-medium;
+    }
+}
+
+.status-tags-box {
+    @apply flex items-center flex-wrap gap-2 p-2 border border-gray-200 rounded-lg bg-white min-h-[44px];
+}
+
+.status-tag {
+    @apply flex items-center gap-1.5 px-3 py-1 rounded-md text-[13px] font-medium bg-[#eef5fe] text-[#0066cc];
+}
+
+.status-dropdown-icon {
+    @apply flex items-center justify-center w-6 h-6 rounded hover:bg-gray-100 cursor-pointer;
+}
+
+.role-select-box {
+    @apply flex items-center justify-between px-3 py-2 border border-gray-200 rounded-lg text-[13px] text-gray-700 cursor-pointer hover:border-gray-300 transition-colors;
+}
+
+.btn-primary {
+    @apply flex items-center justify-center px-6 py-2 rounded-lg bg-[#0066cc] text-white text-sm font-semibold cursor-pointer hover:bg-[#0052a3] transition-colors shadow-sm;
+}
+
+@keyframes searchSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes searchSlideDown {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(8px);
+    }
 }
 
 /* ===== Right Section ===== */
