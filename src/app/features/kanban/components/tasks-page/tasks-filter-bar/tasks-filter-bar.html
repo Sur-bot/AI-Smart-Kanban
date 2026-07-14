@@ -10,28 +10,24 @@
       </button>
     </div>
 
-    <!-- Separator -->
     <div class="filter-divider"></div>
 
-    <!-- Quick Filters -->
     <div class="quick-filters">
-      <button *ngFor="let filter of quickFilters" class="quick-filter-btn" [class.active]="filter.isActive">
-        <span class="filter-badge">{{ filter.count }}</span>
+      <button *ngFor="let filter of quickFilters" class="quick-filter-btn" [class.active]="filter.isActive"
+              (click)="onQuickFilterClick(filter)">
+        <span class="filter-badge" [class.has-notifications]="filter.count > 0">{{ filter.count }}</span>
         <span>{{ filter.label }}</span>
       </button>
     </div>
     
-    <!-- Separator -->
     <div class="filter-divider"></div>
 
-    <!-- Đánh dấu đã đọc tất cả -->
     <button class="mark-read-btn">
       Đánh dấu đã đọc tất cả
     </button>
 
   </div>
 
-  <!-- Right: Actions -->
   <div class="filter-right">
     <button class="filter-action-btn">
       <span>Gửi phản hồi</span>

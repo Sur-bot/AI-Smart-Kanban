@@ -3,12 +3,10 @@
   background: transparent;
 }
 
-/* ===== Left Section ===== */
 .filter-left {
   @apply flex items-center gap-1 overflow-x-auto whitespace-nowrap;
 }
 
-/* ===== View Tabs ===== */
 .view-tabs {
   @apply flex items-center rounded-lg bg-white/10 overflow-hidden;
 }
@@ -25,36 +23,35 @@
   }
 }
 
-/* ===== Divider ===== */
 .filter-divider {
   @apply w-px h-4 mx-2 shrink-0;
   background: rgba(255, 255, 255, 0.12);
 }
 
-/* ===== Quick Filters ===== */
 .quick-filters {
-  @apply flex items-center gap-1;
+  @apply flex items-center rounded-lg bg-white/10 overflow-hidden;
 }
 
 .quick-filter-btn {
-  @apply flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[13px] font-medium text-white/70 bg-transparent border border-white/10 cursor-pointer whitespace-nowrap;
-  transition: all 0.15s ease;
+  @apply flex items-center gap-1.5 px-3.5 py-1.5 text-[13px] font-medium text-white/70 bg-transparent border-none cursor-pointer whitespace-nowrap transition-colors;
 
   &:hover {
-    @apply text-white/75 bg-white/5 border-white/20;
+    @apply text-white/90 bg-white/10;
   }
 
   &.active {
-    @apply text-white bg-indigo-500/20 border-indigo-400/40;
+    @apply text-white bg-white/20;
   }
 }
 
-/* ===== Filter Badge ===== */
 .filter-badge {
   @apply inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full text-[11px] font-semibold bg-white/20 text-white/90;
+
+  &.has-notifications {
+    @apply bg-red-500 text-white;
+  }
 }
 
-/* ===== Mark Read ===== */
 .mark-read-btn {
   @apply px-2.5 py-1 rounded-md text-[13px] font-medium text-white/70 bg-transparent border-none cursor-pointer whitespace-nowrap;
   transition: all 0.15s ease;
@@ -64,7 +61,6 @@
   }
 }
 
-/* ===== Right Section ===== */
 .filter-right {
   @apply flex items-center gap-1 shrink-0;
 }

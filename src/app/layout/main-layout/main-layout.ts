@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { HeaderComponent } from '../header/header';
 import { SidebarComponent } from '../sidebar/sidebar';
 import { FooterComponent } from '../footer/footer';
@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { RightBarComponent } from '../right-bar/right-bar';
 import { RightBarPopupComponent } from '../right-bar/components/right-bar-popup/right-bar-popup';
+import { RightBarService } from '../../core/services/right-bar.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -15,8 +16,13 @@ import { RightBarPopupComponent } from '../right-bar/components/right-bar-popup/
   imports: [CommonModule, HeaderComponent, SidebarComponent, FooterComponent, RouterOutlet, RightBarComponent, RightBarPopupComponent]
 })
 export class MainLayoutComponent {
+  private rightBarService = inject(RightBarService);
+
   sidebarCollapsed = true;
-  activeRightBarFeature: string | null = null;
+
+  get activeRightBarFeature(): string | null {
+    return this.rightBarService.activeFeature();
+  }
 
   toggleSidebar(isCollapsed?: boolean) {
     if (isCollapsed !== undefined) {
@@ -27,10 +33,10 @@ export class MainLayoutComponent {
   }
 
   onRightBarFeatureClick(featureId: string) {
-    this.activeRightBarFeature = featureId;
+    this.rightBarService.openFeature(featureId);
   }
 
   onRightBarPopupClose() {
-    this.activeRightBarFeature = null;
+    this.rightBarService.closeFeature();
   }
 }

@@ -1,7 +1,9 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { TaskViewMode } from '../../../models/task-list.model';
+import { RightBarService } from '../../../../../core/services/right-bar.service';
+
 @Component({
     selector: 'app-tasks-filter-bar',
     standalone: true,
@@ -10,7 +12,8 @@ import { TaskViewMode } from '../../../models/task-list.model';
     styleUrls: ['./tasks-filter-bar.scss'],
 })
 export class TasksFilterBarComponent {
-    /** Chế độ xem hiện tại */
+    private rightBarService = inject(RightBarService);
+
     activeView: TaskViewMode = 'list';
 
     @Output() viewChange = new EventEmitter<TaskViewMode>();
@@ -20,7 +23,6 @@ export class TasksFilterBarComponent {
       this.viewChange.emit(id);
     }
 
-    /** Các tab chế độ xem */
     viewTabs: { id: TaskViewMode; label: string }[] = [
         { id: 'list', label: 'Danh sách' },
         { id: 'deadline', label: 'Hạn chót' },
@@ -28,10 +30,16 @@ export class TasksFilterBarComponent {
         { id: 'calendar', label: 'Lịch' },
         { id: 'gantt', label: 'Gantt' },
     ];
-    /** Quick filters */
-    quickFilters = [
-        { id: 'conversations', label: 'Cuộc trò chuyện tác vụ', icon: 'chat', count: 3, isActive: false },
-        { id: 'overdue', label: 'Quá hạn', icon: 'clock', count: 5, isActive: false },
+
+    quickFilters: { id: string; label: string; icon: string; count: number; isActive: boolean; rightBarFeatureId?: string }[] = [
+        { id: 'conversations', label: 'Cuộc trò chuyện tác vụ', icon: 'chat', count: 3, isActive: false, rightBarFeatureId: 'task_chat' },
+        { id: 'overdue', label: 'Quá hạn', icon: 'clock', count: 0, isActive: false },
         { id: 'comments', label: 'Bình luận', icon: 'comment', count: 12, isActive: false },
     ];
+
+    onQuickFilterClick(filter: { id: string; rightBarFeatureId?: string; isActive: boolean }) {
+        if (filter.rightBarFeatureId) {
+            this.rightBarService.openFeature(filter.rightBarFeatureId);
+        }
+    }
 }
