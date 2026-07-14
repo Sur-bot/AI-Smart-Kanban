@@ -1,6 +1,5 @@
 <section class="deadline-board" [attr.aria-label]="'TASKS_PAGE.DEADLINE.ARIA_LABEL' | translate">
 
-  <!-- Columns Header Row -->
   <header class="deadline-header">
     <div
       *ngFor="let col of columns"
@@ -14,23 +13,34 @@
     </div>
   </header>
 
-  <!-- Columns Body + Empty State wrapper -->
   <div class="deadline-body">
 
-    <!-- Each column -->
-    <div *ngFor="let col of columns" class="deadline-col-body">
-      <!-- Nút + ở đầu mỗi cột -->
+    <div *ngFor="let col of columns" class="deadline-col-body group">
       <button
-        *ngIf="col.id !== 'overdue' && col.id !== 'completed'"
+        *ngIf="col.id !== 'overdue' && col.id !== 'completed' && activeQuickTaskCol !== col.id"
         class="col-add-btn"
         [attr.aria-label]="('TASKS_PAGE.DEADLINE.ADD_TO_COL' | translate) + ' ' + (col.labelKey | translate)"
-        [title]="'TASKS_PAGE.DEADLINE.ADD_TASK' | translate"
+        (click)="openQuickTask(col.id, $event)"
       >
         <mat-icon>add</mat-icon>
+        <span class="btn-text">{{ 'TASKS_PAGE.DEADLINE.QUICK_TASK' | translate }}</span>
       </button>
+
+      <app-quick-task-input
+        *ngIf="activeQuickTaskCol === col.id"
+        (create)="onQuickTaskCreate($event, col.id)"
+        (cancel)="closeQuickTask()"
+      ></app-quick-task-input>
+
+      <div class="tasks-list flex flex-col items-center w-full pb-4">
+        <app-task-card 
+          *ngFor="let task of col.tasks" 
+          [task]="task"
+          (click)="onTaskClick(task)">
+        </app-task-card>
+      </div>
     </div>
 
-    <!-- Empty State overlay - chỉ hiện khi tất cả cột đều rỗng -->
     <div class="deadline-empty-state" *ngIf="isEmpty()">
       <p class="empty-text">{{ 'TASKS_PAGE.DEADLINE.EMPTY_TEXT' | translate }}</p>
     </div>

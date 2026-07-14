@@ -1,0 +1,35 @@
+:host {
+  @apply block w-[calc(100%-20px)] mt-2 bg-white rounded shadow-[0_4px_12px_rgba(0,0,0,0.15)] border border-[#38bdf8] overflow-hidden;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.quick-task-container {
+  @apply flex flex-col;
+}
+
+.task-input {
+  @apply w-full border-none outline-none resize-none p-3 text-[13px] text-slate-800 bg-transparent;
+  
+  &::placeholder {
+    @apply text-slate-400 font-medium;
+  }
+}
+
+.quick-task-footer {
+  @apply flex items-center justify-start px-3 pb-2;
+  
+  .helper-text {
+    @apply text-[12px] text-slate-400 italic;
+  }
+}

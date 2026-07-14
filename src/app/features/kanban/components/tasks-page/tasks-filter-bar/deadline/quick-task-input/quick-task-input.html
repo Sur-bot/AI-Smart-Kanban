@@ -1,0 +1,15 @@
+<div class="quick-task-container">
+  <textarea
+    #taskInput
+    class="task-input"
+    [placeholder]="'TASKS_PAGE.DEADLINE.QUICK_TASK_PLACEHOLDER' | translate"
+    [(ngModel)]="taskTitle"
+    (keydown)="onKeyDown($event)"
+    rows="3"
+  ></textarea>
+  <div class="quick-task-footer">
+    <span class="helper-text">
+      {{ 'TASKS_PAGE.DEADLINE.PRESS_ENTER' | translate }}
+    </span>
+  </div>
+</div>

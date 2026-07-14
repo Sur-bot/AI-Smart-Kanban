@@ -2,10 +2,17 @@ export interface Task {
   id: string;
   title: string;
   description: string;
-  columnId: 'todo' | 'inprogress' | 'done';
+  columnId: string;
   priority: 'high' | 'medium' | 'low';
   estimatedHours?: number;
   checklist?: { id: string; text: string; done: boolean }[];
+  
+  // UI Display fields for Deadline view
+  timeLabel?: string;
+  timeColor?: 'red' | 'green' | 'default';
+  badgeCount?: number;
+  assignees?: string[];
+  stripeColor?: string;
 }
 
 export interface AiAssistResponse {

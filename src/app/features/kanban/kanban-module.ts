@@ -5,15 +5,15 @@ import { KanbanRoutingModule } from './kanban-routing-module';
 
 import { KanbanBoardComponent } from './components/kanban-board/kanban-board';
 import { KanbanColumn } from './components/kanban-column/kanban-column';
-import { TaskCard } from './components/task-card/task-card';
-import { TaskDetailModal } from './components/task-detail-modal/task-detail-modal';
+import { TaskCardComponent } from './components/task-card/task-card';
+import { TaskDetailModalComponent } from './components/task-detail-modal/task-detail-modal';
 
 @NgModule({
   imports: [
     KanbanBoardComponent,
     KanbanColumn,
-    TaskCard,
-    TaskDetailModal,
+    TaskCardComponent,
+    TaskDetailModalComponent,
      CommonModule,
     KanbanRoutingModule,
     DragDropModule

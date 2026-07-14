@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
+import { QuickTaskInputComponent } from './quick-task-input/quick-task-input';
+import { TaskCardComponent } from '../../../task-card/task-card';
+import { Task } from '../../../../models/kanban.model';
 
 export interface DeadlineColumn {
   id: string;
@@ -14,11 +17,13 @@ export interface DeadlineColumn {
 @Component({
   selector: 'app-deadline',
   standalone: true,
-  imports: [CommonModule, MatIconModule, TranslatePipe],
+  imports: [CommonModule, MatIconModule, TranslatePipe, QuickTaskInputComponent, TaskCardComponent],
   templateUrl: './deadline.html',
   styleUrls: ['./deadline.scss'],
 })
 export class DeadlineComponent {
+  @Output() taskSelected = new EventEmitter<Task>();
+
   columns: DeadlineColumn[] = [
     { id: 'overdue',     labelKey: 'TASKS_PAGE.DEADLINE.COL_OVERDUE',     color: 'col-red',    count: 0, tasks: [] },
     { id: 'today',       labelKey: 'TASKS_PAGE.DEADLINE.COL_TODAY',        color: 'col-green',  count: 0, tasks: [] },
@@ -29,7 +34,44 @@ export class DeadlineComponent {
     { id: 'completed',   labelKey: 'TASKS_PAGE.DEADLINE.COL_COMPLETED',    color: 'col-purple', count: 0, tasks: [] },
   ];
 
+  activeQuickTaskCol: string | null = null;
+
   isEmpty(): boolean {
-    return this.columns.every(col => col.tasks.length === 0);
+    const noTasks = this.columns.every(col => col.tasks.length === 0);
+    return noTasks && !this.activeQuickTaskCol;
+  }
+
+  openQuickTask(colId: string, event: MouseEvent) {
+    event.stopPropagation();
+    this.activeQuickTaskCol = colId;
+  }
+
+  closeQuickTask() {
+    this.activeQuickTaskCol = null;
+  }
+
+  onQuickTaskCreate(taskTitle: string, colId: string) {
+    const col = this.columns.find(c => c.id === colId);
+    if (col) {
+      const newTask = {
+        id: Math.random().toString(36).substring(2, 9),
+        title: taskTitle,
+        columnId: colId,
+        priority: 'medium',
+        timeLabel: '- 47 phút', // Mock data from image
+        timeColor: 'red',
+        badgeCount: 1,
+        assignees: ['user1', 'user2'], // Just placeholders to show avatars
+        stripeColor: col.color // Use the column's color
+      };
+      
+      col.tasks.push(newTask as any);
+      col.count = col.tasks.length;
+    }
+    this.closeQuickTask();
+  }
+
+  onTaskClick(task: any) {
+    this.taskSelected.emit(task);
   }
 }

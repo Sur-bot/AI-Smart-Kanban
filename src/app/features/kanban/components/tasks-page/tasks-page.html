@@ -10,6 +10,13 @@
   <app-tasks-table *ngIf="activeView === 'list'" [tasks]="tasks" />
 
   <!-- View: Hạn chót -->
-  <app-deadline *ngIf="activeView === 'deadline'" />
+  <app-deadline *ngIf="activeView === 'deadline'" (taskSelected)="openTaskDetail($event)" />
+
+  <!-- Task Detail Modal Overlay -->
+  <app-task-detail-modal 
+    *ngIf="selectedTask" 
+    [task]="selectedTask" 
+    (close)="closeTaskDetail()">
+  </app-task-detail-modal>
 
 </div>

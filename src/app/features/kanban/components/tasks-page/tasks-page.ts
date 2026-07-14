@@ -4,7 +4,9 @@ import { TasksToolbarComponent } from './tasks-toolbar/tasks-toolbar';
 import { TasksFilterBarComponent } from './tasks-filter-bar/tasks-filter-bar';
 import { TasksTableComponent } from './tasks-table/tasks-table';
 import { DeadlineComponent } from './tasks-filter-bar/deadline/deadline';
+import { TaskDetailModalComponent } from '../task-detail-modal/task-detail-modal';
 import { TaskItem, TaskViewMode } from '../../models/task-list.model';
+import { Task } from '../../models/kanban.model';
 
 @Component({
   selector: 'app-tasks-page',
@@ -15,6 +17,7 @@ import { TaskItem, TaskViewMode } from '../../models/task-list.model';
     TasksFilterBarComponent,
     TasksTableComponent,
     DeadlineComponent,
+    TaskDetailModalComponent,
   ],
   templateUrl: './tasks-page.html',
   styleUrls: ['./tasks-page.scss'],
@@ -25,8 +28,18 @@ export class TasksPageComponent {
 
   /** Chế độ xem hiện tại — được chia sẻ từ filter-bar */
   activeView: TaskViewMode = 'list';
+  selectedTask: Task | null = null; // Quản lý trạng thái mở modal
 
   onViewChange(view: TaskViewMode) {
     this.activeView = view;
+  }
+
+  // Hàm mở modal (có thể gọi từ DeadlineComponent hoặc TasksTableComponent)
+  openTaskDetail(task: Task) {
+    this.selectedTask = task;
+  }
+
+  closeTaskDetail() {
+    this.selectedTask = null;
   }
 }
