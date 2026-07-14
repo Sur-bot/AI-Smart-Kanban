@@ -1,1 +1,43 @@
-<p>task-card works!</p>
+<div class="task-card-container">
+  <div class="card-stripe" [ngClass]="task.stripeColor"></div>
+  
+  <div class="card-content">
+    <div class="card-header">
+      <h3 class="task-title">{{ task.title }}</h3>
+      <div class="task-badge bg-orange-500" *ngIf="task.badgeCount">
+        {{ task.badgeCount }}
+      </div>
+    </div>
+    
+    <div class="task-meta" *ngIf="task.timeLabel">
+      <div class="time-label" [ngClass]="task.timeColor ? 'time-' + task.timeColor : 'time-default'">
+        {{ task.timeLabel }}
+      </div>
+    </div>
+    
+    <div class="card-footer">
+      <div class="task-assignees" *ngIf="task.assignees && task.assignees.length > 0">
+        <ng-container *ngFor="let assignee of task.assignees; let i = index">
+          <div class="avatar bg-slate-400">
+            <mat-icon class="text-white">person</mat-icon>
+          </div>
+          <mat-icon *ngIf="i < task.assignees.length - 1" class="separator">chevron_right</mat-icon>
+        </ng-container>
+      </div>
+
+      <div *ngIf="!task.assignees || task.assignees.length === 0" class="flex-1"></div>
+
+      <div class="task-actions">
+        <button class="action-btn bg-slate-500 hover:bg-slate-600" [title]="'Tắt tiếng'">
+          <mat-icon>notifications_off</mat-icon>
+        </button>
+        <button class="action-btn bg-sky-400 hover:bg-sky-500" [title]="'Bắt đầu tác vụ'">
+          <mat-icon>play_arrow</mat-icon>
+        </button>
+        <button class="action-btn bg-slate-300 hover:bg-slate-400" [title]="'Hoàn tất tác vụ'">
+          <mat-icon>flag</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

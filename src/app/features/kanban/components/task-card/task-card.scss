@@ -1,0 +1,92 @@
+:host {
+  @apply block w-[calc(100%-20px)] mt-2 bg-white rounded-md shadow-sm border border-slate-200 overflow-hidden select-none cursor-grab active:cursor-grabbing;
+}
+
+.task-card-container {
+  @apply flex min-h-[90px];
+}
+
+.card-stripe {
+  @apply w-[5px] shrink-0;
+  
+  &.col-red { @apply bg-red-500; }
+  &.col-green { @apply bg-green-500; }
+  &.col-teal { @apply bg-teal-500; }
+  &.col-cyan { @apply bg-cyan-500; }
+  &.col-gray { @apply bg-slate-400; }
+  &.col-blue { @apply bg-blue-500; }
+  &.col-purple { @apply bg-purple-500; }
+}
+
+.card-content {
+  @apply flex-1 flex flex-col p-3 pt-2 gap-2;
+}
+
+.card-header {
+  @apply flex justify-between items-start gap-2;
+}
+
+.task-title {
+  @apply text-[14px] text-slate-800 font-medium m-0 flex-1 leading-snug break-words;
+}
+
+.task-badge {
+  @apply w-5 h-5 rounded-full text-white flex items-center justify-center text-[11px] font-bold shrink-0;
+}
+
+.task-meta {
+  @apply flex items-center;
+}
+
+.time-label {
+  @apply px-2 py-0.5 rounded-full text-[12px] font-medium;
+  
+  &.time-red {
+    @apply text-red-500 bg-red-50;
+  }
+  
+  &.time-green {
+    @apply text-green-600 bg-green-50;
+  }
+  
+  &.time-default {
+    @apply text-slate-500 bg-slate-100;
+  }
+}
+
+.task-assignees {
+  @apply flex items-center gap-1;
+  
+  .avatar {
+    @apply w-6 h-6 rounded-full flex items-center justify-center;
+    
+    mat-icon {
+      @apply text-[16px] w-4 h-4 leading-4;
+    }
+  }
+  
+  .separator {
+    @apply text-slate-300 text-[16px] w-4 h-4 leading-4;
+  }
+}
+
+.card-footer {
+  @apply flex justify-between items-end mt-1 min-h-[26px];
+}
+
+.task-actions {
+  @apply flex items-center gap-1.5 opacity-0 transition-opacity duration-300;
+  
+  /* Show actions on card hover only */
+  :host:hover & {
+    @apply opacity-100;
+  }
+}
+
+.action-btn {
+  @apply w-[26px] h-[26px] rounded-full text-white flex items-center justify-center border-none cursor-pointer transition-colors shadow-sm;
+  
+  mat-icon {
+    @apply text-[16px] w-4 h-4 leading-4;
+  }
+}
