@@ -4,9 +4,12 @@
   <app-tasks-toolbar />
 
   <!-- Filter Bar: Chế độ xem + Quick Filters + Actions -->
-  <app-tasks-filter-bar />
+  <app-tasks-filter-bar (viewChange)="onViewChange($event)" />
 
-  <!-- Table: Header cột + Danh sách / Empty State -->
-  <app-tasks-table [tasks]="tasks" />
+  <!-- View: Danh sách -->
+  <app-tasks-table *ngIf="activeView === 'list'" [tasks]="tasks" />
+
+  <!-- View: Hạn chót -->
+  <app-deadline *ngIf="activeView === 'deadline'" />
 
 </div>
