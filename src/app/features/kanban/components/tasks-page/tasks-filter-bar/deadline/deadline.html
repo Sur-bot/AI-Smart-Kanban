@@ -1,0 +1,40 @@
+<section class="deadline-board" [attr.aria-label]="'TASKS_PAGE.DEADLINE.ARIA_LABEL' | translate">
+
+  <!-- Columns Header Row -->
+  <header class="deadline-header">
+    <div
+      *ngFor="let col of columns"
+      class="deadline-col-header"
+      [ngClass]="col.color"
+      role="columnheader"
+      [attr.aria-label]="(col.labelKey | translate) + ': ' + col.count"
+    >
+      <span class="col-label">{{ col.labelKey | translate }}</span>
+      <span class="col-count">{{ col.count }}</span>
+    </div>
+  </header>
+
+  <!-- Columns Body + Empty State wrapper -->
+  <div class="deadline-body">
+
+    <!-- Each column -->
+    <div *ngFor="let col of columns" class="deadline-col-body">
+      <!-- Nút + ở đầu mỗi cột -->
+      <button
+        *ngIf="col.id !== 'overdue' && col.id !== 'completed'"
+        class="col-add-btn"
+        [attr.aria-label]="('TASKS_PAGE.DEADLINE.ADD_TO_COL' | translate) + ' ' + (col.labelKey | translate)"
+        [title]="'TASKS_PAGE.DEADLINE.ADD_TASK' | translate"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    <!-- Empty State overlay - chỉ hiện khi tất cả cột đều rỗng -->
+    <div class="deadline-empty-state" *ngIf="isEmpty()">
+      <p class="empty-text">{{ 'TASKS_PAGE.DEADLINE.EMPTY_TEXT' | translate }}</p>
+    </div>
+
+  </div>
+
+</section>

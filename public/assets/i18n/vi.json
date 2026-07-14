@@ -52,6 +52,19 @@
   "TASKS_PAGE": {
     "TITLE": "Tác vụ của tôi",
     "CREATE": "Tạo",
-    "ROLE_ALL": "Tất cả các vai trò"
+    "ROLE_ALL": "Tất cả các vai trò",
+    "DEADLINE": {
+      "ARIA_LABEL": "Chế độ xem hạn chót",
+      "ADD_TASK": "Thêm nhiệm vụ",
+      "ADD_TO_COL": "Thêm vào",
+      "EMPTY_TEXT": "Hiện không có dữ liệu nào về trang này.",
+      "COL_OVERDUE": "Quá hạn",
+      "COL_TODAY": "Hạn hôm nay",
+      "COL_THIS_WEEK": "Hạn tuần này",
+      "COL_NEXT_WEEK": "Hạn tuần sau",
+      "COL_NO_DEADLINE": "Không có hạn chốt",
+      "COL_TWO_WEEKS": "Hạn trong 2 tuần",
+      "COL_COMPLETED": "Đã hoàn thành"
+    }
   }
 }

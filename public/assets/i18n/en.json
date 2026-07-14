@@ -52,6 +52,19 @@
   "TASKS_PAGE": {
     "TITLE": "My Tasks",
     "CREATE": "Create",
-    "ROLE_ALL": "All Roles"
+    "ROLE_ALL": "All Roles",
+    "DEADLINE": {
+      "ARIA_LABEL": "Deadline view",
+      "ADD_TASK": "Add task",
+      "ADD_TO_COL": "Add to",
+      "EMPTY_TEXT": "There is currently no data on this page.",
+      "COL_OVERDUE": "Overdue",
+      "COL_TODAY": "Due today",
+      "COL_THIS_WEEK": "Due this week",
+      "COL_NEXT_WEEK": "Due next week",
+      "COL_NO_DEADLINE": "No deadline",
+      "COL_TWO_WEEKS": "Due over two weeks",
+      "COL_COMPLETED": "Completed"
+    }
   }
 }
