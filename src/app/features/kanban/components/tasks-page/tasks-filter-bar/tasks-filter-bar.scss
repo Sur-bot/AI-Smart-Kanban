@@ -10,19 +10,18 @@
 
 /* ===== View Tabs ===== */
 .view-tabs {
-  @apply flex items-center gap-0.5;
+  @apply flex items-center rounded-lg bg-white/10 overflow-hidden;
 }
 
 .view-tab {
-  @apply px-3 py-1.5 rounded-md text-xs font-medium text-white/55 bg-transparent border-none cursor-pointer whitespace-nowrap;
-  transition: all 0.15s ease;
+  @apply px-3.5 py-1.5 text-[13px] font-medium text-white/70 bg-transparent border-none cursor-pointer whitespace-nowrap transition-colors;
 
   &:hover {
-    @apply text-white/80 bg-white/10;
+    @apply text-white/90 bg-white/10;
   }
 
   &.active {
-    @apply text-white bg-white/15 font-semibold;
+    @apply text-white bg-white/20;
   }
 }
 
@@ -38,7 +37,7 @@
 }
 
 .quick-filter-btn {
-  @apply flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium text-white/50 bg-transparent border border-white/10 cursor-pointer whitespace-nowrap;
+  @apply flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[13px] font-medium text-white/70 bg-transparent border border-white/10 cursor-pointer whitespace-nowrap;
   transition: all 0.15s ease;
 
   &:hover {
@@ -50,9 +49,14 @@
   }
 }
 
+/* ===== Filter Badge ===== */
+.filter-badge {
+  @apply inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full text-[11px] font-semibold bg-white/20 text-white/90;
+}
+
 /* ===== Mark Read ===== */
 .mark-read-btn {
-  @apply px-2.5 py-1 rounded-md text-[11px] font-medium text-white/45 bg-transparent border-none cursor-pointer whitespace-nowrap;
+  @apply px-2.5 py-1 rounded-md text-[13px] font-medium text-white/70 bg-transparent border-none cursor-pointer whitespace-nowrap;
   transition: all 0.15s ease;
 
   &:hover {
@@ -66,7 +70,7 @@
 }
 
 .filter-action-btn {
-  @apply flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[11px] font-medium text-white/50 bg-transparent border-none cursor-pointer whitespace-nowrap;
+  @apply flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[13px] font-medium text-white/70 bg-transparent border-none cursor-pointer whitespace-nowrap;
   transition: all 0.15s ease;
 
   &:hover {
@@ -75,5 +79,13 @@
 
   &.has-dropdown {
     @apply pr-2;
+  }
+
+  .dropdown-arrow {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    @apply opacity-50;
   }
 }
