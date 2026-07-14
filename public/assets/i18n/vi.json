@@ -64,7 +64,62 @@
       "COL_NEXT_WEEK": "Hạn tuần sau",
       "COL_NO_DEADLINE": "Không có hạn chốt",
       "COL_TWO_WEEKS": "Hạn trong 2 tuần",
-      "COL_COMPLETED": "Đã hoàn thành"
+      "COL_COMPLETED": "Đã hoàn thành",
+      "QUICK_TASK": "Tác vụ nhanh",
+      "QUICK_TASK_PLACEHOLDER": "Tên #tag",
+      "PRESS_ENTER": "Nhấn ↵ Enter để tạo"
+    }
+  },
+  "TASK_DETAIL": {
+    "CLOSE": "Đóng",
+    "COPY_LINK": "Sao chép đường dẫn",
+    "MINIMIZE": "Thu nhỏ",
+    "PRINT": "In",
+    "DESCRIPTION_PLACEHOLDER": "Mô tả",
+    "TASK_OWNER": "Chủ sở hữu tác vụ",
+    "ASSIGNEE": "Người được phân công",
+    "DEADLINE": "Hạn chót",
+    "STATUS": "Trạng thái",
+    "CREATED": "Ngày tạo",
+    "OVERDUE": "Quá hạn {{time}}",
+    "STATUS_PENDING": "Đang chờ thực hiện",
+    "STATUS_IN_PROGRESS": "Đang tiến hành",
+    "STATUS_DONE": "Đã hoàn thành",
+    "BTN_START": "Bắt đầu",
+    "BTN_COMPLETE": "Đã hoàn thành",
+    "RATE_TASK": "Đánh giá tác vụ",
+    "CHIPS": {
+      "STATUS_SUMMARIES": "Các tóm tắt trạng thái tác vụ",
+      "FILES": "Tập tin",
+      "CHECKLISTS": "Danh sách kiểm tra",
+      "PROJECT": "Dự án",
+      "PARTICIPANTS": "Những người tham gia",
+      "OBSERVERS": "Người quan sát",
+      "FLOW": "Luồng",
+      "TAGS": "Thẻ",
+      "REMINDERS": "Lời nhắc",
+      "CRM_ITEMS": "Mục CRM",
+      "PARENT_TASK": "Tác vụ cha",
+      "SUBTASKS": "Tác vụ con",
+      "RELATED_TASKS": "Các tác vụ liên quan",
+      "GANTT": "Gantt",
+      "TIME_PLANNING": "Xếp lịch tác vụ",
+      "TIME_TRACKING": "Theo dõi thời gian",
+      "CUSTOM_FIELDS": "Trường tùy chỉnh"
+    },
+    "CHAT": {
+      "TITLE": "Cuộc trò chuyện tác vụ",
+      "MEMBERS": "{{count}} thành viên",
+      "VIDEO_CALL": "Cuộc gọi video",
+      "TODAY": "hôm nay",
+      "CREATED_TASK": "đã tạo",
+      "TASK_LINK": "tác vụ này",
+      "STARTED_TASK": "đã bắt đầu tác vụ",
+      "INPUT_PLACEHOLDER": "Gõ @ hoặc + để nhắc đến một người, một cuộc trò chuyện hoặc AI",
+      "CARD_STATUS": "Trạng thái",
+      "CARD_CREATED_BY": "Chủ sở hữu tác vụ",
+      "CARD_ASSIGNEE": "Người được phân công",
+      "CARD_DEADLINE": "Hạn chót"
     }
   }
 }

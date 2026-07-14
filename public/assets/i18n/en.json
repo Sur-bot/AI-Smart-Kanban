@@ -64,7 +64,62 @@
       "COL_NEXT_WEEK": "Due next week",
       "COL_NO_DEADLINE": "No deadline",
       "COL_TWO_WEEKS": "Due over two weeks",
-      "COL_COMPLETED": "Completed"
+      "COL_COMPLETED": "Completed",
+      "QUICK_TASK": "Quick task",
+      "QUICK_TASK_PLACEHOLDER": "Name #tag",
+      "PRESS_ENTER": "Press ↵ Enter to create"
+    }
+  },
+  "TASK_DETAIL": {
+    "CLOSE": "Close",
+    "COPY_LINK": "Copy link",
+    "MINIMIZE": "Minimize",
+    "PRINT": "Print",
+    "DESCRIPTION_PLACEHOLDER": "Description",
+    "TASK_OWNER": "Task owner",
+    "ASSIGNEE": "Assignee",
+    "DEADLINE": "Deadline",
+    "STATUS": "Status",
+    "CREATED": "Created",
+    "OVERDUE": "Overdue {{time}}",
+    "STATUS_PENDING": "Pending",
+    "STATUS_IN_PROGRESS": "In progress",
+    "STATUS_DONE": "Done",
+    "BTN_START": "Start",
+    "BTN_COMPLETE": "Complete",
+    "RATE_TASK": "Rate task",
+    "CHIPS": {
+      "STATUS_SUMMARIES": "Task status summaries",
+      "FILES": "Files",
+      "CHECKLISTS": "Checklists",
+      "PROJECT": "Project",
+      "PARTICIPANTS": "Participants",
+      "OBSERVERS": "Observers",
+      "FLOW": "Flow",
+      "TAGS": "Tags",
+      "REMINDERS": "Reminders",
+      "CRM_ITEMS": "CRM items",
+      "PARENT_TASK": "Parent task",
+      "SUBTASKS": "Subtasks",
+      "RELATED_TASKS": "Related tasks",
+      "GANTT": "Gantt",
+      "TIME_PLANNING": "Time planning",
+      "TIME_TRACKING": "Time tracking",
+      "CUSTOM_FIELDS": "Custom fields"
+    },
+    "CHAT": {
+      "TITLE": "Task chat",
+      "MEMBERS": "{{count}} member",
+      "VIDEO_CALL": "Video call",
+      "TODAY": "today",
+      "CREATED_TASK": "created",
+      "TASK_LINK": "this task",
+      "STARTED_TASK": "started the task",
+      "INPUT_PLACEHOLDER": "Type @ or + to mention a person, a chat or AI",
+      "CARD_STATUS": "Status",
+      "CARD_CREATED_BY": "Created by",
+      "CARD_ASSIGNEE": "Assignee",
+      "CARD_DEADLINE": "Deadline"
     }
   }
 }
