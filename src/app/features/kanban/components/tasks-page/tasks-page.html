@@ -1,21 +1,20 @@
 <div class="tasks-page">
 
-  <!-- Toolbar: Tiêu đề + Tạo + Bộ lọc + Tìm kiếm -->
-  <app-tasks-toolbar />
+  <app-page-toolbar title="Tác vụ của tôi" />
 
-  <!-- Filter Bar: Chế độ xem + Quick Filters + Actions -->
-  <app-tasks-filter-bar (viewChange)="onViewChange($event)" />
+  <app-view-filter-bar
+    [viewTabs]="viewTabs"
+    [quickFilters]="quickFilters"
+    [activeView]="activeView"
+    (viewChange)="onViewChange($event)" />
 
-  <!-- View: Danh sách -->
-  <app-tasks-table *ngIf="activeView === 'list'" [tasks]="tasks" />
+  <app-data-table *ngIf="activeView === 'list'" [tasks]="tasks" />
 
-  <!-- View: Hạn chót -->
   <app-deadline *ngIf="activeView === 'deadline'" (taskSelected)="openTaskDetail($event)" />
 
-  <!-- Task Detail Modal Overlay -->
-  <app-task-detail-modal 
-    *ngIf="selectedTask" 
-    [task]="selectedTask" 
+  <app-task-detail-modal
+    *ngIf="selectedTask"
+    [task]="selectedTask"
     (close)="closeTaskDetail()">
   </app-task-detail-modal>
 

@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
 import { QuickTaskInputComponent } from './quick-task-input/quick-task-input';
-import { TaskCardComponent } from '../../../task-card/task-card';
-import { Task } from '../../../../models/kanban.model';
+import { TaskCardComponent } from '../../../components/task-card/task-card';
+import { Task } from '../../../models/kanban.model';
 
 export interface DeadlineColumn {
   id: string;

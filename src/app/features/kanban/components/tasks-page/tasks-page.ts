@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TasksToolbarComponent } from './tasks-toolbar/tasks-toolbar';
-import { TasksFilterBarComponent } from './tasks-filter-bar/tasks-filter-bar';
-import { TasksTableComponent } from './tasks-table/tasks-table';
-import { DeadlineComponent } from './tasks-filter-bar/deadline/deadline';
+import { PageToolbarComponent } from '../../../../shared/components/page-layout/page-toolbar/page-toolbar';
+import { ViewFilterBarComponent, QuickFilter } from '../../../../shared/components/page-layout/view-filter-bar/view-filter-bar';
+import { DataTableComponent } from '../../../../shared/components/page-layout/data-table/data-table';
+import { DeadlineComponent } from './deadline/deadline';
 import { TaskDetailModalComponent } from '../task-detail-modal/task-detail-modal';
-import { TaskItem, TaskViewMode } from '../../models/task-list.model';
+import { TaskItem, TaskViewMode, ViewTab } from '../../../../shared/models/task-list.model';
 import { Task } from '../../models/kanban.model';
 
 @Component({
@@ -13,9 +13,9 @@ import { Task } from '../../models/kanban.model';
   standalone: true,
   imports: [
     CommonModule,
-    TasksToolbarComponent,
-    TasksFilterBarComponent,
-    TasksTableComponent,
+    PageToolbarComponent,
+    ViewFilterBarComponent,
+    DataTableComponent,
     DeadlineComponent,
     TaskDetailModalComponent,
   ],
@@ -23,18 +23,28 @@ import { Task } from '../../models/kanban.model';
   styleUrls: ['./tasks-page.scss'],
 })
 export class TasksPageComponent {
-  /** Danh sách tác vụ — để trống theo yêu cầu (hiển thị empty state) */
   tasks: TaskItem[] = [];
-
-  /** Chế độ xem hiện tại — được chia sẻ từ filter-bar */
   activeView: TaskViewMode = 'list';
-  selectedTask: Task | null = null; // Quản lý trạng thái mở modal
+  selectedTask: Task | null = null;
+
+  viewTabs: ViewTab[] = [
+    { id: 'list', label: 'Danh sách' },
+    { id: 'deadline', label: 'Hạn chót' },
+    { id: 'planner', label: 'Trình lập kế hoạch' },
+    { id: 'calendar', label: 'Lịch' },
+    { id: 'gantt', label: 'Gantt' },
+  ];
+
+  quickFilters: QuickFilter[] = [
+    { id: 'conversations', label: 'Cuộc trò chuyện tác vụ', icon: 'chat', count: 3, isActive: false, rightBarFeatureId: 'task_chat' },
+    { id: 'overdue', label: 'Quá hạn', icon: 'clock', count: 0, isActive: false },
+    { id: 'comments', label: 'Bình luận', icon: 'comment', count: 12, isActive: false },
+  ];
 
   onViewChange(view: TaskViewMode) {
     this.activeView = view;
   }
 
-  // Hàm mở modal (có thể gọi từ DeadlineComponent hoặc TasksTableComponent)
   openTaskDetail(task: Task) {
     this.selectedTask = task;
   }
