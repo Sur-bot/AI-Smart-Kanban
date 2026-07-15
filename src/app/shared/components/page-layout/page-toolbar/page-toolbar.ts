@@ -1,16 +1,17 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, Input, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-tasks-toolbar',
+  selector: 'app-page-toolbar',
   standalone: true,
   imports: [CommonModule, MatIconModule],
-  templateUrl: './tasks-toolbar.html',
-  styleUrls: ['./tasks-toolbar.scss'],
+  templateUrl: './page-toolbar.html',
+  styleUrls: ['./page-toolbar.scss'],
 })
-export class TasksToolbarComponent {
-  /** Các filter tag đang áp dụng */
+export class PageToolbarComponent {
+  @Input() title = '';
+
   activeFilters = [
     { id: 'status', label: 'Đang tiến hành' },
   ];
@@ -23,7 +24,7 @@ export class TasksToolbarComponent {
     { id: 'doing', label: 'Đang thực hiện' },
     { id: 'assisting', label: 'Đang hỗ trợ' },
     { id: 'set_by_me', label: 'Thiết lập bởi tôi' },
-    { id: 'following', label: 'Đang theo dõi' }
+    { id: 'following', label: 'Đang theo dõi' },
   ];
 
   toggleRoleDropdown(event: Event) {
@@ -53,7 +54,6 @@ export class TasksToolbarComponent {
     this.closeSearch();
   }
 
-  // --- Search & Filter Combo ---
   isSearchOpen = false;
   isSearchClosing = false;
   searchQuery = '';
@@ -63,7 +63,7 @@ export class TasksToolbarComponent {
     { id: 'completed', label: 'Đã hoàn thành' },
     { id: 'delayed', label: 'Đang trì hoãn' },
     { id: 'overdue', label: 'Quá hạn' },
-    { id: 'almost_overdue', label: 'Sắp quá hạn' }
+    { id: 'almost_overdue', label: 'Sắp quá hạn' },
   ];
   selectedSearchFilter: string | null = 'in_progress';
 
@@ -85,7 +85,7 @@ export class TasksToolbarComponent {
   }
 
   statusOptions = [
-    'Đang chờ thực hiện', 'Đang tiến hành', 'Đang chờ xem xét', 'Đang trì hoãn'
+    'Đang chờ thực hiện', 'Đang tiến hành', 'Đang chờ xem xét', 'Đang trì hoãn',
   ];
 
   toggleSearch(event?: Event) {
@@ -99,14 +99,13 @@ export class TasksToolbarComponent {
     }
   }
 
-
   closeSearch() {
     if (!this.isSearchOpen || this.isSearchClosing) return;
     this.isSearchClosing = true;
     setTimeout(() => {
       this.isSearchOpen = false;
       this.isSearchClosing = false;
-    }, 200); // Match CSS animation duration
+    }, 200);
   }
 
   onSearchInput(event: Event) {
