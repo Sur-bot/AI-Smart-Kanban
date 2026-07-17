@@ -1,0 +1,13 @@
+<div class="project-page">
+
+  <app-page-toolbar title="Dự án" [showRoleDropdown]="false" [showCreateDropdown]="false" [showToolbarRight]="false" />
+
+  <app-view-filter-bar
+    [quickFilters]="quickFilters"
+    [activeView]="activeView"
+    [showMarkRead]="false"
+    (viewChange)="onViewChange($event)" />
+
+  <app-data-table [tasks]="tasks" />
+
+</div>

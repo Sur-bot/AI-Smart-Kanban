@@ -21,6 +21,12 @@ export const routes: Routes = [
         title: 'Tác vụ của tôi - AI Smart Kanban'
       },
 
+      {
+        path: 'kanban/projects',
+        loadComponent: () => import('./features/kanban/components/project-page/project-page').then(m => m.ProjectPageComponent),
+        title: 'Dự án - AI Smart Kanban'
+      },
+
       // Các trang khác (CRM, Booking, Inventory, Marketing, etc.)
       // Để mở rộng sau này:
       // {
