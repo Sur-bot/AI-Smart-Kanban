@@ -1,5 +1,9 @@
+:host {
+    display: block;
+}
+
 .tasks-toolbar {
-    @apply flex items-center justify-between select-none;
+    @apply flex items-center justify-between select-none relative z-[99];
     padding: 22px 0px 22px 22px;
     background: transparent;
 }
@@ -127,7 +131,7 @@
 
 /* ===== Search Popup Panel ===== */
 .search-popup-panel {
-    @apply absolute top-[calc(100%+12px)] left-0 h-[340px] bg-white rounded-xl shadow-[0_12px_40px_rgba(0,0,0,0.15)] z-50 flex overflow-hidden border border-gray-100;
+    @apply fixed h-[340px] bg-white rounded-xl shadow-[0_12px_40px_rgba(0,0,0,0.15)] z-[9999] flex overflow-hidden border border-gray-100;
     width: 42vw;
     animation: searchSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     transform-origin: top left;

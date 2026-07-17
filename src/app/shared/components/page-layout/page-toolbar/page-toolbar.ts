@@ -1,16 +1,24 @@
-import { Component, Input, HostListener } from '@angular/core';
+import { Component, Input, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-page-toolbar',
   standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, MatIconModule, NgStyle],
   templateUrl: './page-toolbar.html',
   styleUrls: ['./page-toolbar.scss'],
 })
 export class PageToolbarComponent {
   @Input() title = '';
+  @Input() showRoleDropdown = true;
+  @Input() showCreateDropdown = true;
+  @Input() showToolbarRight = true;
+
+  popupStyle: { top: string; left: string } = { top: '0px', left: '0px' };
+
+  constructor(private el: ElementRef) {}
 
   activeFilters = [
     { id: 'status', label: 'Đang tiến hành' },
@@ -94,6 +102,15 @@ export class PageToolbarComponent {
     if (this.isSearchOpen && !this.isSearchClosing) {
       this.closeSearch();
     } else if (!this.isSearchOpen) {
+      // Tính toán vị trí fixed dựa trên search-filter-container
+      const container = this.el.nativeElement.querySelector('.search-filter-container');
+      if (container) {
+        const rect = container.getBoundingClientRect();
+        this.popupStyle = {
+          top: `${rect.bottom + 12}px`,
+          left: `${rect.left}px`,
+        };
+      }
       this.isSearchOpen = true;
       this.isSearchClosing = false;
     }

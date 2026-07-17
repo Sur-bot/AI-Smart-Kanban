@@ -1,6 +1,6 @@
 /* ===== Host Element ===== */
 :host {
-  @apply block shrink-0 h-screen relative z-40 transition-[width] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)];
+  @apply block shrink-0 h-screen relative z-[250] transition-[width] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)];
 }
 
 /* ===== Wrapper (hover zone) ===== */

@@ -9,15 +9,15 @@
                 </svg>
                 <span>Tạo</span>
             </button>
-            <div class="btn-create-divider"></div>
-            <button class="btn-create-dropdown">
+            <div class="btn-create-divider" *ngIf="showCreateDropdown"></div>
+            <button class="btn-create-dropdown" *ngIf="showCreateDropdown">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
                     stroke="currentColor" class="w-3.5 h-3.5 opacity-80">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                 </svg>
             </button>
         </div>
-        <div class="relative">
+        <div class="relative" *ngIf="showRoleDropdown">
             <button class="btn-role" (click)="toggleRoleDropdown($event)" [class.active]="isRoleDropdownOpen">
                 <span>{{ getSelectedRoleLabel() }}</span>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <div class="search-popup-panel" *ngIf="isSearchOpen || isSearchClosing" [class.closing]="isSearchClosing" (click)="$event.stopPropagation()">
+            <div class="search-popup-panel" *ngIf="isSearchOpen || isSearchClosing" [class.closing]="isSearchClosing" [ngStyle]="popupStyle" (click)="$event.stopPropagation()">
                 <div class="search-popup-sidebar">
                     <div class="search-preset-item" *ngFor="let filter of searchFilters"
                         [class.active]="selectedSearchFilter === filter.id"
@@ -108,7 +108,7 @@
                         </div>
                     </div>
 
-                    <div class="filter-group mt-5">
+                    <div class="filter-group mt-5" *ngIf="showRoleDropdown">
                         <label>Vai trò</label>
                         <div class="role-select-box">
                             <span>Không quy định</span>
@@ -134,7 +134,7 @@
             </div>
         </div>
     </div>
-    <div class="toolbar-right">
+    <div class="toolbar-right" *ngIf="showToolbarRight">
         <button class="toolbar-icon-btn" title="CoPilot">
             <mat-icon fontSet="material-icons-outlined">auto_awesome</mat-icon>
         </button>
