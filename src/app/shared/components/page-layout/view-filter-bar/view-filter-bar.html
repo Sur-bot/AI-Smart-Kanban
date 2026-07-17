@@ -10,7 +10,7 @@
       </button>
     </div>
 
-    <div class="filter-divider"></div>
+    <div *ngIf="showMarkRead" class="filter-divider"></div>
 
     <div class="quick-filters">
       <button *ngFor="let filter of quickFilters" class="quick-filter-btn" [class.active]="filter.isActive"
@@ -20,11 +20,13 @@
       </button>
     </div>
 
-    <div class="filter-divider"></div>
+    <ng-container *ngIf="showMarkRead">
+      <div class="filter-divider"></div>
 
-    <button class="mark-read-btn">
-      Đánh dấu đã đọc tất cả
-    </button>
+      <button class="mark-read-btn">
+        Đánh dấu đã đọc tất cả
+      </button>
+    </ng-container>
   </div>
 
   <div class="filter-right">

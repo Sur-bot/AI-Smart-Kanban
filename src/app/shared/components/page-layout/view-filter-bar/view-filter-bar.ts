@@ -26,6 +26,7 @@ export class ViewFilterBarComponent {
   @Input() activeView: TaskViewMode = 'list';
   @Input() viewTabs: ViewTab[] = [];
   @Input() quickFilters: QuickFilter[] = [];
+  @Input() showMarkRead = true;
 
   @Output() viewChange = new EventEmitter<TaskViewMode>();
 
