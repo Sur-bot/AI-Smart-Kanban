@@ -1,7 +1,7 @@
-<div class="tasks-toolbar">
-    <div class="toolbar-left">
-        <span class="toolbar-title">{{ title }}</span>
-        <div class="btn-create-group">
+<header class="tasks-toolbar">
+    <nav class="toolbar-left" aria-label="Toolbar Primary">
+        <h1 class="toolbar-title m-0 text-base font-normal">{{ title }}</h1>
+        <div class="btn-create-group" role="group" aria-label="Create Actions">
             <button class="btn-create-main">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
                     stroke="currentColor" class="w-4 h-4">
@@ -27,7 +27,7 @@
                 </svg>
             </button>
 
-            <div class="role-dropdown-menu" *ngIf="isRoleDropdownOpen" (click)="$event.stopPropagation()">
+            <menu class="role-dropdown-menu m-0 p-0" *ngIf="isRoleDropdownOpen" (click)="$event.stopPropagation()">
                 <div class="role-dropdown-item" *ngFor="let role of roles"
                     (click)="selectRole(role.id)">
                     <span [class.text-gray-900]="selectedRole === role.id">{{ role.label }}</span>
@@ -36,9 +36,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                     </svg>
                 </div>
-            </div>
+            </menu>
         </div>
-        <div class="search-filter-container" [class.expanded]="isSearchOpen && !isSearchClosing">
+        <form class="search-filter-container" role="search" [class.expanded]="isSearchOpen && !isSearchClosing" (submit)="$event.preventDefault()">
             <div class="search-input-box" [class.has-filter]="!!selectedSearchFilter || selectedRole !== 'all'" [class.has-role-filter]="selectedRole !== 'all'" (click)="toggleSearch($event)">
                 <div class="flex items-center gap-1 shrink-0" *ngIf="selectedSearchFilter || selectedRole !== 'all'">
                     <div class="search-active-tag" *ngIf="selectedSearchFilter">
@@ -70,8 +70,8 @@
                 </div>
             </div>
 
-            <div class="search-popup-panel" *ngIf="isSearchOpen || isSearchClosing" [class.closing]="isSearchClosing" [ngStyle]="popupStyle" (click)="$event.stopPropagation()">
-                <div class="search-popup-sidebar">
+            <section class="search-popup-panel" aria-label="Search Filters" *ngIf="isSearchOpen || isSearchClosing" [class.closing]="isSearchClosing" [ngStyle]="popupStyle" (click)="onPanelClick($event)">
+                <aside class="search-popup-sidebar" aria-label="Preset filters">
                     <div class="search-preset-item" *ngFor="let filter of searchFilters"
                         [class.active]="selectedSearchFilter === filter.id"
                         (click)="selectSearchFilter(filter.id)">
@@ -81,65 +81,78 @@
                             <path d="M11.603 7.963a.75.75 0 0 0-.977 1.138 2.5 2.5 0 0 1 .142 3.667l-3 3a2.5 2.5 0 0 1-3.536-3.536l1.225-1.224a.75.75 0 0 0-1.061-1.06l-1.224 1.224a4 4 0 1 0 5.656 5.656l3-3a4 4 0 0 0-.225-5.865Z" />
                         </svg>
                     </div>
+                </aside>
+                <main class="search-popup-content !p-0">
+                    <div class="flex-1 overflow-y-auto p-6 pb-4 min-h-0 custom-scrollbar">
+                        <ng-container *ngFor="let field of availableFields; let first = first">
+                            <fieldset class="filter-group m-0 p-0 border-none" [class.mt-5]="!first" *ngIf="field.checked">
+                                <label [for]="field.id">{{ field.label }}</label>
+                                
+                                <div class="flex items-center gap-3">
+                                    <div class="flex-1 min-w-0" [ngSwitch]="field.type">
+                                        <input *ngSwitchCase="'text'" type="text" [id]="field.id" class="form-input-box" [placeholder]="'Nhập ' + field.label.toLowerCase()" />
 
-                    <div class="mt-4 pt-4 border-t border-gray-100">
-                        <button class="search-preset-item text-gray-500 hover:text-gray-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-                            Lưu bộ lọc
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-auto opacity-50 hover:opacity-100 transition-opacity"><path stroke-linecap="round" stroke-linejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 1 1 0-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 0 1-1.44-4.282m3.102.069a18.03 18.03 0 0 1-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 0 1 8.835 2.535M10.34 6.66a23.847 23.847 0 0 0 8.835-2.535m0 0A23.74 23.74 0 0 0 18.795 3m.38 1.125a23.91 23.91 0 0 1 1.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 0 0 1.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 0 1 0 3.46" /></svg>
-                        </button>
-                    </div>
-                </div>
-                <div class="search-popup-content">
-                    <div class="filter-group">
-                        <label>Trạng thái</label>
-                        <div class="status-tags-box">
-                            <span class="status-tag" *ngFor="let st of statusOptions">
-                                {{ st }}
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3 ml-1.5 opacity-40 hover:opacity-100 cursor-pointer transition-opacity">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                                </svg>
-                            </span>
-                            <div class="status-dropdown-icon ml-auto">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 text-gray-400">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                                </svg>
-                            </div>
+                                        <input *ngSwitchCase="'date'" type="date" [id]="field.id" class="form-input-box" />
+
+                                        <button type="button" *ngSwitchCase="'select'" [id]="field.id" class="role-select-box w-full text-left">
+                                            <span class="truncate">Không quy định</span>
+                                            <mat-icon class="text-gray-400 !text-[18px] shrink-0">expand_more</mat-icon>
+                                        </button>
+
+                                        <div *ngSwitchCase="'tags'" [id]="field.id" class="status-tags-box" role="group" aria-label="Tags">
+                                            <span class="status-tag" *ngFor="let st of field.options">
+                                                {{ st }}
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3 ml-1.5 opacity-40 hover:opacity-100 cursor-pointer transition-opacity">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                                </svg>
+                                            </span>
+                                            <div class="status-dropdown-icon ml-auto">
+                                                <mat-icon class="text-gray-400 !text-[18px]">expand_more</mat-icon>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="flex items-center justify-center text-gray-500 opacity-40 hover:opacity-100 transition-opacity shrink-0" (click)="toggleFieldCheck(field.id)" title="Xóa trường này">
+                                        <mat-icon class="!text-[18px] !w-[18px] !h-[18px] !leading-[18px] flex items-center justify-center">close</mat-icon>
+                                    </button>
+                                </div>
+                            </fieldset>
+                        </ng-container>
+
+                        <div class="flex items-center gap-4 text-[13px] relative" [class.mt-5]="hasCheckedFields()">
+                            <button type="button" class="text-blue-500 font-medium hover:underline bg-transparent border-none p-0 cursor-pointer" (click)="toggleAddField($event)">Thêm trường</button>
+                            <button type="button" class="text-gray-400 hover:text-gray-600 transition-colors bg-transparent border-none p-0 cursor-pointer" (click)="restoreDefaultFields()">Khôi phục các trường mặc định</button>
                         </div>
                     </div>
 
-                    <div class="filter-group mt-5" *ngIf="showRoleDropdown">
-                        <label>Vai trò</label>
-                        <div class="role-select-box">
-                            <span>Không quy định</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 text-gray-400">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                            </svg>
+                    <div class="shrink-0 p-6 pt-4 bg-white rounded-br-xl relative z-10">
+
+                        <div class="search-popup-actions flex items-center justify-center gap-5">
+                            <button class="btn-primary" (click)="closeSearch()">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1.5"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+                                Tìm kiếm
+                            </button>
+                            <button type="button" class="text-gray-600 hover:text-gray-900 font-medium text-sm transition-colors bg-transparent border-none p-0 cursor-pointer">Đặt lại</button>
                         </div>
                     </div>
+                </main>
 
-                    <div class="flex items-center gap-4 mt-6 text-[13px]">
-                        <a href="javascript:void(0)" class="text-blue-500 font-medium hover:underline">Thêm trường</a>
-                        <a href="javascript:void(0)" class="text-gray-400 hover:text-gray-600 transition-colors">Khôi phục các trường mặc định</a>
+                <aside class="add-field-popup" role="dialog" aria-label="Available Fields" *ngIf="isAddFieldOpen" [ngStyle]="addFieldPopupStyle" (click)="$event.stopPropagation()">
+                    <div class="field-list">
+                        <label class="field-item" *ngFor="let field of availableFields">
+                            <input type="checkbox" class="field-checkbox" [checked]="field.checked" (change)="toggleFieldCheck(field.id)">
+                            <span class="field-label">{{ field.label }}</span>
+                        </label>
                     </div>
-
-                    <div class="search-popup-actions mt-7 flex items-center justify-center gap-5">
-                        <button class="btn-primary" (click)="closeSearch()">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1.5"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
-                            Tìm kiếm
-                        </button>
-                        <button class="text-gray-600 hover:text-gray-900 font-medium text-sm transition-colors">Đặt lại</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                </aside>
+            </section>
+        </form>
+    </nav>
     <div class="toolbar-right" *ngIf="showToolbarRight">
-        <button class="toolbar-icon-btn" title="CoPilot">
+        <button type="button" class="toolbar-icon-btn" title="CoPilot">
             <mat-icon fontSet="material-icons-outlined">auto_awesome</mat-icon>
         </button>
-        <button class="toolbar-icon-btn" title="Chia sẻ">
+        <button type="button" class="toolbar-icon-btn" title="Chia sẻ">
             <mat-icon fontSet="material-icons-outlined">share</mat-icon>
         </button>
     </div>
-</div>
+</header>
