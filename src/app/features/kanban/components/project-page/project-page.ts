@@ -27,6 +27,14 @@ export class ProjectPageComponent {
     { id: 'markatread', label: 'Đánh dấu đã đọc', icon: 'eye', count: 0, isActive: false },
   ];
 
+  projectSearchFilters = [
+    { id: 'in_progress', label: 'Đang tiến hành' },
+    { id: 'completed', label: 'Đã hoàn thành' },
+    { id: 'delayed', label: 'Đang trì hoãn' },
+    { id: 'overdue', label: 'Quá hạn' },
+    { id: 'not_started', label: 'Chưa bắt đầu' },
+  ];
+
   onViewChange(view: TaskViewMode) {
     this.activeView = view;
   }

@@ -1,7 +1,6 @@
-import { Component, Input, HostListener, ElementRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, HostListener, ElementRef, OnInit } from '@angular/core';
+import { CommonModule, NgStyle } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-page-toolbar',
@@ -10,15 +9,27 @@ import { NgStyle } from '@angular/common';
   templateUrl: './page-toolbar.html',
   styleUrls: ['./page-toolbar.scss'],
 })
-export class PageToolbarComponent {
+export class PageToolbarComponent implements OnInit {
   @Input() title = '';
   @Input() showRoleDropdown = true;
   @Input() showCreateDropdown = true;
   @Input() showToolbarRight = true;
+  @Input() searchFilters: { id: string; label: string }[] = [
+    { id: 'in_progress', label: 'Đang tiến hành' },
+    { id: 'completed', label: 'Đã hoàn thành' },
+    { id: 'delayed', label: 'Đang trì hoãn' },
+    { id: 'overdue', label: 'Quá hạn' },
+    { id: 'almost_overdue', label: 'Sắp quá hạn' },
+  ];
+  @Input() defaultSearchFilter: string | null = 'in_progress';
 
   popupStyle: { top: string; left: string } = { top: '0px', left: '0px' };
 
   constructor(private el: ElementRef) {}
+
+  ngOnInit() {
+    this.selectedSearchFilter = this.defaultSearchFilter;
+  }
 
   activeFilters = [
     { id: 'status', label: 'Đang tiến hành' },
@@ -66,13 +77,6 @@ export class PageToolbarComponent {
   isSearchClosing = false;
   searchQuery = '';
 
-  searchFilters = [
-    { id: 'in_progress', label: 'Đang tiến hành' },
-    { id: 'completed', label: 'Đã hoàn thành' },
-    { id: 'delayed', label: 'Đang trì hoãn' },
-    { id: 'overdue', label: 'Quá hạn' },
-    { id: 'almost_overdue', label: 'Sắp quá hạn' },
-  ];
   selectedSearchFilter: string | null = 'in_progress';
 
   getSelectedSearchFilterLabel(): string {
