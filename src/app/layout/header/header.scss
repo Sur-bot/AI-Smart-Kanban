@@ -52,7 +52,7 @@
 
 /* ===== ACTION BUTTONS (Mời / Mua ngay / Trợ giúp) ===== */
 .header-action-btn {
-  @apply flex items-center justify-center h-7 px-3 rounded-full text-xs font-medium tracking-[0.01em] cursor-pointer transition-all duration-150 ease-in-out whitespace-nowrap leading-none;
+  @apply flex items-center justify-center h-7 w-7 px-0 xl:w-auto xl:px-3 rounded-full text-xs font-medium tracking-[0.01em] cursor-pointer transition-all duration-150 ease-in-out whitespace-nowrap leading-none;
 
   /* Variant: ghost (outline) */
   &.ghost {

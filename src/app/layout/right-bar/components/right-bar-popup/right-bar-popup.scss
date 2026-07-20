@@ -7,7 +7,7 @@
 }
 
 .popup-container {
-  @apply absolute inset-0 flex flex-col overflow-hidden pointer-events-none pl-[68px];
+  @apply absolute inset-0 flex flex-col overflow-hidden pointer-events-none pl-[68px] pr-5;
 }
 
 .popup-wrapper {

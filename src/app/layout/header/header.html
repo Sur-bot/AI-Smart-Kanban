@@ -41,38 +41,38 @@
 
         <!-- Invite / Mời -->
         <div class="invite-wrapper">
-          <button id="header-invite-btn" class="header-action-btn accent" (click)="toggleInvite()">
-            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"
+          <button id="header-invite-btn" class="header-action-btn accent" (click)="toggleInvite()" [title]="'HEADER.INVITE' | translate">
+            <svg class="w-3.5 h-3.5 xl:w-3 xl:h-3 xl:mr-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"
               stroke-linecap="round" stroke-linejoin="round">
               <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
               <circle cx="9" cy="7" r="4" />
               <line x1="19" y1="8" x2="19" y2="14" />
               <line x1="22" y1="11" x2="16" y2="11" />
             </svg>
-            {{ 'HEADER.INVITE' | translate }}
+            <span class="hidden xl:inline">{{ 'HEADER.INVITE' | translate }}</span>
           </button>
 
           <app-invite-dropdown [isOpen]="isInviteOpen" (close)="activePopup = null"></app-invite-dropdown>
         </div>
 
         <!-- Buy Now / Mua ngay -->
-        <button id="header-buy-btn" class="header-action-btn primary">
-          <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"
+        <button id="header-buy-btn" class="header-action-btn primary" [title]="'HEADER.UPGRADE' | translate">
+          <svg class="w-3.5 h-3.5 xl:w-3 xl:h-3 xl:mr-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"
             stroke-linecap="round" stroke-linejoin="round">
             <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
           </svg>
-          {{ 'HEADER.UPGRADE' | translate }}
+          <span class="hidden xl:inline">{{ 'HEADER.UPGRADE' | translate }}</span>
         </button>
 
         <!-- Help / Trợ giúp -->
         <button id="header-help-btn" class="header-action-btn ghost" [title]="'HEADER.HELP_TITLE' | translate">
-          <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"
+          <svg class="w-3.5 h-3.5 xl:w-3 xl:h-3 xl:mr-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"
             stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10" />
             <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
             <line x1="12" y1="17" x2="12.01" y2="17" />
           </svg>
-          {{ 'HEADER.HELP' | translate }}
+          <span class="hidden xl:inline">{{ 'HEADER.HELP' | translate }}</span>
         </button>
       </div>
 
