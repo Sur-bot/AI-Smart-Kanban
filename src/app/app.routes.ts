@@ -1,9 +1,23 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  // 1. Bộ cấu trúc chính với Layout (Dashboard)
+  // 1. Landing Page (Trang chủ)
   {
     path: '',
+    loadComponent: () => import('./features/landing-page/landing-page').then(m => m.LandingPageComponent),
+    title: 'AI Smart Kanban - Quản lý thông minh'
+  },
+
+  // 2. Trang Lưu trữ Hình ảnh (Đứng độc lập hoặc đưa vào app tùy thiết kế, tạm giữ nguyên nếu nó độc lập)
+  {
+    path: 'image-storage',
+    loadComponent: () => import('./features/image-storage/components/image-storage-page/image-storage-page').then(m => m.ImageStoragePageComponent),
+    title: 'Lưu trữ hình ảnh - AI Smart Kanban'
+  },
+
+  // 3. Bộ cấu trúc chính với Layout (Dashboard)
+  {
+    path: 'app',
     loadComponent: () => import('./layout/main-layout/main-layout').then(m => m.MainLayoutComponent),
     title: 'AI Smart Kanban',
     children: [
