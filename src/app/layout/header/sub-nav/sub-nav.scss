@@ -1,0 +1,30 @@
+:host {
+  display: block;
+  position: relative;
+}
+
+/* ===== MORE DROPDOWN PANEL ===== */
+.more-dropdown {
+  @apply absolute min-w-[200px] bg-white rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.15)] border border-gray-100 overflow-hidden z-[600] py-1;
+  animation: dropdownIn 0.15s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes dropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ===== DROPDOWN ITEM ===== */
+.dropdown-item {
+  @apply flex items-center gap-2.5 px-4 py-2 text-[13px] text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer w-full text-left border-none bg-transparent;
+
+  &.locked {
+    @apply text-gray-400 cursor-default pointer-events-none;
+  }
+}

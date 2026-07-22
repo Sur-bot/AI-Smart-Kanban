@@ -1,16 +1,18 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { ChatFeatureComponent } from './features/chat-feature/chat-feature.component';
-import { TaskChatFeatureComponent } from './features/task-chat-feature/task-chat-feature.component';
-import { CopilotFeatureComponent } from './features/copilot-feature/copilot-feature.component';
-import { CollabFeatureComponent } from './features/collab-feature/collab-feature.component';
-import { ChannelFeatureComponent } from './features/channel-feature/channel-feature.component';
-import { OpenChannelFeatureComponent } from './features/open-channel-feature/open-channel-feature.component';
-import { NotificationsFeatureComponent } from './features/notifications-feature/notifications-feature.component';
-import { TelephonyFeatureComponent } from './features/telephony-feature/telephony-feature.component';
-import { AppsFeatureComponent } from './features/apps-feature/apps-feature.component';
-import { SettingsFeatureComponent } from './features/settings-feature/settings-feature.component';
+import {
+  ChatFeatureComponent,
+  TaskChatFeatureComponent,
+  CopilotFeatureComponent,
+  CollabFeatureComponent,
+  ChannelFeatureComponent,
+  OpenChannelFeatureComponent,
+  NotificationsFeatureComponent,
+  TelephonyFeatureComponent,
+  AppsFeatureComponent,
+  SettingsFeatureComponent
+} from '../../../../features/right-bar-features';
 import { RIGHT_BAR_FEATURES, RightBarFeature } from '../../../../core/config/right-bar.config';
 
 @Component({

@@ -5,7 +5,7 @@
 
 /* ===== CONTAINER ===== */
 .header-container {
-  @apply flex justify-between items-center w-full px-5 h-[58px] gap-3 overflow-visible;
+  @apply flex justify-between items-center w-full px-3 lg:px-5 h-[58px] gap-2 lg:gap-3 overflow-visible;
 }
 
 /* ===== LEFT: sub-nav ===== */
@@ -15,7 +15,7 @@
 
 /* ===== RIGHT: actions ===== */
 .header-right {
-  @apply flex items-center gap-1.5 shrink-0 whitespace-nowrap overflow-visible;
+  @apply flex items-center gap-1 lg:gap-1.5 shrink-0 whitespace-nowrap overflow-visible;
 }
 
 /* ===== LOGO "Digit 24" ===== */
@@ -88,7 +88,6 @@
 
 /* ===== SEARCH ===== */
 .search-wrapper {
-  @apply flex items-center;
 }
 
 // Animations
@@ -107,6 +106,16 @@
 // Responsive
 @media (max-width: 768px) {
   .header-container {
-    @apply px-3 h-12;
+    @apply px-2 h-12;
   }
+}
+
+// Sub-nav scrollbar
+.custom-scrollbar-x::-webkit-scrollbar {
+  height: 0;
+  width: 0;
+}
+.custom-scrollbar-x {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }

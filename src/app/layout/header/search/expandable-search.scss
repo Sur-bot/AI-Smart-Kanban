@@ -15,5 +15,5 @@
 }
 
 .search-btn {
-  @apply bg-transparent border-none w-10 h-10 rounded-full cursor-pointer flex justify-center items-center text-white/70 transition-colors duration-200;
+  @apply bg-transparent border-none w-9 h-9 rounded-full cursor-pointer flex justify-center items-center text-white/70 transition-colors duration-200 hover:text-white;
 }
