@@ -1,0 +1,39 @@
+:host {
+  display: block;
+}
+
+.upload-zone {
+  @apply relative border-2 border-dashed border-blue-200 rounded-2xl bg-gradient-to-br from-blue-50/50 to-cyan-50/30 p-8 text-center cursor-pointer transition-all duration-300;
+
+  &:hover {
+    @apply border-blue-400 bg-gradient-to-br from-blue-50 to-cyan-50/60;
+  }
+
+  &.drag-over {
+    @apply border-blue-500 bg-gradient-to-br from-blue-100/70 to-cyan-100/50 scale-[1.01];
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  }
+}
+
+.upload-content {
+  @apply flex flex-col items-center justify-center;
+}
+
+.upload-icon-wrapper {
+  @apply w-16 h-16 rounded-full bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center;
+}
+
+.upload-btn {
+  @apply inline-flex items-center px-5 py-2.5 rounded-xl text-sm font-semibold text-white border-none cursor-pointer transition-all duration-200;
+  background: linear-gradient(135deg, #3b82f6, #06b6d4);
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+
+  &:hover {
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    @apply brightness-110;
+  }
+
+  &:active {
+    @apply scale-[0.98];
+  }
+}

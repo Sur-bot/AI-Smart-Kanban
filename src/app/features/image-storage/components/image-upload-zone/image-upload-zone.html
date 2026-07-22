@@ -1,0 +1,34 @@
+<section class="upload-zone" [class.drag-over]="isDragOver"
+  role="region" aria-label="Khu vực tải ảnh lên">
+
+  <input type="file" #fileInput
+    class="hidden"
+    multiple
+    accept=".jpg,.jpeg,.png,.gif,.webp"
+    (change)="onFileInputChange($event)" />
+
+  <article class="upload-content">
+    <figure class="upload-icon-wrapper">
+      <mat-icon class="!text-[40px] !w-10 !h-10 !leading-[40px] text-blue-500">cloud_upload</mat-icon>
+    </figure>
+
+    <h3 class="text-base font-semibold text-gray-700 mt-3">
+      Kéo thả ảnh vào đây
+    </h3>
+
+    <p class="text-sm text-gray-400 mt-1">
+      hoặc
+    </p>
+
+    <button type="button"
+      class="upload-btn mt-3"
+      (click)="fileInput.click()">
+      <mat-icon class="!text-[18px] !w-[18px] !h-[18px] !leading-[18px] mr-1.5">add_photo_alternate</mat-icon>
+      Chọn ảnh từ thiết bị
+    </button>
+
+    <p class="text-xs text-gray-400 mt-3">
+      JPG, PNG, GIF, WEBP — Tối đa 20MB/ảnh
+    </p>
+  </article>
+</section>

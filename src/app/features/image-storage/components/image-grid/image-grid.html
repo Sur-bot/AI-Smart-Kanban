@@ -1,0 +1,43 @@
+@if (images.length === 0) {
+  <section class="empty-state" role="status">
+    <mat-icon class="!text-[48px] !w-12 !h-12 !leading-[48px] text-gray-300">photo_library</mat-icon>
+    <h3 class="text-base font-medium text-gray-400 mt-3">Chưa có ảnh nào</h3>
+    <p class="text-sm text-gray-400 mt-1">Tải ảnh lên để bắt đầu lưu trữ</p>
+  </section>
+} @else {
+  <section class="image-grid" role="list" aria-label="Danh sách ảnh">
+    @for (image of images; track image.id) {
+      <article class="image-card group" role="listitem" (click)="onImageClick(image)">
+        <!-- Thumbnail -->
+        <figure class="card-thumbnail">
+          <img [src]="image.thumbnailUrl" [alt]="image.name" loading="lazy" />
+          <!-- Hover Overlay -->
+          <figcaption class="card-overlay">
+            <button type="button" class="overlay-btn" title="Xem chi tiết">
+              <mat-icon class="!text-[22px] !w-[22px] !h-[22px] !leading-[22px]">visibility</mat-icon>
+            </button>
+          </figcaption>
+        </figure>
+
+        <!-- Metadata -->
+        <footer class="card-meta">
+          <h4 class="card-name" [title]="image.name">{{ image.name }}</h4>
+          <dl class="card-info">
+            <div class="info-item">
+              <dt class="sr-only">Dung lượng</dt>
+              <dd>{{ formatSize(image.size) }}</dd>
+            </div>
+            <div class="info-item">
+              <dt class="sr-only">Ngày upload</dt>
+              <dd>{{ formatDate(image.uploadedAt) }}</dd>
+            </div>
+          </dl>
+          <p class="card-uploader">
+            <mat-icon class="!text-[14px] !w-3.5 !h-3.5 !leading-[14px] text-gray-400">person</mat-icon>
+            <span>{{ image.uploadedBy.name }}</span>
+          </p>
+        </footer>
+      </article>
+    }
+  </section>
+}

@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # 1. MinIO Object Storage Server (S3 Compatible)
+  minio:
+    image: minio/minio:latest
+    container_name: kanban-minio
+    restart: always
+    ports:
+      - "9000:9000"   # S3 API Port
+      - "9001:9001"   # MinIO Console Web UI Port
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadminpassword
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. MinIO Client (Tự động tạo Bucket và cấu hình CORS khi khởi động)
+  create-bucket:
+    image: minio/mc:latest
+    container_name: kanban-minio-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set myminio http://minio:9000 minioadmin minioadminpassword;
+      /usr/bin/mc mb myminio/ai-kanban-storage --ignore-existing;
+      /usr/bin/mc anonymous set download myminio/ai-kanban-storage;
+      echo 'Bucket ai-kanban-storage created successfully!';
+      exit 0;
+      "
+
+  # 3. Redis (Cho BullMQ - Backend Worker)
+  redis:
+    image: redis:alpine
+    container_name: kanban-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  minio_data:
+    driver: local
+  redis_data:
+    driver: local
