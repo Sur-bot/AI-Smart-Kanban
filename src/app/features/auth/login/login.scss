@@ -1,0 +1,90 @@
+@keyframes slideInFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100vw);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.login-container {
+  @apply relative z-10 w-full px-4 sm:px-0 lg:ml-auto lg:mr-[10%] xl:mr-[15%] mx-auto flex flex-col lg:flex-row items-center justify-center lg:justify-end gap-0;
+  animation: slideInFromRight 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.main-card {
+  @apply bg-white rounded-[18px] sm:rounded-[30px] p-6 sm:p-8 shadow-2xl z-20 w-full sm:max-w-[400px];
+  
+  .auth-title {
+    @apply text-2xl sm:text-[28px] font-medium text-slate-900 text-center mb-2;
+  }
+
+  .auth-subtitle {
+    @apply text-sm text-slate-600 text-center mb-6 font-medium;
+  }
+
+  .form-group {
+    @apply mb-5;
+    
+    .input-field {
+      @apply w-full border border-slate-300 rounded-lg px-4 py-3 text-base text-slate-900 
+             placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 
+             focus:border-blue-500 transition-all;
+    }
+  }
+
+  .btn-submit {
+    @apply w-full rounded-lg py-3 text-base font-bold text-center transition-all duration-300;
+    
+    &.disabled {
+      @apply bg-slate-200 text-slate-400 cursor-not-allowed;
+    }
+    
+    &.active {
+      @apply bg-[#00d074] text-white hover:bg-[#00b965] hover:shadow-lg shadow-sm cursor-pointer;
+    }
+  }
+
+  .divider {
+    @apply flex items-center gap-4 my-6;
+    
+    hr {
+      @apply flex-1 border-slate-200;
+    }
+    
+    span {
+      @apply text-sm text-slate-500 font-medium;
+    }
+  }
+}
+
+.qr-card {
+  @apply hidden lg:flex flex-col items-center bg-black/20 backdrop-blur-md rounded-r-[24px] p-6 z-10 -ml-4 pl-10;
+  width: 250px;
+  
+  .qr-title {
+    @apply text-[15px] font-bold text-white mb-2;
+  }
+  
+  .qr-desc {
+    @apply text-[11px] text-white/90 text-center leading-relaxed mb-4;
+  }
+  
+  .qr-image-container {
+    @apply bg-white p-2 rounded-xl mb-4 shadow-sm;
+    
+    .qr-code {
+      @apply w-28 h-28 object-cover;
+    }
+  }
+  
+  .app-badges {
+    @apply flex items-center justify-center gap-2;
+    
+    .badge {
+      @apply h-7 w-auto cursor-pointer hover:opacity-80 transition-opacity;
+    }
+  }
+}

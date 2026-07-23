@@ -1,62 +1,16 @@
-// ─── Landing Page Styles ───
+// ─── Landing Page Styles (Host only) ───
 // Font: Sử dụng font hệ thống (Inter / system-ui) cho hiệu năng tối đa
 
 :host {
   display: block;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
-}
 
-// ─── Scrollbar-hide cho tab ───
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-// ─── Animation: Slide-in cho feature items ───
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.animate-slide-in {
-  animation: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  opacity: 0;
-
-  @for $i from 1 through 8 {
-    &:nth-child(#{$i}) {
-      animation-delay: #{($i - 1) * 60}ms;
-    }
-  }
-}
-
-// ─── Border-b-3 custom (Tailwind không có sẵn) ───
-.border-b-3 {
-  border-bottom-width: 3px;
-}
-
-// ─── Feedback Panel: Slide-up animation ───
-@keyframes feedbackSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.feedback-panel {
-  animation: feedbackSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  /* --- CÀI ĐẶT BACKGROUND CHUẨN MỰC --- */
+  min-height: 100vh;
+  background-image: url('/assets/images/main-bg-5.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }

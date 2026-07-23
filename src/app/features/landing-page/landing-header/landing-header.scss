@@ -1,0 +1,31 @@
+.header-container {
+  @apply sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm;
+}
+
+.nav-container {
+  @apply max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 h-16;
+}
+
+.logo-link {
+  @apply flex items-center gap-2.5 shrink-0;
+}
+
+.nav-links {
+  @apply hidden lg:flex items-center gap-1 text-sm font-semibold text-black;
+}
+
+.nav-item {
+  @apply px-4 py-2 rounded-lg hover:text-[#1A1B1F] transition-colors;
+}
+
+.cta-container {
+  @apply flex items-center gap-2;
+}
+
+.btn-login {
+  @apply hidden sm:inline-flex px-5 py-2.5 text-sm font-semibold text-blue-600 border-2 border-blue-600 rounded-xl hover:bg-blue-50 transition-all duration-200;
+}
+
+.btn-start {
+  @apply inline-flex items-center px-5 py-2.5 text-sm font-semibold text-[#1A1B1F] bg-[#BDF300] rounded-xl transition-all duration-300;
+}

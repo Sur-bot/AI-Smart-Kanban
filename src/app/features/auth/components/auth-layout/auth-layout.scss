@@ -1,0 +1,109 @@
+.auth-page {
+  @apply min-h-screen relative flex flex-col lg:flex-row items-center justify-center lg:justify-between overflow-hidden;
+  background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100vw);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.auth-slogan {
+  @apply hidden lg:flex flex-1 items-center justify-center z-10 px-10 xl:px-20 mt-[-100px];
+  animation: slideInFromLeft 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  
+  .slogan-content {
+    @apply w-full max-w-lg text-white;
+    
+    .slogan-title {
+      @apply text-5xl xl:text-6xl font-bold mb-4 flex items-center gap-2;
+      
+      .slogan-icon {
+        @apply text-[36px] w-9 h-9 opacity-80 mt-1;
+      }
+    }
+    
+    .slogan-subtitle {
+      @apply text-xl xl:text-2xl font-medium opacity-90;
+    }
+  }
+}
+
+.auth-header {
+  @apply absolute top-4 right-4 sm:top-6 sm:right-6 lg:top-8 lg:right-8 z-20;
+
+  .btn-login {
+    @apply inline-flex items-center justify-center px-3 py-1.5 rounded-full text-white text-xs font-normal 
+           backdrop-blur-md bg-white/20
+           hover:bg-white/30 transition-all duration-300 shadow-lg;
+  }
+}
+
+.auth-footer {
+  @apply absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 lg:bottom-8 lg:left-8 lg:right-8 flex items-end justify-between z-20 pointer-events-none;
+
+  .footer-left {
+    @apply flex items-center gap-4 pointer-events-auto;
+    
+    .privacy-link {
+      @apply text-white/80 hover:text-white text-[11px] sm:text-xs font-medium transition-colors hidden sm:block;
+    }
+
+    .lang-dropdown {
+      @apply relative;
+
+      .lang-btn {
+        @apply flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold text-white 
+               backdrop-blur-md bg-white/10 hover:bg-white/20 transition-colors cursor-pointer;
+      }
+
+      .lang-menu {
+        @apply absolute left-0 bottom-full mb-2 min-w-[200px] rounded-lg bg-white shadow-xl border border-slate-100 overflow-hidden flex flex-col z-50 py-1;
+        
+        button {
+          @apply text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors whitespace-nowrap border-none cursor-pointer;
+        }
+      }
+    }
+  }
+
+  .footer-right {
+    @apply pointer-events-auto flex justify-end;
+
+    .help-btn {
+      @apply flex items-center bg-white/20 backdrop-blur-md rounded-full text-white transition-all duration-300 ease-in-out cursor-pointer hover:bg-white/30 overflow-hidden;
+      width: 40px;
+      height: 40px;
+      justify-content: flex-start;
+      padding: 0 10px;
+
+      .help-icon {
+        @apply shrink-0 flex items-center justify-center font-bold;
+        width: 20px;
+        height: 20px;
+      }
+
+      .help-text {
+        @apply whitespace-nowrap text-sm font-semibold opacity-0 transition-opacity duration-300 w-0 hidden sm:block;
+      }
+
+      &:hover {
+        width: 110px;
+        padding-left: 10px;
+        padding-right: 14px;
+        
+        .help-text {
+          @apply opacity-100 w-auto ml-2 block;
+        }
+      }
+    }
+  }
+}

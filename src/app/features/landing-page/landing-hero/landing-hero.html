@@ -1,0 +1,133 @@
+<!-- ──── Hero Section ──── -->
+<section class="relative overflow-hidden bg-gradient-to-b from-blue-50/70 via-white to-white">
+  <!-- Decorative blobs -->
+  <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-100/60 rounded-full blur-[100px] pointer-events-none" aria-hidden="true"></div>
+  <div class="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-cyan-100/50 rounded-full blur-[100px] pointer-events-none" aria-hidden="true"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-12">
+    <!-- Headline -->
+    <div class="text-center mb-12 sm:mb-16">
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
+        AI Smart Kanban.
+        <br class="hidden sm:block"/>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">Không gian làm việc lý tưởng.</span>
+      </h1>
+      <p class="text-lg sm:text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
+        Nền tảng quản lý công việc thông minh tích hợp Kanban Board, AI Worker xử lý ảnh ngầm và lưu trữ đám mây bảo mật.
+      </p>
+    </div>
+
+    <!-- Feature Tabs -->
+    <div class="max-w-6xl mx-auto" id="features">
+      <!-- Tab Headers -->
+      <nav class="flex items-center gap-1 overflow-x-auto pb-1 mb-10 border-b-2 border-slate-200 scrollbar-hide" aria-label="Danh mục tính năng">
+        @for (tab of tabs; track tab.label; let i = $index) {
+          <button
+            type="button"
+            [class]="'flex items-center gap-2 px-4 py-3 text-sm font-semibold whitespace-nowrap transition-all duration-200 border-b-3 -mb-[2px] ' +
+              (activeTab() === i
+                ? 'text-blue-600 border-blue-600'
+                : 'text-slate-500 border-transparent hover:text-slate-800 hover:border-slate-300')"
+            (click)="setActiveTab(i)"
+            [attr.aria-selected]="activeTab() === i"
+            role="tab">
+            <mat-icon class="text-[20px] w-5 h-5">{{ tab.icon }}</mat-icon>
+            <span class="hidden sm:inline">{{ tab.label }}</span>
+          </button>
+        }
+      </nav>
+
+      <!-- Tab Content -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[360px]">
+        <!-- Feature List (Left) -->
+        <div class="space-y-1">
+          <ul class="space-y-4">
+            @for (feature of tabs[activeTab()].features; track feature) {
+              <li class="flex items-start gap-3 text-slate-700 text-base sm:text-lg animate-slide-in">
+                <mat-icon class="text-green-500 mt-0.5 shrink-0 text-[20px] w-5 h-5">check_circle</mat-icon>
+                <span>{{ feature }}</span>
+              </li>
+            }
+          </ul>
+
+          <div class="pt-8">
+            <a routerLink="/app" class="inline-flex items-center gap-2 px-8 py-4 text-base font-bold text-white bg-gradient-to-r from-green-500 to-emerald-600 rounded-full hover:shadow-xl hover:shadow-green-500/20 hover:-translate-y-1 transition-all duration-300 active:translate-y-0 uppercase tracking-wide" title="Bắt đầu sử dụng miễn phí">
+              Bắt đầu miễn phí
+            </a>
+          </div>
+        </div>
+
+        <!-- App Preview (Right) -->
+        <figure class="relative">
+          <div class="rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-200/50 overflow-hidden">
+            <!-- Browser bar mockup -->
+            <div class="flex items-center gap-2 px-4 py-3 bg-slate-50 border-b border-slate-200">
+              <span class="w-3 h-3 rounded-full bg-red-400"></span>
+              <span class="w-3 h-3 rounded-full bg-amber-400"></span>
+              <span class="w-3 h-3 rounded-full bg-green-400"></span>
+              <span class="ml-4 flex-1 h-7 bg-slate-100 rounded-md flex items-center px-3 text-xs text-slate-400 font-mono">localhost:4200/app/kanban</span>
+            </div>
+            <!-- App mockup content -->
+            <div class="aspect-video bg-gradient-to-br from-slate-50 to-blue-50/50 p-6 relative">
+              <div class="grid grid-cols-3 gap-4 h-full">
+                <!-- Column 1 -->
+                <div class="bg-white rounded-xl border border-slate-200 p-3 flex flex-col gap-2.5 shadow-sm">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                    <span class="h-3 w-16 bg-slate-200 rounded-sm"></span>
+                  </div>
+                  <div class="h-16 bg-blue-50 rounded-lg border border-blue-100"></div>
+                  <div class="h-20 bg-slate-50 rounded-lg border border-slate-100"></div>
+                  <div class="h-12 bg-slate-50 rounded-lg border border-slate-100"></div>
+                </div>
+                <!-- Column 2 -->
+                <div class="bg-white rounded-xl border border-slate-200 p-3 flex flex-col gap-2.5 shadow-sm">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                    <span class="h-3 w-20 bg-slate-200 rounded-sm"></span>
+                  </div>
+                  <div class="h-24 bg-amber-50 rounded-lg border border-amber-100 relative">
+                    <div class="absolute left-0 top-0 w-1 h-full bg-amber-400 rounded-l-lg"></div>
+                  </div>
+                  <div class="h-14 bg-slate-50 rounded-lg border border-slate-100"></div>
+                </div>
+                <!-- Column 3 -->
+                <div class="bg-white rounded-xl border border-slate-200 p-3 flex flex-col gap-2.5 shadow-sm">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+                    <span class="h-3 w-14 bg-slate-200 rounded-sm"></span>
+                  </div>
+                  <div class="h-14 bg-green-50 rounded-lg border border-green-100"></div>
+                  <div class="h-10 bg-slate-50 rounded-lg border border-slate-100"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </figure>
+      </div>
+    </div>
+  </div>
+
+  <!-- Social Proof Bar -->
+  <div class="bg-gradient-to-r from-blue-600 to-cyan-500 py-5 mt-8">
+    <div class="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-16 text-white">
+      <div class="flex items-center gap-3">
+        <mat-icon class="text-[28px] w-7 h-7 opacity-80">cloud_done</mat-icon>
+        <p class="text-lg font-bold">100% Miễn phí</p>
+        <span class="text-white/70 text-sm">để bắt đầu</span>
+      </div>
+      <div class="hidden sm:block w-px h-8 bg-white/30"></div>
+      <div class="flex items-center gap-3">
+        <mat-icon class="text-[28px] w-7 h-7 opacity-80">speed</mat-icon>
+        <p class="text-lg font-bold">WebP 80%</p>
+        <span class="text-white/70 text-sm">nén ảnh tự động</span>
+      </div>
+      <div class="hidden sm:block w-px h-8 bg-white/30"></div>
+      <div class="flex items-center gap-3">
+        <mat-icon class="text-[28px] w-7 h-7 opacity-80">language</mat-icon>
+        <p class="text-lg font-bold">Angular 22</p>
+        <span class="text-white/70 text-sm">framework mới nhất</span>
+      </div>
+    </div>
+  </div>
+</section>

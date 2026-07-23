@@ -1,0 +1,111 @@
+@keyframes slideInFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100vw);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.auth-card-container {
+  @apply relative z-10 w-full px-4 sm:px-0 sm:max-w-[400px] lg:ml-auto lg:mr-[10%] xl:mr-[15%] mx-auto;
+  animation: slideInFromRight 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.auth-card {
+  @apply bg-white rounded-[18px] sm:rounded-[30px] p-6 sm:p-8 shadow-2xl;
+  
+  .auth-title {
+    @apply text-2xl sm:text-[28px] font-medium text-slate-900 text-center mb-6;
+  }
+
+  .auth-subtitle {
+    @apply text-sm text-slate-600 text-center mb-4 font-medium;
+  }
+
+  .divider {
+    @apply flex items-center gap-4 my-6;
+    
+    hr {
+      @apply flex-1 border-slate-200;
+    }
+    
+    span {
+      @apply text-sm text-slate-500 font-medium;
+    }
+  }
+  
+  .form-group {
+    @apply mb-5;
+    
+    .input-field {
+      @apply w-full border border-slate-300 rounded-lg px-4 py-3 text-base text-slate-900 
+             placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 
+             focus:border-blue-500 transition-all;
+    }
+  }
+
+  .checkbox-group {
+    @apply space-y-3 mb-6;
+    
+    .checkbox-item {
+      @apply flex items-start gap-3;
+      
+      input[type="checkbox"] {
+        @apply mt-0.5 sm:mt-1 w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer shrink-0;
+      }
+      
+      span {
+        @apply text-[13px] sm:text-sm text-slate-600 leading-snug cursor-pointer select-none;
+      }
+    }
+  }
+
+  .recaptcha-mock {
+    @apply flex items-center justify-between border border-slate-200 bg-slate-50 rounded-lg p-3 sm:p-4 mb-6;
+    
+    .recaptcha-left {
+      @apply flex items-center gap-3;
+      
+      input[type="checkbox"] {
+        @apply w-6 h-6 rounded-sm border-2 border-slate-300 bg-white text-green-500 focus:ring-green-500 cursor-pointer transition-all shrink-0;
+      }
+      
+      span {
+        @apply text-[13px] sm:text-sm font-medium text-slate-800 leading-tight;
+      }
+    }
+    
+    .recaptcha-right {
+      @apply flex flex-col items-center shrink-0 ml-2;
+      img {
+        @apply w-8 h-8 opacity-80;
+      }
+      span {
+        @apply text-[9px] text-slate-500 mt-1;
+      }
+    }
+  }
+
+  .btn-submit {
+    @apply w-full rounded-lg py-3.5 text-base font-bold text-center transition-all duration-300 uppercase;
+    
+    &.disabled {
+      @apply bg-slate-200 text-slate-400 cursor-not-allowed;
+    }
+    
+    &.active {
+      @apply bg-[#BDF300] text-slate-900 hover:bg-[#aee000] hover:shadow-lg shadow-sm cursor-pointer;
+    }
+  }
+
+  .terms-note {
+    @apply text-center text-[12px] sm:text-[13px] text-slate-500 mt-6 leading-relaxed;
+    
+    a {
+      @apply text-blue-600 hover:underline;
+    }
+  }
+}

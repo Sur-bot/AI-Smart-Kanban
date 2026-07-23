@@ -1,4 +1,39 @@
 {
+  "REGISTER": {
+    "SLOGAN_TITLE": "Digit24",
+    "SLOGAN_SUBTITLE": "The ideal workspace",
+    "LOGIN": "Log in",
+    "TITLE": "Create your Digit24",
+    "SOCIAL_LOGIN": "Sign up with a social media account",
+    "OR": "or",
+    "EMAIL_PLACEHOLDER": "Enter email",
+    "AGREE_UPDATES": "I agree to receive product updates, special offers, and news via email",
+    "AGREE_TRAINING": "I want to receive training materials",
+    "RECAPTCHA": "I'm not a robot",
+    "SUBMIT": "Create for free",
+    "TERMS_PREFIX": "By proceeding to the next screen, you confirm that you accept the",
+    "TERMS_OF_SERVICE": "Terms of Service",
+    "AND": "and",
+    "PRIVACY_POLICY": "Privacy Policy",
+    "HELP": "Help"
+  },
+  "LOGIN": {
+    "TITLE": "Log in to Digit24",
+    "INPUT_LABEL": "Email or phone number",
+    "INPUT_PLACEHOLDER": "name@company.vn",
+    "CONTINUE": "Continue",
+    "OR": "Other login options",
+    "QR_TITLE": "Log in with QR",
+    "QR_DESC": "Scan the QR code and follow the link to log in to Digit24.",
+    "REGISTER": "Sign up"
+  },
+  "LANDING": {
+    "FEATURES": "FEATURES",
+    "SOLUTIONS": "SOLUTIONS",
+    "TECH": "TECHNOLOGY",
+    "LOGIN": "LOG IN",
+    "START": "START FOR FREE"
+  },
   "HEADER": {
     "SEARCH": "Search...",
     "SETTINGS": "Settings",

@@ -1,0 +1,25 @@
+<!-- ──── Solutions Grid Section ──── -->
+<section id="solutions" class="bg-white py-20 sm:py-28">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <header class="text-center mb-16">
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4">
+        Mọi thứ bạn cần, trong một nền tảng
+      </h2>
+      <p class="text-lg text-slate-500 max-w-2xl mx-auto">
+        AI Smart Kanban cung cấp bộ công cụ hoàn chỉnh cho mọi đội nhóm và phòng ban.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (solution of solutions; track solution.title) {
+        <article class="group p-7 rounded-2xl bg-white border border-slate-200 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100/50 transition-all duration-300 hover:-translate-y-1 cursor-default">
+          <div [class]="'w-14 h-14 rounded-2xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110 ' + solution.bg">
+            <mat-icon [class]="solution.color + ' text-[28px] w-7 h-7'">{{ solution.icon }}</mat-icon>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2">{{ solution.title }}</h3>
+          <p class="text-slate-500 leading-relaxed">{{ solution.description }}</p>
+        </article>
+      }
+    </div>
+  </div>
+</section>

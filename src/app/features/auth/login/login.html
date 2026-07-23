@@ -1,0 +1,56 @@
+<app-auth-layout headerLinkText="LOGIN.REGISTER" headerLinkRoute="/register">
+  <div class="login-container">
+    
+    <!-- White Card (Main Login Form) -->
+    <section class="login-card main-card">
+      <h1 class="auth-title">{{ 'LOGIN.TITLE' | translate }}</h1>
+      <p class="auth-subtitle">{{ 'LOGIN.INPUT_LABEL' | translate }}</p>
+
+      <form (submit)="onSubmit($event)">
+        <div class="form-group">
+          <input 
+            type="text" 
+            [placeholder]="'LOGIN.INPUT_PLACEHOLDER' | translate" 
+            class="input-field"
+            [ngModel]="email()"
+            (ngModelChange)="email.set($event)"
+            name="email">
+        </div>
+
+        <button 
+          type="submit" 
+          class="btn-submit"
+          [class.active]="isFormValid()"
+          [class.disabled]="!isFormValid()"
+          [disabled]="!isFormValid()">
+          {{ 'LOGIN.CONTINUE' | translate }}
+        </button>
+      </form>
+
+      <div class="divider">
+        <hr>
+        <span>{{ 'LOGIN.OR' | translate }}</span>
+        <hr>
+      </div>
+
+      <app-social-login></app-social-login>
+    </section>
+
+    <!-- Gray Card (QR Login) -->
+    <section class="login-card qr-card">
+      <h2 class="qr-title">{{ 'LOGIN.QR_TITLE' | translate }}</h2>
+      <p class="qr-desc">{{ 'LOGIN.QR_DESC' | translate }}</p>
+      
+      <div class="qr-image-container">
+        <!-- Placeholder QR code -->
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://digit24.vn" alt="QR Code" class="qr-code">
+      </div>
+
+      <div class="app-badges">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="App Store" class="badge">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" class="badge">
+      </div>
+    </section>
+
+  </div>
+</app-auth-layout>

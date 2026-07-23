@@ -68,12 +68,19 @@ export const routes: Routes = [
     ]
   },
 
-  // 2. Tuyến đường cho trang Login (Giao diện độc lập, không dùng Layout)
-  // {
-  //   path: 'login',
-  //   loadComponent: () => import('./features/auth/login/login.ts').then(m => m.LoginComponent),
-  //   title: 'Đăng nhập - AI Smart Kanban'
-  // },
+  // 2. Tuyến đường cho trang Đăng ký (Register - Giao diện độc lập)
+  {
+    path: 'register',
+    loadComponent: () => import('./features/auth/register/register.component').then(m => m.RegisterComponent),
+    title: 'Tạo tài khoản - Digit24'
+  },
+
+  // Tuyến đường cho trang Đăng nhập (Login - Giao diện độc lập)
+  {
+    path: 'login',
+    loadComponent: () => import('./features/auth/login/login.component').then(m => m.LoginComponent),
+    title: 'Đăng nhập - Digit24'
+  },
 
   // 3. Trang 404 - Lỗi không tìm thấy (Phải đặt ở cuối cùng)
   // {

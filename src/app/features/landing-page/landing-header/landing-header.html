@@ -1,0 +1,88 @@
+<header class="header-container">
+  <nav class="nav-container" aria-label="Điều hướng chính">
+    <a routerLink="/" class="logo-link" title="AI Smart Kanban - Trang chủ">
+      <svg width="134" height="36" viewBox="0 0 112 30" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(0, 3)">
+          <path
+            d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 18c-3.314 0-6-2.686-6-6s2.686-6 6-6 6 2.686 6 6-2.686 6-6 6z"
+            fill="#00629A"
+          />
+          <circle cx="10" cy="10" r="3" fill="#3FC0F0" />
+          <text
+            x="28"
+            y="19"
+            font-family="Montserrat, system-ui, -apple-system, sans-serif"
+            font-size="20"
+            font-weight="700"
+            fill="#00629A"
+          >
+            Digit
+          </text>
+          <text
+            x="77"
+            y="19"
+            font-family="Montserrat, system-ui, -apple-system, sans-serif"
+            font-size="20"
+            font-weight="700"
+            fill="#3FC0F0"
+          >
+            24
+          </text>
+        </g>
+      </svg>
+    </a>
+
+    <ul class="nav-links">
+      <li>
+        <a href="#features" class="nav-item">{{ 'LANDING.FEATURES' | translate }}</a>
+      </li>
+      <li>
+        <a href="#solutions" class="nav-item">{{ 'LANDING.SOLUTIONS' | translate }}</a>
+      </li>
+      <li>
+        <a href="#tech" class="nav-item">{{ 'LANDING.TECH' | translate }}</a>
+      </li>
+    </ul>
+
+    <div class="cta-container">
+      <a routerLink="/app" class="btn-login" [title]="'LANDING.LOGIN' | translate">
+        {{ 'LANDING.LOGIN' | translate }}
+      </a>
+      <a routerLink="/register" class="btn-start" [title]="'LANDING.START' | translate">
+        {{ 'LANDING.START' | translate }}
+      </a>
+
+      <div class="relative">
+        <button
+          (click)="toggleLangPopup($event)"
+          class="flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-sm font-normal text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+        >
+          <span>{{ currentLangLabel }}</span>
+          <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </button>
+
+        <div
+          *ngIf="isLangPopupOpen()"
+          class="absolute right-0 top-full mt-4 w-max rounded-lg bg-white shadow-lg border border-slate-100 overflow-hidden flex flex-col z-50 py-1"
+        >
+          <button
+            *ngFor="let lang of languages"
+            (click)="changeLanguage(lang.code)"
+            class="text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors whitespace-nowrap"
+            [class.font-bold]="lang.code === currentLang()"
+            [class.text-blue-600]="lang.code === currentLang()"
+          >
+            {{ lang.fullName }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>

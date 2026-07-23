@@ -1,4 +1,39 @@
 {
+  "REGISTER": {
+    "SLOGAN_TITLE": "Digit24",
+    "SLOGAN_SUBTITLE": "Không gian làm việc lý tưởng",
+    "LOGIN": "Đăng nhập",
+    "TITLE": "Tạo Digit24 của bạn",
+    "SOCIAL_LOGIN": "Đăng ký bằng tài khoản mạng xã hội",
+    "OR": "hoặc",
+    "EMAIL_PLACEHOLDER": "Điền email",
+    "AGREE_UPDATES": "Tôi đồng ý nhận thông tin cập nhật về sản phẩm, các ưu đãi đặc biệt, và tin tức qua email",
+    "AGREE_TRAINING": "Tôi muốn nhận tài liệu đào tạo",
+    "RECAPTCHA": "Tôi không phải là người máy",
+    "SUBMIT": "Tạo miễn phí",
+    "TERMS_PREFIX": "Thông qua việc chuyển sang màn hình tiếp theo, bạn xác nhận rằng bạn chấp nhận",
+    "TERMS_OF_SERVICE": "Terms of Service",
+    "AND": "và",
+    "PRIVACY_POLICY": "Privacy Policy",
+    "HELP": "Trợ giúp"
+  },
+  "LOGIN": {
+    "TITLE": "Đăng nhập vào Digit24",
+    "INPUT_LABEL": "Email hoặc số điện thoại",
+    "INPUT_PLACEHOLDER": "name@company.vn",
+    "CONTINUE": "Tiếp tục",
+    "OR": "Các tùy chọn đăng nhập khác",
+    "QR_TITLE": "Đăng nhập bằng QR",
+    "QR_DESC": "Quét mã QR và truy cập liên kết để đăng nhập vào Digit24.",
+    "REGISTER": "Đăng ký"
+  },
+  "LANDING": {
+    "FEATURES": "TÍNH NĂNG",
+    "SOLUTIONS": "GIẢI PHÁP",
+    "TECH": "CÔNG NGHỆ",
+    "LOGIN": "ĐĂNG NHẬP",
+    "START": "BẮT ĐẦU NGAY"
+  },
   "HEADER": {
     "SEARCH": "Tìm kiếm...",
     "SETTINGS": "Cài đặt",

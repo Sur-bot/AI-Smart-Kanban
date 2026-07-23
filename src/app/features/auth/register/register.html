@@ -1,0 +1,76 @@
+<app-auth-layout headerLinkText="REGISTER.LOGIN" headerLinkRoute="/login">
+  <div class="auth-card-container">
+    <section class="auth-card">
+      <h1 class="auth-title">{{ 'REGISTER.TITLE' | translate }}</h1>
+      <p class="auth-subtitle">{{ 'REGISTER.SOCIAL_LOGIN' | translate }}</p>
+
+      <app-social-login></app-social-login>
+
+      <div class="divider">
+        <hr>
+        <span>{{ 'REGISTER.OR' | translate }}</span>
+        <hr>
+      </div>
+
+      <form (submit)="onSubmit($event)">
+        <div class="form-group">
+          <input 
+            type="text" 
+            [placeholder]="'REGISTER.EMAIL_PLACEHOLDER' | translate" 
+            class="input-field"
+            [ngModel]="email()"
+            (ngModelChange)="email.set($event)"
+            name="email">
+        </div>
+
+        <div class="checkbox-group">
+          <label class="checkbox-item">
+            <input 
+              type="checkbox" 
+              [ngModel]="agreeUpdates()"
+              (ngModelChange)="agreeUpdates.set($event)"
+              name="agreeUpdates">
+            <span>{{ 'REGISTER.AGREE_UPDATES' | translate }}</span>
+          </label>
+          <label class="checkbox-item">
+            <input 
+              type="checkbox" 
+              [ngModel]="agreeTraining()"
+              (ngModelChange)="agreeTraining.set($event)"
+              name="agreeTraining">
+            <span>{{ 'REGISTER.AGREE_TRAINING' | translate }}</span>
+          </label>
+        </div>
+
+        <div class="recaptcha-mock">
+          <label class="recaptcha-left">
+            <input 
+              type="checkbox" 
+              [ngModel]="recaptchaVerified()"
+              (ngModelChange)="recaptchaVerified.set($event)"
+              name="recaptchaVerified">
+            <span>{{ 'REGISTER.RECAPTCHA' | translate }}</span>
+          </label>
+          <div class="recaptcha-right">
+            <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA">
+            <span>Privacy - Terms</span>
+          </div>
+        </div>
+
+        <button 
+          type="submit" 
+          class="btn-submit"
+          [class.active]="isFormValid()"
+          [class.disabled]="!isFormValid()"
+          [disabled]="!isFormValid()">
+          {{ 'REGISTER.SUBMIT' | translate }}
+        </button>
+
+        <p class="terms-note">
+          {{ 'REGISTER.TERMS_PREFIX' | translate }} 
+          <a href="#">{{ 'REGISTER.TERMS_LINK' | translate }}</a>.
+        </p>
+      </form>
+    </section>
+  </div>
+</app-auth-layout>
