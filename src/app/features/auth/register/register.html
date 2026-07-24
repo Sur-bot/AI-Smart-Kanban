@@ -7,68 +7,76 @@
       <app-social-login></app-social-login>
 
       <div class="divider">
-        <hr>
+        <hr />
         <span>{{ 'REGISTER.OR' | translate }}</span>
-        <hr>
+        <hr />
       </div>
 
       <form (submit)="onSubmit($event)">
         <div class="form-group">
-          <input 
-            type="text" 
-            [placeholder]="'REGISTER.EMAIL_PLACEHOLDER' | translate" 
+          <input
+            type="text"
+            [placeholder]="'REGISTER.EMAIL_PLACEHOLDER' | translate"
             class="input-field"
             [ngModel]="email()"
             (ngModelChange)="email.set($event)"
-            name="email">
+            name="email"
+          />
         </div>
 
         <div class="checkbox-group">
           <label class="checkbox-item">
-            <input 
-              type="checkbox" 
+            <input
+              type="checkbox"
               [ngModel]="agreeUpdates()"
               (ngModelChange)="agreeUpdates.set($event)"
-              name="agreeUpdates">
+              name="agreeUpdates"
+            />
             <span>{{ 'REGISTER.AGREE_UPDATES' | translate }}</span>
           </label>
           <label class="checkbox-item">
-            <input 
-              type="checkbox" 
+            <input
+              type="checkbox"
               [ngModel]="agreeTraining()"
               (ngModelChange)="agreeTraining.set($event)"
-              name="agreeTraining">
+              name="agreeTraining"
+            />
             <span>{{ 'REGISTER.AGREE_TRAINING' | translate }}</span>
           </label>
         </div>
 
         <div class="recaptcha-mock">
           <label class="recaptcha-left">
-            <input 
-              type="checkbox" 
+            <input
+              type="checkbox"
               [ngModel]="recaptchaVerified()"
               (ngModelChange)="recaptchaVerified.set($event)"
-              name="recaptchaVerified">
+              name="recaptchaVerified"
+            />
             <span>{{ 'REGISTER.RECAPTCHA' | translate }}</span>
           </label>
           <div class="recaptcha-right">
-            <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA">
+            <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA" />
             <span>Privacy - Terms</span>
           </div>
         </div>
 
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           class="btn-submit"
           [class.active]="isFormValid()"
           [class.disabled]="!isFormValid()"
-          [disabled]="!isFormValid()">
+          [disabled]="!isFormValid()"
+        >
           {{ 'REGISTER.SUBMIT' | translate }}
         </button>
 
         <p class="terms-note">
-          {{ 'REGISTER.TERMS_PREFIX' | translate }} 
-          <a href="#">{{ 'REGISTER.TERMS_LINK' | translate }}</a>.
+          {{ 'REGISTER.TERMS_PREFIX' | translate }}
+          <a routerLink="/terms">{{ 'REGISTER.TERMS_OF_SERVICE' | translate }}</a>
+          {{ 'REGISTER.AND' | translate }}
+          <a routerLink="/privacy">{{ 'REGISTER.PRIVACY_POLICY' | translate }}</a
+          >.
         </p>
       </form>
     </section>

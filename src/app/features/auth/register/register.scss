@@ -16,9 +16,9 @@
 
 .auth-card {
   @apply bg-white rounded-[18px] sm:rounded-[30px] p-6 sm:p-8 shadow-2xl;
-  
+
   .auth-title {
-    @apply text-2xl sm:text-[28px] font-medium text-slate-900 text-center mb-6;
+    @apply text-2xl sm:text-[20px] font-medium text-slate-900 text-center mb-6;
   }
 
   .auth-subtitle {
@@ -27,21 +27,21 @@
 
   .divider {
     @apply flex items-center gap-4 my-6;
-    
+
     hr {
       @apply flex-1 border-slate-200;
     }
-    
+
     span {
       @apply text-sm text-slate-500 font-medium;
     }
   }
-  
+
   .form-group {
     @apply mb-5;
-    
+
     .input-field {
-      @apply w-full border border-slate-300 rounded-lg px-4 py-3 text-base text-slate-900 
+      @apply w-full border border-slate-300 rounded-lg px-4 py-2 text-sm text-slate-900 
              placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 
              focus:border-blue-500 transition-all;
     }
@@ -49,35 +49,35 @@
 
   .checkbox-group {
     @apply space-y-3 mb-6;
-    
+
     .checkbox-item {
       @apply flex items-start gap-3;
-      
+
       input[type="checkbox"] {
-        @apply mt-0.5 sm:mt-1 w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer shrink-0;
+        @apply mt-0.5 sm:mt-1 w-4 h-4 rounded border-slate-400 text-blue-600 focus:ring-blue-500 cursor-pointer shrink-0;
       }
-      
+
       span {
-        @apply text-[13px] sm:text-sm text-slate-600 leading-snug cursor-pointer select-none;
+        @apply text-sm sm:text-sm text-slate-400 leading-none cursor-pointer select-none;
       }
     }
   }
 
   .recaptcha-mock {
     @apply flex items-center justify-between border border-slate-200 bg-slate-50 rounded-lg p-3 sm:p-4 mb-6;
-    
+
     .recaptcha-left {
       @apply flex items-center gap-3;
-      
-      input[type="checkbox"] {
+
+      input[type='checkbox'] {
         @apply w-6 h-6 rounded-sm border-2 border-slate-300 bg-white text-green-500 focus:ring-green-500 cursor-pointer transition-all shrink-0;
       }
-      
+
       span {
         @apply text-[13px] sm:text-sm font-medium text-slate-800 leading-tight;
       }
     }
-    
+
     .recaptcha-right {
       @apply flex flex-col items-center shrink-0 ml-2;
       img {
@@ -90,20 +90,20 @@
   }
 
   .btn-submit {
-    @apply w-full rounded-lg py-3.5 text-base font-bold text-center transition-all duration-300 uppercase;
-    
+    @apply w-full rounded-lg py-3.5 text-base font-bold text-center transition-all duration-300;
+
     &.disabled {
-      @apply bg-slate-200 text-slate-400 cursor-not-allowed;
+      @apply bg-slate-300 text-white/80 cursor-not-allowed;
     }
-    
+
     &.active {
       @apply bg-[#BDF300] text-slate-900 hover:bg-[#aee000] hover:shadow-lg shadow-sm cursor-pointer;
     }
   }
 
   .terms-note {
-    @apply text-center text-[12px] sm:text-[13px] text-slate-500 mt-6 leading-relaxed;
-    
+    @apply text-center text-sm sm:text-sm text-slate-400 mt-6 leading-relaxed;
+
     a {
       @apply text-blue-600 hover:underline;
     }

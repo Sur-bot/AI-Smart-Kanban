@@ -15,15 +15,12 @@ import { SocialLoginComponent } from '../components/social-login/social-login.co
   styleUrl: './register.scss',
 })
 export class RegisterComponent {
-  // Form State
   email = signal('');
   agreeUpdates = signal(false);
   agreeTraining = signal(false);
   recaptchaVerified = signal(false);
 
-  // Form logic
   isFormValid() {
-    // Enabled if email has content OR any checkbox is checked
     return this.email().trim().length > 0 || this.agreeUpdates() || this.agreeTraining() || this.recaptchaVerified();
   }
 
