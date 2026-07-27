@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard, guestGuard } from './core/auth/auth.guard';
 
 export const routes: Routes = [
   // 1. Landing Page (Trang chủ)
@@ -20,6 +21,7 @@ export const routes: Routes = [
     path: 'app',
     loadComponent: () => import('./layout/main-layout/main-layout').then(m => m.MainLayoutComponent),
     title: 'AI Smart Kanban',
+    canActivate: [authGuard],
     children: [
       // Kanban Board - Tác vụ và Dự án
       {
@@ -72,14 +74,16 @@ export const routes: Routes = [
   {
     path: 'register',
     loadComponent: () => import('./features/auth/register/register.component').then(m => m.RegisterComponent),
-    title: 'Tạo tài khoản - Digit24'
+    title: 'Tạo tài khoản - Digit24',
+    canActivate: [guestGuard]
   },
 
   // Tuyến đường cho trang Đăng nhập (Login - Giao diện độc lập)
   {
     path: 'login',
     loadComponent: () => import('./features/auth/login/login.component').then(m => m.LoginComponent),
-    title: 'Đăng nhập - Digit24'
+    title: 'Đăng nhập - Digit24',
+    canActivate: [guestGuard]
   },
 
   // 3. Trang 404 - Lỗi không tìm thấy (Phải đặt ở cuối cùng)

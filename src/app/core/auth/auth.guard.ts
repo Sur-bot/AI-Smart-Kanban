@@ -1,0 +1,38 @@
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { AuthService } from './auth.service';
+import { map, take } from 'rxjs/operators';
+
+export const authGuard: CanActivateFn = (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  return authService.isAuthenticated$.pipe(
+    take(1),
+    map(isAuthenticated => {
+      if (isAuthenticated) {
+        return true;
+      }
+      
+      // Redirect to login if not authenticated
+      return router.createUrlTree(['/login']);
+    })
+  );
+};
+
+export const guestGuard: CanActivateFn = (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  return authService.isAuthenticated$.pipe(
+    take(1),
+    map(isAuthenticated => {
+      if (!isAuthenticated) {
+        return true;
+      }
+      
+      // Redirect to dashboard if already authenticated
+      return router.createUrlTree(['/dashboard']); // Assume dashboard is the main page
+    })
+  );
+};
