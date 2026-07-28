@@ -1,0 +1,30 @@
+<div class="verify-container">
+  <div class="verify-card">
+    <!-- Trạng thái Đang tải -->
+    <div *ngIf="status() === 'loading'" class="state-loading">
+      <div class="spinner"></div>
+      <h2 class="title">{{ 'AUTH_MSG.VERIFYING' | translate }}</h2>
+      <p class="desc">{{ message() }}</p>
+    </div>
+
+    <!-- Trạng thái Thành công -->
+    <div *ngIf="status() === 'success'" class="state-success">
+      <div class="icon-circle">
+        <mat-icon fontSet="material-icons-outlined">check_circle</mat-icon>
+      </div>
+      <h2 class="title">{{ 'AUTH_MSG.VERIFY_SUCCESS' | translate }}</h2>
+      <p class="desc">{{ message() }}</p>
+      <p class="sub-desc">{{ 'AUTH_MSG.PLEASE_LOGIN' | translate }}</p>
+    </div>
+
+    <!-- Trạng thái Lỗi -->
+    <div *ngIf="status() === 'error'" class="state-error">
+      <div class="icon-circle">
+        <mat-icon fontSet="material-icons-outlined">error_outline</mat-icon>
+      </div>
+      <h2 class="title">{{ 'AUTH_MSG.VERIFY_ERROR' | translate }}</h2>
+      <p class="desc">{{ message() }}</p>
+      <button class="back-btn" routerLink="/login">{{ 'AUTH_MSG.GOTO_LOGIN' | translate }}</button>
+    </div>
+  </div>
+</div>

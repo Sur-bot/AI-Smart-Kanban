@@ -1,56 +1,87 @@
+<!-- Toast Message -->
+<div *ngIf="showToast()" 
+     class="fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg flex items-center gap-3 transition-all duration-300 animate-slide-in-right"
+     [ngClass]="toastType() === 'success' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'">
+  <mat-icon [fontSet]="'material-icons-outlined'" class="text-xl">
+    {{ toastType() === 'success' ? 'check_circle' : 'error_outline' }}
+  </mat-icon>
+  <span class="font-medium text-sm">{{ toastMessage() }}</span>
+</div>
+
 <app-auth-layout headerLinkText="LOGIN.REGISTER" headerLinkRoute="/register">
   <div class="login-container">
-    
-    <!-- White Card (Main Login Form) -->
     <section class="login-card main-card">
       <h1 class="auth-title">{{ 'LOGIN.TITLE' | translate }}</h1>
       <p class="auth-subtitle">{{ 'LOGIN.INPUT_LABEL' | translate }}</p>
-
-      <form (submit)="onSubmit($event)">
+      
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit($event)">
+        <!-- Email Field -->
         <div class="form-group">
-          <input 
-            type="text" 
-            [placeholder]="'LOGIN.INPUT_PLACEHOLDER' | translate" 
+          <label class="input-label">{{ 'LOGIN.INPUT_LABEL' | translate }}</label>
+          <input
+            type="email"
+            [placeholder]="'LOGIN.INPUT_PLACEHOLDER' | translate"
             class="input-field"
-            [ngModel]="email()"
-            (ngModelChange)="email.set($event)"
-            name="email">
+            [class.border-red-400]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+            formControlName="email"
+          />
+          <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="error-text">
+            <span *ngIf="loginForm.get('email')?.hasError('required')">Email không được để trống</span>
+            <span *ngIf="loginForm.get('email')?.hasError('email')">Email không đúng định dạng</span>
+          </div>
         </div>
 
-        <button 
-          type="submit" 
-          class="btn-submit"
-          [class.active]="isFormValid()"
-          [class.disabled]="!isFormValid()"
-          [disabled]="!isFormValid()">
-          {{ 'LOGIN.CONTINUE' | translate }}
+        <!-- Password Field -->
+        <div class="form-group relative mt-4">
+          <label class="input-label">Mật khẩu</label>
+          <input
+            [type]="showPassword() ? 'text' : 'password'"
+            placeholder="Nhập mật khẩu"
+            class="input-field pr-10"
+            [class.border-red-400]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+            formControlName="password"
+          />
+          <button type="button" class="absolute right-3 top-9 text-slate-400 hover:text-slate-600 transition-colors" (click)="togglePasswordVisibility()">
+            <mat-icon [fontSet]="'material-icons-outlined'" class="text-[20px]">{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error-text">
+            <span *ngIf="loginForm.get('password')?.hasError('required')">Mật khẩu không được để trống</span>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="btn-submit mt-6 flex items-center justify-center gap-2"
+          [class.active]="isFormValid && !isLoading()"
+          [class.disabled]="!isFormValid || isLoading()"
+          [disabled]="!isFormValid || isLoading()"
+        >
+          <svg *ngIf="isLoading()" class="animate-spin h-5 w-5 text-slate-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span *ngIf="!isLoading()">{{ 'LOGIN.CONTINUE' | translate }}</span>
+          <span *ngIf="isLoading()">ĐANG ĐĂNG NHẬP...</span>
         </button>
+
+        <div class="divider">
+          <hr />
+          <span>{{ 'LOGIN.OR' | translate }}</span>
+          <hr />
+        </div>
+
+        <app-social-login></app-social-login>
+
+        <div class="qr-login">
+          <div class="qr-icon-wrapper">
+            <mat-icon>qr_code_scanner</mat-icon>
+          </div>
+          <div class="qr-content">
+            <h3>{{ 'LOGIN.QR_TITLE' | translate }}</h3>
+            <p>{{ 'LOGIN.QR_DESC' | translate }}</p>
+          </div>
+        </div>
       </form>
-
-      <div class="divider">
-        <hr>
-        <span>{{ 'LOGIN.OR' | translate }}</span>
-        <hr>
-      </div>
-
-      <app-social-login></app-social-login>
     </section>
-
-    <!-- Gray Card (QR Login) -->
-    <section class="login-card qr-card">
-      <h2 class="qr-title">{{ 'LOGIN.QR_TITLE' | translate }}</h2>
-      <p class="qr-desc">{{ 'LOGIN.QR_DESC' | translate }}</p>
-      
-      <div class="qr-image-container">
-        <!-- Placeholder QR code -->
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://digit24.vn" alt="QR Code" class="qr-code">
-      </div>
-
-      <div class="app-badges">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="App Store" class="badge">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" class="badge">
-      </div>
-    </section>
-
   </div>
 </app-auth-layout>

@@ -1,3 +1,13 @@
+<!-- Toast Message -->
+<div *ngIf="showToast()" 
+     class="fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg flex items-center gap-3 transition-all duration-300 animate-slide-in-right"
+     [ngClass]="toastType() === 'success' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'">
+  <mat-icon [fontSet]="'material-icons-outlined'" class="text-xl">
+    {{ toastType() === 'success' ? 'check_circle' : 'error_outline' }}
+  </mat-icon>
+  <span class="font-medium text-sm">{{ toastMessage() }}</span>
+</div>
+
 <app-auth-layout headerLinkText="REGISTER.LOGIN" headerLinkRoute="/login">
   <div class="auth-card-container">
     <section class="auth-card">
@@ -12,47 +22,55 @@
         <hr />
       </div>
 
-      <form (submit)="onSubmit($event)">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit($event)">
+        <!-- Email Field -->
         <div class="form-group">
           <input
-            type="text"
+            type="email"
             [placeholder]="'REGISTER.EMAIL_PLACEHOLDER' | translate"
             class="input-field"
-            [ngModel]="email()"
-            (ngModelChange)="email.set($event)"
-            name="email"
+            [class.border-red-400]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+            formControlName="email"
           />
+          <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="error-text">
+            <span *ngIf="registerForm.get('email')?.hasError('required')">Email không được để trống</span>
+            <span *ngIf="registerForm.get('email')?.hasError('email')">Email không đúng định dạng</span>
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group relative">
+          <input
+            [type]="showPassword() ? 'text' : 'password'"
+            placeholder="Mật khẩu"
+            class="input-field pr-10"
+            [class.border-red-400]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+            formControlName="password"
+          />
+          <button type="button" class="absolute right-3 top-2 text-slate-400 hover:text-slate-600 transition-colors" (click)="togglePasswordVisibility()">
+            <mat-icon [fontSet]="'material-icons-outlined'" class="text-[20px]">{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="error-text">
+            <span *ngIf="registerForm.get('password')?.hasError('required')">Mật khẩu không được để trống</span>
+            <span *ngIf="registerForm.get('password')?.hasError('minlength')">Mật khẩu phải dài ít nhất 8 ký tự</span>
+            <span *ngIf="registerForm.get('password')?.hasError('pattern')">Mật khẩu phải chứa ít nhất 1 chữ hoa, 1 chữ thường và 1 số</span>
+          </div>
         </div>
 
         <div class="checkbox-group">
           <label class="checkbox-item">
-            <input
-              type="checkbox"
-              [ngModel]="agreeUpdates()"
-              (ngModelChange)="agreeUpdates.set($event)"
-              name="agreeUpdates"
-            />
+            <input type="checkbox" formControlName="agreeUpdates" />
             <span>{{ 'REGISTER.AGREE_UPDATES' | translate }}</span>
           </label>
           <label class="checkbox-item">
-            <input
-              type="checkbox"
-              [ngModel]="agreeTraining()"
-              (ngModelChange)="agreeTraining.set($event)"
-              name="agreeTraining"
-            />
+            <input type="checkbox" formControlName="agreeTraining" />
             <span>{{ 'REGISTER.AGREE_TRAINING' | translate }}</span>
           </label>
         </div>
 
-        <div class="recaptcha-mock">
+        <div class="recaptcha-mock" [class.border-red-400]="registerForm.get('recaptchaVerified')?.invalid && registerForm.get('recaptchaVerified')?.touched">
           <label class="recaptcha-left">
-            <input
-              type="checkbox"
-              [ngModel]="recaptchaVerified()"
-              (ngModelChange)="recaptchaVerified.set($event)"
-              name="recaptchaVerified"
-            />
+            <input type="checkbox" formControlName="recaptchaVerified" />
             <span>{{ 'REGISTER.RECAPTCHA' | translate }}</span>
           </label>
           <div class="recaptcha-right">
@@ -60,23 +78,30 @@
             <span>Privacy - Terms</span>
           </div>
         </div>
+        <div *ngIf="registerForm.get('recaptchaVerified')?.invalid && registerForm.get('recaptchaVerified')?.touched" class="error-text mt-[-1rem] mb-4">
+          <span *ngIf="registerForm.get('recaptchaVerified')?.hasError('required')">Vui lòng xác minh reCAPTCHA</span>
+        </div>
 
         <button
           type="submit"
-          class="btn-submit"
-          [class.active]="isFormValid()"
-          [class.disabled]="!isFormValid()"
-          [disabled]="!isFormValid()"
+          class="btn-submit flex items-center justify-center gap-2"
+          [class.active]="isFormValid && !isLoading()"
+          [class.disabled]="!isFormValid || isLoading()"
+          [disabled]="!isFormValid || isLoading()"
         >
-          {{ 'REGISTER.SUBMIT' | translate }}
+          <svg *ngIf="isLoading()" class="animate-spin h-5 w-5 text-slate-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span *ngIf="!isLoading()">{{ 'REGISTER.SUBMIT' | translate }}</span>
+          <span *ngIf="isLoading()">ĐANG XỬ LÝ...</span>
         </button>
 
         <p class="terms-note">
           {{ 'REGISTER.TERMS_PREFIX' | translate }}
           <a routerLink="/terms">{{ 'REGISTER.TERMS_OF_SERVICE' | translate }}</a>
           {{ 'REGISTER.AND' | translate }}
-          <a routerLink="/privacy">{{ 'REGISTER.PRIVACY_POLICY' | translate }}</a
-          >.
+          <a routerLink="/privacy">{{ 'REGISTER.PRIVACY_POLICY' | translate }}</a>.
         </p>
       </form>
     </section>
