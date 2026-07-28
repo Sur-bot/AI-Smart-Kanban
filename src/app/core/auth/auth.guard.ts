@@ -32,7 +32,7 @@ export const guestGuard: CanActivateFn = (route, state) => {
       }
       
       // Redirect to dashboard if already authenticated
-      return router.createUrlTree(['/dashboard']); // Assume dashboard is the main page
+      return router.createUrlTree(['/app/kanban']);
     })
   );
 };
