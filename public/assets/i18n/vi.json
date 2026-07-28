@@ -156,5 +156,19 @@
       "CARD_ASSIGNEE": "Người được phân công",
       "CARD_DEADLINE": "Hạn chót"
     }
+  },
+  "AUTH_MSG": {
+    "LOGIN_SUCCESS": "Đăng nhập thành công!",
+    "LOGIN_ERROR": "Đã có lỗi xảy ra khi đăng nhập",
+    "REGISTER_SUCCESS": "Đăng ký thành công! Vui lòng đăng nhập.",
+    "REGISTER_ERROR": "Đã có lỗi xảy ra khi đăng ký",
+    "VERIFY_SUCCESS": "Xác minh thành công!",
+    "VERIFY_SUCCESS_MSG": "Địa chỉ email của bạn đã được xác minh thành công.",
+    "VERIFY_ERROR": "Xác minh thất bại",
+    "VERIFY_ERROR_MSG": "Liên kết xác minh không hợp lệ hoặc đã hết hạn.",
+    "VERIFYING": "Đang xác minh...",
+    "PLEASE_LOGIN": "Vui lòng đăng nhập để tiếp tục.",
+    "GOTO_LOGIN": "Đến trang Đăng nhập",
+    "BACK_TO_HOME": "Về trang chủ"
   }
 }

@@ -1,11 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
+import { RouterModule, Router } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthLayoutComponent } from '../components/auth-layout/auth-layout.component';
 import { SocialLoginComponent } from '../components/social-login/social-login.component';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -24,6 +25,9 @@ import { SocialLoginComponent } from '../components/social-login/social-login.co
 })
 export class RegisterComponent {
   private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private translate = inject(TranslateService);
   
   registerForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -60,14 +64,29 @@ export class RegisterComponent {
 
     this.isLoading.set(true);
 
-    // Simulate API Call
-    setTimeout(() => {
-      this.isLoading.set(false);
-      this.toastMessage.set('Đăng ký thành công! Vui lòng kiểm tra email.');
-      this.toastType.set('success');
-      this.showToast.set(true);
-      
-      setTimeout(() => this.showToast.set(false), 3000);
-    }, 1500);
+    const { email, password } = this.registerForm.value;
+
+    this.authService.register({ email, password }).subscribe({
+      next: (res) => {
+        this.isLoading.set(false);
+        this.toastMessage.set(res.message || this.translate.instant('AUTH_MSG.REGISTER_SUCCESS'));
+        this.toastType.set('success');
+        this.showToast.set(true);
+        
+        setTimeout(() => {
+          this.showToast.set(false);
+          this.router.navigate(['/login']);
+        }, 3000);
+      },
+      error: (err) => {
+        this.isLoading.set(false);
+        const errorMsg = err.error?.error || this.translate.instant('AUTH_MSG.REGISTER_ERROR');
+        this.toastMessage.set(errorMsg);
+        this.toastType.set('error');
+        this.showToast.set(true);
+
+        setTimeout(() => this.showToast.set(false), 3000);
+      }
+    });
   }
 }

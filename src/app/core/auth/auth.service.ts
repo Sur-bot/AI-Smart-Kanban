@@ -56,6 +56,10 @@ export class AuthService {
     return this.http.post<any>(`${environment.apiUrl}/auth/register`, userData);
   }
 
+  verifyEmail(token: string): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/auth/verify-email?token=${token}`);
+  }
+
   /**
    * Logout user and clear cookies/state
    */

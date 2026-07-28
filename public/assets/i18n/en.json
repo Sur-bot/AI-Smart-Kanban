@@ -156,5 +156,19 @@
       "CARD_ASSIGNEE": "Assignee",
       "CARD_DEADLINE": "Deadline"
     }
+  },
+  "AUTH_MSG": {
+    "LOGIN_SUCCESS": "Login successful!",
+    "LOGIN_ERROR": "An error occurred during login",
+    "REGISTER_SUCCESS": "Registration successful! Please log in.",
+    "REGISTER_ERROR": "An error occurred during registration",
+    "VERIFY_SUCCESS": "Verification successful!",
+    "VERIFY_SUCCESS_MSG": "Your email address has been successfully verified.",
+    "VERIFY_ERROR": "Verification failed",
+    "VERIFY_ERROR_MSG": "The verification link is invalid or has expired.",
+    "VERIFYING": "Verifying...",
+    "PLEASE_LOGIN": "Please log in to continue.",
+    "GOTO_LOGIN": "Go to Login",
+    "BACK_TO_HOME": "Back to Home"
   }
 }
