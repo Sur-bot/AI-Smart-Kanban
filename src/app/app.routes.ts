@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard, guestGuard } from './core/auth/auth.guard';
 
 export const routes: Routes = [
   // 1. Landing Page (Trang chủ)
@@ -20,6 +21,7 @@ export const routes: Routes = [
     path: 'app',
     loadComponent: () => import('./layout/main-layout/main-layout').then(m => m.MainLayoutComponent),
     title: 'AI Smart Kanban',
+    canActivate: [authGuard],
     children: [
       // Kanban Board - Tác vụ và Dự án
       {
@@ -41,24 +43,6 @@ export const routes: Routes = [
         title: 'Dự án - AI Smart Kanban'
       },
 
-      // Các trang khác (CRM, Booking, Inventory, Marketing, etc.)
-      // Để mở rộng sau này:
-      // {
-      //   path: 'crm',
-      //   loadComponent: () => import('./features/crm/crm.ts').then(m => m.CrmComponent),
-      //   title: 'CRM - Quản lý khách hàng'
-      // },
-      // {
-      //   path: 'booking',
-      //   loadComponent: () => import('./features/booking/booking.ts').then(m => m.BookingComponent),
-      //   title: 'Đặt chỗ'
-      // },
-      // {
-      //   path: 'inventory',
-      //   loadComponent: () => import('./features/inventory/inventory.ts').then(m => m.InventoryComponent),
-      //   title: 'Quản lý kho hàng'
-      // },
-
       // Default route - Redirect từ '' sang 'kanban'
       {
         path: '',
@@ -72,20 +56,25 @@ export const routes: Routes = [
   {
     path: 'register',
     loadComponent: () => import('./features/auth/register/register.component').then(m => m.RegisterComponent),
-    title: 'Tạo tài khoản - Digit24'
+    title: 'Tạo tài khoản - Digit24',
+    canActivate: [guestGuard]
   },
 
   // Tuyến đường cho trang Đăng nhập (Login - Giao diện độc lập)
   {
     path: 'login',
     loadComponent: () => import('./features/auth/login/login.component').then(m => m.LoginComponent),
-    title: 'Đăng nhập - Digit24'
+    title: 'Đăng nhập - Digit24',
+    canActivate: [guestGuard]
+  },
+
+  // Tuyến đường Xác minh Email
+  {
+    path: 'verify-email',
+    loadComponent: () => import('./features/auth/verify-email/verify-email.component').then(m => m.VerifyEmailComponent),
+    title: 'Xác minh Email - Digit24'
   },
 
   // 3. Trang 404 - Lỗi không tìm thấy (Phải đặt ở cuối cùng)
-  // {
-  //   path: '**',
-  //   loadComponent: () => import('./shared/components/not-found/not-found.ts').then(m => m.NotFoundComponent),
-  //   title: '404 - Không tìm thấy trang'
-  // }
+  // Tính năng 404 sẽ được mở khi Shared Module hoàn thiện
 ];

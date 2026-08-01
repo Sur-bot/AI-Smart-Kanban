@@ -9,6 +9,10 @@
   }
 }
 
+.animate-slide-in-right {
+  animation: slideInFromRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 .login-container {
   @apply relative z-10 w-full px-4 sm:px-0 lg:ml-auto lg:mr-[10%] xl:mr-[15%] mx-auto flex flex-col lg:flex-row items-center justify-center lg:justify-end gap-0;
   animation: slideInFromRight 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -32,6 +36,10 @@
       @apply w-full border border-slate-300 rounded-lg px-4 py-3 text-base text-slate-900 
              placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 
              focus:border-blue-500 transition-all;
+    }
+
+    .error-text {
+      @apply text-red-500 text-xs mt-1 font-medium flex flex-col;
     }
   }
 
