@@ -10,14 +10,16 @@
 
 /* ===== Sidebar Container ===== */
 .sidebar-container {
-  @apply w-[260px] h-full flex flex-col text-white font-['Inter',sans-serif] bg-[#2a3c53] transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] overflow-hidden;
+  @apply w-[260px] h-full flex flex-col text-white font-['Inter',sans-serif] bg-black/20 backdrop-blur-md transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] overflow-hidden;
 
   &.collapsed {
-    @apply w-[68px] bg-white/10 backdrop-blur-md;
+    @apply w-[68px];
   }
 
   &.hover-expanded {
     @apply w-[260px] absolute top-0 left-0 h-screen shadow-[8px_0_40px_rgba(0,0,0,0.5),2px_0_12px_rgba(0,0,0,0.25)] z-50;
+    background-color: #16273C !important;
+    backdrop-filter: none !important;
   }
 }
 
@@ -102,6 +104,16 @@
   &.submenu-arrow-expanded {
     @apply rotate-180 opacity-70;
   }
+}
+
+/* ===== Badge COMING SOON ===== */
+.coming-soon-badge {
+  @apply ml-auto text-[8.5px] font-bold tracking-wider uppercase px-2 py-[3px] rounded-md shrink-0;
+  background: linear-gradient(135deg, rgba(255,140,114,0.15) 0%, rgba(229,106,179,0.15) 100%);
+  color: #ffb8d2;
+  border: 1px solid rgba(229,106,179,0.25);
+  box-shadow: 0 0 10px rgba(229,106,179,0.1);
+  transition: opacity 0.3s ease;
 }
 
 /* ===== Badge ===== */

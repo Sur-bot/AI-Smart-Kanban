@@ -21,20 +21,20 @@ export const routes: Routes = [
     path: 'app',
     loadComponent: () => import('./layout/main-layout/main-layout').then(m => m.MainLayoutComponent),
     title: 'AI Smart Kanban',
-    canActivate: [authGuard],
+    // canActivate: [authGuard], // TODO: Tạm tắt để vào thẳng Kanban
     children: [
-      // Kanban Board - Tác vụ và Dự án
+      // Trang Tác vụ (Tasks Page) - Mặc định cho kanban
       {
         path: 'kanban',
-        loadComponent: () => import('./features/kanban/components/kanban-board/kanban-board').then(m => m.KanbanBoardComponent),
-        title: 'Bảng Kanban - Tác vụ và Dự án'
-      },
-
-      // Trang Tác vụ (Tasks Page)
-      {
-        path: 'kanban/tasks',
         loadComponent: () => import('./features/kanban/components/tasks-page/tasks-page').then(m => m.TasksPageComponent),
         title: 'Tác vụ của tôi - AI Smart Kanban'
+      },
+
+      // Redirect kanban/tasks cũ về kanban
+      {
+        path: 'kanban/tasks',
+        redirectTo: 'kanban',
+        pathMatch: 'full'
       },
 
       {

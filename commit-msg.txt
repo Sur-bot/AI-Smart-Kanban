@@ -1,0 +1,6 @@
+feat(theme): thêm tính năng thay đổi hình nền chủ đề
+
+- Tạo ThemeService để quản lý hình nền động và tính năng xem trước (live preview).
+- Thêm giao diện ThemeModal để người dùng chọn hình nền abstract với hiệu ứng viền bo (hover/select).
+- Cập nhật Sidebar UI: Kính mờ (glassmorphic) khi ghim và nền đặc (solid) khi rê chuột.
+- Tinh chỉnh các khoảng cách padding và thanh cuộn ẩn cho popup chủ đề.
