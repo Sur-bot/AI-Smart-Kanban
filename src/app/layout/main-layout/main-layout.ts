@@ -7,6 +7,7 @@ import { RouterOutlet } from '@angular/router';
 import { RightBarComponent } from '../right-bar/right-bar';
 import { RightBarPopupComponent } from '../right-bar/components/right-bar-popup/right-bar-popup';
 import { RightBarService } from '../../core/services/right-bar.service';
+import { ThemeService } from '../../core/services/theme.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -17,6 +18,7 @@ import { RightBarService } from '../../core/services/right-bar.service';
 })
 export class MainLayoutComponent {
   private rightBarService = inject(RightBarService);
+  themeService = inject(ThemeService);
 
   sidebarCollapsed = true;
 

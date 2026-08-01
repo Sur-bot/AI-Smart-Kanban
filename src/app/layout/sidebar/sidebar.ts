@@ -5,6 +5,7 @@ import { BITRIX_SIDEBAR_MENU, MenuItem } from '../../core/config/menu.config';
 import { CollaborationComponent } from './collaboration/collaboration';
 import { ImageStorageBtnComponent } from './image-storage-btn/image-storage-btn';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sidebar',
@@ -17,7 +18,8 @@ import { MatIconModule } from '@angular/material/icon';
     RouterLinkActive,
     CollaborationComponent,
     ImageStorageBtnComponent,
-    MatIconModule
+    MatIconModule,
+    TranslatePipe
   ],
 })
 export class SidebarComponent {
@@ -34,6 +36,9 @@ export class SidebarComponent {
 
   /** Trạng thái hover mở rộng tạm thời khi sidebar đang thu gọn */
   isHoverExpanded = false;
+
+  /** Trạng thái thu gọn các mục không quan trọng (hiển thị tất cả) */
+  isOtherItemsHidden = true;
 
   /**
    * Host element width:
@@ -97,5 +102,22 @@ export class SidebarComponent {
 
   onToggle() {
     this.toggleSidebar.emit(this.isCollapsed);
+  }
+
+  /** Xử lý click vào menu item */
+  onMenuClick(item: MenuItem, event: Event) {
+    if (item.id === 'show-all') {
+      event.preventDefault();
+      this.isOtherItemsHidden = !this.isOtherItemsHidden;
+      return;
+    }
+    if (item.children && !item.isComingSoon) {
+      this.toggleSubMenu(item, event);
+    }
+  }
+
+  /** Xác định xem menu item có đang bị ẩn bởi nút Thu gọn không */
+  isHidden(item: MenuItem): boolean {
+    return this.isOtherItemsHidden && item.id !== 'tasks-projects' && item.id !== 'show-all' && item.id !== 'settings';
   }
 }

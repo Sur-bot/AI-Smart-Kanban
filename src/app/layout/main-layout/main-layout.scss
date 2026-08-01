@@ -13,7 +13,7 @@
     position: absolute;
     inset: 0;
     z-index: -2;
-    background-image: url('/assets/images/main-bg-5.png');
+    background-image: var(--bg-image);
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
