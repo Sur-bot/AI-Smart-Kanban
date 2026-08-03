@@ -6,7 +6,7 @@
       <div class="envelope-body">
         <div class="envelope-flap"></div>
         <div class="letter-content">
-          <mat-icon class="letter-icon">mail</mat-icon>
+          <mat-icon fontSet="material-icons-outlined" class="letter-icon">mail</mat-icon>
         </div>
       </div>
       <div class="ping-ring ring-1"></div>
@@ -29,19 +29,19 @@
     <ol class="verify-steps" aria-label="Các bước xác nhận">
       <li class="step" [class.step-done]="step() >= 1">
         <span class="step-icon">
-          <mat-icon>{{ step() >= 1 ? 'check_circle' : 'mail_outline' }}</mat-icon>
+          <mat-icon fontSet="material-icons-outlined">{{ step() >= 1 ? 'check_circle' : 'mail_outline' }}</mat-icon>
         </span>
         <span class="step-label">Email đã được gửi</span>
       </li>
       <li class="step" [class.step-active]="step() === 1">
         <span class="step-icon">
-          <mat-icon>{{ step() >= 2 ? 'check_circle' : 'touch_app' }}</mat-icon>
+          <mat-icon fontSet="material-icons-outlined">{{ step() >= 2 ? 'check_circle' : 'touch_app' }}</mat-icon>
         </span>
         <span class="step-label">Bạn nhấn xác nhận trong thư</span>
       </li>
       <li class="step" [class.step-active]="step() === 2">
         <span class="step-icon">
-          <mat-icon>rocket_launch</mat-icon>
+          <mat-icon fontSet="material-icons-outlined">rocket_launch</mat-icon>
         </span>
         <span class="step-label">Tự động vào ứng dụng</span>
       </li>
@@ -57,14 +57,14 @@
         (click)="resendEmail()"
         [attr.aria-label]="resendCooldown() > 0 ? 'Gửi lại sau ' + resendCooldown() + ' giây' : 'Gửi lại email xác nhận'"
       >
-        <mat-icon>{{ resending() ? 'hourglass_empty' : 'refresh' }}</mat-icon>
+        <mat-icon fontSet="material-icons-outlined">{{ resending() ? 'hourglass_empty' : 'refresh' }}</mat-icon>
         <span *ngIf="resendCooldown() > 0">Gửi lại sau {{ resendCooldown() }}s</span>
         <span *ngIf="resendCooldown() === 0 && !resending()">Gửi lại email</span>
         <span *ngIf="resending()">Đang gửi...</span>
       </button>
 
       <a routerLink="/register" class="back-link">
-        <mat-icon>arrow_back</mat-icon>
+        <mat-icon fontSet="material-icons-outlined">arrow_back</mat-icon>
         Dùng email khác
       </a>
     </footer>

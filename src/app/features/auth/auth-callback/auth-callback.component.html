@@ -4,7 +4,7 @@
   <div *ngIf="status() === 'loading'" class="callback-state loading-state">
     <div class="spinner-ring" aria-hidden="true">
       <div class="ring"></div>
-      <mat-icon class="spinner-icon">lock</mat-icon>
+      <mat-icon fontSet="material-icons-outlined" class="spinner-icon">lock</mat-icon>
     </div>
     <h1 id="callback-status" class="state-title">Đang xác nhận tài khoản...</h1>
     <p class="state-subtitle">Vui lòng chờ trong giây lát</p>
@@ -14,7 +14,7 @@
   <div *ngIf="status() === 'success'" class="callback-state success-state">
     <figure class="success-icon" aria-hidden="true">
       <div class="check-circle">
-        <mat-icon>check</mat-icon>
+        <mat-icon fontSet="material-icons-outlined">check</mat-icon>
       </div>
       <div class="confetti-ring" aria-hidden="true"></div>
     </figure>
@@ -37,7 +37,7 @@
   <div *ngIf="status() === 'error'" class="callback-state error-state">
     <figure class="error-icon" aria-hidden="true">
       <div class="error-circle">
-        <mat-icon>error_outline</mat-icon>
+        <mat-icon fontSet="material-icons-outlined">error_outline</mat-icon>
       </div>
     </figure>
 
@@ -46,11 +46,11 @@
 
     <nav class="error-actions" aria-label="Các lựa chọn tiếp theo">
       <a routerLink="/register" class="action-btn primary-btn">
-        <mat-icon>person_add</mat-icon>
+        <mat-icon fontSet="material-icons-outlined">person_add</mat-icon>
         Đăng ký lại
       </a>
       <a routerLink="/login" class="action-btn secondary-btn">
-        <mat-icon>login</mat-icon>
+        <mat-icon fontSet="material-icons-outlined">login</mat-icon>
         Đăng nhập
       </a>
     </nav>
