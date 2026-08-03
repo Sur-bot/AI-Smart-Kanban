@@ -1,11 +1,9 @@
-<!-- Toast Message -->
-<div *ngIf="showToast()" 
-     class="fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg flex items-center gap-3 transition-all duration-300 animate-slide-in-right"
-     [ngClass]="toastType() === 'success' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'">
-  <mat-icon [fontSet]="'material-icons-outlined'" class="text-xl">
-    {{ toastType() === 'success' ? 'check_circle' : 'error_outline' }}
-  </mat-icon>
-  <span class="font-medium text-sm">{{ toastMessage() }}</span>
+<!-- Error Banner -->
+<div *ngIf="errorMessage()" 
+     class="fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg flex items-center gap-3 transition-all duration-300"
+     style="background: #fef2f2; border: 1px solid #fecaca; color: #991b1b;" role="alert">
+  <mat-icon [fontSet]="'material-icons-outlined'" class="text-xl">error_outline</mat-icon>
+  <span class="font-medium text-sm">{{ errorMessage() }}</span>
 </div>
 
 <app-auth-layout headerLinkText="REGISTER.LOGIN" headerLinkRoute="/login">
