@@ -36,28 +36,20 @@ export class AuthLayoutComponent implements OnInit {
       this.currentLang.set(this.translate.currentLang() || 'vi');
     }
 
-    // 2. Preload ảnh nền kèm khoảng thời gian giả lập loading mượt mà (1.2s)
-    const MIN_LOADING_TIME = 1200;
-    const startTime = Date.now();
-
+    // 2. Preload ảnh nền cục bộ để đảm bảo giao diện hiển thị đồng nhất
     const bgImg = new Image();
     bgImg.src = '/assets/images/auth-bg.jpg';
-
-    const finishLoading = () => {
-      const elapsed = Date.now() - startTime;
-      const remainingTime = Math.max(0, MIN_LOADING_TIME - elapsed);
-      setTimeout(() => {
-        this.isLoaded.set(true);
-      }, remainingTime);
+    bgImg.onload = () => {
+      this.isLoaded.set(true);
+    };
+    bgImg.onerror = () => {
+      this.isLoaded.set(true);
     };
 
-    bgImg.onload = finishLoading;
-    bgImg.onerror = finishLoading;
-
-    // Timeout an toàn
+    // Timeout an toàn tối đa 600ms phòng trường hợp render chậm
     setTimeout(() => {
       this.isLoaded.set(true);
-    }, 2000);
+    }, 600);
   }
 
   toggleLangPopup(event: Event) {
