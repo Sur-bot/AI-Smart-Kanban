@@ -1,9 +1,10 @@
-import { Component, Input, Output, EventEmitter, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, HostListener, ViewChild, ElementRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Task } from '../../models/kanban.model';
+import { TaskDetail, TaskItem } from '../../../../core/models/task.model';
+import { TaskStore } from '../../../../core/state/task.store';
 
 @Component({
   selector: 'app-task-detail-modal',
@@ -13,7 +14,9 @@ import { Task } from '../../models/kanban.model';
   styleUrls: ['./task-detail-modal.scss']
 })
 export class TaskDetailModalComponent {
-  @Input() task: Task | null = null;
+  readonly taskStore = inject(TaskStore);
+
+  @Input() task: TaskDetail | TaskItem | any = null;
   @Output() close = new EventEmitter<void>();
 
   @ViewChild('modalContainer') containerRef!: ElementRef<HTMLDivElement>;

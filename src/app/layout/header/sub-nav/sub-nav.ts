@@ -31,14 +31,14 @@ export interface MoreDropdownItem {
 })
 export class SubNavComponent implements AfterViewInit, OnDestroy {
   menuList: NavItem[] = [
-    { id: 'tasks',      label: 'SUBNAV.TASKS',       route: '/kanban/tasks',      hasDropdown: false, overflowPriority: 8 },
-    { id: 'projects',   label: 'SUBNAV.PROJECTS',     route: '/kanban/projects',   hasDropdown: false, overflowPriority: 7 },
-    { id: 'stream',     label: 'SUBNAV.STREAM',       route: '/kanban/stream',     hasDropdown: false, overflowPriority: 6 },
-    { id: 'scrum',      label: 'SUBNAV.SCRUM',        route: '/kanban/scrum',      hasDropdown: false, overflowPriority: 5 },
-    { id: 'efficiency', label: 'SUBNAV.PERFORMANCE',  route: '/kanban/efficiency', hasDropdown: false, overflowPriority: 4, badge: '100%' },
+    { id: 'tasks',      label: 'SUBNAV.TASKS',       route: '/app/kanban',      hasDropdown: false, overflowPriority: 8 },
+    { id: 'projects',   label: 'SUBNAV.PROJECTS',     route: '/app/kanban/projects',   hasDropdown: false, overflowPriority: 7 },
+    { id: 'stream',     label: 'SUBNAV.STREAM',       route: '/app/kanban/stream',     hasDropdown: false, overflowPriority: 6 },
+    { id: 'scrum',      label: 'SUBNAV.SCRUM',        route: '/app/kanban/scrum',      hasDropdown: false, overflowPriority: 5 },
+    { id: 'efficiency', label: 'SUBNAV.PERFORMANCE',  route: '/app/kanban/efficiency', hasDropdown: false, overflowPriority: 4, badge: '100%' },
     { id: 'analytics',  label: 'SUBNAV.ANALYTICS',    route: '',                   hasDropdown: true,  overflowPriority: 3 },
-    { id: 'templates',  label: 'SUBNAV.TEMPLATES',    route: '/kanban/templates',  hasDropdown: false, overflowPriority: 2 },
-    { id: 'trash',      label: 'SUBNAV.RECYCLE_BIN',  route: '/kanban/trash',      hasDropdown: false, overflowPriority: 1 },
+    { id: 'templates',  label: 'SUBNAV.TEMPLATES',    route: '/app/kanban/templates',  hasDropdown: false, overflowPriority: 2 },
+    { id: 'trash',      label: 'SUBNAV.RECYCLE_BIN',  route: '/app/kanban/trash',      hasDropdown: false, overflowPriority: 1 },
     { id: 'more',       label: 'SUBNAV.MORE',         route: '',                   hasDropdown: true },
   ];
 

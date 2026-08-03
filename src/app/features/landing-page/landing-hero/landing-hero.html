@@ -31,7 +31,7 @@
             (click)="setActiveTab(i)"
             [attr.aria-selected]="activeTab() === i"
             role="tab">
-            <mat-icon class="text-[20px] w-5 h-5">{{ tab.icon }}</mat-icon>
+            <mat-icon fontSet="material-icons-outlined" class="text-[20px] w-5 h-5">{{ tab.icon }}</mat-icon>
             <span class="hidden sm:inline">{{ tab.label }}</span>
           </button>
         }
@@ -44,14 +44,14 @@
           <ul class="space-y-4">
             @for (feature of tabs[activeTab()].features; track feature) {
               <li class="flex items-start gap-3 text-slate-700 text-base sm:text-lg animate-slide-in">
-                <mat-icon class="text-green-500 mt-0.5 shrink-0 text-[20px] w-5 h-5">check_circle</mat-icon>
+                <mat-icon fontSet="material-icons-outlined" class="text-green-500 mt-0.5 shrink-0 text-[20px] w-5 h-5">check_circle</mat-icon>
                 <span>{{ feature }}</span>
               </li>
             }
           </ul>
 
           <div class="pt-8">
-            <a routerLink="/app" class="inline-flex items-center gap-2 px-8 py-4 text-base font-bold text-white bg-gradient-to-r from-green-500 to-emerald-600 rounded-full hover:shadow-xl hover:shadow-green-500/20 hover:-translate-y-1 transition-all duration-300 active:translate-y-0 uppercase tracking-wide" title="Bắt đầu sử dụng miễn phí">
+            <a routerLink="/register" class="inline-flex items-center gap-2 px-8 py-4 text-base font-bold text-white bg-gradient-to-r from-green-500 to-emerald-600 rounded-full hover:shadow-xl hover:shadow-green-500/20 hover:-translate-y-1 transition-all duration-300 active:translate-y-0 uppercase tracking-wide" title="Bắt đầu sử dụng miễn phí">
               Bắt đầu miễn phí
             </a>
           </div>
@@ -112,19 +112,19 @@
   <div class="bg-gradient-to-r from-blue-600 to-cyan-500 py-5 mt-8">
     <div class="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-16 text-white">
       <div class="flex items-center gap-3">
-        <mat-icon class="text-[28px] w-7 h-7 opacity-80">cloud_done</mat-icon>
+        <mat-icon fontSet="material-icons-outlined" class="text-[28px] w-7 h-7 opacity-80">cloud_done</mat-icon>
         <p class="text-lg font-bold">100% Miễn phí</p>
         <span class="text-white/70 text-sm">để bắt đầu</span>
       </div>
       <div class="hidden sm:block w-px h-8 bg-white/30"></div>
       <div class="flex items-center gap-3">
-        <mat-icon class="text-[28px] w-7 h-7 opacity-80">speed</mat-icon>
+        <mat-icon fontSet="material-icons-outlined" class="text-[28px] w-7 h-7 opacity-80">speed</mat-icon>
         <p class="text-lg font-bold">WebP 80%</p>
         <span class="text-white/70 text-sm">nén ảnh tự động</span>
       </div>
       <div class="hidden sm:block w-px h-8 bg-white/30"></div>
       <div class="flex items-center gap-3">
-        <mat-icon class="text-[28px] w-7 h-7 opacity-80">language</mat-icon>
+        <mat-icon fontSet="material-icons-outlined" class="text-[28px] w-7 h-7 opacity-80">language</mat-icon>
         <p class="text-lg font-bold">Angular 22</p>
         <span class="text-white/70 text-sm">framework mới nhất</span>
       </div>

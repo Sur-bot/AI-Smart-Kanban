@@ -82,7 +82,9 @@
   "SIDEBAR": {
     "HOME": "Trang chủ",
     "TASKS": "Tác vụ",
-    "PROJECTS": "Dự án"
+    "PROJECTS": "Dự án",
+    "COLLAPSE_ALL": "Thu gọn tất cả",
+    "EXPAND_ALL": "Mở rộng tất cả"
   },
   "TASKS_PAGE": {
     "TITLE": "Tác vụ của tôi",

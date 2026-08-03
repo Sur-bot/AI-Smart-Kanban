@@ -1,18 +1,11 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
 import { QuickTaskInputComponent } from './quick-task-input/quick-task-input';
 import { TaskCardComponent } from '../../../components/task-card/task-card';
-import { Task } from '../../../models/kanban.model';
-
-export interface DeadlineColumn {
-  id: string;
-  labelKey: string;
-  color: string;
-  count: number;
-  tasks: any[];
-}
+import { TaskStore } from '../../../../../core/state/task.store';
+import { TaskItem } from '../../../../../core/models/task.model';
 
 @Component({
   selector: 'app-deadline',
@@ -21,20 +14,21 @@ export interface DeadlineColumn {
   templateUrl: './deadline.html',
   styleUrls: ['./deadline.scss'],
 })
-export class DeadlineComponent {
-  @Output() taskSelected = new EventEmitter<Task>();
+export class DeadlineComponent implements OnInit {
+  readonly taskStore = inject(TaskStore);
 
-  columns: DeadlineColumn[] = [
-    { id: 'overdue',     labelKey: 'TASKS_PAGE.DEADLINE.COL_OVERDUE',     color: 'col-red',    count: 0, tasks: [] },
-    { id: 'today',       labelKey: 'TASKS_PAGE.DEADLINE.COL_TODAY',        color: 'col-green',  count: 0, tasks: [] },
-    { id: 'this-week',   labelKey: 'TASKS_PAGE.DEADLINE.COL_THIS_WEEK',    color: 'col-teal',   count: 0, tasks: [] },
-    { id: 'next-week',   labelKey: 'TASKS_PAGE.DEADLINE.COL_NEXT_WEEK',    color: 'col-cyan',   count: 0, tasks: [] },
-    { id: 'no-deadline', labelKey: 'TASKS_PAGE.DEADLINE.COL_NO_DEADLINE',  color: 'col-gray',   count: 0, tasks: [] },
-    { id: 'two-weeks',   labelKey: 'TASKS_PAGE.DEADLINE.COL_TWO_WEEKS',    color: 'col-blue',   count: 0, tasks: [] },
-    { id: 'completed',   labelKey: 'TASKS_PAGE.DEADLINE.COL_COMPLETED',    color: 'col-purple', count: 0, tasks: [] },
-  ];
+  @Output() taskSelected = new EventEmitter<TaskItem>();
 
   activeQuickTaskCol: string | null = null;
+
+  get columns() {
+    return this.taskStore.deadlineColumns();
+  }
+
+  ngOnInit() {
+    this.taskStore.loadProjects();
+    this.taskStore.loadTasks();
+  }
 
   isEmpty(): boolean {
     const noTasks = this.columns.every(col => col.tasks.length === 0);
@@ -51,27 +45,37 @@ export class DeadlineComponent {
   }
 
   onQuickTaskCreate(taskTitle: string, colId: string) {
-    const col = this.columns.find(c => c.id === colId);
-    if (col) {
-      const newTask = {
-        id: Math.random().toString(36).substring(2, 9),
-        title: taskTitle,
-        columnId: colId,
-        priority: 'medium',
-        timeLabel: '- 47 phút', // Mock data from image
-        timeColor: 'red',
-        badgeCount: 1,
-        assignees: ['user1', 'user2'], // Just placeholders to show avatars
-        stripeColor: col.color // Use the column's color
-      };
-      
-      col.tasks.push(newTask as any);
-      col.count = col.tasks.length;
+    if (!taskTitle || !taskTitle.trim()) return;
+
+    let dueDate: string | undefined = undefined;
+    const now = new Date();
+
+    if (colId === 'today') {
+      dueDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59).toISOString();
+    } else if (colId === 'this-week') {
+      const day = now.getDay();
+      const diffToFriday = (5 - day + 7) % 7 || 7;
+      const friday = new Date(now.getTime() + diffToFriday * 24 * 60 * 60 * 1000);
+      dueDate = new Date(friday.getFullYear(), friday.getMonth(), friday.getDate(), 18, 0, 0).toISOString();
+    } else if (colId === 'next-week') {
+      const nextWeek = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+      dueDate = new Date(nextWeek.getFullYear(), nextWeek.getMonth(), nextWeek.getDate(), 18, 0, 0).toISOString();
+    } else if (colId === 'two-weeks') {
+      const twoWeeks = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
+      dueDate = new Date(twoWeeks.getFullYear(), twoWeeks.getMonth(), twoWeeks.getDate(), 18, 0, 0).toISOString();
     }
+
+    this.taskStore.createTask({
+      title: taskTitle.trim(),
+      dueDate: dueDate,
+      priority: 'medium'
+    });
+
     this.closeQuickTask();
   }
 
-  onTaskClick(task: any) {
+  onTaskClick(task: TaskItem) {
+    this.taskStore.selectTask(task.id);
     this.taskSelected.emit(task);
   }
 }

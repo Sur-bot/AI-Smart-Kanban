@@ -1,53 +1,41 @@
-import { HttpInterceptorFn, HttpRequest, HttpHandlerFn, HttpEvent, HttpErrorResponse } from '@angular/common/http';
-import { inject } from '@angular/core';
-import { Observable, throwError, BehaviorSubject } from 'rxjs';
-import { catchError, switchMap, filter, take } from 'rxjs/operators';
+import { Injectable, inject } from '@angular/core';
+import { HttpRequest, HttpHandlerFn, HttpEvent, HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError, from, switchMap, catchError } from 'rxjs';
 import { AuthService } from './auth.service';
 
-let isRefreshing = false;
-const refreshTokenSubject = new BehaviorSubject<any>(null);
-
-export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> => {
+/**
+ * Interceptor tự động đính kèm Supabase Access Token vào mọi request tới Backend API.
+ * Không cần quản lý refresh token thủ công — Supabase tự xử lý.
+ */
+export const authInterceptor: HttpInterceptorFn = (
+  req: HttpRequest<unknown>,
+  next: HttpHandlerFn
+): Observable<HttpEvent<unknown>> => {
   const authService = inject(AuthService);
 
-  // Since we use HttpOnly cookies, we don't need to manually attach the token to headers.
-  // We just pass the request through, but catch 401 errors to trigger the refresh token flow.
+  // Chỉ đính kèm token vào request tới Backend API của chúng ta
+  const isApiRequest = req.url.includes('/api/');
+  if (!isApiRequest) {
+    return next(req);
+  }
 
-  return next(req).pipe(
+  const token = authService.accessToken();
+
+  if (!token) {
+    return next(req);
+  }
+
+  const authReq = req.clone({
+    setHeaders: { Authorization: `Bearer ${token}` }
+  });
+
+  return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 401 && !req.url.includes('/auth/login') && !req.url.includes('/auth/refresh')) {
-        return handle401Error(req, next, authService);
+      // Nếu 401: Supabase sẽ tự refresh token ở lần gọi tiếp theo qua onAuthStateChange
+      if (error.status === 401) {
+        console.warn('[AuthInterceptor] 401 — Token có thể đã hết hạn, Supabase sẽ tự refresh.');
       }
       return throwError(() => error);
     })
   );
 };
-
-function handle401Error(req: HttpRequest<any>, next: HttpHandlerFn, authService: AuthService): Observable<HttpEvent<any>> {
-  if (!isRefreshing) {
-    isRefreshing = true;
-    refreshTokenSubject.next(null);
-
-    return authService.refreshToken().pipe(
-      switchMap((tokenResponse: any) => {
-        isRefreshing = false;
-        // Notify any waiting requests that refresh is done
-        refreshTokenSubject.next(tokenResponse);
-        // Retry the original request
-        return next(req);
-      }),
-      catchError((error) => {
-        isRefreshing = false;
-        authService.logout().subscribe(); // Force logout if refresh fails
-        return throwError(() => error);
-      })
-    );
-  } else {
-    // Wait until refresh is done
-    return refreshTokenSubject.pipe(
-      filter(token => token !== null),
-      take(1),
-      switchMap(() => next(req))
-    );
-  }
-}

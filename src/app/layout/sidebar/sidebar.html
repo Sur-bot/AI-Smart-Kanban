@@ -6,10 +6,7 @@
     <!-- Header: Logo + Toggle Button -->
     <div class="sidebar-header">
       <button class="toggle-btn" (click)="onToggleCollapse()" title="Thu gọn / Mở rộng">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-          class="w-5 h-5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-        </svg>
+        <mat-icon fontSet="material-icons-outlined" class="w-5 h-5 text-[20px] !leading-[20px]">menu</mat-icon>
       </button>
       <div class="logo-area h-9 flex items-center" (click)="onToggleCollapse()">
         <span class="text-[15px] font-medium text-white/80 leading-none">Mở rộng menu</span>
@@ -19,45 +16,58 @@
     <!-- Menu Items -->
     <div class="sidebar-menu custom-scrollbar">
       <ul class="flex flex-col gap-[3px]">
-        <li *ngFor="let item of menuItems" class="shrink-0 transition-colors duration-300"
-            [ngClass]="{'bg-white/[0.04] rounded-[10px] overflow-hidden': item.hasSubMenu && isMenuExpanded(item.id)}">
-          <!-- Menu item chính -->
-          <a [routerLink]="item.route || null" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }"
-            class="menu-item group"
-            [class.expanded-parent]="item.hasSubMenu && isMenuExpanded(item.id)"
-            [ngClass]="item.isActive ? 'bg-white/20 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white'"
-            [title]="!isExpanded ? item.label : ''" (click)="item.children ? toggleSubMenu(item, $event) : null">
+        <li *ngFor="let item of menuItems" 
+            class="shrink-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] grid"
+            [ngClass]="{'bg-white/[0.04] rounded-[10px]': item.hasSubMenu && isMenuExpanded(item.id)}"
+            [ngStyle]="{
+               'grid-template-rows': isHidden(item) ? '0fr' : '1fr',
+               'opacity': isHidden(item) ? '0' : '1',
+               'margin-top': isHidden(item) ? '-3px' : '0'
+            }">
+          <div class="overflow-hidden min-h-0 flex flex-col">
+            <!-- Menu item chính -->
+            <a [routerLink]="item.isComingSoon || item.id === 'show-all' ? null : (item.route || null)" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }"
+              class="menu-item group"
+              [class.expanded-parent]="item.hasSubMenu && isMenuExpanded(item.id)"
+              [ngClass]="item.isComingSoon ? 'text-white/40 cursor-default' : (item.isActive ? 'bg-white/20 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white')"
+              [title]="!isExpanded || item.isComingSoon ? item.label : ''" (click)="onMenuClick(item, $event)">
 
-            <div class="menu-item-left">
-              <!-- Icon -->
-              <div class="menu-icon">
-                <mat-icon class="w-[20px] h-[20px] text-[20px] !leading-[20px]">{{ item.icon }}</mat-icon>
+              <div class="menu-item-left flex-1">
+                <!-- Icon -->
+                <div class="menu-icon" [class.opacity-50]="item.isComingSoon">
+                  <mat-icon fontSet="material-icons-outlined" class="w-[20px] h-[20px] text-[20px] !leading-[20px]">{{ item.id === 'show-all' ? (isOtherItemsHidden ? 'expand_more' : 'expand_less') : item.icon }}</mat-icon>
+                </div>
+
+                <!-- Label -->
+                <span class="menu-label" [ngClass]="item.isActive ? 'font-medium' : 'font-normal'" [class.opacity-50]="item.isComingSoon">
+                  {{ item.id === 'show-all' ? (isOtherItemsHidden ? ('SIDEBAR.EXPAND_ALL' | translate) : ('SIDEBAR.COLLAPSE_ALL' | translate)) : item.label }}
+                </span>
+
+                <!-- Badge COMING SOON -->
+                <span *ngIf="item.isComingSoon" class="coming-soon-badge" [class.opacity-0]="!isExpanded">
+                  COMING SOON
+                </span>
+
+                <!-- Badge -->
+                <span *ngIf="item.badge" class="menu-badge">
+                  {{ item.badge }}
+                </span>
               </div>
 
-              <!-- Label -->
-              <span class="menu-label" [ngClass]="item.isActive ? 'font-medium' : 'font-normal'">
-                {{ item.label }}
-              </span>
+              <!-- SubMenu Arrow -->
+              <mat-icon *ngIf="item.hasSubMenu && !item.isComingSoon" fontSet="material-icons-outlined"
+                class="submenu-arrow !text-[16px] !w-[16px] !h-[16px] !leading-[16px]"
+                [class.submenu-arrow-expanded]="isMenuExpanded(item.id)">
+                expand_more
+              </mat-icon>
 
-              <!-- Badge -->
-              <span *ngIf="item.badge" class="menu-badge">
-                {{ item.badge }}
-              </span>
-            </div>
+            </a>
 
-            <!-- SubMenu Arrow -->
-            <svg *ngIf="item.hasSubMenu" xmlns="http://www.w3.org/2000/svg" fill="none"
-              viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="submenu-arrow"
-              [class.submenu-arrow-expanded]="isMenuExpanded(item.id)">
-              <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-            </svg>
-
-          </a>
-
-          <!-- Sub Menu Items (Component con) -->
-          <app-collaboration *ngIf="item.children" [children]="item.children" [isOpen]="isMenuExpanded(item.id)"
-            [isExpanded]="isExpanded">
-          </app-collaboration>
+            <!-- Sub Menu Items (Component con) -->
+            <app-collaboration *ngIf="item.children" [children]="item.children" [isOpen]="isMenuExpanded(item.id)"
+              [isExpanded]="isExpanded">
+            </app-collaboration>
+          </div>
         </li>
       </ul>
     </div>
@@ -66,11 +76,7 @@
     <div class="sidebar-footer">
       <app-image-storage-btn [isCollapsed]="isCollapsed && !isHoverExpanded"></app-image-storage-btn>
       <button class="upgrade-btn" title="Nâng cấp kế hoạch">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-          class="w-5 h-5 shrink-0">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.452.15.148 0 0 0-.056-.312m2.814-.298a14.926 14.926 0 0 0-2.58-5.84m-2.58 5.84a14.927 14.927 0 0 1-5.84-2.58" />
-        </svg>
+        <mat-icon fontSet="material-icons-outlined" class="w-5 h-5 shrink-0 text-[20px] !leading-[20px]">rocket_launch</mat-icon>
         <span class="upgrade-text">Nâng cấp kế hoạch của bạn</span>
       </button>
     </div>

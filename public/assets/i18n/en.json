@@ -82,7 +82,9 @@
   "SIDEBAR": {
     "HOME": "Home",
     "TASKS": "Tasks",
-    "PROJECTS": "Projects"
+    "PROJECTS": "Projects",
+    "COLLAPSE_ALL": "Collapse all",
+    "EXPAND_ALL": "Expand all"
   },
   "TASKS_PAGE": {
     "TITLE": "My Tasks",

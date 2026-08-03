@@ -1,0 +1,21 @@
+/* Các style tùy chỉnh bổ sung cho Modal nếu Tailwind không đủ (ví dụ scrollbar) */
+.custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.25);
+  }
+}
+
+// Bỏ background của MatDialog mặc định để bo góc mượt hơn
+:host {
+  display: block;
+}

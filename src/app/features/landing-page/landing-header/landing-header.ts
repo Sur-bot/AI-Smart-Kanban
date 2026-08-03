@@ -3,9 +3,11 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
+import { MatIconModule } from '@angular/material/icon';
+
 @Component({
   selector: 'app-landing-header',
-  imports: [CommonModule, RouterModule, TranslatePipe],
+  imports: [CommonModule, RouterModule, TranslatePipe, MatIconModule],
   templateUrl: './landing-header.html',
   styleUrl: './landing-header.scss',
 })

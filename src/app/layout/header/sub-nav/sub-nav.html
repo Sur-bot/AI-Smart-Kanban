@@ -83,8 +83,7 @@
           [class.locked]="dropItem.locked">
 
           @if (dropItem.icon) {
-            <mat-icon class="!text-[16px] !w-4 !h-4 shrink-0"
-              [attr.fontSet]="dropItem.locked ? 'material-icons-outlined' : null"
+            <mat-icon fontSet="material-icons-outlined" class="!text-[16px] !w-4 !h-4 shrink-0"
               [class.text-blue-500]="dropItem.icon === 'settings'"
               [class.text-gray-400]="dropItem.locked">
               {{ dropItem.icon }}

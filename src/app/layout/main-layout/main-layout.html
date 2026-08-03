@@ -1,4 +1,4 @@
-<div class="main-layout">
+<div class="main-layout" [style.--bg-image]="'url(' + (themeService.currentTheme$ | async) + ')'">
   <div class="layout-body" [class.sidebar-open]="!sidebarCollapsed" [class.sidebar-closed]="sidebarCollapsed">
     <app-sidebar 
       [isOpen]="!sidebarCollapsed" 

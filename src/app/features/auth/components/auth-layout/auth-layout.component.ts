@@ -17,6 +17,7 @@ export class AuthLayoutComponent implements OnInit {
   headerLinkText = input.required<string>();
   headerLinkRoute = input.required<string>();
 
+  isLoaded = signal(false);
   isLangPopupOpen = signal(false);
   currentLang = signal('vi');
 
@@ -26,6 +27,7 @@ export class AuthLayoutComponent implements OnInit {
   ];
 
   ngOnInit() {
+    // 1. Khởi tạo ngôn ngữ
     const savedLang = localStorage.getItem('appLang');
     if (savedLang) {
       this.currentLang.set(savedLang);
@@ -33,6 +35,21 @@ export class AuthLayoutComponent implements OnInit {
     } else {
       this.currentLang.set(this.translate.currentLang() || 'vi');
     }
+
+    // 2. Preload ảnh nền cục bộ để đảm bảo giao diện hiển thị đồng nhất
+    const bgImg = new Image();
+    bgImg.src = '/assets/images/auth-bg.jpg';
+    bgImg.onload = () => {
+      this.isLoaded.set(true);
+    };
+    bgImg.onerror = () => {
+      this.isLoaded.set(true);
+    };
+
+    // Timeout an toàn tối đa 600ms phòng trường hợp render chậm
+    setTimeout(() => {
+      this.isLoaded.set(true);
+    }, 600);
   }
 
   toggleLangPopup(event: Event) {

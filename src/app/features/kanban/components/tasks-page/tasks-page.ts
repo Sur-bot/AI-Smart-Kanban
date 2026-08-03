@@ -1,12 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PageToolbarComponent } from '../../../../shared/components/page-layout/page-toolbar/page-toolbar';
 import { ViewFilterBarComponent, QuickFilter } from '../../../../shared/components/page-layout/view-filter-bar/view-filter-bar';
 import { DataTableComponent } from '../../../../shared/components/page-layout/data-table/data-table';
 import { DeadlineComponent } from './deadline/deadline';
 import { TaskDetailModalComponent } from '../task-detail-modal/task-detail-modal';
-import { TaskItem, TaskViewMode, ViewTab } from '../../../../shared/models/task-list.model';
-import { Task } from '../../models/kanban.model';
+import { TaskViewMode, ViewTab } from '../../../../shared/models/task-list.model';
+import { TaskItem } from '../../../../core/models/task.model';
+import { TaskStore } from '../../../../core/state/task.store';
 
 @Component({
   selector: 'app-tasks-page',
@@ -22,10 +23,11 @@ import { Task } from '../../models/kanban.model';
   templateUrl: './tasks-page.html',
   styleUrls: ['./tasks-page.scss'],
 })
-export class TasksPageComponent {
-  tasks: TaskItem[] = [];
-  activeView: TaskViewMode = 'list';
-  selectedTask: Task | null = null;
+export class TasksPageComponent implements OnInit {
+  readonly taskStore = inject(TaskStore);
+
+  activeView: TaskViewMode = 'deadline';
+  selectedTask: TaskItem | any = null;
 
   viewTabs: ViewTab[] = [
     { id: 'list', label: 'Danh sách' },
@@ -36,20 +38,31 @@ export class TasksPageComponent {
   ];
 
   quickFilters: QuickFilter[] = [
-    { id: 'conversations', label: 'Cuộc trò chuyện tác vụ', icon: 'chat', count: 3, isActive: false, rightBarFeatureId: 'task_chat' },
+    { id: 'conversations', label: 'Cuộc trò chuyện tác vụ', icon: 'chat', count: 0, isActive: false, rightBarFeatureId: 'task_chat' },
     { id: 'overdue', label: 'Quá hạn', icon: 'clock', count: 0, isActive: false },
-    { id: 'comments', label: 'Bình luận', icon: 'comment', count: 12, isActive: false },
+    { id: 'comments', label: 'Bình luận', icon: 'comment', count: 0, isActive: false },
   ];
+
+  get tasks() {
+    return this.taskStore.tasks() as any;
+  }
+
+  ngOnInit() {
+    this.taskStore.loadProjects();
+    this.taskStore.loadTasks();
+  }
 
   onViewChange(view: TaskViewMode) {
     this.activeView = view;
   }
 
-  openTaskDetail(task: Task) {
+  openTaskDetail(task: TaskItem) {
     this.selectedTask = task;
+    this.taskStore.selectTask(task.id);
   }
 
   closeTaskDetail() {
     this.selectedTask = null;
+    this.taskStore.clearSelectedTask();
   }
 }

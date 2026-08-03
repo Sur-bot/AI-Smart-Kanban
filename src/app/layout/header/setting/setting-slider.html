@@ -10,14 +10,7 @@
         <div class="setting-slider-header-content">
           <span class="domain-name">b24-efr2se.bitrix24.vn</span>
           <button class="edit-btn" [title]="'SETTINGS.EDIT_DOMAIN' | translate">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
+            <mat-icon fontSet="material-icons-outlined" class="!w-4 !h-4 !text-[16px] !leading-[16px]">edit</mat-icon>
           </button>
         </div>
       </div>
@@ -27,7 +20,7 @@
         <div class="setting-card group">
           <div class="setting-card-left">
             <div class="icon-company">
-              <i class="fa-solid fa-address-card"></i>
+              <mat-icon fontSet="material-icons-outlined">badge</mat-icon>
             </div>
             <span class="setting-card-title">{{ 'SETTINGS.COMPANY_DETAILS' | translate }}</span>
           </div>
@@ -37,35 +30,34 @@
         <div class="setting-card">
           <div class="setting-card-left">
             <div class="icon-home">
-              <i class="fa-solid fa-house"></i>
+              <mat-icon fontSet="material-icons-outlined">home</mat-icon>
             </div>
             <span class="setting-card-title">{{ 'SETTINGS.START_PAGE' | translate }}</span>
           </div>
-          <i class="fa-solid fa-chevron-right setting-card-arrow"></i>
+          <mat-icon fontSet="material-icons-outlined" class="setting-card-arrow">chevron_right</mat-icon>
         </div>
 
         <div class="setting-grid">
           <div class="setting-card">
             <div class="setting-card-left icon-security">
-              <i class="fa-solid fa-shield-halved"></i>
+              <mat-icon fontSet="material-icons-outlined">shield</mat-icon>
               <span class="setting-card-title">{{ 'SETTINGS.SECURITY' | translate }}</span>
             </div>
-            <i class="fa-solid fa-chevron-right setting-card-arrow small"></i>
+            <mat-icon fontSet="material-icons-outlined" class="setting-card-arrow small">chevron_right</mat-icon>
           </div>
           <div class="setting-card">
             <div class="setting-card-left icon-config">
-              <i class="fa-solid fa-gear"></i>
+              <mat-icon fontSet="material-icons-outlined">settings</mat-icon>
               <span class="setting-card-title">{{ 'SETTINGS.SETTINGS' | translate }}</span>
             </div>
-            <i class="fa-solid fa-chevron-right setting-card-arrow small"></i>
+            <mat-icon fontSet="material-icons-outlined" class="setting-card-arrow small">chevron_right</mat-icon>
           </div>
         </div>
 
         <div class="setting-card">
           <div class="setting-card-left">
             <div class="icon-network">
-              <i class="fa-solid fa-circle-nodes main"></i>
-              <i class="fa-solid fa-lock lock"></i>
+              <mat-icon fontSet="material-icons-outlined">lan</mat-icon>
             </div>
             <span class="setting-card-title">{{ 'SETTINGS.BRANCH_NETWORK' | translate }}</span>
           </div>

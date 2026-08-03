@@ -6,6 +6,10 @@ import { SearchComponent } from './search/expandable-search';
 import { SettingSliderComponent } from './setting/setting-slider';
 import { InviteComponent } from './actions-button/invite/invite';
 import { UserTimeWidgetComponent } from './user-time-widget/user-time-widget';
+import { UserProfileDropdownComponent } from './user-profile-dropdown/user-profile-dropdown.component';
+
+import { RouterModule } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-header',
@@ -14,22 +18,22 @@ import { UserTimeWidgetComponent } from './user-time-widget/user-time-widget';
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     TranslatePipe,
+    MatIconModule,
     SubNavComponent,
     SearchComponent,
     SettingSliderComponent,
     InviteComponent,
     UserTimeWidgetComponent,
+    UserProfileDropdownComponent,
   ],
 })
 export class HeaderComponent {
   currentView = signal<'list' | 'board'>('board');
-  profileMenuOpen = signal(false);
   notificationCount = signal(3);
-  userName = 'John Doe';
-  userInitial = 'JD';
 
-  activePopup: 'setting' | 'invite' | null = null;
+  activePopup: 'setting' | 'invite' | 'profile' | null = null;
 
   get isPopupOpen() {
     return this.activePopup === 'setting';
@@ -37,19 +41,31 @@ export class HeaderComponent {
   get isInviteOpen() {
     return this.activePopup === 'invite';
   }
+  get isProfileOpen() {
+    return this.activePopup === 'profile';
+  }
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event) {
     const target = event.target as HTMLElement;
 
-    if (target.closest('.setting-slider-dropdown') || target.closest('.invite-dropdown')) {
+    // Không đóng nếu click vào bên trong các dropdown popup
+    if (
+      target.closest('.setting-slider-dropdown') ||
+      target.closest('.invite-dropdown') ||
+      target.closest('.user-profile-dropdown')
+    ) {
       return;
     }
 
+    // Không đóng nếu click vào các nút trigger
     if (target.closest('#header-settings-btn')) {
       return;
     }
     if (target.closest('#header-invite-btn')) {
+      return;
+    }
+    if (target.closest('#header-user-widget-btn')) {
       return;
     }
 
@@ -64,8 +80,8 @@ export class HeaderComponent {
     this.activePopup = this.activePopup === 'invite' ? null : 'invite';
   }
 
-  toggleProfileMenu() {
-    this.profileMenuOpen.update((v) => !v);
+  toggleProfile() {
+    this.activePopup = this.activePopup === 'profile' ? null : 'profile';
   }
 
   switchView(view: 'list' | 'board') {

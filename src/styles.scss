@@ -25,3 +25,27 @@ body {
 
   image-rendering: auto;
 }
+
+/* Custom MatDialog styling for Theme Modal */
+.custom-theme-dialog {
+  .mat-mdc-dialog-container {
+    .mdc-dialog__surface {
+      background: transparent !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      border-radius: 16px !important;
+    }
+  }
+}
+
+.custom-theme-backdrop {
+  background: transparent !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

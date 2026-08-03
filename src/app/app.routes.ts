@@ -9,11 +9,12 @@ export const routes: Routes = [
     title: 'AI Smart Kanban - Quản lý thông minh'
   },
 
-  // 2. Trang Lưu trữ Hình ảnh (Đứng độc lập hoặc đưa vào app tùy thiết kế, tạm giữ nguyên nếu nó độc lập)
+  // 2. Trang Lưu trữ Hình ảnh
   {
     path: 'image-storage',
     loadComponent: () => import('./features/image-storage/components/image-storage-page/image-storage-page').then(m => m.ImageStoragePageComponent),
-    title: 'Lưu trữ hình ảnh - AI Smart Kanban'
+    title: 'Lưu trữ hình ảnh - AI Smart Kanban',
+    canActivate: [authGuard]
   },
 
   // 3. Bộ cấu trúc chính với Layout (Dashboard)
@@ -23,18 +24,18 @@ export const routes: Routes = [
     title: 'AI Smart Kanban',
     canActivate: [authGuard],
     children: [
-      // Kanban Board - Tác vụ và Dự án
+      // Trang Tác vụ (Tasks Page) - Mặc định cho kanban
       {
         path: 'kanban',
-        loadComponent: () => import('./features/kanban/components/kanban-board/kanban-board').then(m => m.KanbanBoardComponent),
-        title: 'Bảng Kanban - Tác vụ và Dự án'
-      },
-
-      // Trang Tác vụ (Tasks Page)
-      {
-        path: 'kanban/tasks',
         loadComponent: () => import('./features/kanban/components/tasks-page/tasks-page').then(m => m.TasksPageComponent),
         title: 'Tác vụ của tôi - AI Smart Kanban'
+      },
+
+      // Redirect kanban/tasks cũ về kanban
+      {
+        path: 'kanban/tasks',
+        redirectTo: 'kanban',
+        pathMatch: 'full'
       },
 
       {
@@ -68,11 +69,26 @@ export const routes: Routes = [
     canActivate: [guestGuard]
   },
 
-  // Tuyến đường Xác minh Email
+  // Tuyến đường Xác minh Email (Cũ - giữ để tương thích)
   {
     path: 'verify-email',
     loadComponent: () => import('./features/auth/verify-email/verify-email.component').then(m => m.VerifyEmailComponent),
     title: 'Xác minh Email - Digit24'
+  },
+
+  // ─── Auth flows Supabase ─────────────────────────────────
+  // Màn hình chờ sau khi đăng ký — hiển thị hướng dẫn kiểm tra email
+  {
+    path: 'auth/verify-pending',
+    loadComponent: () => import('./features/auth/verify-pending/verify-pending.component').then(m => m.VerifyPendingComponent),
+    title: 'Xác nhận Email - AI Smart Kanban'
+  },
+
+  // Callback page — Supabase redirect về đây sau khi user click link trong email
+  {
+    path: 'auth/callback',
+    loadComponent: () => import('./features/auth/auth-callback/auth-callback.component').then(m => m.AuthCallbackComponent),
+    title: 'Đang kích hoạt tài khoản... - AI Smart Kanban'
   },
 
   // 3. Trang 404 - Lỗi không tìm thấy (Phải đặt ở cuối cùng)
