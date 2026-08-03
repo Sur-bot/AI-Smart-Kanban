@@ -1,6 +1,6 @@
 <button
   type="button"
-  class="inline-flex items-center bg-white/15 border border-white/10 rounded-full h-8 xl:pl-3 pl-0.5 pr-0.5 gap-2.5 hover:bg-white/25 transition-all cursor-pointer group shadow-sm focus:outline-none focus:ring-2 focus:ring-white/40"
+  class="inline-flex items-center bg-white/15 border border-white/10 rounded-full h-8 xl:pl-3 pl-0.5 pr-0.5 gap-2.5 transition-colors cursor-pointer group shadow-sm focus:outline-none focus:ring-2 focus:ring-white/40"
   [class.bg-white/30]="isOpen"
   [class.border-white/30]="isOpen"
   [attr.aria-expanded]="isOpen"
@@ -13,7 +13,7 @@
     <span class="text-[9px] font-bold opacity-75 mt-0.5 uppercase">{{ ampm }}</span>
   </div>
 
-  <figure class="w-[26px] h-[26px] bg-slate-500/40 rounded-full flex items-center justify-center border border-white/15 shadow-sm group-hover:scale-105 transition-transform overflow-hidden m-0">
+  <figure class="w-[26px] h-[26px] bg-slate-500/40 rounded-full flex items-center justify-center border border-white/15 shadow-sm group-hover:bg-slate-500/60 group-hover:border-white/30 transition-colors overflow-hidden m-0">
     <img *ngIf="avatarUrl()" [src]="avatarUrl()" [alt]="userName()" class="w-full h-full object-cover" />
     <mat-icon *ngIf="!avatarUrl()" class="!text-[15px] !w-[15px] !h-[15px] text-white">person</mat-icon>
   </figure>
