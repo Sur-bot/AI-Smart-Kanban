@@ -1,11 +1,17 @@
-/* ===== LOADING SCREEN ===== */
+/* ===== LOADING SCREEN (HIỆU ỨNG CHÀO DIGIT24) ===== */
 .auth-loading-screen {
-  @apply fixed inset-0 z-50 flex items-center justify-center bg-slate-950 text-white select-none;
+  @apply fixed inset-0 z-50 flex items-center justify-center bg-slate-950 text-white select-none transition-all duration-500 ease-out;
+
+  &.auth-loading-fade-out {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+  }
 }
 
 .auth-loading-bar {
   width: 40%;
-  animation: loadingAnim 1.2s infinite ease-in-out;
+  animation: loadingAnim 1.4s infinite ease-in-out;
 }
 
 @keyframes loadingAnim {
