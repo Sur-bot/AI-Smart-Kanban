@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/auth/auth.service';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 /**
  * VerifyEmailComponent — trang xử lý redirect từ link email cũ (legacy).
@@ -13,7 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-verify-email',
   standalone: true,
-  imports: [CommonModule, RouterModule, MatIconModule],
+  imports: [CommonModule, RouterModule, MatIconModule, TranslatePipe],
   templateUrl: './verify-email.component.html',
   styleUrl: './verify-email.component.scss'
 })
@@ -21,6 +22,7 @@ export class VerifyEmailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private authService = inject(AuthService);
+  private translate = inject(TranslateService);
 
   status = signal<'loading' | 'success' | 'error'>('loading');
   message = signal('Đang xử lý xác minh...');
