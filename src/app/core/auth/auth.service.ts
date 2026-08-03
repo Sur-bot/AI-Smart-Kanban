@@ -48,11 +48,14 @@ export class AuthService {
    * Supabase tự gửi email xác nhận — không cần cấu hình SMTP, không cần domain riêng.
    */
   async signUp(email: string, password: string, fullName?: string) {
+    const redirectTo = `${window.location.origin}/auth/callback`;
+
     const { data, error } = await this.supabase.auth.signUp({
       email,
       password,
       options: {
-        data: { full_name: fullName || '' }
+        data: { full_name: fullName || '' },
+        emailRedirectTo: redirectTo  // Supabase sẽ dùng URL này trong link email xác nhận
       }
     });
 
