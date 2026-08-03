@@ -8,13 +8,13 @@
   [title]="userName() + ' - Mở menu tài khoản'"
 >
   <div class="hidden xl:flex items-center gap-1.5 text-white leading-none">
-    <mat-icon class="!text-[13px] !w-[13px] !h-[13px] opacity-70">schedule</mat-icon>
+    <mat-icon fontSet="material-icons-outlined" class="!text-[13px] !w-[13px] !h-[13px] opacity-70">schedule</mat-icon>
     <span class="text-[13px] font-bold tracking-wide">{{ currentTime }}</span>
     <span class="text-[9px] font-bold opacity-75 mt-0.5 uppercase">{{ ampm }}</span>
   </div>
 
   <figure class="w-[26px] h-[26px] bg-slate-500/40 rounded-full flex items-center justify-center border border-white/15 shadow-sm group-hover:bg-slate-500/60 group-hover:border-white/30 transition-colors overflow-hidden m-0">
     <img *ngIf="avatarUrl()" [src]="avatarUrl()" [alt]="userName()" class="w-full h-full object-cover" />
-    <mat-icon *ngIf="!avatarUrl()" class="!text-[15px] !w-[15px] !h-[15px] text-white">person</mat-icon>
+    <mat-icon *ngIf="!avatarUrl()" fontSet="material-icons-outlined" class="!text-[15px] !w-[15px] !h-[15px] text-white">person</mat-icon>
   </figure>
 </button>
