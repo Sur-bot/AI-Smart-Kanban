@@ -1,4 +1,38 @@
-<main class="auth-page">
+<!-- Loading Transition Screen -->
+@if (!isLoaded()) {
+  <section class="auth-loading-screen" aria-live="polite" aria-label="Đang tải giao diện">
+    <figure class="flex flex-col items-center gap-4">
+      <svg width="110" height="30" viewBox="0 0 86 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="animate-pulse select-none" aria-label="Digit24">
+        <text
+          x="0"
+          y="18"
+          font-family="Montserrat, system-ui, -apple-system, sans-serif"
+          font-size="20"
+          font-weight="700"
+          fill="#ffffff"
+        >
+          Digit
+        </text>
+        <text
+          x="54"
+          y="18"
+          font-family="Montserrat, system-ui, -apple-system, sans-serif"
+          font-size="20"
+          font-weight="700"
+          fill="#3FC0F0"
+        >
+          24
+        </text>
+      </svg>
+      <div class="w-28 h-1 bg-white/15 rounded-full overflow-hidden">
+        <div class="auth-loading-bar h-full bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full"></div>
+      </div>
+    </figure>
+  </section>
+}
+
+<!-- Main Auth Container -->
+<main class="auth-page" [class.auth-page-ready]="isLoaded()">
   <!-- Header -->
   <header class="auth-header">
     <a [routerLink]="headerLinkRoute()" class="btn-login">
@@ -7,7 +41,7 @@
   </header>
 
   <!-- Slogan (Desktop Only) -->
-  <div class="auth-slogan">
+  <section class="auth-slogan">
     <div class="slogan-content">
       <h2 class="slogan-title cursor-pointer" routerLink="/">
         {{ 'REGISTER.SLOGAN_TITLE' | translate }}
@@ -15,8 +49,9 @@
       </h2>
       <p class="slogan-subtitle">{{ 'REGISTER.SLOGAN_SUBTITLE' | translate }}</p>
     </div>
-  </div>
+  </section>
 
+  <!-- Form Content (Login / Register) -->
   <ng-content></ng-content>
 
   <!-- Footer -->
@@ -25,7 +60,7 @@
       <div class="lang-dropdown">
         <button type="button" class="lang-btn" (click)="toggleLangPopup($event)">
           <span>{{ currentLangLabel }}</span>
-          <mat-icon class="!text-[18px] !w-[18px] !h-[18px] !leading-none translate-y-[1px]">keyboard_arrow_down</mat-icon>
+          <mat-icon class="!text-[18px] !w-[18px] !h-[18px] !leading-none translate-y-[1px]" fontSet="material-icons-outlined">keyboard_arrow_down</mat-icon>
         </button>
 
         @if (isLangPopupOpen()) {
@@ -47,8 +82,8 @@
     </div>
 
     <div class="footer-right">
-      <button class="help-btn">
-        <mat-icon class="help-icon" fontSet="material-icons">question_mark</mat-icon>
+      <button type="button" class="help-btn">
+        <mat-icon class="help-icon" fontSet="material-icons-outlined">help_outline</mat-icon>
         <span class="help-text font-semibold">{{ 'REGISTER.HELP' | translate }}</span>
       </button>
     </div>

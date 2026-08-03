@@ -1,8 +1,37 @@
+/* ===== LOADING SCREEN ===== */
+.auth-loading-screen {
+  @apply fixed inset-0 z-50 flex items-center justify-center bg-slate-950 text-white select-none;
+}
+
+.auth-loading-bar {
+  width: 40%;
+  animation: loadingAnim 1.2s infinite ease-in-out;
+}
+
+@keyframes loadingAnim {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+/* ===== MAIN AUTH PAGE ===== */
 .auth-page {
-  @apply min-h-screen relative flex flex-col lg:flex-row items-center justify-center lg:justify-between overflow-hidden;
-  background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000&auto=format&fit=crop');
+  @apply min-h-screen relative flex flex-col lg:flex-row items-center justify-center lg:justify-between overflow-hidden bg-slate-950;
+  background-image: url('/assets/images/auth-bg.jpg');
   background-size: cover;
   background-position: center;
+  opacity: 0;
+  transition: opacity 400ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  &.auth-page-ready {
+    opacity: 1;
+  }
 }
 
 @keyframes slideInFromLeft {
