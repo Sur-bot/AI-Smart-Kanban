@@ -1,38 +1,47 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from './auth.service';
-import { map, take } from 'rxjs/operators';
 
-export const authGuard: CanActivateFn = (route, state) => {
+/**
+ * Guard bảo vệ các route cần đăng nhập.
+ * Dùng Signal thay vì Observable — không cần take(1), map, pipe.
+ */
+export const authGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  return authService.isAuthenticated$.pipe(
-    take(1),
-    map(isAuthenticated => {
-      if (isAuthenticated) {
-        return true;
-      }
-      
-      // Redirect to login if not authenticated
-      return router.createUrlTree(['/login']);
-    })
-  );
+  // Nếu đang tải session lần đầu, chờ (trả về Promise)
+  if (authService.loading()) {
+    return new Promise<boolean | import('@angular/router').UrlTree>(resolve => {
+      const interval = setInterval(() => {
+        if (!authService.loading()) {
+          clearInterval(interval);
+          resolve(authService.isAuthenticated() ? true : router.createUrlTree(['/login']));
+        }
+      }, 50);
+    });
+  }
+
+  return authService.isAuthenticated() ? true : router.createUrlTree(['/login']);
 };
 
-export const guestGuard: CanActivateFn = (route, state) => {
+/**
+ * Guard ngăn người dùng đã đăng nhập quay lại trang Login/Register.
+ */
+export const guestGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  return authService.isAuthenticated$.pipe(
-    take(1),
-    map(isAuthenticated => {
-      if (!isAuthenticated) {
-        return true;
-      }
-      
-      // Redirect to dashboard if already authenticated
-      return router.createUrlTree(['/app/kanban']);
-    })
-  );
+  if (authService.loading()) {
+    return new Promise<boolean | import('@angular/router').UrlTree>(resolve => {
+      const interval = setInterval(() => {
+        if (!authService.loading()) {
+          clearInterval(interval);
+          resolve(!authService.isAuthenticated() ? true : router.createUrlTree(['/app/kanban']));
+        }
+      }, 50);
+    });
+  }
+
+  return !authService.isAuthenticated() ? true : router.createUrlTree(['/app/kanban']);
 };
