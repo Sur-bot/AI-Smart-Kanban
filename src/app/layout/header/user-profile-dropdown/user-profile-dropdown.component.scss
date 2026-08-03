@@ -13,19 +13,6 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  animation: profilePopupSlide 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  transform-origin: top right;
-}
-
-@keyframes profilePopupSlide {
-  from {
-    opacity: 0;
-    transform: translateY(-8px) scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
 }
 
 /* ===== 1. PROFILE HEADER ===== */
@@ -97,6 +84,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: color 0.15s ease;
   }
 
   .chevron-icon {
@@ -104,7 +92,7 @@
     width: 18px;
     height: 18px;
     color: #64748b;
-    transition: transform 0.15s ease;
+    transition: color 0.15s ease;
   }
 
   &:hover {
@@ -112,7 +100,6 @@
       color: #0284c7;
     }
     .chevron-icon {
-      transform: translateX(2px);
       color: #0284c7;
     }
   }
@@ -148,39 +135,34 @@
   border: 1px solid #bae6fd;
   border-radius: 16px;
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 
   .action-icon {
     font-size: 24px;
     width: 24px;
     height: 24px;
     color: #1e293b;
-    transition: transform 0.18s ease;
+    transition: color 0.15s ease;
   }
 
   .action-label {
     font-size: 12px;
     font-weight: 600;
     color: #334155;
+    transition: color 0.15s ease;
   }
 
   &:hover {
     background-color: #f0f9ff;
     border-color: #7dd3fc;
-    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.1);
 
     .action-icon {
-      transform: scale(1.08);
       color: #0284c7;
     }
 
     .action-label {
       color: #0284c7;
     }
-  }
-
-  &:active {
-    transform: scale(0.98);
   }
 }
 
@@ -240,14 +222,13 @@
     width: 18px;
     height: 18px;
     color: #94a3b8;
-    transition: transform 0.15s ease;
+    transition: color 0.15s ease;
   }
 
   &:hover {
     background-color: rgba(226, 232, 240, 0.6);
 
     .menu-chevron {
-      transform: translateX(2px);
       color: #475569;
     }
   }
@@ -289,17 +270,10 @@
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 119, 255, 0.28);
-  transition: all 0.15s ease;
+  transition: background-color 0.15s ease;
 
   &:hover {
     background-color: #0066dc;
-    box-shadow: 0 4px 10px rgba(0, 119, 255, 0.38);
-    transform: translateY(-0.5px);
-  }
-
-  &:active {
-    transform: translateY(0);
   }
 }
 
