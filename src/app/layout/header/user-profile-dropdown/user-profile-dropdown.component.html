@@ -1,0 +1,94 @@
+<aside *ngIf="isOpen" class="user-profile-dropdown" aria-label="Menu tài khoản người dùng" role="dialog">
+
+  <!-- Header: User Profile Info -->
+  <header class="profile-header">
+    <figure class="avatar-wrapper" aria-hidden="true">
+      <img *ngIf="avatarUrl()" [src]="avatarUrl()" [alt]="userName()" class="avatar-img" />
+      <span *ngIf="!avatarUrl()" class="avatar-placeholder">
+        <mat-icon fontSet="material-icons-outlined" class="avatar-icon">person</mat-icon>
+      </span>
+    </figure>
+
+    <div class="user-details">
+      <button type="button" class="user-name-btn" [title]="'Xem hồ sơ ' + userName()" (click)="onProfileClick()">
+        <span class="user-name">{{ userName() }}</span>
+        <mat-icon fontSet="material-icons-outlined" class="chevron-icon">chevron_right</mat-icon>
+      </button>
+      <span class="role-badge">{{ userRole() }}</span>
+    </div>
+  </header>
+
+  <!-- Quick Action Cards: Bảo mật & Phần mở rộng -->
+  <nav class="quick-actions-nav" aria-label="Thao tác bảo mật và mở rộng">
+    <button type="button" class="action-card" (click)="onSecurityClick()" title="Cài đặt bảo mật">
+      <mat-icon fontSet="material-icons-outlined" class="action-icon">shield</mat-icon>
+      <span class="action-label">Bảo mật</span>
+    </button>
+
+    <button type="button" class="action-card" (click)="onExtensionsClick()" title="Quản lý phần mở rộng">
+      <mat-icon fontSet="material-icons-outlined" class="action-icon">inventory_2</mat-icon>
+      <span class="action-label">Phần mở rộng</span>
+    </button>
+  </nav>
+
+  <!-- Menu Group 1: Ứng dụng & Di động -->
+  <section class="menu-group-card" aria-label="Ứng dụng và kết nối">
+    <ul class="menu-list">
+      <li class="menu-item">
+        <button type="button" class="menu-row-btn" (click)="onMobileLoginClick()">
+          <span class="menu-leading">
+            <mat-icon fontSet="material-icons-outlined" class="menu-icon">smartphone</mat-icon>
+            <span class="menu-text">Đăng nhập nhanh trên di động</span>
+          </span>
+          <mat-icon fontSet="material-icons-outlined" class="menu-chevron">chevron_right</mat-icon>
+        </button>
+      </li>
+      <li class="menu-item">
+        <div class="menu-row-static">
+          <span class="menu-leading">
+            <mat-icon fontSet="material-icons-outlined" class="menu-icon">laptop_windows</mat-icon>
+            <span class="menu-text">Ứng dụng Windows</span>
+          </span>
+          <button type="button" class="download-btn" (click)="onDownloadWindowsApp()" title="Tải về ứng dụng Windows">
+            Tải về
+          </button>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Menu Group 2: Chủ đề & Tài khoản -->
+  <section class="menu-group-card" aria-label="Tùy chỉnh và tài khoản">
+    <ul class="menu-list">
+      <li class="menu-item">
+        <button type="button" class="menu-row-btn" (click)="onThemeClick()">
+          <span class="menu-leading">
+            <mat-icon fontSet="material-icons-outlined" class="menu-icon">palette</mat-icon>
+            <span class="menu-text">Chủ đề hình ảnh</span>
+          </span>
+          <mat-icon fontSet="material-icons-outlined" class="menu-chevron">chevron_right</mat-icon>
+        </button>
+      </li>
+      <li class="menu-item">
+        <button type="button" class="menu-row-btn" (click)="onSwitchAccountClick()">
+          <span class="menu-leading">
+            <mat-icon fontSet="material-icons-outlined" class="menu-icon">switch_account</mat-icon>
+            <span class="menu-text">Thay đổi tài khoản</span>
+          </span>
+          <mat-icon fontSet="material-icons-outlined" class="menu-chevron">chevron_right</mat-icon>
+        </button>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Footer Actions -->
+  <footer class="profile-footer">
+    <button type="button" class="footer-link-btn" (click)="onCompanyActivityClick()">
+      Hoạt động Công ty
+    </button>
+    <button type="button" class="footer-link-btn logout-btn" (click)="onLogout()" title="Đăng xuất khỏi hệ thống">
+      Đăng xuất
+    </button>
+  </footer>
+
+</aside>

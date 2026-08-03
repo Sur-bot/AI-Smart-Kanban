@@ -1,0 +1,73 @@
+<section class="verify-pending-page" aria-labelledby="verify-heading">
+
+  <!-- Animated Email Icon -->
+  <figure class="email-icon-wrapper" aria-hidden="true">
+    <div class="email-envelope">
+      <div class="envelope-body">
+        <div class="envelope-flap"></div>
+        <div class="letter-content">
+          <mat-icon fontSet="material-icons-outlined" class="letter-icon">mail</mat-icon>
+        </div>
+      </div>
+      <div class="ping-ring ring-1"></div>
+      <div class="ping-ring ring-2"></div>
+    </div>
+  </figure>
+
+  <!-- Content -->
+  <article class="verify-content">
+    <h1 id="verify-heading" class="verify-title">Kiểm tra hộp thư của bạn</h1>
+    <p class="verify-subtitle">
+      Chúng tôi đã gửi một liên kết xác nhận đến
+      <strong class="email-highlight">{{ email() }}</strong>
+    </p>
+    <p class="verify-instruction">
+      Nhấn vào nút <strong>"Xác nhận email"</strong> trong thư để kích hoạt tài khoản và bắt đầu sử dụng <strong>AI Smart Kanban</strong>.
+    </p>
+
+    <!-- Steps -->
+    <ol class="verify-steps" aria-label="Các bước xác nhận">
+      <li class="step" [class.step-done]="step() >= 1">
+        <span class="step-icon">
+          <mat-icon fontSet="material-icons-outlined">{{ step() >= 1 ? 'check_circle' : 'mail_outline' }}</mat-icon>
+        </span>
+        <span class="step-label">Email đã được gửi</span>
+      </li>
+      <li class="step" [class.step-active]="step() === 1">
+        <span class="step-icon">
+          <mat-icon fontSet="material-icons-outlined">{{ step() >= 2 ? 'check_circle' : 'touch_app' }}</mat-icon>
+        </span>
+        <span class="step-label">Bạn nhấn xác nhận trong thư</span>
+      </li>
+      <li class="step" [class.step-active]="step() === 2">
+        <span class="step-icon">
+          <mat-icon fontSet="material-icons-outlined">rocket_launch</mat-icon>
+        </span>
+        <span class="step-label">Tự động vào ứng dụng</span>
+      </li>
+    </ol>
+
+    <!-- Resend -->
+    <footer class="verify-footer">
+      <p class="resend-text">Không thấy thư?</p>
+      <button
+        type="button"
+        class="resend-btn"
+        [disabled]="resendCooldown() > 0 || resending()"
+        (click)="resendEmail()"
+        [attr.aria-label]="resendCooldown() > 0 ? 'Gửi lại sau ' + resendCooldown() + ' giây' : 'Gửi lại email xác nhận'"
+      >
+        <mat-icon fontSet="material-icons-outlined">{{ resending() ? 'hourglass_empty' : 'refresh' }}</mat-icon>
+        <span *ngIf="resendCooldown() > 0">Gửi lại sau {{ resendCooldown() }}s</span>
+        <span *ngIf="resendCooldown() === 0 && !resending()">Gửi lại email</span>
+        <span *ngIf="resending()">Đang gửi...</span>
+      </button>
+
+      <a routerLink="/register" class="back-link">
+        <mat-icon fontSet="material-icons-outlined">arrow_back</mat-icon>
+        Dùng email khác
+      </a>
+    </footer>
+  </article>
+
+</section>

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { Task } from '../../models/kanban.model';
+import { TaskItem } from '../../../../core/models/task.model';
 
 @Component({
   selector: 'app-task-card',
@@ -11,5 +11,6 @@ import { Task } from '../../models/kanban.model';
   imports: [CommonModule, MatIconModule]
 })
 export class TaskCardComponent {
-  @Input() task!: Task;
+  @Input() task!: TaskItem;
 }
+

@@ -10,16 +10,20 @@
 
 /* ===== Sidebar Container ===== */
 .sidebar-container {
-  @apply w-[260px] h-full flex flex-col text-white font-['Inter',sans-serif] bg-black/20 backdrop-blur-md transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] overflow-hidden;
+  @apply w-[260px] h-full flex flex-col text-white font-['Inter',sans-serif] bg-black/20 backdrop-blur-md overflow-hidden;
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.25s ease, box-shadow 0.25s ease;
 
   &.collapsed {
     @apply w-[68px];
   }
 
   &.hover-expanded {
-    @apply w-[260px] absolute top-0 left-0 h-screen shadow-[8px_0_40px_rgba(0,0,0,0.5),2px_0_12px_rgba(0,0,0,0.25)] z-50;
-    background-color: #16273C !important;
-    backdrop-filter: none !important;
+    @apply w-[260px] absolute top-0 left-0 h-screen shadow-[6px_0_24px_rgba(0,0,0,0.25),2px_0_8px_rgba(0,0,0,0.15)] z-50;
+    background-color: rgba(22, 39, 60, 0.85) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    transition: width 0.18s cubic-bezier(0.0, 0, 0.2, 1), background-color 0.18s ease, box-shadow 0.18s ease;
   }
 }
 
@@ -30,7 +34,7 @@
 
 .toggle-btn {
   @apply w-9 h-9 flex items-center justify-center rounded-[10px] text-white/65 shrink-0 cursor-pointer bg-transparent border-none hover:bg-white/10 hover:text-white hover:scale-105 active:scale-95;
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
 }
 
 .logo-area {
@@ -40,7 +44,12 @@
 /* ===== Menu ===== */
 .sidebar-menu {
   @apply flex-1 overflow-x-hidden py-2 px-3;
-  overflow-y: scroll; /* Luôn giữ chỗ cho scrollbar, tránh layout shift */
+  overflow-y: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   .collapsed & {
     @apply py-2 px-3 overflow-y-hidden;
@@ -49,20 +58,20 @@
 
 .menu-item {
   @apply flex items-center py-2.5 px-3 rounded-[10px] cursor-pointer whitespace-nowrap overflow-hidden no-underline relative;
-  transition: background-color 0.2s ease, color 0.2s ease, border-radius 0.2s ease;
+  transition: background-color 0.18s ease, color 0.18s ease, border-radius 0.18s ease;
 
   &.expanded-parent {
     @apply rounded-b-none;
 
     .menu-label {
       @apply text-[13.5px] text-white/40 font-normal;
-      transition: all 0.2s ease;
+      transition: all 0.18s ease;
     }
 
     .menu-icon {
       @apply opacity-40;
       transform: scale(0.85);
-      transition: all 0.2s ease;
+      transition: all 0.18s ease;
     }
 
     &:hover {
@@ -82,7 +91,7 @@
 
 .menu-icon {
   @apply w-5 h-5 flex items-center justify-center opacity-80 shrink-0;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.18s ease;
 
   .menu-item:hover & {
     @apply opacity-100;
@@ -95,7 +104,8 @@
 
 /* ===== SubMenu Arrow ===== */
 .submenu-arrow {
-  @apply absolute left-[210px] w-[14px] h-[14px] opacity-40 shrink-0 transition duration-300 ease-in-out;
+  @apply absolute left-[210px] w-[14px] h-[14px] opacity-40 shrink-0;
+  transition: opacity 0.18s ease, transform 0.18s ease-in-out;
 
   .group:hover & {
     @apply opacity-100;
@@ -113,7 +123,7 @@
   color: #ffb8d2;
   border: 1px solid rgba(229,106,179,0.25);
   box-shadow: 0 0 10px rgba(229,106,179,0.1);
-  transition: opacity 0.3s ease;
+  transition: opacity 0.18s ease;
 }
 
 /* ===== Badge ===== */
@@ -127,11 +137,11 @@
 }
 
 .upgrade-btn {
-  @apply flex items-center justify-start gap-3 py-2.5 px-3 rounded-[10px] w-[236px] h-[44px] text-[13px] font-medium text-white border-none cursor-pointer bg-gradient-to-br from-[#ff8c72] via-[#e56ab3] to-[#b36af5] shadow-[0_4px_15px_rgba(229,106,179,0.3)] whitespace-nowrap overflow-hidden;
-  transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 200ms ease, filter 200ms ease, transform 200ms ease;
+  @apply flex items-center justify-start gap-3 py-2.5 px-3 rounded-[10px] w-[236px] h-[44px] text-[13px] font-medium text-white border-none cursor-pointer bg-gradient-to-br from-[#ff8c72] via-[#e56ab3] to-[#b36af5] whitespace-nowrap overflow-hidden;
+  transition: width 0.18s cubic-bezier(0.4, 0, 0.2, 1), filter 0.15s ease;
 
   &:hover {
-    @apply shadow-[0_6px_20px_rgba(229,106,179,0.4)] brightness-110;
+    @apply brightness-110;
   }
 
   .collapsed & {
@@ -140,7 +150,8 @@
 }
 
 .upgrade-text {
-  @apply opacity-100 transition-opacity duration-200;
+  @apply opacity-100;
+  transition: opacity 0.18s ease;
 
   .collapsed & {
     @apply opacity-0;

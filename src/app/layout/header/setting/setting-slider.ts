@@ -3,10 +3,12 @@ import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { TranslatePipe } from '@ngx-translate/core';
 
+import { MatIconModule } from '@angular/material/icon';
+
 @Component({
   selector: 'app-setting-slider',
   standalone: true,
-  imports: [CommonModule, TranslatePipe],
+  imports: [CommonModule, TranslatePipe, MatIconModule],
   templateUrl: './setting-slider.html',
   styleUrl: './setting-slider.scss',
   animations: [
