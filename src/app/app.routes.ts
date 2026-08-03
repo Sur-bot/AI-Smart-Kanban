@@ -9,11 +9,12 @@ export const routes: Routes = [
     title: 'AI Smart Kanban - Quản lý thông minh'
   },
 
-  // 2. Trang Lưu trữ Hình ảnh (Đứng độc lập hoặc đưa vào app tùy thiết kế, tạm giữ nguyên nếu nó độc lập)
+  // 2. Trang Lưu trữ Hình ảnh
   {
     path: 'image-storage',
     loadComponent: () => import('./features/image-storage/components/image-storage-page/image-storage-page').then(m => m.ImageStoragePageComponent),
-    title: 'Lưu trữ hình ảnh - AI Smart Kanban'
+    title: 'Lưu trữ hình ảnh - AI Smart Kanban',
+    canActivate: [authGuard]
   },
 
   // 3. Bộ cấu trúc chính với Layout (Dashboard)
@@ -21,7 +22,7 @@ export const routes: Routes = [
     path: 'app',
     loadComponent: () => import('./layout/main-layout/main-layout').then(m => m.MainLayoutComponent),
     title: 'AI Smart Kanban',
-    // canActivate: [authGuard], // TODO: Tạm tắt để vào thẳng Kanban
+    canActivate: [authGuard],
     children: [
       // Trang Tác vụ (Tasks Page) - Mặc định cho kanban
       {
