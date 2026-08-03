@@ -91,6 +91,13 @@
     width: 18px;
     height: 18px;
     color: #64748b;
+    transition: color 0.15s ease;
+  }
+
+  &:hover {
+    .chevron-icon {
+      color: #0284c7;
+    }
   }
 }
 
@@ -194,6 +201,13 @@
     width: 18px;
     height: 18px;
     color: #94a3b8;
+    transition: color 0.15s ease;
+  }
+
+  &:hover {
+    .menu-chevron {
+      color: #0284c7;
+    }
   }
 }
 
