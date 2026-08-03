@@ -8,6 +8,8 @@ import { InviteComponent } from './actions-button/invite/invite';
 import { UserTimeWidgetComponent } from './user-time-widget/user-time-widget';
 import { UserProfileDropdownComponent } from './user-profile-dropdown/user-profile-dropdown.component';
 
+import { MatIconModule } from '@angular/material/icon';
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.html',
@@ -16,6 +18,7 @@ import { UserProfileDropdownComponent } from './user-profile-dropdown/user-profi
   imports: [
     CommonModule,
     TranslatePipe,
+    MatIconModule,
     SubNavComponent,
     SearchComponent,
     SettingSliderComponent,

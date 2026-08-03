@@ -63,16 +63,17 @@
     }
   }
 
-  /* Variant: primary (solid gradient) */
+  /* Variant: primary (Mua ngay) */
   &.primary {
-    @apply border-none bg-gradient-to-br from-[#10b981] to-[#059669] text-white shadow-[0_2px_8px_rgba(16,185,129,0.35)];
+    @apply border-none bg-gradient-to-br from-[#10b981] to-[#059669] text-white;
+    transition: background-color 0.15s ease, filter 0.15s ease;
 
     &:hover {
-      @apply bg-gradient-to-br from-[#059669] to-[#047857] shadow-[0_3px_12px_rgba(16,185,129,0.5)] -translate-y-[1px];
+      @apply bg-gradient-to-br from-[#059669] to-[#047857] brightness-105;
     }
 
     &:active {
-      @apply translate-y-0;
+      @apply brightness-95;
     }
   }
 

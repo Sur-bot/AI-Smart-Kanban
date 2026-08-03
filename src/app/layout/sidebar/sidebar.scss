@@ -137,11 +137,11 @@
 }
 
 .upgrade-btn {
-  @apply flex items-center justify-start gap-3 py-2.5 px-3 rounded-[10px] w-[236px] h-[44px] text-[13px] font-medium text-white border-none cursor-pointer bg-gradient-to-br from-[#ff8c72] via-[#e56ab3] to-[#b36af5] shadow-[0_4px_15px_rgba(229,106,179,0.3)] whitespace-nowrap overflow-hidden;
-  transition: width 0.18s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.18s ease, filter 0.18s ease, transform 0.18s ease;
+  @apply flex items-center justify-start gap-3 py-2.5 px-3 rounded-[10px] w-[236px] h-[44px] text-[13px] font-medium text-white border-none cursor-pointer bg-gradient-to-br from-[#ff8c72] via-[#e56ab3] to-[#b36af5] whitespace-nowrap overflow-hidden;
+  transition: width 0.18s cubic-bezier(0.4, 0, 0.2, 1), filter 0.15s ease;
 
   &:hover {
-    @apply shadow-[0_6px_20px_rgba(229,106,179,0.4)] brightness-110;
+    @apply brightness-110;
   }
 
   .collapsed & {
