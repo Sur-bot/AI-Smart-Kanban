@@ -76,8 +76,19 @@
         </button>
       </div>
 
-      <!-- User Time Widget -->
-      <app-user-time-widget></app-user-time-widget>
+      <!-- User Profile & Time Widget -->
+      <div class="user-profile-wrapper relative">
+        <app-user-time-widget
+          id="header-user-widget-btn"
+          [isOpen]="isProfileOpen"
+          (click)="toggleProfile()"
+        ></app-user-time-widget>
+
+        <app-user-profile-dropdown
+          [isOpen]="isProfileOpen"
+          (close)="activePopup = null"
+        ></app-user-profile-dropdown>
+      </div>
 
     </div>
   </div>
