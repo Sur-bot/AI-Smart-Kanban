@@ -14,23 +14,37 @@
         <app-expandable-search></app-expandable-search>
       </div>
 
-      <div class="hidden xl:flex items-center leading-none select-none shrink-0">
-        <span class="logo-text">Digit</span>
-        <span class="logo-number">24</span>
-      </div>
+      <!-- Logo Digit24 SVG -->
+      <a routerLink="/app" class="hidden xl:flex items-center leading-none select-none shrink-0" title="Digit24">
+        <svg width="86" height="24" viewBox="0 0 86 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Digit24">
+          <text
+            x="0"
+            y="18"
+            font-family="Montserrat, system-ui, -apple-system, sans-serif"
+            font-size="20"
+            font-weight="700"
+            fill="#ffffff"
+          >
+            Digit
+          </text>
+          <text
+            x="54"
+            y="18"
+            font-family="Montserrat, system-ui, -apple-system, sans-serif"
+            font-size="20"
+            font-weight="700"
+            fill="#3FC0F0"
+          >
+            24
+          </text>
+        </svg>
+      </a>
 
       <!-- Settings Popup -->
       <div class="setting-wrapper">
         <button id="header-settings-btn" class="header-icon-btn" (click)="togglePopup()" [title]="'HEADER.SETTINGS' | translate"
           [class.bg-white/10]="isPopupOpen" [class.text-white]="isPopupOpen">
-          <!-- Sliders icon -->
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"
-            stroke-linejoin="round">
-            <circle cx="16" cy="8" r="2.5" />
-            <path d="M3 8h10.5M18.5 8H21" />
-            <circle cx="8" cy="16" r="2.5" />
-            <path d="M3 16h2.5M10.5 16H21" />
-          </svg>
+          <mat-icon fontSet="material-icons-outlined" class="!text-[20px] !w-5 !h-5">tune</mat-icon>
         </button>
 
         <app-setting-slider [isOpen]="isPopupOpen" (close)="activePopup = null"></app-setting-slider>

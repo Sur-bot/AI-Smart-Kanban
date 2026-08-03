@@ -8,6 +8,7 @@ import { InviteComponent } from './actions-button/invite/invite';
 import { UserTimeWidgetComponent } from './user-time-widget/user-time-widget';
 import { UserProfileDropdownComponent } from './user-profile-dropdown/user-profile-dropdown.component';
 
+import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -17,6 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     TranslatePipe,
     MatIconModule,
     SubNavComponent,
