@@ -151,6 +151,7 @@ export interface TaskItem {
   timeLabel?: string;
   timeColor?: 'red' | 'green' | 'default';
   stripeColor?: string;
+  badgeCount?: number;
 }
 
 /**
