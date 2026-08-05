@@ -24,6 +24,7 @@ export class TaskDetailModalComponent {
   leftPaneWidth: number = 38;
   isDragging: boolean = false;
   isClosing: boolean = false;
+  isFullscreen: boolean = false;
 
   triggerClose() {
     this.isClosing = true;
@@ -31,6 +32,10 @@ export class TaskDetailModalComponent {
       this.close.emit();
       this.isClosing = false;
     }, 300);
+  }
+
+  toggleFullscreen() {
+    this.isFullscreen = !this.isFullscreen;
   }
 
   startDrag(event: MouseEvent) {
