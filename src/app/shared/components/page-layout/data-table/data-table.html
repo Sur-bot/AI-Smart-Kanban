@@ -1,44 +1,275 @@
-<div class="tasks-table-wrapper">
-    <div class="table-header">
-        <div class="table-row header-row">
-            <div class="table-cell cell-settings">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-slate-400 hover:text-slate-600 cursor-pointer">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                </svg>
-            </div>
-            <div *ngFor="let col of columns" class="table-cell" [ngClass]="{
-          'cell-name': col.id === 'name',
-          'cell-activity': col.id === 'activity',
-          'cell-due': col.id === 'dueDate',
-          'cell-creator': col.id === 'creator',
-          'cell-assignee': col.id === 'assignee',
-          'cell-project': col.id === 'project',
-          'cell-tags': col.id === 'tags'
-        }">
-                <span class="col-label">{{ col.label }}</span>
-                <svg *ngIf="col.hasDropdown" class="w-3 h-3 opacity-40 ml-1" fill="none" viewBox="0 0 24 24"
-                    stroke-width="2.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                </svg>
-            </div>
+<section class="tasks-table-wrapper" aria-label="Bảng danh sách tác vụ">
+  
+  <!-- Table Container (Co giãn tự động theo số lượng task) -->
+  <div class="table-container custom-scrollbar">
+    
+    <!-- Table Header -->
+    <header class="table-header">
+      <div class="table-row header-row">
+        
+        <!-- Cột 1: Cố định Checkbox all + Cài đặt -->
+        <div class="table-cell cell-settings">
+          <input type="checkbox" 
+                 [checked]="isAllSelected" 
+                 [indeterminate]="isIndeterminate" 
+                 (change)="toggleSelectAll($any($event.target).checked)" 
+                 class="task-checkbox" 
+                 aria-label="Chọn tất cả tác vụ">
+          <button type="button" class="btn-icon" title="Cài đặt cột" aria-label="Cài đặt cột">
+            <mat-icon class="icon-center text-[16px]">settings</mat-icon>
+          </button>
         </div>
-    </div>
+
+        <!-- Cột 2: Cố định cột TÊN (Không thể kéo thả, có thể resize) -->
+        <div class="table-cell header-col-cell header-fixed-name" 
+             [style.width.px]="nameColumn.width" 
+             [style.min-width.px]="nameColumn.width"
+             [style.max-width.px]="nameColumn.width">
+          <div class="col-static-handle">
+            <span class="col-label">{{ nameColumn.label }}</span>
+            <mat-icon class="sort-arrow">expand_more</mat-icon>
+          </div>
+          <!-- Splitter điều chỉnh độ rộng cột Tên -->
+          <div class="col-splitter" (mousedown)="startResize($event, nameColumn)"></div>
+        </div>
+
+        <!-- Các cột kéo thả sắp xếp thứ tự (Angular CDK) -->
+        <div class="draggable-header-list flex items-center" 
+             cdkDropList 
+             cdkDropListOrientation="horizontal" 
+             (cdkDropListDropped)="onColumnDrop($event)">
+          
+          <div *ngFor="let col of draggableColumns" 
+               class="table-cell header-col-cell" 
+               [class.col-assignee-highlight]="col.id === 'assignee'"
+               cdkDrag 
+               [style.width.px]="col.width" 
+               [style.min-width.px]="col.width"
+               [style.max-width.px]="col.width">
+            
+            <div class="col-drag-handle" cdkDragHandle>
+              <span class="col-label">{{ col.label }}</span>
+              <mat-icon *ngIf="col.hasDropdown || col.sortable" class="sort-arrow">
+                {{ col.id === 'assignee' ? 'expand_less' : 'expand_more' }}
+              </mat-icon>
+            </div>
+
+            <!-- Splitter điều chỉnh độ rộng cột (Không có tooltip, không có padding thô) -->
+            <div class="col-splitter" (mousedown)="startResize($event, col)"></div>
+          </div>
+
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Table Body -->
     <div class="table-body">
-        <div *ngIf="tasks.length > 0" class="table-rows">
-            <div *ngFor="let task of tasks" class="table-row data-row">
-                <div class="table-cell cell-settings"></div>
-                <div class="table-cell cell-name">{{ task.title }}</div>
-                <div class="table-cell cell-activity">{{ task.activity }}</div>
-                <div class="table-cell cell-due">{{ task.dueDate }}</div>
-                <div class="table-cell cell-creator">{{ task.creator }}</div>
-                <div class="table-cell cell-assignee">{{ task.assignee }}</div>
-                <div class="table-cell cell-project">{{ task.project }}</div>
-                <div class="table-cell cell-tags">
-                    <span *ngFor="let tag of task.tags" class="tag-badge">{{ tag }}</span>
-                </div>
+      <div *ngIf="tasks.length > 0" class="table-rows">
+        <article *ngFor="let task of tasks" 
+                 class="table-row data-row group" 
+                 [class.row-selected]="isRowSelected(task)"
+                 (click)="toggleRowSelection(task, $event)">
+          
+          <!-- Cột Checkbox & Menu Icon của dòng -->
+          <div class="table-cell cell-settings" (click)="$event.stopPropagation()">
+            <input type="checkbox" 
+                   [checked]="isRowSelected(task)" 
+                   (change)="toggleRowSelection(task)" 
+                   class="task-checkbox" 
+                   aria-label="Chọn tác vụ">
+            <button type="button" class="btn-icon" aria-label="Menu tác vụ">
+              <mat-icon class="icon-center text-[16px] text-slate-400 cursor-grab">menu</mat-icon>
+            </button>
+          </div>
+
+          <!-- Nội dung từng cột (Đồng bộ thứ tự theo allColumns) -->
+          <ng-container *ngFor="let col of allColumns">
+            
+            <!-- Tên task -->
+            <div *ngIf="col.id === 'name'" 
+                 class="table-cell cell-name" 
+                 [style.width.px]="col.width" 
+                 [style.min-width.px]="col.width"
+                 [style.max-width.px]="col.width">
+              <span class="task-title-link" (click)="onTitleClick(task, $event)">
+                {{ task.title }}
+              </span>
+              <button type="button" 
+                      class="btn-edit-task opacity-0 group-hover:opacity-100 transition-opacity ml-1.5" 
+                      (click)="onTitleClick(task, $event)" 
+                      title="Chỉnh sửa tác vụ"
+                      aria-label="Chỉnh sửa tác vụ">
+                <mat-icon class="icon-center text-[14px]">edit</mat-icon>
+              </button>
             </div>
-        </div>
-        <ng-content select="[emptyState]"></ng-content>
+
+            <!-- Hoạt động -->
+            <div *ngIf="col.id === 'activity'" 
+                 class="table-cell cell-activity" 
+                 [style.width.px]="col.width" 
+                 [style.min-width.px]="col.width"
+                 [style.max-width.px]="col.width">
+              <time class="text-slate-600 text-[13px] whitespace-nowrap">
+                {{ formatDate(task.updatedAt || task.createdAt) || '5 Thg 8, 15:45' }}
+              </time>
+            </div>
+
+            <!-- Hạn chót -->
+            <div *ngIf="col.id === 'dueDate'" 
+                 class="table-cell cell-due" 
+                 [style.width.px]="col.width" 
+                 [style.min-width.px]="col.width"
+                 [style.max-width.px]="col.width">
+              <span class="due-badge">
+                {{ formatDate(task.dueDate) || '12 Thg 8, 19:00' }}
+              </span>
+            </div>
+
+            <!-- Người tạo -->
+            <div *ngIf="col.id === 'creator'" 
+                 class="table-cell cell-user" 
+                 [style.width.px]="col.width" 
+                 [style.min-width.px]="col.width"
+                 [style.max-width.px]="col.width">
+              <figure class="user-avatar-circle bg-slate-700">
+                <mat-icon class="icon-center text-[13px]">person</mat-icon>
+              </figure>
+              <span class="user-name-text">{{ task.creator?.name || 'Văn Anh Nguyễn' }}</span>
+            </div>
+
+            <!-- Người được phân công (Nổi bật toàn bộ cột với nền xanh nhạt + avatar theo mẫu) -->
+            <div *ngIf="col.id === 'assignee'" 
+                 class="table-cell cell-user col-assignee-highlight" 
+                 [style.width.px]="col.width" 
+                 [style.min-width.px]="col.width"
+                 [style.max-width.px]="col.width">
+              <figure class="user-avatar-circle bg-slate-500">
+                <mat-icon class="icon-center text-[13px]">person</mat-icon>
+              </figure>
+              <span class="user-name-text font-normal text-slate-800">{{ task.assignee?.name || (task.assignees && task.assignees[0]?.name) || 'Văn Anh Nguyễn' }}</span>
+            </div>
+
+            <!-- Dự án (Hiện nút + khi hover) -->
+            <div *ngIf="col.id === 'project'" 
+                 class="table-cell cell-project" 
+                 [style.width.px]="col.width" 
+                 [style.min-width.px]="col.width"
+                 [style.max-width.px]="col.width"
+                 (click)="$event.stopPropagation()">
+              <button type="button" 
+                      class="quick-add-btn opacity-0 group-hover:opacity-100 transition-opacity" 
+                      title="Thêm dự án"
+                      aria-label="Thêm dự án">
+                <mat-icon class="icon-center text-[14px]">add</mat-icon>
+              </button>
+            </div>
+
+            <!-- Thẻ (Hiện nút + khi hover) -->
+            <div *ngIf="col.id === 'tags'" 
+                 class="table-cell cell-tags" 
+                 [style.width.px]="col.width" 
+                 [style.min-width.px]="col.width"
+                 [style.max-width.px]="col.width"
+                 (click)="$event.stopPropagation()">
+              <span *ngFor="let label of task.labels" class="tag-badge">{{ label.name }}</span>
+              <button type="button" 
+                      class="quick-add-btn opacity-0 group-hover:opacity-100 transition-opacity" 
+                      title="Thêm thẻ"
+                      aria-label="Thêm thẻ">
+                <mat-icon class="icon-center text-[14px]">add</mat-icon>
+              </button>
+            </div>
+
+          </ng-container>
+
+        </article>
+      </div>
+
+      <ng-content select="[emptyState]"></ng-content>
     </div>
-</div>
+
+  </div>
+
+  <!-- Thanh Thống kê & Phân trang (Summary Footer Bar) -->
+  <footer class="table-summary-bar">
+    <div class="summary-left">
+      <span class="summary-stat">
+        ĐÃ CHỌN: <strong>{{ selectedIds.size }} / {{ tasks.length }}</strong>
+      </span>
+      <span class="summary-stat">
+        TỔNG: <button type="button" class="btn-show-total">HIỂN THỊ</button>
+      </span>
+    </div>
+
+    <div class="summary-center">
+      <span class="summary-stat">
+        TRANG: <strong>1</strong>
+      </span>
+    </div>
+
+    <div class="summary-right">
+      <span class="summary-stat">BẢN GHI:</span>
+      <div class="records-dropdown-box">
+        <select [(ngModel)]="pageSize" class="records-select" aria-label="Số bản ghi hiển thị">
+          <option *ngFor="let opt of pageSizeOptions" [value]="opt">{{ opt }}</option>
+        </select>
+        <mat-icon class="dropdown-icon">expand_more</mat-icon>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Thanh Thao tác hàng loạt (Batch Action Bottom Bar) -->
+  <section class="batch-action-bar" aria-label="Thao tác hàng loạt">
+    <div class="action-dropdown-box" [class.box-disabled]="selectedIds.size === 0">
+      <select [(ngModel)]="selectedAction" 
+              [disabled]="selectedIds.size === 0" 
+              class="action-select" 
+              aria-label="Chọn hành động hàng loạt">
+        <option value="" disabled selected>CHỌN HÀNH ĐỘNG</option>
+        <option *ngFor="let action of actionOptions" [value]="action">{{ action }}</option>
+      </select>
+      <mat-icon class="dropdown-icon">expand_more</mat-icon>
+    </div>
+
+    <button type="button" 
+            class="btn-apply" 
+            [disabled]="selectedIds.size === 0" 
+            [class.btn-apply-active]="selectedIds.size > 0">
+      ÁP DỤNG
+    </button>
+
+    <label class="apply-all-label">
+      <input type="checkbox" 
+             [checked]="applyToAll" 
+             (change)="onApplyAllCheckboxClick($event)" 
+             class="task-checkbox">
+      <span>DÀNH CHO TẤT CẢ</span>
+    </label>
+  </section>
+
+  <!-- Popup Modal Xác nhận "Dành cho tất cả" -->
+  <div *ngIf="showApplyAllModal" 
+       class="modal-backdrop-center" 
+       role="dialog" 
+       aria-modal="true" 
+       aria-labelledby="modal-apply-title">
+    <div class="modal-dialog-card">
+      <p id="modal-apply-title" class="modal-message-text">
+        Hành động này sẽ được áp dụng cho tất cả các mục được chọn bởi bộ lọc, bao gồm các mục ở những trang khác
+      </p>
+      <div class="modal-actions-row">
+        <button type="button" class="btn-confirm-gray" (click)="confirmApplyAll()">
+          Xác nhận
+        </button>
+        <button type="button" class="btn-cancel-underline" (click)="cancelApplyAll()">
+          Hủy bỏ
+        </button>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+

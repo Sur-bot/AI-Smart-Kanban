@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { PageToolbarComponent, ToolbarField } from '../../../../shared/components/page-layout/page-toolbar/page-toolbar';
 import { ViewFilterBarComponent, QuickFilter } from '../../../../shared/components/page-layout/view-filter-bar/view-filter-bar';
 import { DataTableComponent } from '../../../../shared/components/page-layout/data-table/data-table';
-import { TaskItem, TaskViewMode } from '../../../../shared/models/task-list.model';
+import { TaskViewMode } from '../../../../shared/models/task-list.model';
+import { TaskItem } from '../../../../core/models/task.model';
 
 @Component({
   selector: 'app-project-page',
