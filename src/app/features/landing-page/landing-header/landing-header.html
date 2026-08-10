@@ -1,5 +1,6 @@
 <header class="header-container">
   <nav class="nav-container" aria-label="Điều hướng chính">
+    <!-- Logo -->
     <a routerLink="/" class="logo-link" title="AI Smart Kanban - Trang chủ">
       <svg width="134" height="36" viewBox="0 0 112 30" xmlns="http://www.w3.org/2000/svg">
         <g transform="translate(0, 3)">
@@ -8,69 +9,160 @@
             fill="#00629A"
           />
           <circle cx="10" cy="10" r="3" fill="#3FC0F0" />
-          <text
-            x="28"
-            y="19"
-            font-family="Montserrat, system-ui, -apple-system, sans-serif"
-            font-size="20"
-            font-weight="700"
-            fill="#00629A"
-          >
-            Digit
-          </text>
-          <text
-            x="77"
-            y="19"
-            font-family="Montserrat, system-ui, -apple-system, sans-serif"
-            font-size="20"
-            font-weight="700"
-            fill="#3FC0F0"
-          >
-            24
-          </text>
+          <text x="28" y="19" font-family="Montserrat, system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#00629A">Digit</text>
+          <text x="77" y="19" font-family="Montserrat, system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#3FC0F0">24</text>
         </g>
       </svg>
     </a>
 
+    <!-- Nav Links -->
     <ul class="nav-links">
       <li>
-        <a href="#features" class="nav-item">{{ 'LANDING.FEATURES' | translate }}</a>
+        <button type="button" class="nav-item">
+          <span>{{ 'LANDING.FEATURES' | translate }}</span>
+          <mat-icon fontSet="material-icons-outlined" class="!text-[20px] !w-[20px] !h-[20px] nav-icon">keyboard_arrow_down</mat-icon>
+        </button>
+      </li>
+
+      <!-- GIẢI PHÁP — dropdown (data-driven) -->
+      <li class="relative">
+        <button
+          type="button"
+          class="nav-item"
+          [class.nav-item--active]="isSolutionsOpen()"
+          (click)="toggleSolutions($event)"
+          aria-haspopup="true"
+          [attr.aria-expanded]="isSolutionsOpen()"
+        >
+          <span>{{ 'LANDING.SOLUTIONS' | translate }}</span>
+          <mat-icon
+            fontSet="material-icons-outlined"
+            class="!text-[20px] !w-[20px] !h-[20px] nav-icon"
+            [class.rotate-180]="isSolutionsOpen()"
+          >keyboard_arrow_down</mat-icon>
+        </button>
+
+        <!-- Dropdown Panel -->
+        <div
+          *ngIf="isSolutionsOpen()"
+          class="solutions-dropdown"
+          (click)="$event.stopPropagation()"
+          role="menu"
+        >
+          <!-- Main groups (normal columns) -->
+          <ng-container *ngFor="let group of solutionsDropdown.groups">
+            <section
+              class="dropdown-col"
+              [class.dropdown-col--wide]="group.twoColumns"
+              [attr.aria-labelledby]="group.id"
+            >
+              <header class="dropdown-col-header" [id]="group.id">
+                <mat-icon fontSet="material-icons-outlined" class="!text-[18px]">{{ group.icon }}</mat-icon>
+                <h3>{{ group.titleKey | translate }}</h3>
+              </header>
+
+              <!-- Two-column layout (e.g. Industry) -->
+              <ng-container *ngIf="group.twoColumns; else singleColumn">
+                <div class="dropdown-col-grid">
+                  <ul class="dropdown-list" *ngFor="let col of getColumns(group)">
+                    <li *ngFor="let item of col">
+                      <button type="button" class="dropdown-link">{{ item.labelKey | translate }}</button>
+                    </li>
+                  </ul>
+                </div>
+              </ng-container>
+
+              <!-- Single-column layout -->
+              <ng-template #singleColumn>
+                <ul class="dropdown-list">
+                  <li *ngFor="let item of group.items">
+                    <button type="button" class="dropdown-link">{{ item.labelKey | translate }}</button>
+                  </li>
+                </ul>
+              </ng-template>
+            </section>
+          </ng-container>
+
+          <!-- Aside panel (shaded right column) -->
+          <aside class="dropdown-col dropdown-col--aside">
+            <section
+              *ngFor="let group of solutionsDropdown.asideGroups; let i = index"
+              [class.mt-5]="i > 0"
+              [attr.aria-labelledby]="group.id"
+            >
+              <header class="dropdown-col-header" [id]="group.id">
+                <mat-icon fontSet="material-icons-outlined" class="!text-[18px]">{{ group.icon }}</mat-icon>
+                <h3>{{ group.titleKey | translate }}</h3>
+              </header>
+              <ul class="dropdown-list">
+                <li *ngFor="let item of group.items">
+                  <button type="button" class="dropdown-link">{{ item.labelKey | translate }}</button>
+                </li>
+              </ul>
+            </section>
+
+            <!-- See All Footer -->
+            <a
+              *ngIf="solutionsDropdown.seeAllKey"
+              [routerLink]="solutionsDropdown.seeAllRoute"
+              class="dropdown-see-all"
+            >
+              {{ solutionsDropdown.seeAllKey | translate }}
+              <mat-icon fontSet="material-icons-outlined" class="!text-[16px]">chevron_right</mat-icon>
+            </a>
+          </aside>
+        </div>
+      </li>
+
+      <li>
+        <button type="button" class="nav-item">
+          <span>{{ 'LANDING.TECH' | translate }}</span>
+          <mat-icon fontSet="material-icons-outlined" class="!text-[20px] !w-[20px] !h-[20px] nav-icon">keyboard_arrow_down</mat-icon>
+        </button>
       </li>
       <li>
-        <a href="#solutions" class="nav-item">{{ 'LANDING.SOLUTIONS' | translate }}</a>
+        <button type="button" class="nav-item">
+          <span>{{ 'LANDING.PARTNERS' | translate }}</span>
+          <mat-icon fontSet="material-icons-outlined" class="!text-[20px] !w-[20px] !h-[20px] nav-icon">keyboard_arrow_down</mat-icon>
+        </button>
       </li>
       <li>
-        <a href="#tech" class="nav-item">{{ 'LANDING.TECH' | translate }}</a>
+        <button type="button" class="nav-item">
+          <span>{{ 'LANDING.WHY_DIGIT24' | translate }}</span>
+          <mat-icon fontSet="material-icons-outlined" class="!text-[20px] !w-[20px] !h-[20px] nav-icon">keyboard_arrow_down</mat-icon>
+        </button>
       </li>
     </ul>
 
+    <!-- CTA + Language Switcher -->
     <div class="cta-container">
-      <a routerLink="/login" class="btn-login" [title]="'LANDING.LOGIN' | translate">
-        {{ 'LANDING.LOGIN' | translate }}
-      </a>
-      <a routerLink="/register" class="btn-start" [title]="'LANDING.START' | translate">
-        {{ 'LANDING.START' | translate }}
-      </a>
+      <a routerLink="/login" class="btn-login" [title]="'LANDING.LOGIN' | translate">{{ 'LANDING.LOGIN' | translate }}</a>
+      <a routerLink="/register" class="btn-start" [title]="'LANDING.START' | translate">{{ 'LANDING.START' | translate }}</a>
 
       <div class="relative">
         <button
+          type="button"
           (click)="toggleLangPopup($event)"
-          class="flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm font-normal text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
+          class="flex items-center gap-0.5 px-2 py-1.5 rounded-lg text-[13px] font-normal text-slate-700 hover:text-[#1A1B1F] transition-colors cursor-pointer"
+          [title]="'Chuyển ngôn ngữ'"
         >
           <span>{{ currentLangLabel }}</span>
-          <mat-icon fontSet="material-icons-outlined" class="!text-[18px] !w-[18px] !h-[18px] opacity-70">keyboard_arrow_down</mat-icon>
         </button>
 
         <div
           *ngIf="isLangPopupOpen()"
           class="absolute right-0 top-full mt-4 w-max rounded-lg bg-white shadow-lg border border-slate-100 overflow-hidden flex flex-col z-50 py-1"
+          role="listbox"
         >
           <button
             *ngFor="let lang of languages"
+            type="button"
             (click)="changeLanguage(lang.code)"
             class="text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors whitespace-nowrap"
             [class.font-bold]="lang.code === currentLang()"
             [class.text-blue-600]="lang.code === currentLang()"
+            role="option"
+            [attr.aria-selected]="lang.code === currentLang()"
           >
             {{ lang.fullName }}
           </button>
