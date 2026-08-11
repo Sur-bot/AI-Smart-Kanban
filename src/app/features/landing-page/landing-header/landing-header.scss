@@ -1,116 +1,60 @@
+// ─── Header layout ──────────────────────────────────────────────────────────
+
 .header-container {
-  @apply sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-none;
+  @apply fixed top-0 left-0 right-0 z-50 h-16;
+  @apply bg-white/95 backdrop-blur-sm;
+  @apply border-b border-slate-100;
 }
 
 .nav-container {
-  @apply max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 h-16;
+  @apply flex items-center h-full max-w-[1400px] mx-auto px-6 gap-6;
 }
 
 .logo-link {
-  @apply flex items-center gap-2 shrink-0;
+  @apply flex items-center flex-shrink-0;
 }
 
+// ─── Nav links ──────────────────────────────────────────────────────────────
+
 .nav-links {
-  @apply hidden lg:flex items-center gap-0 text-[13px] font-semibold text-slate-700;
+  @apply flex items-center gap-1 list-none p-0 m-0 flex-1;
 }
 
 .nav-item {
-  @apply flex items-center gap-0.5 px-3 py-1.5 rounded-md
-         text-slate-700 hover:text-[#1A1B1F]
-         transition-all duration-150 cursor-pointer whitespace-nowrap;
+  @apply flex items-center gap-0.5 px-2 py-1.5 rounded-lg;
+  @apply text-[13px] font-semibold text-slate-700;
+  @apply bg-transparent border-none cursor-pointer;
+  @apply transition-colors duration-150;
+  @apply whitespace-nowrap;
+
+  &:hover { @apply text-[#2563EB]; }
 
   .nav-icon {
-    @apply transition-transform duration-200 text-slate-400 opacity-70;
+    @apply text-slate-400;
   }
 
-  &:hover .nav-icon {
-    @apply text-[#1A1B1F] opacity-100;
-    transform: rotate(180deg);
+  &--active {
+    @apply text-blue-600;
+    .nav-icon { @apply text-blue-500; }
   }
 }
 
+// ─── CTA buttons ────────────────────────────────────────────────────────────
+
 .cta-container {
-  @apply flex items-center gap-2 shrink-0;
+  @apply flex items-center gap-2 flex-shrink-0;
 }
 
 .btn-login {
-  @apply hidden sm:inline-flex items-center justify-center shrink-0 px-3 py-2.5 text-[14px] font-semibold text-blue-600
-         border border-blue-500 rounded-lg hover:bg-blue-50
-         transition-all duration-200 !whitespace-nowrap;
+  @apply hidden sm:inline-flex items-center justify-center shrink-0;
+  @apply px-3 py-2.5 text-[14px] font-semibold;
+  @apply text-blue-600 border border-blue-500 rounded-lg;
+  @apply hover:bg-blue-50 transition-all duration-200 !whitespace-nowrap;
 }
 
 .btn-start {
-  @apply inline-flex items-center justify-center shrink-0 px-3 py-2.5 text-[14px] font-semibold
-         text-[#1A1B1F] bg-[#BDF300] rounded-lg
-         hover:brightness-95 transition-all duration-200 !whitespace-nowrap;
+  @apply inline-flex items-center justify-center shrink-0;
+  @apply px-3 py-2.5 text-[14px] font-semibold;
+  @apply text-[#1A1B1F] bg-[#BDF300] rounded-lg;
+  @apply hover:brightness-95 transition-all duration-200 !whitespace-nowrap;
 }
-
-/* ─── Solutions Dropdown ─────────────────────────────────────── */
-.nav-item--active {
-  @apply text-blue-600;
-  .nav-icon { @apply text-blue-600 opacity-100; }
-}
-
-.solutions-dropdown {
-  position: fixed;
-  top: 64px; /* khớp với h-16 */
-  left: 0;
-  right: 0;
-  z-index: 100;
-  @apply bg-white border-t border-b border-slate-100 shadow-xl;
-  display: flex;
-  justify-content: center;
-  animation: dd-fade-in 0.18s ease;
-
-  &__inner {
-    @apply max-w-7xl w-full flex gap-0 px-6 py-7;
-  }
-}
-
-@keyframes dd-fade-in {
-  from { opacity: 0; transform: translateY(-6px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.dropdown-col {
-  @apply flex flex-col px-6 py-6 border-r border-slate-100 min-w-[160px];
-
-  &--wide {
-    @apply min-w-[340px];
-  }
-
-  &--aside {
-    @apply border-r-0 bg-slate-50/60 rounded-r-xl min-w-[180px];
-  }
-}
-
-.dropdown-col-grid {
-  @apply flex gap-0;
-  & > ul { @apply flex-1; }
-}
-
-.dropdown-col-header {
-  @apply flex items-center gap-1.5 mb-4;
-  mat-icon { @apply text-slate-400; }
-  h3 { @apply text-[11px] font-bold uppercase tracking-wider text-slate-400; }
-}
-
-.dropdown-list {
-  @apply flex flex-col gap-0.5;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.dropdown-link {
-  @apply w-full text-left px-0 py-[5px] text-[13px] text-slate-600
-         bg-transparent border-none
-         hover:text-[#1A1B1F] hover:translate-x-0.5
-         transition-all duration-150 cursor-pointer;
-}
-
-.dropdown-see-all {
-  @apply mt-auto pt-5 flex items-center gap-0.5 text-[13px] font-semibold text-blue-600
-         hover:text-blue-700 transition-colors;
-}
-

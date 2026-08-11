@@ -4,11 +4,12 @@ import { RouterModule } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 
-import { NavDropdownConfig, NavMenuGroup } from './landing-header.types';
+import { NavDropdownConfig, NavItem } from './landing-header.types';
+import { NavDropdownComponent } from '../nav-dropdown/nav-dropdown.component';
 
 @Component({
   selector: 'app-landing-header',
-  imports: [CommonModule, RouterModule, TranslatePipe, MatIconModule],
+  imports: [CommonModule, RouterModule, TranslatePipe, MatIconModule, NavDropdownComponent],
   templateUrl: './landing-header.html',
   styleUrl: './landing-header.scss',
 })
@@ -17,9 +18,10 @@ export class LandingHeaderComponent implements OnInit {
   translate = inject(TranslateService);
 
   // ─── UI State ───────────────────────────────────────────────
+  /** Tracks which nav dropdown is open. null = all closed. */
+  activeDropdown = signal<string | null>(null);
   isLangPopupOpen = signal(false);
-  isSolutionsOpen = signal(false);
-  currentLang     = signal('vi');
+  currentLang = signal('vi');
 
   // ─── Language Options ────────────────────────────────────────
   languages = [
@@ -27,20 +29,149 @@ export class LandingHeaderComponent implements OnInit {
     { code: 'en', label: 'EN', fullName: 'United Kingdom (English)' },
   ];
 
-  // ─── Solutions Dropdown Data ─────────────────────────────────
-  /**
-   * Data-driven configuration for the "GIẢI PHÁP" dropdown.
-   * Adding or removing menu items only requires editing this object —
-   * no changes to the HTML template needed.
-   *
-   * Future: replace with an API call from a CMS/backend service.
-   */
-  readonly solutionsDropdown: NavDropdownConfig = {
+  // ─── Dropdown Configs ────────────────────────────────────────
+
+  private readonly featuresDropdown: NavDropdownConfig = {
+    variant: 'mega-tabbed',
+    seeAllTabsKey: 'LANDING.DD.FEAT_SEE_ALL_TOOLS',
+    seeAllTabsRoute: '/features',
+    tabs: [
+      {
+        key: 'crm',
+        labelKey: 'LANDING.DD.FEAT_CRM_TAB',
+        matIcon: 'manage_accounts',
+        iconColor: '#409EEF',
+        contentTitleKey: 'LANDING.DD.FEAT_CRM_TITLE',
+        contentSubtitleKey: 'LANDING.DD.FEAT_CRM_SUBTITLE',
+        seeAllFeaturesKey: 'LANDING.DD.FEAT_CRM_SEE_ALL',
+        seeAllFeaturesRoute: '/features/crm',
+        items: [
+          { labelKey: 'LANDING.DD.FEAT_CRM_SALES',         descKey: 'LANDING.DD.FEAT_CRM_SALES_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_CRM_MARKETING',     descKey: 'LANDING.DD.FEAT_CRM_MARKETING_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_CRM_COLLAB',        descKey: 'LANDING.DD.FEAT_CRM_COLLAB_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_CRM_CONTACT',       descKey: 'LANDING.DD.FEAT_CRM_CONTACT_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_CRM_ANALYTICS',     descKey: 'LANDING.DD.FEAT_CRM_ANALYTICS_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_CRM_MOBILE',        descKey: 'LANDING.DD.FEAT_CRM_MOBILE_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_CRM_PROMO',         descKey: 'LANDING.DD.FEAT_CRM_PROMO_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_CRM_AUTOMATION',    descKey: 'LANDING.DD.FEAT_CRM_AUTOMATION_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_CRM_COPILOT',       descKey: 'LANDING.DD.FEAT_CRM_COPILOT_DESC' },
+        ],
+      },
+      {
+        key: 'tasks',
+        labelKey: 'LANDING.DD.FEAT_TASKS_TAB',
+        matIcon: 'task_alt',
+        iconColor: '#BEEB00',
+        contentTitleKey: 'LANDING.DD.FEAT_TASKS_TITLE',
+        contentSubtitleKey: 'LANDING.DD.FEAT_TASKS_SUBTITLE',
+        seeAllFeaturesKey: 'LANDING.DD.FEAT_TASKS_SEE_ALL',
+        seeAllFeaturesRoute: '/features/tasks',
+        items: [
+          { labelKey: 'LANDING.DD.FEAT_TASKS_KANBAN',     descKey: 'LANDING.DD.FEAT_TASKS_KANBAN_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_TASKS_GANTT',      descKey: 'LANDING.DD.FEAT_TASKS_GANTT_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_TASKS_SCRUM',      descKey: 'LANDING.DD.FEAT_TASKS_SCRUM_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_TASKS_DEADLINE',   descKey: 'LANDING.DD.FEAT_TASKS_DEADLINE_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_TASKS_TEMPLATES',  descKey: 'LANDING.DD.FEAT_TASKS_TEMPLATES_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_TASKS_REPORTS',    descKey: 'LANDING.DD.FEAT_TASKS_REPORTS_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_TASKS_CHECKLIST',  descKey: 'LANDING.DD.FEAT_TASKS_CHECKLIST_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_TASKS_TIME',       descKey: 'LANDING.DD.FEAT_TASKS_TIME_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_TASKS_MOBILE',     descKey: 'LANDING.DD.FEAT_TASKS_MOBILE_DESC' },
+        ],
+      },
+      {
+        key: 'collab',
+        labelKey: 'LANDING.DD.FEAT_COLLAB_TAB',
+        matIcon: 'group_work',
+        iconColor: '#FF9500',
+        contentTitleKey: 'LANDING.DD.FEAT_COLLAB_TITLE',
+        contentSubtitleKey: 'LANDING.DD.FEAT_COLLAB_SUBTITLE',
+        seeAllFeaturesKey: 'LANDING.DD.FEAT_COLLAB_SEE_ALL',
+        seeAllFeaturesRoute: '/features/collab',
+        items: [
+          { labelKey: 'LANDING.DD.FEAT_COLLAB_CHAT',     descKey: 'LANDING.DD.FEAT_COLLAB_CHAT_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_COLLAB_VIDEO',    descKey: 'LANDING.DD.FEAT_COLLAB_VIDEO_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_COLLAB_DOCS',     descKey: 'LANDING.DD.FEAT_COLLAB_DOCS_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_COLLAB_CALENDAR', descKey: 'LANDING.DD.FEAT_COLLAB_CALENDAR_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_COLLAB_STORAGE',  descKey: 'LANDING.DD.FEAT_COLLAB_STORAGE_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_COLLAB_NEWS',     descKey: 'LANDING.DD.FEAT_COLLAB_NEWS_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_COLLAB_STREAM',   descKey: 'LANDING.DD.FEAT_COLLAB_STREAM_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_COLLAB_WORKGROUP',descKey: 'LANDING.DD.FEAT_COLLAB_WORKGROUP_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_COLLAB_MOBILE',   descKey: 'LANDING.DD.FEAT_COLLAB_MOBILE_DESC' },
+        ],
+      },
+      {
+        key: 'website',
+        labelKey: 'LANDING.DD.FEAT_WEB_TAB',
+        matIcon: 'storefront',
+        iconColor: '#FF4782',
+        contentTitleKey: 'LANDING.DD.FEAT_WEB_TITLE',
+        contentSubtitleKey: 'LANDING.DD.FEAT_WEB_SUBTITLE',
+        seeAllFeaturesKey: 'LANDING.DD.FEAT_WEB_SEE_ALL',
+        seeAllFeaturesRoute: '/features/website',
+        items: [
+          { labelKey: 'LANDING.DD.FEAT_WEB_BUILDER',    descKey: 'LANDING.DD.FEAT_WEB_BUILDER_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_WEB_CATALOG',    descKey: 'LANDING.DD.FEAT_WEB_CATALOG_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_WEB_LANDING',    descKey: 'LANDING.DD.FEAT_WEB_LANDING_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_WEB_FORM',       descKey: 'LANDING.DD.FEAT_WEB_FORM_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_WEB_STORE',      descKey: 'LANDING.DD.FEAT_WEB_STORE_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_WEB_SEO',        descKey: 'LANDING.DD.FEAT_WEB_SEO_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_WEB_CHAT',       descKey: 'LANDING.DD.FEAT_WEB_CHAT_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_WEB_PAYMENT',    descKey: 'LANDING.DD.FEAT_WEB_PAYMENT_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_WEB_ANALYTICS',  descKey: 'LANDING.DD.FEAT_WEB_ANALYTICS_DESC' },
+        ],
+      },
+      {
+        key: 'hr',
+        labelKey: 'LANDING.DD.FEAT_HR_TAB',
+        matIcon: 'engineering',
+        iconColor: '#28CC43',
+        contentTitleKey: 'LANDING.DD.FEAT_HR_TITLE',
+        contentSubtitleKey: 'LANDING.DD.FEAT_HR_SUBTITLE',
+        seeAllFeaturesKey: 'LANDING.DD.FEAT_HR_SEE_ALL',
+        seeAllFeaturesRoute: '/features/hr',
+        items: [
+          { labelKey: 'LANDING.DD.FEAT_HR_STRUCTURE',  descKey: 'LANDING.DD.FEAT_HR_STRUCTURE_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_HR_LEAVE',      descKey: 'LANDING.DD.FEAT_HR_LEAVE_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_HR_WORKTIME',   descKey: 'LANDING.DD.FEAT_HR_WORKTIME_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_HR_KPI',        descKey: 'LANDING.DD.FEAT_HR_KPI_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_HR_WORKFLOW',   descKey: 'LANDING.DD.FEAT_HR_WORKFLOW_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_HR_ROBOT',      descKey: 'LANDING.DD.FEAT_HR_ROBOT_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_HR_REPORT',     descKey: 'LANDING.DD.FEAT_HR_REPORT_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_HR_ONBOARD',    descKey: 'LANDING.DD.FEAT_HR_ONBOARD_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_HR_MOBILE',     descKey: 'LANDING.DD.FEAT_HR_MOBILE_DESC' },
+        ],
+      },
+      {
+        key: 'copilot',
+        labelKey: 'LANDING.DD.FEAT_COPILOT_TAB',
+        matIcon: 'smart_toy',
+        iconColor: '#804DF0',
+        contentTitleKey: 'LANDING.DD.FEAT_COPILOT_TITLE',
+        contentSubtitleKey: 'LANDING.DD.FEAT_COPILOT_SUBTITLE',
+        seeAllFeaturesKey: 'LANDING.DD.FEAT_COPILOT_SEE_ALL',
+        seeAllFeaturesRoute: '/features/copilot',
+        items: [
+          { labelKey: 'LANDING.DD.FEAT_COPILOT_SUMMARY',   descKey: 'LANDING.DD.FEAT_COPILOT_SUMMARY_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_COPILOT_FILL',      descKey: 'LANDING.DD.FEAT_COPILOT_FILL_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_COPILOT_TASK',      descKey: 'LANDING.DD.FEAT_COPILOT_TASK_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_COPILOT_WRITE',     descKey: 'LANDING.DD.FEAT_COPILOT_WRITE_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_COPILOT_IMAGE',     descKey: 'LANDING.DD.FEAT_COPILOT_IMAGE_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_COPILOT_TRANSLATE', descKey: 'LANDING.DD.FEAT_COPILOT_TRANSLATE_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_COPILOT_SEARCH',    descKey: 'LANDING.DD.FEAT_COPILOT_SEARCH_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_COPILOT_VOICE',     descKey: 'LANDING.DD.FEAT_COPILOT_VOICE_DESC' },
+          { labelKey: 'LANDING.DD.FEAT_COPILOT_ANALYST',   descKey: 'LANDING.DD.FEAT_COPILOT_ANALYST_DESC' },
+        ],
+      },
+    ],
+  };
+
+  private readonly solutionsDropdown: NavDropdownConfig = {
+    variant: 'wide',
     groups: [
       {
         id: 'dd-industry',
         titleKey: 'LANDING.DD.INDUSTRY_TITLE',
-        icon: 'apartment',
+        matIcon: 'apartment',
         twoColumns: true,
         items: [
           { labelKey: 'LANDING.DD.IND_TRANSPORT' },
@@ -60,7 +191,7 @@ export class LandingHeaderComponent implements OnInit {
       {
         id: 'dd-goal',
         titleKey: 'LANDING.DD.GOAL_TITLE',
-        icon: 'track_changes',
+        matIcon: 'track_changes',
         items: [
           { labelKey: 'LANDING.DD.GOAL_EFFICIENCY' },
           { labelKey: 'LANDING.DD.GOAL_COMMUNICATION' },
@@ -71,7 +202,7 @@ export class LandingHeaderComponent implements OnInit {
       {
         id: 'dd-tool',
         titleKey: 'LANDING.DD.TOOL_TITLE',
-        icon: 'build',
+        matIcon: 'build',
         items: [
           { labelKey: 'LANDING.DD.TOOL_PHONE' },
           { labelKey: 'LANDING.DD.TOOL_CRM' },
@@ -86,7 +217,7 @@ export class LandingHeaderComponent implements OnInit {
       {
         id: 'dd-size',
         titleKey: 'LANDING.DD.SIZE_TITLE',
-        icon: 'corporate_fare',
+        matIcon: 'corporate_fare',
         items: [
           { labelKey: 'LANDING.DD.SIZE_SOLO' },
           { labelKey: 'LANDING.DD.SIZE_SMB' },
@@ -96,7 +227,7 @@ export class LandingHeaderComponent implements OnInit {
       {
         id: 'dd-role',
         titleKey: 'LANDING.DD.ROLE_TITLE',
-        icon: 'groups',
+        matIcon: 'groups',
         items: [
           { labelKey: 'LANDING.DD.ROLE_MARKETING' },
           { labelKey: 'LANDING.DD.ROLE_HR' },
@@ -105,22 +236,101 @@ export class LandingHeaderComponent implements OnInit {
         ],
       },
     ],
-    seeAllKey:   'LANDING.DD.SEE_ALL',
+    seeAllKey: 'LANDING.DD.SEE_ALL',
     seeAllRoute: '/solutions',
   };
 
-  // ─── Helpers ─────────────────────────────────────────────────
-  /**
-   * Splits a group's items array in half for two-column layout.
-   * Used by groups with twoColumns = true.
-   */
-  getColumns(group: NavMenuGroup): [typeof group.items, typeof group.items] {
-    const half = Math.ceil(group.items.length / 2);
-    return [group.items.slice(0, half), group.items.slice(half)];
-  }
+  private readonly techDropdown: NavDropdownConfig = {
+    variant: 'wide',
+    groups: [
+      {
+        id: 'dd-tech-import',
+        titleKey: 'LANDING.DD.TECH_IMPORT_TITLE',
+        matIcon: 'import_export',
+        items: [
+          { labelKey: 'LANDING.DD.TECH_IMPORT_FRAMEWORKS', matIcon: 'code' },
+          { labelKey: 'LANDING.DD.TECH_IMPORT_MAKE',       matIcon: 'auto_fix_high' },
+          { labelKey: 'LANDING.DD.TECH_IMPORT_SHEET',      matIcon: 'table_chart' },
+          { labelKey: 'LANDING.DD.TECH_IMPORT_TASKS',      matIcon: 'task_alt' },
+        ],
+      },
+      {
+        id: 'dd-tech-sales',
+        titleKey: 'LANDING.DD.TECH_SALES_TITLE',
+        matIcon: 'point_of_sale',
+        items: [
+          { labelKey: 'LANDING.DD.TECH_SALES_SHIPPER',    matIcon: 'local_shipping' },
+          { labelKey: 'LANDING.DD.TECH_SALES_ANALYTICS',  matIcon: 'analytics' },
+          { labelKey: 'LANDING.DD.TECH_SALES_REPORT',     matIcon: 'bar_chart' },
+          { labelKey: 'LANDING.DD.TECH_SALES_DEALS',      matIcon: 'handshake' },
+        ],
+      },
+      {
+        id: 'dd-tech-marketing',
+        titleKey: 'LANDING.DD.TECH_MARKET_TITLE',
+        matIcon: 'campaign',
+        items: [
+          { labelKey: 'LANDING.DD.TECH_MARKET_SMS',       matIcon: 'sms' },
+          { labelKey: 'LANDING.DD.TECH_MARKET_FONTUMI',   matIcon: 'message' },
+          { labelKey: 'LANDING.DD.TECH_MARKET_VOICE',     matIcon: 'record_voice_over' },
+          { labelKey: 'LANDING.DD.TECH_MARKET_SOCIAL',    matIcon: 'share' },
+        ],
+      },
+      {
+        id: 'dd-tech-tasks',
+        titleKey: 'LANDING.DD.TECH_TASKS_TITLE',
+        matIcon: 'task',
+        items: [
+          { labelKey: 'LANDING.DD.TECH_TASKS_BURNUP',     matIcon: 'trending_up' },
+          { labelKey: 'LANDING.DD.TECH_TASKS_IQDESK',     matIcon: 'support_agent' },
+          { labelKey: 'LANDING.DD.TECH_TASKS_HELPDESK',   matIcon: 'help_center' },
+          { labelKey: 'LANDING.DD.TECH_TASKS_TRACKER',    matIcon: 'timer' },
+        ],
+      },
+    ],
+    seeAllKey: 'LANDING.DD.TECH_SEE_ALL',
+    seeAllRoute: '/integrations',
+  };
 
-  // ─── Lifecycle ───────────────────────────────────────────────
-  ngOnInit() {
+  private readonly partnersDropdown: NavDropdownConfig = {
+    variant: 'wide',
+    groups: [
+      {
+        id: 'dd-partner-customer',
+        titleKey: 'LANDING.DD.PART_CUSTOMER_TITLE',
+        matIcon: 'groups',
+        items: [
+          { labelKey: 'LANDING.DD.PART_DIRECTORY' },
+          { labelKey: 'LANDING.DD.PART_CONSULT' },
+        ],
+      },
+      {
+        id: 'dd-partner-biz',
+        titleKey: 'LANDING.DD.PART_BIZ_TITLE',
+        matIcon: 'handshake',
+        items: [
+          { labelKey: 'LANDING.DD.PART_BECOME',  isExternal: true },
+          { labelKey: 'LANDING.DD.PART_LOGIN',   isExternal: true },
+        ],
+      },
+    ],
+  };
+
+
+  /**
+   * Single source of truth for the navigation bar.
+   * Adding a new nav item = add 1 object here. No HTML changes needed.
+   */
+  readonly navItems: NavItem[] = [
+    { key: 'features',  labelKey: 'LANDING.FEATURES',    dropdown: this.featuresDropdown  },
+    { key: 'solutions', labelKey: 'LANDING.SOLUTIONS',   dropdown: this.solutionsDropdown },
+    { key: 'tech',      labelKey: 'LANDING.TECH',        dropdown: this.techDropdown      },
+    { key: 'partners',  labelKey: 'LANDING.PARTNERS',    dropdown: this.partnersDropdown  },
+    { key: 'why',       labelKey: 'LANDING.WHY_DIGIT24'                                   },
+  ];
+
+
+  ngOnInit(): void {
     const savedLang = localStorage.getItem('appLang');
     if (savedLang) {
       this.currentLang.set(savedLang);
@@ -130,20 +340,20 @@ export class LandingHeaderComponent implements OnInit {
     }
   }
 
-  // ─── Event Handlers ──────────────────────────────────────────
-  toggleLangPopup(event: Event) {
+
+  toggleDropdown(key: string, event: Event): void {
     event.stopPropagation();
-    this.isSolutionsOpen.set(false);
+    this.isLangPopupOpen.set(false);
+    this.activeDropdown.set(this.activeDropdown() === key ? null : key);
+  }
+
+  toggleLangPopup(event: Event): void {
+    event.stopPropagation();
+    this.activeDropdown.set(null);
     this.isLangPopupOpen.set(!this.isLangPopupOpen());
   }
 
-  toggleSolutions(event: Event) {
-    event.stopPropagation();
-    this.isLangPopupOpen.set(false);
-    this.isSolutionsOpen.set(!this.isSolutionsOpen());
-  }
-
-  changeLanguage(lang: string) {
+  changeLanguage(lang: string): void {
     this.translate.use(lang);
     this.currentLang.set(lang);
     localStorage.setItem('appLang', lang);
@@ -151,9 +361,9 @@ export class LandingHeaderComponent implements OnInit {
   }
 
   @HostListener('document:click')
-  onClickOutside() {
+  onClickOutside(): void {
+    this.activeDropdown.set(null);
     this.isLangPopupOpen.set(false);
-    this.isSolutionsOpen.set(false);
   }
 
   get currentLangLabel(): string {
