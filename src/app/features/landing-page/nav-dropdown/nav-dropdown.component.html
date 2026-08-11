@@ -1,0 +1,197 @@
+
+
+<!-- ── COMPACT (e.g. ĐỐI TÁC) ─ absolute, auto-width, 2 cols ── -->
+<ng-container *ngIf="config.variant === 'compact'">
+  <div class="nd-compact" (click)="$event.stopPropagation()" role="menu">
+    <section
+      *ngFor="let group of config.groups"
+      class="nd-compact__col"
+      [attr.aria-labelledby]="group.id"
+    >
+      <header class="nd-col-header" [id]="group.id">
+        <mat-icon fontSet="material-icons-outlined">{{ group.matIcon }}</mat-icon>
+        <h3>{{ group.titleKey | translate }}</h3>
+      </header>
+      <ul class="nd-list">
+        <li *ngFor="let item of group.items">
+          <button type="button" class="nd-link">
+            <mat-icon
+              *ngIf="item.isExternal"
+              fontSet="material-icons-outlined"
+              class="nd-external-icon"
+            >open_in_new</mat-icon>
+            {{ item.labelKey | translate }}
+          </button>
+        </li>
+      </ul>
+    </section>
+  </div>
+</ng-container>
+
+<!-- ── WIDE (e.g. GIẢI PHÁP, CÔNG NGHỆ) ─ fixed full-width, multi-col ── -->
+<ng-container *ngIf="config.variant === 'wide'">
+  <div class="nd-wide" (click)="$event.stopPropagation()" role="menu">
+    <div class="nd-wide__inner">
+      <!-- Main groups -->
+      <section
+        *ngFor="let group of config.groups"
+        class="nd-col"
+        [class.nd-col--two]="group.twoColumns"
+        [attr.aria-labelledby]="group.id"
+      >
+        <header class="nd-col-header" [id]="group.id">
+          <mat-icon fontSet="material-icons-outlined">{{ group.matIcon }}</mat-icon>
+          <h3>{{ group.titleKey | translate }}</h3>
+        </header>
+
+        <!-- Two-column sub-layout -->
+        <ng-container *ngIf="group.twoColumns; else singleCol">
+          <div class="nd-two-col">
+            <ul class="nd-list" *ngFor="let col of getColumns(group)">
+              <li *ngFor="let item of col">
+                <button type="button" class="nd-link">
+                  <mat-icon
+                    *ngIf="item.isExternal"
+                    fontSet="material-icons-outlined"
+                    class="nd-external-icon"
+                  >open_in_new</mat-icon>
+                  {{ item.labelKey | translate }}
+                </button>
+              </li>
+            </ul>
+          </div>
+        </ng-container>
+
+        <!-- Single-column layout (with optional per-item icon) -->
+        <ng-template #singleCol>
+          <ul class="nd-list">
+            <li *ngFor="let item of group.items">
+              <button type="button" class="nd-link">
+                <mat-icon
+                  *ngIf="item.matIcon"
+                  fontSet="material-icons-outlined"
+                  class="nd-item-icon"
+                >{{ item.matIcon }}</mat-icon>
+                <mat-icon
+                  *ngIf="item.isExternal"
+                  fontSet="material-icons-outlined"
+                  class="nd-external-icon"
+                >open_in_new</mat-icon>
+                {{ item.labelKey | translate }}
+              </button>
+            </li>
+          </ul>
+        </ng-template>
+      </section>
+
+      <!-- Optional aside panel (shaded right column) or see all -->
+      <aside *ngIf="config.asideGroups?.length || config.seeAllKey" class="nd-aside">
+        <section
+          *ngFor="let group of config.asideGroups; let i = index"
+          [class.nd-aside__section--gap]="i > 0"
+          [attr.aria-labelledby]="group.id"
+        >
+          <header class="nd-col-header" [id]="group.id">
+            <mat-icon fontSet="material-icons-outlined">{{ group.matIcon }}</mat-icon>
+            <h3>{{ group.titleKey | translate }}</h3>
+          </header>
+          <ul class="nd-list">
+            <li *ngFor="let item of group.items">
+              <button type="button" class="nd-link">{{ item.labelKey | translate }}</button>
+            </li>
+          </ul>
+        </section>
+
+        <footer *ngIf="config.seeAllKey" class="nd-aside__footer">
+          <a [routerLink]="config.seeAllRoute" class="nd-see-all">
+            {{ config.seeAllKey | translate }}
+            <mat-icon fontSet="material-icons-outlined">chevron_right</mat-icon>
+          </a>
+        </footer>
+      </aside>
+
+    </div>
+  </div>
+</ng-container>
+
+<!-- ── MEGA-TABBED (e.g. TÍNH NĂNG) ─ fixed full-width, sidebar + content ── -->
+<ng-container *ngIf="config.variant === 'mega-tabbed'">
+  <div class="nd-mega" (click)="$event.stopPropagation()" role="dialog" aria-label="Feature menu">
+
+    <!-- Left sidebar: tab list -->
+    <nav class="nd-mega__sidebar" aria-label="Danh mục tính năng">
+      <ul class="nd-mega__tab-list" role="tablist">
+        <li *ngFor="let tab of config.tabs" role="presentation">
+          <button
+            type="button"
+            class="nd-mega__tab-btn"
+            [class.nd-mega__tab-btn--active]="activeTab() === tab.key"
+            (mouseenter)="setActiveTab(tab.key)"
+            (focus)="setActiveTab(tab.key)"
+            role="tab"
+            [attr.aria-selected]="activeTab() === tab.key"
+            [attr.aria-controls]="'nd-panel-' + tab.key"
+          >
+            <mat-icon
+              fontSet="material-icons-outlined"
+              class="nd-mega__tab-icon"
+              [style.color]="tab.iconColor"
+            >{{ tab.matIcon }}</mat-icon>
+            <span>{{ tab.labelKey | translate }}</span>
+            <mat-icon fontSet="material-icons-outlined" class="nd-mega__tab-arrow">arrow_forward_ios</mat-icon>
+          </button>
+        </li>
+      </ul>
+
+      <a
+        *ngIf="config.seeAllTabsKey"
+        [routerLink]="config.seeAllTabsRoute"
+        class="nd-see-all nd-mega__see-all-tabs"
+      >
+        {{ config.seeAllTabsKey | translate }}
+        <mat-icon fontSet="material-icons-outlined">chevron_right</mat-icon>
+      </a>
+    </nav>
+
+    <!-- Right content panel -->
+    <section
+      *ngIf="activeTabData as tab"
+      class="nd-mega__content"
+      [id]="'nd-panel-' + tab.key"
+      role="tabpanel"
+    >
+      <header class="nd-mega__content-header">
+        <h2 class="nd-mega__content-title">
+          <mat-icon 
+            fontSet="material-icons-outlined" 
+            [style.color]="tab.iconColor"
+          >{{ tab.matIcon }}</mat-icon>
+          {{ tab.contentTitleKey | translate }}
+        </h2>
+        <p *ngIf="tab.contentSubtitleKey">{{ tab.contentSubtitleKey | translate }}</p>
+      </header>
+
+      <div class="nd-mega__content-grid">
+        <article
+          *ngFor="let item of tab.items"
+          class="nd-mega__item"
+          role="menuitem"
+        >
+          <h4>{{ item.labelKey | translate }}</h4>
+          <p *ngIf="item.descKey">{{ item.descKey | translate }}</p>
+        </article>
+      </div>
+
+      <footer class="nd-mega__content-footer">
+        <a
+          *ngIf="tab.seeAllFeaturesKey"
+          [routerLink]="tab.seeAllFeaturesRoute"
+          class="nd-see-all"
+        >
+          {{ tab.seeAllFeaturesKey | translate }}
+          <mat-icon fontSet="material-icons-outlined">chevron_right</mat-icon>
+        </a>
+      </footer>
+    </section>
+  </div>
+</ng-container>
