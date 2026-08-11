@@ -36,11 +36,25 @@
   width: calc(100% - 68px - 64px);
   height: calc(100% - 8px);
   transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.fullscreen-mode {
+    margin-left: 48px !important;
+    margin-right: 0 !important;
+    margin-top: 0 !important;
+    width: calc(100% - 48px) !important;
+    height: 100% !important;
+    border-radius: 0 !important;
+  }
 }
 
 :host-context(.sidebar-open) .modal-container {
   margin-left: 260px;
   width: calc(100% - 260px - 64px);
+
+  &.fullscreen-mode {
+    margin-left: 48px !important;
+    width: calc(100% - 48px) !important;
+  }
 }
 
 .modal-actions-sidebar {
@@ -52,6 +66,10 @@
 
 :host-context(.sidebar-open) .modal-actions-sidebar {
   left: calc(260px - 48px);
+}
+
+:host:has(.fullscreen-mode) .modal-actions-sidebar {
+  left: 0 !important;
 }
 
 .modal-close-btn {

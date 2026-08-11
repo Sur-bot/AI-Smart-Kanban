@@ -1,4 +1,4 @@
-<div class="tasks-page">
+<main class="tasks-page" role="main">
 
   <app-page-toolbar title="Tác vụ của tôi" />
 
@@ -8,7 +8,10 @@
     [activeView]="activeView"
     (viewChange)="onViewChange($event)" />
 
-  <app-data-table *ngIf="activeView === 'list'" [tasks]="tasks" />
+  <app-data-table 
+    *ngIf="activeView === 'list'" 
+    [tasks]="tasks" 
+    (taskSelected)="openTaskDetail($event)" />
 
   <app-deadline *ngIf="activeView === 'deadline'" (taskSelected)="openTaskDetail($event)" />
 
@@ -18,4 +21,5 @@
     (close)="closeTaskDetail()">
   </app-task-detail-modal>
 
-</div>
+</main>
+
