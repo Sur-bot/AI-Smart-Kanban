@@ -1,0 +1,27 @@
+﻿[
+  {
+    "tabKey": "TAB_KANBAN",
+    "icon": "dashboard",
+    "imageUrl": "https://images.unsplash.com/photo-1611224923853-80b023f02d71?auto=format&fit=crop&q=80&w=1280&h=720"
+  },
+  {
+    "tabKey": "TAB_AI",
+    "icon": "auto_awesome",
+    "imageUrl": "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1280&h=720"
+  },
+  {
+    "tabKey": "TAB_PROJECT",
+    "icon": "folder_special",
+    "imageUrl": "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&q=80&w=1280&h=720"
+  },
+  {
+    "tabKey": "TAB_STORAGE",
+    "icon": "cloud_upload",
+    "imageUrl": "https://images.unsplash.com/photo-1601597111158-2fceff292cdc?auto=format&fit=crop&q=80&w=1280&h=720"
+  },
+  {
+    "tabKey": "TAB_SECURITY",
+    "icon": "shield",
+    "imageUrl": "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&q=80&w=1280&h=720"
+  }
+]
