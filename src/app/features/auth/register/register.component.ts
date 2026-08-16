@@ -77,4 +77,15 @@ export class RegisterComponent {
       this.isLoading.set(false);
     }
   }
+
+  async loginAsGuest() {
+    this.isLoading.set(true);
+    try {
+      await this.authService.loginAsGuest();
+    } catch (err: any) {
+      this.errorMessage.set('Lỗi khi vào Guest Mode: ' + err.message);
+    } finally {
+      this.isLoading.set(false);
+    }
+  }
 }
