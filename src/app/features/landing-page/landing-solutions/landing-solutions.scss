@@ -1,0 +1,136 @@
+// ─── Section Wrapper ────────────────────────────────────────────
+.solutions-section {
+  @apply relative overflow-hidden py-24 sm:py-32;
+  background: linear-gradient(160deg, #dbeafe 0%, #e0f2fe 40%, #ccfbf1 100%);
+}
+
+.solutions-container {
+  @apply relative z-10 max-w-6xl mx-auto px-4 sm:px-6;
+}
+
+// ─── Section Header ──────────────────────────────────────────────
+.solutions-header {
+  @apply text-center mb-12;
+}
+
+.solutions-title {
+  @apply text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight;
+}
+
+.solutions-subtitle {
+  @apply text-lg text-slate-500 max-w-2xl mx-auto;
+}
+
+// ─── Grid Layout ─────────────────────────────────────────────────
+.solutions-grid {
+  @apply grid grid-cols-1 md:grid-cols-3 gap-5;
+}
+
+.solutions-column {
+  @apply flex flex-col gap-5 p-5 rounded-[2rem];
+}
+
+// ─── Group Label ─────────────────────────────────────────────────
+.solutions-group-label {
+  @apply text-sm font-bold tracking-wide uppercase text-center py-1;
+}
+
+// ─── Solution Card ───────────────────────────────────────────────
+.solution-card {
+  @apply relative bg-white rounded-2xl overflow-hidden
+         border border-white/80 shadow-sm
+         hover:shadow-xl hover:shadow-slate-500/10
+         transition-all duration-500
+         cursor-default flex flex-col;
+}
+
+.solution-card-header {
+  @apply flex items-center gap-3 px-5 pt-5 pb-4;
+}
+
+.solution-card-icon-wrapper {
+  @apply w-9 h-9 rounded-xl flex items-center justify-center shrink-0;
+}
+
+.solution-card-title {
+  @apply text-base font-bold text-slate-800 leading-tight;
+}
+
+.solution-card-mockup {
+  @apply w-full overflow-hidden m-0 flex-1 relative aspect-video;
+
+  img {
+    @apply w-full h-full object-cover;
+  }
+}
+
+// ─── Floating Kanban Decorations (Vertical Marquee) ────────────────
+.solutions-deco-left,
+.solutions-deco-right {
+  @apply absolute top-32 sm:top-48 w-[380px] sm:w-[480px] h-[200%] pointer-events-none select-none z-0 opacity-70;
+}
+
+.solutions-deco-left {
+  @apply -left-20 sm:-left-12 -rotate-[24deg] origin-top-left;
+}
+
+.solutions-deco-right {
+  @apply -right-20 sm:-right-12 rotate-[24deg] origin-top-right;
+}
+
+.kanban-marquee-track-horizontal-left {
+  @apply flex flex-row gap-6 w-max;
+  animation: marquee-left 15s linear infinite;
+}
+
+.kanban-marquee-track-horizontal-right {
+  @apply flex flex-row gap-6 w-max;
+  animation: marquee-right 15s linear infinite;
+}
+
+@keyframes marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+// ─── Kanban Column & Card Design ─────────────────────────────────
+.kanban-deco-col {
+  @apply w-max bg-white/30 backdrop-blur-md rounded-[1.5rem] p-4 flex flex-col gap-4 border border-white/60 shadow-sm shrink-0;
+}
+
+.kanban-deco-header {
+  @apply flex items-center gap-2 px-1 mb-1;
+}
+
+.kanban-deco-dot {
+  @apply w-2.5 h-2.5 rounded-full;
+}
+
+.kanban-deco-title {
+  @apply text-sm font-bold text-slate-500/80 uppercase tracking-wide;
+}
+
+.kanban-deco-cards {
+  @apply flex flex-row gap-4;
+}
+
+.kanban-deco-card {
+  @apply w-[200px] sm:w-[220px] shrink-0 bg-white/90 rounded-2xl p-4 shadow-sm border border-slate-100/50 flex flex-col gap-3;
+}
+
+.kanban-deco-line {
+  @apply h-2.5 rounded-full bg-slate-200/80;
+}
+
+.kanban-deco-avatars {
+  @apply flex mt-2;
+}
+
+.kanban-deco-avatar {
+  @apply w-7 h-7 rounded-full border-2 border-white shadow-sm -ml-2 first:ml-0;
+}
