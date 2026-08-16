@@ -1,0 +1,77 @@
+[
+  {
+    "groupLabel": "LANDING.SOLUTIONS_SECTION.GROUP_PROCESS",
+    "labelColor": "text-slate-900",
+    "bgClass": "bg-[#B9D5F9] border border-blue-200/60 shadow-lg shadow-blue-900/5",
+    "items": [
+      {
+        "icon": "task_alt",
+        "title": "LANDING.SOLUTIONS_SECTION.ITEM_PM_TITLE",
+        "description": "LANDING.SOLUTIONS_SECTION.ITEM_PM_DESC",
+        "color": "text-blue-600",
+        "bg": "bg-gradient-to-br from-blue-100 to-blue-50",
+        "headerBg": "bg-[#E3EFFD]",
+        "imageName": "Quanlyduan.png"
+      },
+      {
+        "icon": "groups",
+        "title": "LANDING.SOLUTIONS_SECTION.ITEM_COLLAB_TITLE",
+        "description": "LANDING.SOLUTIONS_SECTION.ITEM_COLLAB_DESC",
+        "color": "text-indigo-600",
+        "bg": "bg-gradient-to-br from-indigo-100 to-indigo-50",
+        "headerBg": "bg-[#E3EFFD]",
+        "imageName": "Congtacnhom.png"
+      }
+    ]
+  },
+  {
+    "groupLabel": "LANDING.SOLUTIONS_SECTION.GROUP_ACTIVITY",
+    "labelColor": "text-slate-900",
+    "bgClass": "bg-[#C9C9F6] border border-purple-200/60 shadow-lg shadow-purple-900/5",
+    "items": [
+      {
+        "icon": "image",
+        "title": "LANDING.SOLUTIONS_SECTION.ITEM_IMG_TITLE",
+        "description": "LANDING.SOLUTIONS_SECTION.ITEM_IMG_DESC",
+        "color": "text-purple-600",
+        "bg": "bg-gradient-to-br from-purple-100 to-purple-50",
+        "headerBg": "bg-[#EBEAFC]",
+        "imageName": "Xulyanhthongminh.png"
+      },
+      {
+        "icon": "settings_suggest",
+        "title": "LANDING.SOLUTIONS_SECTION.ITEM_CUSTOM_TITLE",
+        "description": "LANDING.SOLUTIONS_SECTION.ITEM_CUSTOM_DESC",
+        "color": "text-fuchsia-600",
+        "bg": "bg-gradient-to-br from-fuchsia-100 to-fuchsia-50",
+        "headerBg": "bg-[#EBEAFC]",
+        "imageName": "Tuychinhlinhhoat.png"
+      }
+    ]
+  },
+  {
+    "groupLabel": "LANDING.SOLUTIONS_SECTION.GROUP_INFRA",
+    "labelColor": "text-slate-900",
+    "bgClass": "bg-[#ADECDB] border border-emerald-200/60 shadow-lg shadow-emerald-900/5",
+    "items": [
+      {
+        "icon": "cloud_upload",
+        "title": "LANDING.SOLUTIONS_SECTION.ITEM_CLOUD_TITLE",
+        "description": "LANDING.SOLUTIONS_SECTION.ITEM_CLOUD_DESC",
+        "color": "text-emerald-600",
+        "bg": "bg-gradient-to-br from-emerald-100 to-emerald-50",
+        "headerBg": "bg-[#E0F7F2]",
+        "imageName": "Luutrudammay.png"
+      },
+      {
+        "icon": "security",
+        "title": "LANDING.SOLUTIONS_SECTION.ITEM_SECURITY_TITLE",
+        "description": "LANDING.SOLUTIONS_SECTION.ITEM_SECURITY_DESC",
+        "color": "text-teal-600",
+        "bg": "bg-gradient-to-br from-teal-100 to-teal-50",
+        "headerBg": "bg-[#E0F7F2]",
+        "imageName": "Baomatdulieu.png"
+      }
+    ]
+  }
+]

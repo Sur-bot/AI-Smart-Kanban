@@ -31,7 +31,150 @@
   }
 }
 
-// ─── Border-b-3 custom (Tailwind không có sẵn) ───
-.border-b-3 {
-  border-bottom-width: 3px;
+// ─── Hero Tab Navigation ─────────────────────────────────────
+.hero-tab-nav {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #e2e8f0; // slate-200
+    z-index: 0;
+  }
+}
+
+.hero-tab-btn {
+  position: relative;
+  color: #64748b; // slate-500
+  transition: color 200ms;
+
+  &:hover {
+    color: #1e293b; // slate-800
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: var(--tab-progress, 0%);
+    background-color: transparent;
+    z-index: 1;
+    // Không có transition ở đây: để JS cập nhật progress mỗi 50ms không bị lag
+  }
+
+  &.is-active {
+    color: #2563eb; // blue-600
+
+    &::after {
+      background-color: #2563eb;
+    }
+  }
+}
+
+// ─── COMPONENT STYLES ───
+
+.hero-section {
+  @apply relative overflow-hidden bg-gradient-to-b from-blue-50/70 via-white to-white;
+}
+
+.hero-bg-circle-top {
+  @apply absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-100/60 rounded-full blur-[100px] pointer-events-none;
+}
+
+.hero-bg-circle-bottom {
+  @apply absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-cyan-100/50 rounded-full blur-[100px] pointer-events-none;
+}
+
+.hero-header-container {
+  @apply relative max-w-7xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-12;
+}
+
+.hero-title-wrapper {
+  @apply text-center mb-12 sm:mb-16;
+}
+
+.hero-title {
+  @apply text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6;
+}
+
+.hero-title-highlight {
+  @apply text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500;
+}
+
+.hero-subtitle {
+  @apply text-lg sm:text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed;
+}
+
+.hero-features-container {
+  @apply max-w-6xl mx-auto;
+}
+
+.hero-features-grid {
+  @apply grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[360px];
+}
+
+.hero-feature-list {
+  @apply space-y-4;
+}
+
+.hero-feature-item {
+  @apply flex items-start gap-3 text-slate-700 text-base sm:text-lg animate-slide-in;
+}
+
+.hero-cta-btn {
+  @apply inline-flex items-center gap-2 px-8 py-4 text-base font-bold text-white bg-gradient-to-r from-green-500 to-emerald-600 rounded-full hover:shadow-xl hover:shadow-green-500/20 hover:-translate-y-1 transition-all duration-300 active:translate-y-0 uppercase tracking-wide;
+}
+
+.hero-mockup-wrapper {
+  @apply rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-200/50 overflow-hidden;
+}
+
+.hero-mockup-header {
+  @apply flex items-center gap-2 px-4 py-3 bg-slate-50 border-b border-slate-200;
+}
+
+.hero-mockup-url {
+  @apply ml-4 flex-1 h-7 bg-slate-100 rounded-md flex items-center px-3 text-xs text-slate-400 font-mono;
+}
+
+.hero-mockup-body {
+  @apply aspect-video relative overflow-hidden bg-slate-100;
+}
+
+.hero-mockup-card {
+  @apply bg-white rounded-xl border border-slate-200 p-3 flex flex-col gap-2.5 shadow-sm;
+}
+
+.hero-badges-section {
+  @apply w-full bg-gradient-to-r from-blue-600 to-cyan-500 py-6 mt-12;
+}
+
+.hero-badges-container {
+  @apply w-full max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-0 text-white;
+}
+
+.hero-badge-item {
+  @apply flex items-center justify-center gap-4 flex-1;
+}
+
+.hero-badge-icon {
+  @apply text-[36px] w-9 h-9 opacity-90 shrink-0 flex items-center justify-center;
+}
+
+.hero-badge-text {
+  @apply flex flex-col items-start text-left;
+}
+
+.hero-badge-title {
+  @apply text-xl font-bold leading-tight;
+}
+
+.hero-badge-subtitle {
+  @apply text-white/80 text-sm mt-0.5;
 }

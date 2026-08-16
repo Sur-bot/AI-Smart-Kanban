@@ -1,25 +1,151 @@
 <!-- ──── Solutions Grid Section ──── -->
-<section id="solutions" class="bg-white py-20 sm:py-28">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6">
-    <header class="text-center mb-16">
-      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4">
-        Mọi thứ bạn cần, trong một nền tảng
-      </h2>
-      <p class="text-lg text-slate-500 max-w-2xl mx-auto">
-        AI Smart Kanban cung cấp bộ công cụ hoàn chỉnh cho mọi đội nhóm và phòng ban.
+<section id="solutions" class="solutions-section">
+
+  <!-- Left Decoration: Sliding Horizontal (Swapped) -->
+  <div aria-hidden="true" class="solutions-deco-left">
+    <div class="kanban-marquee-track-horizontal-right">
+      @for (set of [1, 2]; track set) {
+        <!-- Column 1: To Do -->
+        <div class="kanban-deco-col">
+          <div class="kanban-deco-header">
+            <span class="kanban-deco-dot bg-slate-300"></span>
+            <span class="kanban-deco-title">To Do</span>
+          </div>
+          <div class="kanban-deco-cards">
+            <div class="kanban-deco-card">
+              <div class="kanban-deco-line w-full"></div>
+              <div class="kanban-deco-line w-3/4"></div>
+              <div class="kanban-deco-avatars">
+                <div class="kanban-deco-avatar bg-blue-200"></div>
+                <div class="kanban-deco-avatar bg-rose-200"></div>
+                <div class="kanban-deco-avatar bg-amber-200"></div>
+              </div>
+            </div>
+            <div class="kanban-deco-card">
+              <div class="kanban-deco-line w-full"></div>
+              <div class="kanban-deco-line w-1/2"></div>
+              <div class="kanban-deco-avatars">
+                <div class="kanban-deco-avatar bg-emerald-200"></div>
+                <div class="kanban-deco-avatar bg-purple-200"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 2: In Progress -->
+        <div class="kanban-deco-col">
+          <div class="kanban-deco-header">
+            <span class="kanban-deco-dot bg-blue-400"></span>
+            <span class="kanban-deco-title">In Progress</span>
+          </div>
+          <div class="kanban-deco-cards">
+            <div class="kanban-deco-card">
+              <div class="kanban-deco-line w-full"></div>
+              <div class="kanban-deco-line w-2/3"></div>
+              <div class="kanban-deco-avatars">
+                <div class="kanban-deco-avatar bg-indigo-200"></div>
+                <div class="kanban-deco-avatar bg-pink-200"></div>
+                <div class="kanban-deco-avatar bg-teal-200"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Right Decoration: Sliding Horizontal (Swapped) -->
+  <div aria-hidden="true" class="solutions-deco-right">
+    <div class="kanban-marquee-track-horizontal-left">
+      @for (set of [1, 2]; track set) {
+        <!-- Column 3: Review -->
+        <div class="kanban-deco-col">
+          <div class="kanban-deco-header">
+            <span class="kanban-deco-dot bg-amber-400"></span>
+            <span class="kanban-deco-title">Review</span>
+          </div>
+          <div class="kanban-deco-cards">
+            <div class="kanban-deco-card">
+              <div class="kanban-deco-line w-5/6"></div>
+              <div class="kanban-deco-line w-1/2"></div>
+              <div class="kanban-deco-avatars">
+                <div class="kanban-deco-avatar bg-cyan-200"></div>
+                <div class="kanban-deco-avatar bg-orange-200"></div>
+              </div>
+            </div>
+            <div class="kanban-deco-card">
+              <div class="kanban-deco-line w-full"></div>
+              <div class="kanban-deco-line w-full"></div>
+              <div class="kanban-deco-avatars">
+                <div class="kanban-deco-avatar bg-rose-200"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 4: Done -->
+        <div class="kanban-deco-col opacity-80">
+          <div class="kanban-deco-header">
+            <span class="kanban-deco-dot bg-emerald-400"></span>
+            <span class="kanban-deco-title">Done</span>
+          </div>
+          <div class="kanban-deco-cards">
+            <div class="kanban-deco-card opacity-60">
+              <div class="kanban-deco-line w-full"></div>
+              <div class="kanban-deco-line w-2/3"></div>
+              <div class="kanban-deco-avatars">
+                <div class="kanban-deco-avatar bg-blue-200"></div>
+                <div class="kanban-deco-avatar bg-emerald-200"></div>
+                <div class="kanban-deco-avatar bg-purple-200"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="solutions-container">
+    <header class="solutions-header">
+      <h2 class="solutions-title">{{ 'LANDING.SOLUTIONS_SECTION.TITLE' | translate }}</h2>
+      <p class="solutions-subtitle">
+        {{ 'LANDING.SOLUTIONS_SECTION.SUBTITLE' | translate }}
       </p>
     </header>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      @for (solution of solutions; track solution.title) {
-        <article class="group p-7 rounded-2xl bg-white border border-slate-200 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100/50 transition-all duration-300 hover:-translate-y-1 cursor-default">
-          <div [class]="'w-14 h-14 rounded-2xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110 ' + solution.bg">
-            <mat-icon [class]="solution.color + ' text-[28px] w-7 h-7'">{{ solution.icon }}</mat-icon>
-          </div>
-          <h3 class="text-xl font-bold text-slate-900 mb-2">{{ solution.title }}</h3>
-          <p class="text-slate-500 leading-relaxed">{{ solution.description }}</p>
-        </article>
+    <div class="solutions-grid">
+      @if (groups$ | async; as groups) {
+        @for (group of groups; track group.groupLabel) {
+        <div [class]="'solutions-column ' + group.bgClass">
+          <!-- Group Header -->
+          <p [class]="'solutions-group-label ' + group.labelColor">{{ group.groupLabel | translate }}</p>
+
+          <!-- Cards -->
+          @for (solution of group.items; track solution.title) {
+            <article class="solution-card group">
+              <!-- Card Top: Icon + Title -->
+              <header [class]="'solution-card-header ' + (solution.headerBg || '')">
+                <div [class]="'solution-card-icon-wrapper ' + solution.bg">
+                  <mat-icon [class]="solution.color + ' !w-5 !h-5 !text-[20px] !leading-[20px] flex items-center justify-center'">{{ solution.icon }}</mat-icon>
+                </div>
+                <h3 class="solution-card-title">{{ solution.title | translate }}</h3>
+              </header>
+
+              <!-- Mockup Image Preview -->
+              <figure class="solution-card-mockup">
+                <img
+                  [ngSrc]="solution.mockupUrl"
+                  [alt]="solution.title | translate"
+                  fill
+                  class="object-contain p-4"
+                />
+              </figure>
+            </article>
+          }
+        </div>
+        }
       }
     </div>
   </div>
 </section>
+

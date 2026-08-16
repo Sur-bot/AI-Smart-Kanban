@@ -31,6 +31,8 @@ export class UserProfileDropdownComponent {
   readonly user = this.authService.user;
 
   readonly userName = computed(() => {
+    if (this.authService.isGuestMode()) return 'Người dùng Khách (Demo)';
+    
     const currentUser = this.user();
     if (!currentUser) return 'Văn Anh Nguyễn';
     return (
@@ -41,6 +43,7 @@ export class UserProfileDropdownComponent {
   });
 
   readonly avatarUrl = computed(() => {
+    if (this.authService.isGuestMode()) return 'https://i.pravatar.cc/150?u=a042581f4e29026024d';
     const currentUser = this.user();
     return currentUser?.user_metadata?.['avatar_url'] || null;
   });

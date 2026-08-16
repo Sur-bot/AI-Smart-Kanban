@@ -95,6 +95,22 @@
           <span *ngIf="isLoading()">ĐANG XỬ LÝ...</span>
         </button>
 
+        <div class="divider mt-6 mb-4">
+          <hr />
+          <span class="text-xs text-slate-400">hoặc</span>
+          <hr />
+        </div>
+
+        <button
+          type="button"
+          class="btn-guest flex items-center justify-center gap-2 w-full py-3 rounded-lg border-2 border-slate-200 text-slate-600 font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all duration-300"
+          (click)="loginAsGuest()"
+          [disabled]="isLoading()"
+        >
+          <mat-icon [fontSet]="'material-icons-outlined'" class="text-xl">explore</mat-icon>
+          <span>Trải nghiệm ngay (Guest Mode)</span>
+        </button>
+
         <p class="terms-note">
           {{ 'REGISTER.TERMS_PREFIX' | translate }}
           <a routerLink="/terms">{{ 'REGISTER.TERMS_OF_SERVICE' | translate }}</a>

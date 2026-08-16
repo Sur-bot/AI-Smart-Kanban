@@ -1,31 +1,60 @@
+// ─── Header layout ──────────────────────────────────────────────────────────
+
 .header-container {
-  @apply sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm;
+  @apply fixed top-0 left-0 right-0 z-50 h-16;
+  @apply bg-white/95 backdrop-blur-sm;
+  @apply border-b border-slate-100;
 }
 
 .nav-container {
-  @apply max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 h-16;
+  @apply flex items-center h-full max-w-[1400px] mx-auto px-6 gap-6;
 }
 
 .logo-link {
-  @apply flex items-center gap-2.5 shrink-0;
+  @apply flex items-center flex-shrink-0;
 }
 
+// ─── Nav links ──────────────────────────────────────────────────────────────
+
 .nav-links {
-  @apply hidden lg:flex items-center gap-1 text-sm font-semibold text-black;
+  @apply flex items-center justify-center gap-1 list-none p-0 m-0 flex-1;
 }
 
 .nav-item {
-  @apply px-4 py-2 rounded-lg hover:text-[#1A1B1F] transition-colors;
+  @apply flex items-center gap-0.5 px-2 py-1.5 rounded-lg;
+  @apply text-[13px] font-semibold text-slate-700;
+  @apply bg-transparent border-none cursor-pointer;
+  @apply transition-colors duration-150;
+  @apply whitespace-nowrap;
+
+  &:hover { @apply text-[#2563EB]; }
+
+  .nav-icon {
+    @apply text-slate-400;
+  }
+
+  &--active {
+    @apply text-blue-600;
+    .nav-icon { @apply text-blue-500; }
+  }
 }
 
+// ─── CTA buttons ────────────────────────────────────────────────────────────
+
 .cta-container {
-  @apply flex items-center gap-2;
+  @apply flex items-center gap-2 flex-shrink-0;
 }
 
 .btn-login {
-  @apply hidden sm:inline-flex px-5 py-2.5 text-sm font-semibold text-blue-600 border-2 border-blue-600 rounded-xl hover:bg-blue-50 transition-all duration-200;
+  @apply hidden sm:inline-flex items-center justify-center shrink-0;
+  @apply px-3 py-2.5 text-[14px] font-semibold;
+  @apply text-blue-600 border border-blue-500 rounded-lg;
+  @apply hover:bg-blue-50 transition-all duration-200 !whitespace-nowrap;
 }
 
 .btn-start {
-  @apply inline-flex items-center px-5 py-2.5 text-sm font-semibold text-[#1A1B1F] bg-[#BDF300] rounded-xl transition-all duration-300;
+  @apply inline-flex items-center justify-center shrink-0;
+  @apply px-3 py-2.5 text-[14px] font-semibold;
+  @apply text-[#1A1B1F] bg-[#BDF300] rounded-lg;
+  @apply hover:brightness-95 transition-all duration-200 !whitespace-nowrap;
 }
