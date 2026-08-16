@@ -12,41 +12,54 @@ export class AuthService {
     environment.supabase.anonKey
   );
 
-  // ─── Signals (Reactive State) ─────────────────────────
   private _session = signal<Session | null>(null);
   private _user = signal<User | null>(null);
   private _loading = signal<boolean>(true);
+  
+  private _isGuestMode = signal<boolean>(false);
 
   readonly session = this._session.asReadonly();
   readonly user = this._user.asReadonly();
   readonly loading = this._loading.asReadonly();
-  readonly isAuthenticated = computed(() => !!this._session());
+  readonly isGuestMode = this._isGuestMode.asReadonly();
+  
+  readonly isAuthenticated = computed(() => !!this._session() || this._isGuestMode());
   readonly accessToken = computed(() => this._session()?.access_token ?? null);
 
   constructor() {
-    // Phục hồi session hiện có (nếu đã đăng nhập trước đó)
+    const storedGuest = localStorage.getItem('ai_smart_kanban_guest');
+    if (storedGuest === 'true') {
+      this._isGuestMode.set(true);
+      this._loading.set(false);
+    }
+
     this.supabase.auth.getSession().then(({ data: { session } }) => {
       this._session.set(session);
       this._user.set(session?.user ?? null);
-      this._loading.set(false);
+      if (!this._isGuestMode()) {
+        this._loading.set(false);
+      }
     });
 
-    // Lắng nghe thay đổi trạng thái xác thực (đăng nhập, đăng xuất, refresh token tự động)
     this.supabase.auth.onAuthStateChange((event: AuthChangeEvent, session: Session | null) => {
       this._session.set(session);
       this._user.set(session?.user ?? null);
-      this._loading.set(false);
+      if (!this._isGuestMode()) {
+        this._loading.set(false);
+      }
 
-      if (event === 'SIGNED_OUT') {
+      if (event === 'SIGNED_OUT' && !this._isGuestMode()) {
         this.router.navigate(['/login']);
       }
     });
   }
 
-  /**
-   * Đăng ký tài khoản mới.
-   * Supabase tự gửi email xác nhận — không cần cấu hình SMTP, không cần domain riêng.
-   */
+  async loginAsGuest() {
+    this._isGuestMode.set(true);
+    localStorage.setItem('ai_smart_kanban_guest', 'true');
+    await this.router.navigate(['/app/kanban']);
+  }
+
   async signUp(email: string, password: string, fullName?: string) {
     const redirectTo = `${window.location.origin}/auth/callback`;
 
@@ -55,7 +68,7 @@ export class AuthService {
       password,
       options: {
         data: { full_name: fullName || '' },
-        emailRedirectTo: redirectTo  // Supabase sẽ dùng URL này trong link email xác nhận
+        emailRedirectTo: redirectTo
       }
     });
 
@@ -63,20 +76,12 @@ export class AuthService {
     return data;
   }
 
-  /**
-   * Đăng nhập bằng Email + Mật khẩu.
-   * Supabase cấp access_token và refresh_token, tự động lưu vào localStorage/cookie.
-   */
   async signIn(email: string, password: string) {
     const { data, error } = await this.supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
     return data;
   }
 
-  /**
-   * Đăng nhập bằng Google OAuth (1-click).
-   * Chỉ cần bật Google Provider trong Supabase Dashboard → Authentication → Providers.
-   */
   async signInWithGoogle() {
     const { data, error } = await this.supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -86,17 +91,18 @@ export class AuthService {
     return data;
   }
 
-  /**
-   * Đăng xuất — Supabase xóa session và tự động điều hướng về trang login.
-   */
   async signOut() {
+    if (this._isGuestMode()) {
+      this._isGuestMode.set(false);
+      localStorage.removeItem('ai_smart_kanban_guest');
+      this.router.navigate(['/login']);
+      return;
+    }
+
     const { error } = await this.supabase.auth.signOut();
     if (error) throw error;
   }
 
-  /**
-   * Gửi lại email đặt lại mật khẩu.
-   */
   async resetPassword(email: string) {
     const { error } = await this.supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/auth/reset-password`
