@@ -27,11 +27,11 @@
             type="email"
             [placeholder]="'REGISTER.EMAIL_PLACEHOLDER' | translate"
             class="input-field"
-            [class.border-red-400]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+            [class.has-error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
             formControlName="email"
           />
           <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="error-text">
-            <span *ngIf="registerForm.get('email')?.hasError('required')">Email không được để trống</span>
+            <span *ngIf="registerForm.get('email')?.hasError('required')">Hãy hoàn thành tất cả các trường bắt buộc.</span>
             <span *ngIf="registerForm.get('email')?.hasError('email')">Email không đúng định dạng</span>
           </div>
         </div>
@@ -42,14 +42,14 @@
             [type]="showPassword() ? 'text' : 'password'"
             placeholder="Mật khẩu"
             class="input-field pr-10"
-            [class.border-red-400]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+            [class.has-error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
             formControlName="password"
           />
           <button type="button" class="absolute right-3 top-2 text-slate-400 hover:text-slate-600 transition-colors" (click)="togglePasswordVisibility()">
             <mat-icon [fontSet]="'material-icons-outlined'" class="text-[20px]">{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
           <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="error-text">
-            <span *ngIf="registerForm.get('password')?.hasError('required')">Mật khẩu không được để trống</span>
+            <span *ngIf="registerForm.get('password')?.hasError('required')">Hãy hoàn thành tất cả các trường bắt buộc.</span>
             <span *ngIf="registerForm.get('password')?.hasError('minlength')">Mật khẩu phải dài ít nhất 8 ký tự</span>
             <span *ngIf="registerForm.get('password')?.hasError('pattern')">Mật khẩu phải chứa ít nhất 1 chữ hoa, 1 chữ thường và 1 số</span>
           </div>
@@ -66,7 +66,7 @@
           </label>
         </div>
 
-        <div class="recaptcha-mock" [class.border-red-400]="registerForm.get('recaptchaVerified')?.invalid && registerForm.get('recaptchaVerified')?.touched">
+        <div class="recaptcha-mock" [class.border-red-500]="registerForm.get('recaptchaVerified')?.invalid && registerForm.get('recaptchaVerified')?.touched">
           <label class="recaptcha-left">
             <input type="checkbox" formControlName="recaptchaVerified" />
             <span>{{ 'REGISTER.RECAPTCHA' | translate }}</span>

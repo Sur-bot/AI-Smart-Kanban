@@ -12,12 +12,14 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './auth-layout.scss',
 })
 export class AuthLayoutComponent implements OnInit {
+  private static hasLoadedBg = false;
+
   translate = inject(TranslateService);
 
   headerLinkText = input.required<string>();
   headerLinkRoute = input.required<string>();
 
-  isLoaded = signal(false);
+  isLoaded = signal(AuthLayoutComponent.hasLoadedBg);
   isLangPopupOpen = signal(false);
   currentLang = signal('vi');
 
@@ -36,18 +38,23 @@ export class AuthLayoutComponent implements OnInit {
       this.currentLang.set(this.translate.currentLang() || 'vi');
     }
 
-    // 2. Preload ảnh nền cục bộ để đảm bảo giao diện hiển thị đồng nhất
+    if (AuthLayoutComponent.hasLoadedBg) {
+      return;
+    }
+
     const bgImg = new Image();
     bgImg.src = '/assets/images/auth-bg.jpg';
     bgImg.onload = () => {
+      AuthLayoutComponent.hasLoadedBg = true;
       this.isLoaded.set(true);
     };
     bgImg.onerror = () => {
+      AuthLayoutComponent.hasLoadedBg = true;
       this.isLoaded.set(true);
     };
 
-    // Timeout an toàn tối đa 600ms phòng trường hợp render chậm
     setTimeout(() => {
+      AuthLayoutComponent.hasLoadedBg = true;
       this.isLoaded.set(true);
     }, 600);
   }

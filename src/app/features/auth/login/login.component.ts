@@ -1,7 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthLayoutComponent } from '../components/auth-layout/auth-layout.component';
@@ -14,7 +13,6 @@ import { AuthService } from '../../../core/auth/auth.service';
   imports: [
     CommonModule,
     RouterModule,
-    TranslatePipe,
     ReactiveFormsModule,
     MatIconModule,
     AuthLayoutComponent,
@@ -34,20 +32,41 @@ export class LoginComponent {
     remember: [false]
   });
 
+  loginStep = signal<1 | 2>(1);
   isLoading = signal(false);
   showToast = signal(false);
   toastMessage = signal('');
   toastType = signal<'success' | 'error'>('success');
   showPassword = signal(false);
 
-  get isFormValid() { return this.loginForm.valid; }
+  get isFormValid() { 
+    if (this.loginStep() === 1) {
+      return this.loginForm.get('email')?.valid;
+    }
+    return this.loginForm.valid; 
+  }
 
   togglePasswordVisibility() {
     this.showPassword.update(v => !v);
   }
 
+  goBackToEmail() {
+    this.loginStep.set(1);
+    this.loginForm.get('password')?.setValue('');
+  }
+
   async onSubmit(event: Event) {
     event.preventDefault();
+    
+    if (this.loginStep() === 1) {
+      if (this.loginForm.get('email')?.invalid) {
+        this.loginForm.get('email')?.markAsTouched();
+        return;
+      }
+      this.loginStep.set(2);
+      return;
+    }
+
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
