@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { CdkDragDrop, CdkDropList, CdkDrag, CdkDragPlaceholder, CdkDragPreview } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, CdkDropList, CdkDrag, CdkDragPlaceholder, CdkDragPreview, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TaskStore } from '../../../../core/state/task.store';
 import { TaskItem, TaskStatus } from '../../../../core/models/task.model';
 import { TaskCardComponent } from '../task-card/task-card';
@@ -60,16 +60,38 @@ export class KanbanBoardComponent implements OnInit {
   }
 
   onTaskDrop(event: CdkDragDrop<TaskItem[]>, targetStatus: TaskStatus) {
-    const task: TaskItem = event.item.data;
-
     if (event.previousContainer === event.container) {
-      // Kéo trong cùng cột — cập nhật sort order
+      // Kéo trong cùng cột
       if (event.previousIndex !== event.currentIndex) {
-        this.taskStore.moveTaskInColumn(task.id, event.currentIndex);
+        const tasks = [...event.container.data];
+        moveItemInArray(tasks, event.previousIndex, event.currentIndex);
+        
+        const moves = tasks.map((task, index) => ({
+          taskId: task.id,
+          boardColumnOrder: index
+        }));
+        
+        this.taskStore.bulkMoveTasks(moves);
       }
     } else {
-      // Kéo sang cột khác — cập nhật statusId + sort order
-      this.taskStore.moveTaskToStatus(task.id, targetStatus.id, event.currentIndex);
+      // Kéo sang cột khác
+      const prevTasks = [...event.previousContainer.data];
+      const currTasks = [...event.container.data];
+      
+      transferArrayItem(prevTasks, currTasks, event.previousIndex, event.currentIndex);
+      
+      const prevMoves = prevTasks.map((task, index) => ({
+        taskId: task.id,
+        boardColumnOrder: index
+      }));
+      
+      const currMoves = currTasks.map((task, index) => ({
+        taskId: task.id,
+        statusId: targetStatus.id,
+        boardColumnOrder: index
+      }));
+      
+      this.taskStore.bulkMoveTasks([...prevMoves, ...currMoves]);
     }
   }
 

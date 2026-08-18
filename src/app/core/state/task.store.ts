@@ -277,32 +277,29 @@ export class TaskStore {
   }
 
   /**
-   * Di chuyển task trong cùng cột (cập nhật boardColumnOrder)
+   * Cập nhật thứ tự và trạng thái hàng loạt (Kéo thả Kanban)
    */
-  moveTaskInColumn(taskId: string, newIndex: number) {
-    this.tasks.update(list => {
-      const task = list.find(t => t.id === taskId);
-      if (!task) return list;
-      return list.map(t => t.id === taskId ? { ...t, boardColumnOrder: newIndex } : t);
-    });
-    this.taskService.updateTask(taskId, { boardColumnOrder: newIndex }).subscribe();
-  }
-
-  /**
-   * Di chuyển task sang cột khác (cập nhật statusId + boardColumnOrder)
-   */
-  moveTaskToStatus(taskId: string, newStatusId: string, newIndex: number) {
+  bulkMoveTasks(moves: { taskId: string, statusId?: string, boardColumnOrder: number }[]) {
     // Optimistic update
-    this.tasks.update(list =>
-      list.map(t => t.id === taskId
-        ? { ...t, statusId: newStatusId, boardColumnOrder: newIndex }
-        : t
-      )
-    );
-    this.taskService.updateTask(taskId, { statusId: newStatusId, boardColumnOrder: newIndex }).subscribe({
+    this.tasks.update(list => {
+      const listCopy = [...list];
+      moves.forEach(move => {
+        const idx = listCopy.findIndex(t => t.id === move.taskId);
+        if (idx !== -1) {
+          listCopy[idx] = {
+            ...listCopy[idx],
+            boardColumnOrder: move.boardColumnOrder,
+            ...(move.statusId ? { statusId: move.statusId } : {})
+          };
+        }
+      });
+      return listCopy;
+    });
+
+    this.taskService.bulkMoveTasks(moves).subscribe({
       error: err => {
-        this.error.set(err.error?.message || 'Không thể di chuyển tác vụ');
-        this.loadTasks();
+        this.error.set(err.error?.message || 'Không thể cập nhật thứ tự tác vụ');
+        this.loadTasks(); // Rollback về trạng thái server
       }
     });
   }
