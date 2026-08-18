@@ -15,16 +15,25 @@
     "TERMS_OF_SERVICE": "Terms of Service",
     "AND": "và",
     "PRIVACY_POLICY": "Privacy Policy",
-    "HELP": "Trợ giúp"
+    "HELP": "Trợ giúp",
+    "ERR_REQUIRED": "Hãy hoàn thành tất cả các trường bắt buộc.",
+    "ERR_EMAIL_FORMAT": "Email không đúng định dạng",
+    "ERR_PASS_MINLENGTH": "Mật khẩu phải dài ít nhất 8 ký tự",
+    "ERR_PASS_PATTERN": "Mật khẩu phải chứa ít nhất 1 chữ hoa, 1 chữ thường và 1 số",
+    "PROCESSING": "ĐANG XỬ LÝ...",
+    "GUEST_MODE": "Guest Mode"
   },
   "LOGIN": {
-    "TITLE": "Đăng nhập vào Digit24",
+    "TITLE": "Đăng nhập vào hệ thống",
     "INPUT_LABEL": "Email hoặc số điện thoại",
     "INPUT_PLACEHOLDER": "name@company.vn",
+    "PASSWORD_LABEL": "Mật khẩu của bạn",
+    "PASSWORD_PLACEHOLDER": "Nhập mật khẩu",
     "CONTINUE": "Tiếp tục",
+    "LOGIN_BTN": "Đăng nhập",
     "OR": "Các tùy chọn đăng nhập khác",
     "QR_TITLE": "Đăng nhập bằng QR",
-    "QR_DESC": "Quét mã QR và truy cập liên kết để đăng nhập vào Digit24.",
+    "QR_DESC": "Quét mã QR và truy cập liên kết để đăng nhập vào hệ thống.",
     "REGISTER": "Đăng ký"
   },
   "LANDING": {
