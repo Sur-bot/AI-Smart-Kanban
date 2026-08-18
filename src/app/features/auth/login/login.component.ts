@@ -7,6 +7,8 @@ import { AuthLayoutComponent } from '../components/auth-layout/auth-layout.compo
 import { SocialLoginComponent } from '../components/social-login/social-login.component';
 import { AuthService } from '../../../core/auth/auth.service';
 
+import { TranslatePipe } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -16,7 +18,8 @@ import { AuthService } from '../../../core/auth/auth.service';
     ReactiveFormsModule,
     MatIconModule,
     AuthLayoutComponent,
-    SocialLoginComponent
+    SocialLoginComponent,
+    TranslatePipe
   ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
