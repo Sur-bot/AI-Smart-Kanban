@@ -15,16 +15,25 @@
     "TERMS_OF_SERVICE": "Terms of Service",
     "AND": "and",
     "PRIVACY_POLICY": "Privacy Policy",
-    "HELP": "Help"
+    "HELP": "Help",
+    "ERR_REQUIRED": "Please complete all required fields.",
+    "ERR_EMAIL_FORMAT": "Invalid email format",
+    "ERR_PASS_MINLENGTH": "Password must be at least 8 characters long",
+    "ERR_PASS_PATTERN": "Password must contain at least 1 uppercase, 1 lowercase letter and 1 number",
+    "PROCESSING": "PROCESSING...",
+    "GUEST_MODE": "Guest Mode"
   },
   "LOGIN": {
-    "TITLE": "Log in to Digit24",
+    "TITLE": "Log in to the system",
     "INPUT_LABEL": "Email or phone number",
     "INPUT_PLACEHOLDER": "name@company.vn",
+    "PASSWORD_LABEL": "Your password",
+    "PASSWORD_PLACEHOLDER": "Enter your password",
     "CONTINUE": "Continue",
+    "LOGIN_BTN": "Log in",
     "OR": "Other login options",
     "QR_TITLE": "Log in with QR",
-    "QR_DESC": "Scan the QR code and follow the link to log in to Digit24.",
+    "QR_DESC": "Scan the QR code and follow the link to log into the system.",
     "REGISTER": "Sign up"
   },
   "LANDING": {
