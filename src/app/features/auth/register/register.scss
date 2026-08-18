@@ -1,7 +1,7 @@
 @keyframes slideInFromRight {
   0% {
     opacity: 0;
-    transform: translateX(100vw);
+    transform: translateX(100px);
   }
   100% {
     opacity: 1;
@@ -14,8 +14,8 @@
 }
 
 .auth-card-container {
-  @apply relative z-10 w-full px-4 sm:px-0 sm:max-w-[400px] lg:ml-auto lg:mr-[10%] xl:mr-[15%] mx-auto;
-  animation: slideInFromRight 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  @apply relative z-10 w-full px-4 sm:px-0 sm:max-w-[400px] lg:ml-auto lg:mr-[20%] xl:mr-[25%] mx-auto;
+  animation: slideInFromRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .auth-card {
@@ -42,16 +42,20 @@
   }
 
   .form-group {
-    @apply mb-5;
+    @apply mb-5 relative;
     
     .input-field {
       @apply w-full border border-slate-300 rounded-lg px-4 py-2 text-sm text-slate-900 
              placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 
              focus:border-blue-500 transition-all;
+             
+      &.has-error {
+        @apply border-red-500 focus:border-red-500 focus:ring-red-500/50;
+      }
     }
 
     .error-text {
-      @apply text-red-500 text-xs mt-1 font-medium flex flex-col;
+      @apply absolute left-3 bottom-0 translate-y-[55%] bg-white px-1.5 text-[11px] text-red-500 font-normal leading-none z-10 flex flex-col;
     }
   }
 

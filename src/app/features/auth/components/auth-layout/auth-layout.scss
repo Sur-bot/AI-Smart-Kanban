@@ -37,7 +37,7 @@
 @keyframes slideInFromLeft {
   0% {
     opacity: 0;
-    transform: translateX(-100vw);
+    transform: translateX(-100px);
   }
   100% {
     opacity: 1;
@@ -47,7 +47,7 @@
 
 .auth-slogan {
   @apply hidden lg:flex flex-1 items-center justify-center z-10 px-10 xl:px-20 mt-[-100px];
-  animation: slideInFromLeft 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideInFromLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   
   .slogan-content {
     @apply w-full max-w-lg text-white;
