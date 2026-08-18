@@ -78,4 +78,18 @@ export class DeadlineComponent implements OnInit {
     this.taskStore.selectTask(task.id);
     this.taskSelected.emit(task);
   }
+
+  onTaskStart(task: TaskItem) {
+    const inProgressStatus = this.taskStore.statuses().find(s => s.category === 'in_progress');
+    if (inProgressStatus) {
+      this.taskStore.updateTask(task.id, { statusId: inProgressStatus.id });
+    }
+  }
+
+  onTaskComplete(task: TaskItem) {
+    const doneStatus = this.taskStore.statuses().find(s => s.category === 'done');
+    if (doneStatus) {
+      this.taskStore.updateTask(task.id, { statusId: doneStatus.id });
+    }
+  }
 }

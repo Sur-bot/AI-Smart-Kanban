@@ -8,12 +8,14 @@
     [activeView]="activeView"
     (viewChange)="onViewChange($event)" />
 
-  <app-data-table 
-    *ngIf="activeView === 'list'" 
-    [tasks]="tasks" 
+  <app-data-table
+    *ngIf="activeView === 'list'"
+    [tasks]="tasks"
     (taskSelected)="openTaskDetail($event)" />
 
   <app-deadline *ngIf="activeView === 'deadline'" (taskSelected)="openTaskDetail($event)" />
+
+  <app-kanban-board *ngIf="activeView === 'kanban'" />
 
   <app-task-detail-modal
     *ngIf="selectedTask"

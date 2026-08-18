@@ -1,1 +1,84 @@
-<h1>đây là kanbanboard</h1>
+<section class="kanban-board" aria-label="Bảng Kanban">
+
+  <!-- Loading state -->
+  <div *ngIf="taskStore.loading()" class="kanban-loading" role="status" aria-live="polite">
+    <mat-icon class="animate-spin text-slate-400">autorenew</mat-icon>
+    <span class="text-slate-500 text-sm">Đang tải...</span>
+  </div>
+
+  <!-- Board columns -->
+  <div class="kanban-columns-wrapper" *ngIf="!taskStore.loading()">
+    <div
+      *ngFor="let col of kanbanColumns(); trackBy: trackByStatus"
+      class="kanban-col">
+
+      <!-- Column Header -->
+      <header class="col-header">
+        <div class="col-header-left">
+          <span class="col-dot" [style.background-color]="col.status.color"></span>
+          <h2 class="col-title">{{ col.status.name }}</h2>
+          <span class="col-count" [attr.aria-label]="col.tasks.length + ' tác vụ'">{{ col.tasks.length }}</span>
+        </div>
+        <div class="col-header-actions">
+          <button type="button" class="col-action-btn" title="Thêm tác vụ" (click)="quickAddInput.focus()">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </header>
+
+      <!-- CDK Drop List -->
+      <div
+        class="col-body"
+        cdkDropList
+        [id]="getColumnDropListId(col.status.id)"
+        [cdkDropListData]="col.tasks"
+        [cdkDropListConnectedTo]="connectedColumnIds()"
+        (cdkDropListDropped)="onTaskDrop($event, col.status)">
+
+        <!-- Task Cards -->
+        <div
+          *ngFor="let task of col.tasks; trackBy: trackByTask"
+          cdkDrag
+          [cdkDragData]="task"
+          class="kanban-drag-item">
+          <!-- Drag placeholder -->
+          <div class="kanban-drag-placeholder" *cdkDragPlaceholder></div>
+          <!-- Drag preview -->
+          <div class="kanban-drag-preview" *cdkDragPreview>
+            <span class="preview-title">{{ task.title }}</span>
+          </div>
+
+          <app-task-card
+            [task]="task"
+            (cardClicked)="onTaskClick($event)"
+            (taskStarted)="onTaskStart($event)"
+            (taskCompleted)="onTaskComplete($event)">
+          </app-task-card>
+        </div>
+
+        <!-- Empty state per column -->
+        <div *ngIf="col.tasks.length === 0" class="col-empty">
+          <span class="col-empty-text">Không có tác vụ</span>
+        </div>
+      </div>
+
+      <!-- Quick Add Task -->
+      <footer class="col-footer">
+        <div class="quick-add">
+          <mat-icon class="quick-add-icon">add</mat-icon>
+          <input
+            #quickAddInput
+            type="text"
+            class="quick-add-input"
+            placeholder="Tên tác vụ mới..."
+            [attr.aria-label]="'Thêm tác vụ vào cột ' + col.status.name"
+            (keydown.enter)="onAddTask(col.status.id, quickAddInput.value); quickAddInput.value = ''"
+            (keydown.escape)="quickAddInput.value = ''; quickAddInput.blur()"
+          />
+        </div>
+      </footer>
+
+    </div>
+  </div>
+
+</section>

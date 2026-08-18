@@ -277,6 +277,37 @@ export class TaskStore {
   }
 
   /**
+   * Di chuyển task trong cùng cột (cập nhật boardColumnOrder)
+   */
+  moveTaskInColumn(taskId: string, newIndex: number) {
+    this.tasks.update(list => {
+      const task = list.find(t => t.id === taskId);
+      if (!task) return list;
+      return list.map(t => t.id === taskId ? { ...t, boardColumnOrder: newIndex } : t);
+    });
+    this.taskService.updateTask(taskId, { boardColumnOrder: newIndex }).subscribe();
+  }
+
+  /**
+   * Di chuyển task sang cột khác (cập nhật statusId + boardColumnOrder)
+   */
+  moveTaskToStatus(taskId: string, newStatusId: string, newIndex: number) {
+    // Optimistic update
+    this.tasks.update(list =>
+      list.map(t => t.id === taskId
+        ? { ...t, statusId: newStatusId, boardColumnOrder: newIndex }
+        : t
+      )
+    );
+    this.taskService.updateTask(taskId, { statusId: newStatusId, boardColumnOrder: newIndex }).subscribe({
+      error: err => {
+        this.error.set(err.error?.message || 'Không thể di chuyển tác vụ');
+        this.loadTasks();
+      }
+    });
+  }
+
+  /**
    * Thêm bình luận
    */
   addComment(taskId: string, content: string) {
