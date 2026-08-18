@@ -1,7 +1,7 @@
 @keyframes slideInFromRight {
   0% {
     opacity: 0;
-    transform: translateX(100vw);
+    transform: translateX(100px);
   }
   100% {
     opacity: 1;
@@ -14,8 +14,8 @@
 }
 
 .login-container {
-  @apply relative z-10 w-full px-4 sm:px-0 lg:ml-auto lg:mr-[10%] xl:mr-[15%] mx-auto flex flex-col lg:flex-row items-center justify-center lg:justify-end gap-0;
-  animation: slideInFromRight 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  @apply relative z-10 w-full px-4 sm:px-0 sm:max-w-[400px] lg:ml-auto lg:mr-[20%] xl:mr-[25%] mx-auto;
+  animation: slideInFromRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .main-card {
@@ -30,16 +30,20 @@
   }
 
   .form-group {
-    @apply mb-5;
+    @apply mb-5 relative;
     
     .input-field {
       @apply w-full border border-slate-300 rounded-lg px-4 py-3 text-base text-slate-900 
              placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 
              focus:border-blue-500 transition-all;
+             
+      &.has-error {
+        @apply border-red-500 focus:border-red-500 focus:ring-red-500/50;
+      }
     }
 
     .error-text {
-      @apply text-red-500 text-xs mt-1 font-medium flex flex-col;
+      @apply absolute left-3 bottom-0 translate-y-[55%] bg-white px-1.5 text-[11px] text-red-500 font-normal leading-none z-10 flex flex-col;
     }
   }
 
@@ -68,9 +72,23 @@
   }
 }
 
+@keyframes slideOutFromBehind {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(180px, -50%);
+  }
+}
+
 .qr-card {
-  @apply hidden lg:flex flex-col items-center bg-black/20 backdrop-blur-md rounded-r-[24px] p-6 z-10 -ml-4 pl-10;
-  width: 250px;
+  @apply hidden lg:flex flex-col items-center bg-black/30 backdrop-blur-md p-6 z-10 pl-10;
+  width: 290px;
+  border-radius: 0 24px 24px 0;
+  animation: slideOutFromBehind 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards;
+  opacity: 0;
   
   .qr-title {
     @apply text-[15px] font-bold text-white mb-2;

@@ -10,78 +10,113 @@
 
 <app-auth-layout headerLinkText="LOGIN.REGISTER" headerLinkRoute="/register">
   <div class="login-container">
-    <section class="login-card main-card">
-      <h1 class="auth-title">{{ 'LOGIN.TITLE' | translate }}</h1>
-      <p class="auth-subtitle">{{ 'LOGIN.INPUT_LABEL' | translate }}</p>
+    <!-- Main Login Card -->
+    <section class="login-card main-card relative z-20 w-full">
+      <h1 class="auth-title text-[22px] font-semibold text-slate-800 text-center mb-6">Đăng nhập vào hệ thống</h1>
       
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit($event)">
-        <!-- Email Field -->
-        <div class="form-group">
-          <label class="input-label">{{ 'LOGIN.INPUT_LABEL' | translate }}</label>
+      <!-- Back button if in step 2 -->
+      <button *ngIf="loginStep() === 2" type="button" (click)="goBackToEmail()" class="absolute top-6 left-6 text-slate-400 hover:text-slate-600 transition-colors">
+        <mat-icon [fontSet]="'material-icons-outlined'" class="text-[20px]">arrow_back</mat-icon>
+      </button>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit($event)" class="w-full">
+        <!-- Step 1: Email Field -->
+        <div *ngIf="loginStep() === 1" class="form-group mb-4">
+          <label class="input-label text-sm text-slate-600 block text-center mb-2">Email hoặc số điện thoại</label>
           <input
             type="email"
-            [placeholder]="'LOGIN.INPUT_PLACEHOLDER' | translate"
-            class="input-field"
-            [class.border-red-400]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+            placeholder="name@company.vn"
+            class="input-field w-full"
+            [class.has-error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
             formControlName="email"
           />
           <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="error-text">
-            <span *ngIf="loginForm.get('email')?.hasError('required')">Email không được để trống</span>
+            <span *ngIf="loginForm.get('email')?.hasError('required')">Hãy hoàn thành tất cả các trường bắt buộc.</span>
             <span *ngIf="loginForm.get('email')?.hasError('email')">Email không đúng định dạng</span>
           </div>
         </div>
 
-        <!-- Password Field -->
-        <div class="form-group relative mt-4">
-          <label class="input-label">Mật khẩu</label>
-          <input
-            [type]="showPassword() ? 'text' : 'password'"
-            placeholder="Nhập mật khẩu"
-            class="input-field pr-10"
-            [class.border-red-400]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-            formControlName="password"
-          />
-          <button type="button" class="absolute right-3 top-9 text-slate-400 hover:text-slate-600 transition-colors" (click)="togglePasswordVisibility()">
-            <mat-icon [fontSet]="'material-icons-outlined'" class="text-[20px]">{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
-          </button>
+        <!-- Step 2: Password Field -->
+        <div *ngIf="loginStep() === 2" class="form-group relative mb-4">
+          <div class="text-center text-sm text-slate-500 mb-4 font-medium">{{ loginForm.get('email')?.value }}</div>
+          <label class="input-label text-sm text-slate-600 block text-center mb-2">Mật khẩu của bạn</label>
+          <div class="relative w-full">
+            <input
+              [type]="showPassword() ? 'text' : 'password'"
+              placeholder="Nhập mật khẩu"
+              class="input-field pr-10 w-full"
+              [class.has-error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+              formControlName="password"
+              autofocus
+            />
+            <button type="button" class="absolute right-3 top-[10px] text-slate-400 hover:text-slate-600 transition-colors" (click)="togglePasswordVisibility()">
+              <mat-icon [fontSet]="'material-icons-outlined'" class="text-[20px]">{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+          </div>
           <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error-text">
-            <span *ngIf="loginForm.get('password')?.hasError('required')">Mật khẩu không được để trống</span>
+            <span *ngIf="loginForm.get('password')?.hasError('required')">Hãy hoàn thành tất cả các trường bắt buộc.</span>
           </div>
         </div>
 
+        <!-- Submit Button -->
         <button
           type="submit"
-          class="btn-submit mt-6 flex items-center justify-center gap-2"
+          class="btn-submit w-full mt-2 flex items-center justify-center gap-2"
           [class.active]="isFormValid && !isLoading()"
           [class.disabled]="!isFormValid || isLoading()"
           [disabled]="!isFormValid || isLoading()"
         >
-          <svg *ngIf="isLoading()" class="animate-spin h-5 w-5 text-slate-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <svg *ngIf="isLoading()" class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
-          <span *ngIf="!isLoading()">{{ 'LOGIN.CONTINUE' | translate }}</span>
-          <span *ngIf="isLoading()">ĐANG ĐĂNG NHẬP...</span>
+          <span *ngIf="!isLoading()">{{ loginStep() === 1 ? 'Tiếp tục' : 'Đăng nhập' }}</span>
         </button>
 
-        <div class="divider">
-          <hr />
-          <span>{{ 'LOGIN.OR' | translate }}</span>
-          <hr />
+        <div class="divider text-center my-6 text-sm text-slate-400 relative">
+          <span class="bg-white px-3 relative z-10">Các tùy chọn đăng nhập khác</span>
+          <hr class="absolute top-1/2 left-0 w-full -z-0 border-slate-200" />
         </div>
 
         <app-social-login></app-social-login>
-
-        <div class="qr-login">
-          <div class="qr-icon-wrapper">
-            <mat-icon>qr_code_scanner</mat-icon>
-          </div>
-          <div class="qr-content">
-            <h3>{{ 'LOGIN.QR_TITLE' | translate }}</h3>
-            <p>{{ 'LOGIN.QR_DESC' | translate }}</p>
-          </div>
-        </div>
       </form>
     </section>
+
+    <!-- QR Code Card - Sliding out from behind -->
+    <div class="qr-card absolute z-10 top-1/2 -translate-y-1/2 left-1/2">
+      <h3 class="qr-title text-center text-sm font-medium mb-1 text-white">Đăng nhập bằng QR</h3>
+      <p class="qr-desc text-center text-xs text-white/80 mb-4 px-2">Quét mã QR và truy cập liên kết để đăng nhập vào hệ thống.</p>
+      
+      <div class="qr-image-container bg-white p-3 rounded-xl mx-auto w-fit mb-4">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=aismartkanban" alt="QR Code" class="w-[120px] h-[120px]" />
+      </div>
+      
+      <div class="app-badges flex justify-center gap-2">
+        <!-- App Store Badge -->
+        <a href="#" class="flex items-center justify-center bg-black border border-slate-600 rounded-lg px-2 py-1 gap-1.5 hover:bg-slate-900 transition-colors w-[110px] h-[36px] cursor-pointer shadow-sm">
+          <svg viewBox="0 0 384 512" class="w-[17px] h-[17px] fill-white shrink-0 mt-[-2px]">
+            <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-95.1 20.7-20.6 0-51.9-20.5-81.6-19.7-40.7 1.2-78.1 23.9-98.8 59.9-41.6 72.1-10.7 179.3 29.8 238.1 19.8 28.9 43.1 61.4 73.9 60.1 29.7-1.3 41.3-19.4 77.2-19.4 35.7 0 46.5 19.4 77.6 18.9 31.8-.4 51.9-30 71.5-58.8 23.4-34.4 33-67.9 33.5-69.6-.5-.3-32.9-12.7-33.3-40.8zM242.3 84.1c16.3-19.9 27.3-47.5 24.3-75-24.1 1-52 14.8-68.7 34.9-15 17.8-28.1 46.1-24.6 72.7 26.8 2 52.7-12.7 69-32.6z"></path>
+          </svg>
+          <div class="flex flex-col text-left justify-center mt-[-1px]">
+            <span class="text-[7.5px] text-white/90 leading-[8px] font-medium tracking-wide">Download on the</span>
+            <span class="text-[12px] text-white leading-[13px] font-semibold tracking-tight mt-[1px]">App Store</span>
+          </div>
+        </a>
+        
+        <!-- Google Play Badge -->
+        <a href="#" class="flex items-center justify-center bg-black border border-slate-600 rounded-lg px-2 py-1 gap-1 hover:bg-slate-900 transition-colors w-[110px] h-[36px] cursor-pointer shadow-sm">
+          <svg viewBox="0 0 512 512" class="w-[16px] h-[16px] shrink-0 mt-[-1px]">
+            <path fill="#4caf50" d="M38.8 19.4C32.1 25.5 28 35.8 28 49.3v413.4c0 13.5 4.1 23.8 10.8 29.9l1.1 1.1L239.5 294.1v-76.2L39.9 18.3l-1.1 1.1z"/>
+            <path fill="#ffc107" d="M317.9 373l-78.4-78.9v-76.2l78.4-78.9 1.4.8 93.3 53c26.6 15.1 26.6 39.8 0 55l-93.3 53-1.4 12.2z"/>
+            <path fill="#f44336" d="M239.5 217.9L39.9 18.3C49.9 8.3 66.8 7 88.5 19.3l228 129.5-77 69.1z"/>
+            <path fill="#2196f3" d="M239.5 294.1l77 69.1-228 129.5c-21.7 12.3-38.6 11-48.6 1L239.5 294.1z"/>
+          </svg>
+          <div class="flex flex-col text-left justify-center">
+            <span class="text-[7.5px] text-white/90 leading-[8px] font-medium tracking-wide">GET IT ON</span>
+            <span class="text-[11.5px] text-white leading-[13px] font-semibold tracking-tight mt-[1px]">Google Play</span>
+          </div>
+        </a>
+      </div>
+    </div>
   </div>
 </app-auth-layout>
