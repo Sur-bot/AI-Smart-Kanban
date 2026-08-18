@@ -1,4 +1,4 @@
-<section class="deadline-board" [attr.aria-label]="'TASKS_PAGE.DEADLINE.ARIA_LABEL' | translate">
+﻿<section class="deadline-board" [attr.aria-label]="'TASKS_PAGE.DEADLINE.ARIA_LABEL' | translate">
 
   <header class="deadline-header">
     <div
@@ -13,9 +13,16 @@
     </div>
   </header>
 
-  <div class="deadline-body">
+  <div class="deadline-body" cdkDropListGroup>
 
-    <div *ngFor="let col of columns" class="deadline-col-body group">
+        <div *ngFor="let col of columns" class="deadline-col-body group">
+      <!-- CDK Drop List -->
+      <div class="col-drop-zone flex-1 flex flex-col"
+           cdkDropList
+           [id]="getColumnDropListId(col.id)"
+           [cdkDropListData]="col.tasks"
+           [cdkDropListConnectedTo]="connectedColumnIds"
+           (cdkDropListDropped)="onTaskDrop($event, col.id)">
       <button
         *ngIf="col.id !== 'overdue' && col.id !== 'completed' && activeQuickTaskCol !== col.id"
         class="col-add-btn"
@@ -32,8 +39,9 @@
         (cancel)="closeQuickTask()"
       ></app-quick-task-input>
 
-      <div class="tasks-list flex flex-col items-center w-full pb-4">
-        <app-task-card
+      <div class="tasks-list flex flex-col items-center w-full pb-4 grow min-h-[50px]">
+                <app-task-card
+          cdkDrag
           *ngFor="let task of col.tasks"
           [task]="task"
           (cardClicked)="onTaskClick($event)"

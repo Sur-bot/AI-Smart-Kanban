@@ -15,8 +15,6 @@
 
   <app-deadline *ngIf="activeView === 'deadline'" (taskSelected)="openTaskDetail($event)" />
 
-  <app-kanban-board *ngIf="activeView === 'kanban'" />
-
   <app-task-detail-modal
     *ngIf="selectedTask"
     [task]="selectedTask"

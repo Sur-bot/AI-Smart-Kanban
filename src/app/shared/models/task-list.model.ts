@@ -12,7 +12,7 @@ export interface TaskItem {
   isSelected?: boolean;
 }
 
-export type TaskViewMode = 'list' | 'deadline' | 'kanban' | 'planner' | 'calendar' | 'gantt';
+export type TaskViewMode = 'list' | 'deadline' | 'planner' | 'calendar' | 'gantt';
 
 export interface TaskQuickFilter {
   id: string;

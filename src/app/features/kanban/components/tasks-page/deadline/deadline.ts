@@ -1,6 +1,7 @@
-import { Component, Output, EventEmitter, inject, OnInit } from '@angular/core';
+﻿import { Component, Output, EventEmitter, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { CdkDropList, CdkDrag, CdkDragPlaceholder, CdkDragPreview, CdkDropListGroup, CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TranslatePipe } from '@ngx-translate/core';
 import { QuickTaskInputComponent } from './quick-task-input/quick-task-input';
 import { TaskCardComponent } from '../../../components/task-card/task-card';
@@ -10,7 +11,18 @@ import { TaskItem } from '../../../../../core/models/task.model';
 @Component({
   selector: 'app-deadline',
   standalone: true,
-  imports: [CommonModule, MatIconModule, TranslatePipe, QuickTaskInputComponent, TaskCardComponent],
+  imports: [
+    CommonModule,
+    MatIconModule,
+    TranslatePipe,
+    QuickTaskInputComponent,
+    TaskCardComponent,
+    CdkDropList,
+    CdkDrag,
+    CdkDragPlaceholder,
+    CdkDragPreview,
+    CdkDropListGroup
+  ],
   templateUrl: './deadline.html',
   styleUrls: ['./deadline.scss'],
 })
@@ -74,6 +86,77 @@ export class DeadlineComponent implements OnInit {
     this.closeQuickTask();
   }
 
+  getColumnDropListId(colId: string): string {
+    return 'deadline-col-' + colId;
+  }
+
+  get connectedColumnIds(): string[] {
+    return this.columns.map(col => 'deadline-col-' + col.id);
+  }
+
+  onTaskDrop(event: CdkDragDrop<TaskItem[]>, targetColId: string) {
+    if (event.previousContainer === event.container) {
+      if (event.previousIndex !== event.currentIndex) {
+        const tasks = [...event.container.data];
+        moveItemInArray(tasks, event.previousIndex, event.currentIndex);
+        const moves = tasks.map((task, index) => ({
+          taskId: task.id,
+          boardColumnOrder: index
+        }));
+        this.taskStore.bulkMoveTasks(moves);
+      }
+    } else {
+      const prevTasks = [...event.previousContainer.data];
+      const currTasks = [...event.container.data];
+      const task = event.item.data as TaskItem;
+      
+      transferArrayItem(prevTasks, currTasks, event.previousIndex, event.currentIndex);
+      
+      // Calculate new due date based on the target column
+      let newDueDate: string | undefined = task.dueDate;
+      const now = new Date();
+      if (targetColId === 'today') {
+        newDueDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59).toISOString();
+      } else if (targetColId === 'this-week') {
+        const day = now.getDay();
+        const diffToFriday = (5 - day + 7) % 7 || 7;
+        const friday = new Date(now.getTime() + diffToFriday * 24 * 60 * 60 * 1000);
+        newDueDate = new Date(friday.getFullYear(), friday.getMonth(), friday.getDate(), 18, 0, 0).toISOString();
+      } else if (targetColId === 'next-week') {
+        const day = now.getDay();
+        const diffToNextFriday = (5 - day + 7) % 7 + 7;
+        const nextFriday = new Date(now.getTime() + diffToNextFriday * 24 * 60 * 60 * 1000);
+        newDueDate = new Date(nextFriday.getFullYear(), nextFriday.getMonth(), nextFriday.getDate(), 18, 0, 0).toISOString();
+      } else if (targetColId === 'two-weeks') {
+        const day = now.getDay();
+        const diffToTwoWeeks = (5 - day + 7) % 7 + 14;
+        const twoWeeksFriday = new Date(now.getTime() + diffToTwoWeeks * 24 * 60 * 60 * 1000);
+        newDueDate = new Date(twoWeeksFriday.getFullYear(), twoWeeksFriday.getMonth(), twoWeeksFriday.getDate(), 18, 0, 0).toISOString();
+      } else if (targetColId === 'no-deadline') {
+        newDueDate = undefined; // actually taskService.updateTask needs null or to omit? The backend allows update.
+      } else if (targetColId === 'overdue' || targetColId === 'completed') {
+        // Can't really drop here and change due date sensibly. Let's just block or do nothing
+        // Or if dropped into completed, maybe mark as completed? But that's not due date change.
+        return;
+      }
+      
+      // Update store for the moved task to have new dueDate
+      this.taskStore.updateTaskDueDate(task.id, newDueDate);
+
+      const prevMoves = prevTasks.map((task, index) => ({
+        taskId: task.id,
+        boardColumnOrder: index
+      }));
+      
+      const currMoves = currTasks.map((task, index) => ({
+        taskId: task.id,
+        boardColumnOrder: index
+      }));
+      
+      this.taskStore.bulkMoveTasks([...prevMoves, ...currMoves]);
+    }
+  }
+
   onTaskClick(task: TaskItem) {
     this.taskStore.selectTask(task.id);
     this.taskSelected.emit(task);
@@ -93,3 +176,4 @@ export class DeadlineComponent implements OnInit {
     }
   }
 }
+

@@ -5,7 +5,6 @@ import { ViewFilterBarComponent, QuickFilter } from '../../../../shared/componen
 import { DataTableComponent } from '../../../../shared/components/page-layout/data-table/data-table';
 import { DeadlineComponent } from './deadline/deadline';
 import { TaskDetailModalComponent } from '../task-detail-modal/task-detail-modal';
-import { KanbanBoardComponent } from '../kanban-board/kanban-board';
 import { TaskViewMode, ViewTab } from '../../../../shared/models/task-list.model';
 import { TaskItem } from '../../../../core/models/task.model';
 import { TaskStore } from '../../../../core/state/task.store';
@@ -20,7 +19,6 @@ import { TaskStore } from '../../../../core/state/task.store';
     DataTableComponent,
     DeadlineComponent,
     TaskDetailModalComponent,
-    KanbanBoardComponent,
   ],
   templateUrl: './tasks-page.html',
   styleUrls: ['./tasks-page.scss'],
@@ -34,7 +32,6 @@ export class TasksPageComponent implements OnInit {
   viewTabs: ViewTab[] = [
     { id: 'list', label: 'Danh sách' },
     { id: 'deadline', label: 'Hạn chót' },
-    { id: 'kanban', label: 'Kanban' },
     { id: 'planner', label: 'Trình lập kế hoạch' },
     { id: 'calendar', label: 'Lịch' },
     { id: 'gantt', label: 'Gantt' },
