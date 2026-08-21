@@ -314,7 +314,8 @@
   },
   "COMMON": {
     "CANCEL": "Cancel",
-    "CLOSE": "Close"
+    "CLOSE": "Close",
+    "BACK": "Back"
   },
   "JOB_ROLES": {
     "PM": "Project Manager",
@@ -328,5 +329,21 @@
     "Other": "Other",
     "SELECT": "Select job title...",
     "NONE": "Unassigned"
+  },
+  "STORAGE": {
+    "USER_STORAGE": "Personal Account",
+    "TITLE": "Storage Center",
+    "SUBTITLE": "Manage and optimize your project images",
+    "UPLOAD_IMAGE": "Upload Image",
+    "QUOTA_HEADING": "Storage Quota",
+    "QUOTA_PER_USER": "500 MB free / account",
+    "AVAILABLE": "Available",
+    "TOTAL_PHOTOS": "Total Photos",
+    "OPTIMIZATION": "Auto Optimized",
+    "TODAY": "Today",
+    "SEARCH_PLACEHOLDER": "Search by name, uploader, format...",
+    "IMAGES_COUNT": "images",
+    "QUOTA_FULL_WARNING": "Your storage quota is full (500 MB). Please delete old images to upload new ones.",
+    "QUOTA_NEAR_LIMIT_WARNING": "You have used over 80% of your storage quota. Please consider cleaning up unnecessary images."
   }
 }
