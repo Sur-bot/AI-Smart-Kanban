@@ -1,0 +1,139 @@
+@if (isOpen) {
+  <div class="modal-backdrop" role="presentation" (click)="onBackdropClick($event)">
+    <dialog
+      class="create-task-dialog"
+      open
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-labelledby]="'CREATE_TASK.TITLE_PLACEHOLDER' | translate"
+      (click)="$event.stopPropagation()"
+    >
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+
+        <!-- ── Header ─────────────────────────────── -->
+        <header class="dialog-header">
+          <input
+            id="create-task-title-input"
+            formControlName="title"
+            type="text"
+            class="title-input"
+            [placeholder]="'CREATE_TASK.TITLE_PLACEHOLDER' | translate"
+            autocomplete="off"
+            [attr.aria-label]="'CREATE_TASK.TITLE_PLACEHOLDER' | translate"
+            autofocus
+          />
+          <div class="header-actions">
+            <button
+              type="button"
+              class="icon-btn fire-btn"
+              [title]="'CREATE_TASK.HIGH_PRIORITY' | translate"
+              [attr.aria-label]="'CREATE_TASK.HIGH_PRIORITY_ARIA' | translate"
+            >
+              <mat-icon fontSet="material-icons-outlined">local_fire_department</mat-icon>
+            </button>
+            <button
+              type="button"
+              class="icon-btn close-btn"
+              [title]="'COMMON.CLOSE' | translate"
+              [attr.aria-label]="'COMMON.CLOSE' | translate"
+              (click)="onClose()"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </header>
+
+        <!-- ── Body ──────────────────────────────── -->
+        <section class="dialog-body" [attr.aria-label]="'CREATE_TASK.TASK_DETAILS_ARIA' | translate">
+
+          <!-- Mô tả -->
+          <div class="field-row description-row">
+            <textarea
+              formControlName="description"
+              class="description-input"
+              [placeholder]="'CREATE_TASK.DESCRIPTION_PLACEHOLDER' | translate"
+              rows="2"
+              [attr.aria-label]="'CREATE_TASK.DESCRIPTION_PLACEHOLDER' | translate"
+            ></textarea>
+          </div>
+
+          <!-- Người được phân công -->
+          <div class="field-row">
+            <label class="field-label" for="assignee-input">{{ 'CREATE_TASK.ASSIGNEE' | translate }}</label>
+            <div class="field-value assignee-value">
+              <span class="avatar-placeholder" aria-hidden="true">
+                <mat-icon fontSet="material-icons-outlined" class="!text-[16px] !w-4 !h-4">person</mat-icon>
+              </span>
+              <input
+                id="assignee-input"
+                formControlName="assigneeId"
+                type="text"
+                class="inline-input"
+                [placeholder]="'CREATE_TASK.ASSIGNEE_PLACEHOLDER' | translate"
+                [attr.aria-label]="'CREATE_TASK.ASSIGNEE' | translate"
+              />
+            </div>
+          </div>
+
+          <!-- Hạn chót -->
+          <div class="field-row">
+            <label class="field-label" for="due-date-input">{{ 'CREATE_TASK.DUE_DATE' | translate }}</label>
+            <div class="field-value">
+              <mat-icon fontSet="material-icons-outlined" class="field-icon">calendar_today</mat-icon>
+              <input
+                id="due-date-input"
+                formControlName="dueDate"
+                type="datetime-local"
+                class="inline-input date-input"
+                [attr.aria-label]="'CREATE_TASK.DUE_DATE' | translate"
+              />
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ── Action Chips ───────────────────────── -->
+        <section class="dialog-chips" [attr.aria-label]="'CREATE_TASK.ADDITIONAL_OPTIONS_ARIA' | translate">
+          <button type="button" class="chip-btn" [title]="'CREATE_TASK.ATTACH_FILE' | translate" [attr.aria-label]="'CREATE_TASK.ATTACH_FILE' | translate">
+            <mat-icon fontSet="material-icons-outlined" class="!text-[14px] !w-[14px] !h-[14px]">attach_file</mat-icon>
+            <span>{{ 'CREATE_TASK.ATTACH_FILE' | translate }}</span>
+          </button>
+          <button type="button" class="chip-btn" [title]="'CREATE_TASK.ADD_CHECKLIST' | translate" [attr.aria-label]="'CREATE_TASK.ADD_CHECKLIST' | translate">
+            <mat-icon fontSet="material-icons-outlined" class="!text-[14px] !w-[14px] !h-[14px]">checklist</mat-icon>
+            <span>{{ 'CREATE_TASK.CHECKLIST' | translate }}</span>
+          </button>
+          <button type="button" class="chip-btn" [title]="'CREATE_TASK.SELECT_PROJECT' | translate" [attr.aria-label]="'CREATE_TASK.SELECT_PROJECT' | translate">
+            <mat-icon fontSet="material-icons-outlined" class="!text-[14px] !w-[14px] !h-[14px]">folder_open</mat-icon>
+            <span>{{ 'CREATE_TASK.PROJECT' | translate }}</span>
+          </button>
+        </section>
+
+        <!-- ── Footer ─────────────────────────────── -->
+        <footer class="dialog-footer">
+          <div class="footer-actions">
+            <button
+              type="submit"
+              class="btn-submit"
+              [disabled]="form.invalid || isSubmitting"
+              [attr.aria-label]="'CREATE_TASK.CREATE_BTN_ARIA' | translate"
+            >
+              {{ isSubmitting ? ('CREATE_TASK.CREATING' | translate) : ('CREATE_TASK.CREATE_BTN' | translate) }}
+            </button>
+            <button
+              type="button"
+              class="btn-cancel"
+              (click)="onClose()"
+              [attr.aria-label]="'COMMON.CANCEL' | translate"
+            >
+              {{ 'COMMON.CANCEL' | translate }}
+            </button>
+          </div>
+          <button type="button" class="btn-detail-link" [attr.aria-label]="'CREATE_TASK.OPEN_DETAIL_ARIA' | translate">
+            {{ 'CREATE_TASK.DETAIL_FORM' | translate }}
+          </button>
+        </footer>
+
+      </form>
+    </dialog>
+  </div>
+}
