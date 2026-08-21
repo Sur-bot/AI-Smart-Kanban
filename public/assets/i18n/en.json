@@ -288,5 +288,45 @@
     "TAB_SECURITY_F4": "Secure Service Role Key",
     "TAB_SECURITY_F5": "Docker containerized",
     "TAB_SECURITY_F6": "SHA-256 encryption for all files"
+  },
+  "CREATE_TASK": {
+    "TITLE_PLACEHOLDER": "Task name",
+    "AI_ASSISTANT": "AI Assistant",
+    "AI_ASSISTANT_ARIA": "Open AI assistant",
+    "TASK_DETAILS_ARIA": "Task details",
+    "DESCRIPTION_PLACEHOLDER": "Description",
+    "ASSIGNEE": "Assignee",
+    "ASSIGNEE_PLACEHOLDER": "Add assignee...",
+    "DUE_DATE": "Due date",
+    "ADDITIONAL_OPTIONS_ARIA": "Additional options",
+    "ATTACH_FILE": "File attachment",
+    "ADD_CHECKLIST": "Add checklist",
+    "CHECKLIST": "Checklist",
+    "SELECT_PROJECT": "Select project",
+    "PROJECT": "Project",
+    "CREATE_BTN_ARIA": "Create task",
+    "CREATING": "Creating...",
+    "CREATE_BTN": "Create",
+    "OPEN_DETAIL_ARIA": "Open detail form",
+    "DETAIL_FORM": "Detail form",
+    "HIGH_PRIORITY": "Mark as priority",
+    "HIGH_PRIORITY_ARIA": "Mark task as priority"
+  },
+  "COMMON": {
+    "CANCEL": "Cancel",
+    "CLOSE": "Close"
+  },
+  "JOB_ROLES": {
+    "PM": "Project Manager",
+    "FE": "Frontend Dev",
+    "BE": "Backend Dev",
+    "QA": "QA/QC",
+    "DevOps": "DevOps",
+    "Designer": "UI/UX Designer",
+    "Mobile": "Mobile Dev",
+    "DataAnalyst": "Data Analyst",
+    "Other": "Other",
+    "SELECT": "Select job title...",
+    "NONE": "Unassigned"
   }
 }

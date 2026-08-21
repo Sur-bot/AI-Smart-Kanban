@@ -1,0 +1,188 @@
+:host {
+  display: contents;
+}
+
+// ── Backdrop ─────────────────────────────────────────────────
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.48);
+  backdrop-filter: blur(2px);
+  padding: 16px;
+  animation: backdrop-in 0.15s ease;
+}
+
+@keyframes backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+// ── Dialog Card ──────────────────────────────────────────────
+.create-task-dialog {
+  @apply bg-white rounded-2xl shadow-2xl border-0 p-0;
+  width: 500px;
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow: auto;
+  animation: dialog-in 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+
+  &::backdrop { display: none; } // Disable native backdrop; dung .modal-backdrop
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// ── Header ───────────────────────────────────────────────────
+.dialog-header {
+  @apply flex items-start gap-2 pt-6 px-6 pb-2;
+}
+
+.title-input {
+  @apply flex-1 text-[22px] font-semibold text-gray-900 border-none outline-none bg-transparent resize-none;
+  line-height: 1.4;
+  min-width: 0;
+  placeholder-color: #9ca3af;
+
+  &::placeholder {
+    color: #9ca3af;
+    font-weight: 400;
+  }
+}
+
+.header-actions {
+  @apply flex items-center gap-0.5 shrink-0 mt-0.5;
+}
+
+.icon-btn {
+  @apply flex items-center justify-center w-7 h-7 rounded-md border-none cursor-pointer text-gray-400 transition-colors duration-150 bg-transparent;
+
+  mat-icon {
+    @apply text-[18px] w-[18px] h-[18px];
+    font-size: 18px;
+  }
+
+  &:hover {
+    @apply bg-gray-100 text-gray-600;
+  }
+
+  &.fire-btn:hover {
+    @apply bg-red-50 text-red-500;
+  }
+}
+
+// ── Body ─────────────────────────────────────────────────────
+.dialog-body {
+  @apply px-6 pb-0 flex flex-col gap-0;
+}
+
+.description-row {
+  @apply mb-1;
+}
+
+.description-input {
+  @apply w-full text-[13px] text-gray-500 border-none outline-none bg-transparent resize-none;
+  line-height: 1.5;
+
+  &::placeholder {
+    color: #d1d5db;
+  }
+}
+
+.field-row {
+  @apply flex items-center gap-3 py-2.5 min-h-[44px];
+}
+
+.field-label {
+  @apply text-[13px] text-gray-500 shrink-0 w-[170px] font-normal;
+}
+
+.field-value {
+  @apply flex items-center gap-2 flex-1 min-w-0;
+}
+
+.field-icon {
+  @apply text-gray-400 shrink-0;
+  font-size: 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+}
+
+.avatar-placeholder {
+  @apply flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-500 shrink-0;
+}
+
+.inline-input {
+  @apply flex-1 text-[13px] text-gray-800 border-none outline-none bg-transparent min-w-0;
+
+  &::placeholder {
+    color: #9ca3af;
+  }
+
+  &.date-input {
+    @apply text-[13px] text-blue-600 cursor-pointer;
+  }
+}
+
+// ── Chips ────────────────────────────────────────────────────
+.dialog-chips {
+  @apply flex items-center gap-2 px-6 py-4;
+}
+
+.chip-btn {
+  @apply flex items-center gap-1.5 px-3 py-1.5 text-[12px] text-gray-500 border border-gray-200 rounded-full bg-transparent cursor-pointer transition-colors duration-150;
+
+  &:hover {
+    @apply bg-gray-50 text-gray-700 border-gray-300;
+  }
+}
+
+// ── Footer ───────────────────────────────────────────────────
+.dialog-footer {
+  @apply flex items-center justify-between px-6 py-5;
+}
+
+.footer-actions {
+  @apply flex items-center gap-2;
+}
+
+.btn-submit {
+  @apply px-5 py-2.5 rounded-lg text-[13px] font-semibold text-white border-none cursor-pointer transition-all duration-150;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  box-shadow: 0 1px 4px rgba(37, 99, 235, 0.3);
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+  }
+
+  &:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+}
+
+.btn-cancel {
+  @apply px-4 py-2.5 rounded-lg text-[13px] font-medium text-gray-700 bg-transparent border-none cursor-pointer transition-colors duration-150;
+
+  &:hover {
+    @apply bg-gray-100;
+  }
+}
+
+.btn-detail-link {
+  @apply text-[12px] text-gray-400 bg-transparent border-none cursor-pointer p-0 transition-colors duration-150;
+
+  &:hover {
+    @apply text-blue-500 underline;
+  }
+}

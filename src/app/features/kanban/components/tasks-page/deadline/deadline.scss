@@ -35,24 +35,37 @@
 }
 
 .deadline-col-body {
-  @apply flex-1 flex flex-col items-center pt-2.5 min-h-full border-r border-dashed border-white/30;
+  // Luôn giữ border trái và phải 1px để tránh co giật content khi hover
+  @apply flex-1 flex flex-col pt-2.5 min-h-full border-x border-transparent border-dashed;
+  border-right-color: rgba(255, 255, 255, 0.3);
+  transition: background-color 150ms ease, border-color 150ms ease;
 
   &:first-child {
-    @apply border-l;
+    border-left-color: rgba(255, 255, 255, 0.3);
   }
 
   &:last-child {
-    @apply border-r-0;
+    border-right-color: transparent;
+  }
+
+  // Chỉ cột mà con trỏ đang di chuyển vào mới sáng viền
+  &.is-drag-over {
+    @apply bg-white/10;
+    border-color: rgba(255, 255, 255, 0.8);
+    border-style: solid;
   }
 }
 
+// Animation khi list đang nhận thẻ được thả vào
+.col-drop-zone.cdk-drop-list-dragging app-task-card:not(.cdk-drag-placeholder) {
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
 .col-add-btn {
-  @apply flex items-center justify-center h-[30px] bg-transparent border-none cursor-pointer text-white/70 rounded-full shrink-0 transition-all duration-300 ease-in-out overflow-hidden px-0;
-  width: 26px;
+  @apply flex items-center justify-center h-[30px] bg-transparent border-none cursor-pointer text-white/70 rounded-full shrink-0 transition-colors duration-300 overflow-hidden px-0 mx-auto mb-2 w-[calc(100%-20px)];
 
   .group:hover & {
     @apply text-white bg-white/20;
-    width: calc(100% - 20px);
   }
 
   .group:hover &:hover {

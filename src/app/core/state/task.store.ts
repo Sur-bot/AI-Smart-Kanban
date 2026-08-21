@@ -115,14 +115,16 @@ export class TaskStore {
       }
     });
 
+    const sortByOrder = (a: TaskItem, b: TaskItem) => a.boardColumnOrder - b.boardColumnOrder;
+
     return [
-      { id: 'overdue', labelKey: 'TASKS_PAGE.DEADLINE.COL_OVERDUE', color: 'col-red', count: overdue.length, tasks: overdue },
-      { id: 'today', labelKey: 'TASKS_PAGE.DEADLINE.COL_TODAY', color: 'col-green', count: today.length, tasks: today },
-      { id: 'this-week', labelKey: 'TASKS_PAGE.DEADLINE.COL_THIS_WEEK', color: 'col-teal', count: thisWeek.length, tasks: thisWeek },
-      { id: 'next-week', labelKey: 'TASKS_PAGE.DEADLINE.COL_NEXT_WEEK', color: 'col-cyan', count: nextWeek.length, tasks: nextWeek },
-      { id: 'no-deadline', labelKey: 'TASKS_PAGE.DEADLINE.COL_NO_DEADLINE', color: 'col-gray', count: noDeadline.length, tasks: noDeadline },
-      { id: 'two-weeks', labelKey: 'TASKS_PAGE.DEADLINE.COL_TWO_WEEKS', color: 'col-blue', count: twoWeeks.length, tasks: twoWeeks },
-      { id: 'completed', labelKey: 'TASKS_PAGE.DEADLINE.COL_COMPLETED', color: 'col-purple', count: completed.length, tasks: completed }
+      { id: 'overdue', labelKey: 'TASKS_PAGE.DEADLINE.COL_OVERDUE', color: 'col-red', count: overdue.length, tasks: overdue.sort(sortByOrder) },
+      { id: 'today', labelKey: 'TASKS_PAGE.DEADLINE.COL_TODAY', color: 'col-green', count: today.length, tasks: today.sort(sortByOrder) },
+      { id: 'this-week', labelKey: 'TASKS_PAGE.DEADLINE.COL_THIS_WEEK', color: 'col-teal', count: thisWeek.length, tasks: thisWeek.sort(sortByOrder) },
+      { id: 'next-week', labelKey: 'TASKS_PAGE.DEADLINE.COL_NEXT_WEEK', color: 'col-cyan', count: nextWeek.length, tasks: nextWeek.sort(sortByOrder) },
+      { id: 'no-deadline', labelKey: 'TASKS_PAGE.DEADLINE.COL_NO_DEADLINE', color: 'col-gray', count: noDeadline.length, tasks: noDeadline.sort(sortByOrder) },
+      { id: 'two-weeks', labelKey: 'TASKS_PAGE.DEADLINE.COL_TWO_WEEKS', color: 'col-blue', count: twoWeeks.length, tasks: twoWeeks.sort(sortByOrder) },
+      { id: 'completed', labelKey: 'TASKS_PAGE.DEADLINE.COL_COMPLETED', color: 'col-purple', count: completed.length, tasks: completed.sort(sortByOrder) }
     ];
   });
 
@@ -277,6 +279,39 @@ export class TaskStore {
   }
 
   /**
+   * Cập nhật thứ tự và trạng thái hàng loạt (Kéo thả Kanban)
+   */
+  updateTaskDueDate(taskId: string, newDueDate: string | undefined | null) {
+    this.tasks.update(list => list.map(t => t.id === taskId ? { ...t, dueDate: newDueDate === null ? undefined : newDueDate } : t));
+    this.taskService.updateTask(taskId, { dueDate: newDueDate === null ? undefined : newDueDate }).subscribe();
+  }
+
+  bulkMoveTasks(moves: { taskId: string, statusId?: string, boardColumnOrder: number }[]) {
+    // Optimistic update
+    this.tasks.update(list => {
+      const listCopy = [...list];
+      moves.forEach(move => {
+        const idx = listCopy.findIndex(t => t.id === move.taskId);
+        if (idx !== -1) {
+          listCopy[idx] = {
+            ...listCopy[idx],
+            boardColumnOrder: move.boardColumnOrder,
+            ...(move.statusId ? { statusId: move.statusId } : {})
+          };
+        }
+      });
+      return listCopy;
+    });
+
+    this.taskService.bulkMoveTasks(moves).subscribe({
+      error: err => {
+        this.error.set(err.error?.message || 'Không thể cập nhật thứ tự tác vụ');
+        this.loadTasks(); // Rollback về trạng thái server
+      }
+    });
+  }
+
+  /**
    * Thêm bình luận
    */
   addComment(taskId: string, content: string) {
@@ -315,3 +350,6 @@ export class TaskStore {
     });
   }
 }
+
+
+
