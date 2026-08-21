@@ -63,6 +63,13 @@ export class TaskService {
   }
 
   /**
+   * Cập nhật hàng loạt (Drag & Drop)
+   */
+  bulkMoveTasks(moves: { taskId: string, statusId?: string, boardColumnOrder: number }[]): Observable<{ success: boolean; count: number }> {
+    return this.http.post<{ success: boolean; count: number }>(`${this.apiUrl}/bulk-move`, { moves }, { withCredentials: true });
+  }
+
+  /**
    * Xóa tác vụ (Soft Delete)
    */
   deleteTask(id: string): Observable<{ success: boolean; message: string }> {

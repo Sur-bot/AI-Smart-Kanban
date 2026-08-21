@@ -13,31 +13,46 @@
     </div>
   </header>
 
-  <div class="deadline-body">
+  <div class="deadline-body" cdkDropListGroup>
 
-    <div *ngFor="let col of columns" class="deadline-col-body group">
-      <button
-        *ngIf="col.id !== 'overdue' && col.id !== 'completed' && activeQuickTaskCol !== col.id"
-        class="col-add-btn"
-        [attr.aria-label]="('TASKS_PAGE.DEADLINE.ADD_TO_COL' | translate) + ' ' + (col.labelKey | translate)"
-        (click)="openQuickTask(col.id, $event)"
-      >
-        <mat-icon>add</mat-icon>
-        <span class="btn-text">{{ 'TASKS_PAGE.DEADLINE.QUICK_TASK' | translate }}</span>
-      </button>
+    <div *ngFor="let col of columns"
+         class="deadline-col-body group"
+         [class.is-drag-over]="dragOverColId === col.id">
+      <div class="col-drop-zone flex-1 flex flex-col w-full">
+        <button
+          *ngIf="col.id !== 'overdue' && col.id !== 'completed' && activeQuickTaskCol !== col.id"
+          class="col-add-btn"
+          [attr.aria-label]="('TASKS_PAGE.DEADLINE.ADD_TO_COL' | translate) + ' ' + (col.labelKey | translate)"
+          (click)="openQuickTask(col.id, $event)"
+        >
+          <mat-icon>add</mat-icon>
+          <span class="btn-text">{{ 'TASKS_PAGE.DEADLINE.QUICK_TASK' | translate }}</span>
+        </button>
 
-      <app-quick-task-input
-        *ngIf="activeQuickTaskCol === col.id"
-        (create)="onQuickTaskCreate($event, col.id)"
-        (cancel)="closeQuickTask()"
-      ></app-quick-task-input>
+        <app-quick-task-input
+          *ngIf="activeQuickTaskCol === col.id"
+          (create)="onQuickTaskCreate($event, col.id)"
+          (cancel)="closeQuickTask()"
+        ></app-quick-task-input>
 
-      <div class="tasks-list flex flex-col items-center w-full pb-4">
-        <app-task-card 
-          *ngFor="let task of col.tasks" 
-          [task]="task"
-          (click)="onTaskClick(task)">
-        </app-task-card>
+        <div class="tasks-list flex flex-col items-center w-full pb-4 grow min-h-[50px]"
+             cdkDropList
+             [id]="getColumnDropListId(col.id)"
+             [cdkDropListData]="col.tasks"
+             [cdkDropListConnectedTo]="connectedColumnIds"
+             (cdkDropListDropped)="onTaskDrop($event, col.id)"
+             (cdkDropListEntered)="onDragEntered($event, col.id)"
+             (cdkDropListExited)="onDragExited($event, col.id)">
+          <app-task-card
+            cdkDrag
+            [cdkDragData]="task"
+            *ngFor="let task of col.tasks"
+            [task]="task"
+            (cardClicked)="onTaskClick($event)"
+            (taskStarted)="onTaskStart($event)"
+            (taskCompleted)="onTaskComplete($event)">
+          </app-task-card>
+        </div>
       </div>
     </div>
 

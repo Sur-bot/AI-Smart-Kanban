@@ -99,7 +99,6 @@
       "ROLE_PM": "Quản lý dự án",
       "ROLE_CS": "Dịch vụ khách hàng",
       "SEE_ALL": "Xem tất cả các giải pháp",
-
       "TECH_IMPORT_TITLE": "Nhập & Xuất",
       "TECH_IMPORT_FRAMEWORKS": "Frameworks integration: Laravel, Symfony, Yii, RoR...",
       "TECH_IMPORT_MAKE": "Make (Integromat)",
@@ -121,14 +120,12 @@
       "TECH_TASKS_HELPDESK": "Helpdesk & support application",
       "TECH_TASKS_TRACKER": "Tasks: Theo dõi thời gian hoàn thành thực tế",
       "TECH_SEE_ALL": "Xem hơn 760+ ứng dụng & bản tích hợp",
-
       "PART_CUSTOMER_TITLE": "Cho khách hàng",
       "PART_DIRECTORY": "Thư mục đối tác",
       "PART_CONSULT": "Nhận tham vấn cá nhân",
       "PART_BIZ_TITLE": "Cho đối tác",
       "PART_BECOME": "Trở thành đối tác của Digit24",
       "PART_LOGIN": "Partner login",
-
       "FEAT_SEE_ALL_TOOLS": "Xem tất cả các công cụ",
       "FEAT_CRM_TAB": "CRM",
       "FEAT_CRM_TITLE": "CRM",
@@ -152,7 +149,6 @@
       "FEAT_CRM_AUTOMATION_DESC": "Quy tắc CRM, luồng công việc tự động, phễu và API",
       "FEAT_CRM_COPILOT": "CoPilot trong CRM",
       "FEAT_CRM_COPILOT_DESC": "AI tóm tắt cuộc gọi và tự động điền vào các trường giao dịch",
-
       "FEAT_TASKS_TAB": "Tác vụ & Dự án",
       "FEAT_TASKS_TITLE": "Tác vụ & Dự án",
       "FEAT_TASKS_SUBTITLE": "Quản lý công việc nhóm hiệu quả từ ý tưởng đến hoàn thành",
@@ -175,7 +171,6 @@
       "FEAT_TASKS_TIME_DESC": "Ghi lại thời gian làm việc thực tế cho mỗi tác vụ",
       "FEAT_TASKS_MOBILE": "Quản lý qua di động",
       "FEAT_TASKS_MOBILE_DESC": "Tạo, cập nhật và theo dõi tác vụ mọi lúc mọi nơi",
-
       "FEAT_COLLAB_TAB": "Hợp tác",
       "FEAT_COLLAB_TITLE": "Hợp tác",
       "FEAT_COLLAB_SUBTITLE": "Làm việc nhóm liền mạch dù ở bất kỳ đâu",
@@ -198,7 +193,6 @@
       "FEAT_COLLAB_WORKGROUP_DESC": "Không gian riêng cho từng bộ phận với tài nguyên và quyền riêng",
       "FEAT_COLLAB_MOBILE": "Mobile app",
       "FEAT_COLLAB_MOBILE_DESC": "Cộng tác đầy đủ tính năng trên iOS và Android",
-
       "FEAT_WEB_TAB": "Trang web & Cửa hàng",
       "FEAT_WEB_TITLE": "Trang web & Cửa hàng",
       "FEAT_WEB_SUBTITLE": "Xây dựng hiện diện trực tuyến và bán hàng không cần lập trình",
@@ -221,7 +215,6 @@
       "FEAT_WEB_PAYMENT_DESC": "Tích hợp cổng thanh toán phổ biến tại Việt Nam",
       "FEAT_WEB_ANALYTICS": "Phân tích website",
       "FEAT_WEB_ANALYTICS_DESC": "Theo dõi lượt truy cập, hành vi người dùng và tỉ lệ chuyển đổi",
-
       "FEAT_HR_TAB": "Nhân sự & Tự động hóa",
       "FEAT_HR_TITLE": "Nhân sự & Tự động hóa",
       "FEAT_HR_SUBTITLE": "Tự động hóa quy trình nhân sự và vận hành doanh nghiệp",
@@ -244,7 +237,6 @@
       "FEAT_HR_ONBOARD_DESC": "Quy trình đào tạo và hội nhập nhân viên mới tự động",
       "FEAT_HR_MOBILE": "Nhân sự qua mobile",
       "FEAT_HR_MOBILE_DESC": "Chấm công, nghỉ phép và xem thông tin từ điện thoại",
-
       "FEAT_COPILOT_TAB": "CoPilot AI",
       "FEAT_COPILOT_TITLE": "CoPilot AI",
       "FEAT_COPILOT_SUBTITLE": "Trợ lý AI thông minh tích hợp sâu vào mọi quy trình làm việc",
@@ -269,7 +261,6 @@
       "FEAT_COPILOT_ANALYST_DESC": "Đặt câu hỏi về số liệu kinh doanh, AI trả lời bằng biểu đồ"
     }
   },
-
   "HEADER": {
     "SEARCH": "Tìm kiếm...",
     "SETTINGS": "Cài đặt",
@@ -457,5 +448,45 @@
     "TAB_SECURITY_F4": "Service Role Key bảo mật",
     "TAB_SECURITY_F5": "Docker containerized",
     "TAB_SECURITY_F6": "Mã hóa SHA-256 mọi file"
+  },
+  "CREATE_TASK": {
+    "TITLE_PLACEHOLDER": "Tên tác vụ",
+    "AI_ASSISTANT": "Trợ lý AI",
+    "AI_ASSISTANT_ARIA": "Mở trợ lý AI",
+    "TASK_DETAILS_ARIA": "Chi tiết tác vụ",
+    "DESCRIPTION_PLACEHOLDER": "Mô tả",
+    "ASSIGNEE": "Người được phân công",
+    "ASSIGNEE_PLACEHOLDER": "Thêm người thực hiện...",
+    "DUE_DATE": "Hạn chót",
+    "ADDITIONAL_OPTIONS_ARIA": "Tùy chọn thêm",
+    "ATTACH_FILE": "Tệp tin",
+    "ADD_CHECKLIST": "Thêm danh sách kiểm tra",
+    "CHECKLIST": "Danh sách kiểm tra",
+    "SELECT_PROJECT": "Chọn dự án",
+    "PROJECT": "Dự án",
+    "CREATE_BTN_ARIA": "Tạo tác vụ",
+    "CREATING": "Đang tạo...",
+    "CREATE_BTN": "Tạo",
+    "OPEN_DETAIL_ARIA": "Mở biểu mẫu chi tiết",
+    "DETAIL_FORM": "Biểu mẫu chi tiết",
+    "HIGH_PRIORITY": "Đánh dấu ưu tiên",
+    "HIGH_PRIORITY_ARIA": "Đánh dấu tác vụ ưu tiên"
+  },
+  "COMMON": {
+    "CANCEL": "Hủy",
+    "CLOSE": "Đóng"
+  },
+  "JOB_ROLES": {
+    "PM": "Project Manager",
+    "FE": "Frontend Dev",
+    "BE": "Backend Dev",
+    "QA": "QA/QC",
+    "DevOps": "DevOps",
+    "Designer": "UI/UX Designer",
+    "Mobile": "Mobile Dev",
+    "DataAnalyst": "Data Analyst",
+    "Other": "Khác",
+    "SELECT": "Chọn chức danh...",
+    "NONE": "Chưa xác định"
   }
 }

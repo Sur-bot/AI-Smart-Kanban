@@ -2,7 +2,7 @@
     <nav class="toolbar-left" aria-label="Toolbar Primary">
         <h1 class="toolbar-title m-0 text-base font-normal">{{ title }}</h1>
         <div class="btn-create-group" role="group" aria-label="Create Actions">
-            <button class="btn-create-main">
+            <button class="btn-create-main" type="button" (click)="openCreateModal(); $event.stopPropagation()">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
                     stroke="currentColor" class="w-4 h-4">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -156,3 +156,9 @@
         </button>
     </div>
 </header>
+
+<!-- Modal Tao Tac Vu nhanh -->
+<app-create-task-modal
+  [isOpen]="isCreateModalOpen"
+  (close)="closeCreateModal()"
+></app-create-task-modal>

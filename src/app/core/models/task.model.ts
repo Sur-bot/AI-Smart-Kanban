@@ -240,3 +240,21 @@ export interface Project {
   created_at: string;
   statuses?: TaskStatus[];
 }
+
+export type ProjectMemberRole = 'owner' | 'admin' | 'member' | 'viewer';
+export type JobRoleId = 'PM' | 'FE' | 'BE' | 'QA' | 'DevOps' | 'Designer' | 'Mobile' | 'DataAnalyst' | 'Other';
+
+export interface ProjectMember {
+  id: string;
+  project_id?: string;
+  user_id: string;
+  role: ProjectMemberRole;
+  job_role: JobRoleId | null;
+  created_at?: string;
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+    avatar_url?: string;
+  };
+}
