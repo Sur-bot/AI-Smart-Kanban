@@ -474,7 +474,8 @@
   },
   "COMMON": {
     "CANCEL": "Hủy",
-    "CLOSE": "Đóng"
+    "CLOSE": "Đóng",
+    "BACK": "Trở về"
   },
   "JOB_ROLES": {
     "PM": "Project Manager",
@@ -488,5 +489,21 @@
     "Other": "Khác",
     "SELECT": "Chọn chức danh...",
     "NONE": "Chưa xác định"
+  },
+  "STORAGE": {
+    "USER_STORAGE": "Tài khoản cá nhân",
+    "TITLE": "Trung tâm Lưu trữ",
+    "SUBTITLE": "Quản lý và tối ưu hóa hình ảnh dự án của bạn",
+    "UPLOAD_IMAGE": "Tải ảnh lên",
+    "QUOTA_HEADING": "Hạn mức Lưu trữ",
+    "QUOTA_PER_USER": "500 MB miễn phí / tài khoản",
+    "AVAILABLE": "Còn trống",
+    "TOTAL_PHOTOS": "Tổng ảnh",
+    "OPTIMIZATION": "Tự động tối ưu",
+    "TODAY": "Hôm nay",
+    "SEARCH_PLACEHOLDER": "Tìm kiếm theo tên, người upload, định dạng...",
+    "IMAGES_COUNT": "ảnh",
+    "QUOTA_FULL_WARNING": "Dung lượng lưu trữ của bạn đã đầy (500 MB). Vui lòng xóa bớt ảnh cũ để có thể tải thêm ảnh mới.",
+    "QUOTA_NEAR_LIMIT_WARNING": "Bạn đã sử dụng hơn 80% hạn mức dung lượng lưu trữ. Hãy chú ý dọn dẹp ảnh không cần thiết."
   }
 }
