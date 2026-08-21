@@ -122,7 +122,10 @@
   }
 
   .alert-icon {
-    @apply !text-[20px] !w-5 !h-5 shrink-0;
+    font-size: 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+    flex-shrink: 0;
   }
 
   .alert-text {
@@ -165,7 +168,11 @@
 }
 
 .quota-card-icon {
-  @apply !text-[22px] !w-6 !h-6 text-blue-600 shrink-0;
+  font-size: 22px !important;
+  width: 24px !important;
+  height: 24px !important;
+  color: #2563eb;
+  flex-shrink: 0;
 }
 
 .quota-heading {
@@ -273,7 +280,10 @@
 }
 
 .search-icon {
-  @apply absolute left-3 !text-[20px] !w-5 !h-5 text-gray-400 pointer-events-none;
+  @apply absolute left-3 text-gray-400 pointer-events-none;
+  font-size: 20px !important;
+  width: 20px !important;
+  height: 20px !important;
 }
 
 .search-input {
