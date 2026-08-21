@@ -2,6 +2,7 @@ import { Component, Input, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { NgStyle } from '@angular/common';
+import { CreateTaskModalComponent } from '../../create-task-modal/create-task-modal';
 
 const TASK_FILTERS = [
   { id: 'in_progress', label: 'Đang tiến hành' },
@@ -58,7 +59,7 @@ export const DEFAULT_TASK_FIELDS: ToolbarField[] = [
 @Component({
   selector: 'app-page-toolbar',
   standalone: true,
-  imports: [CommonModule, MatIconModule, NgStyle],
+  imports: [CommonModule, MatIconModule, NgStyle, CreateTaskModalComponent],
   templateUrl: './page-toolbar.html',
   styleUrls: ['./page-toolbar.scss'],
 })
@@ -121,6 +122,17 @@ export class PageToolbarComponent {
 
   clearRoleFilter() {
     this.selectedRole = 'all';
+  }
+
+  /** Trang thai hien thi popup Tao Tac Vu */
+  isCreateModalOpen = false;
+
+  openCreateModal(): void {
+    this.isCreateModalOpen = true;
+  }
+
+  closeCreateModal(): void {
+    this.isCreateModalOpen = false;
   }
 
   @HostListener('document:click')

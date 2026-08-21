@@ -1,7 +1,7 @@
-﻿import { Component, Output, EventEmitter, inject, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { CdkDropList, CdkDrag, CdkDragPlaceholder, CdkDragPreview, CdkDropListGroup, CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDropList, CdkDrag, CdkDropListGroup, CdkDragDrop, CdkDragEnter, CdkDragExit, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TranslatePipe } from '@ngx-translate/core';
 import { QuickTaskInputComponent } from './quick-task-input/quick-task-input';
 import { TaskCardComponent } from '../../../components/task-card/task-card';
@@ -19,8 +19,6 @@ import { TaskItem } from '../../../../../core/models/task.model';
     TaskCardComponent,
     CdkDropList,
     CdkDrag,
-    CdkDragPlaceholder,
-    CdkDragPreview,
     CdkDropListGroup
   ],
   templateUrl: './deadline.html',
@@ -32,6 +30,7 @@ export class DeadlineComponent implements OnInit {
   @Output() taskSelected = new EventEmitter<TaskItem>();
 
   activeQuickTaskCol: string | null = null;
+  dragOverColId: string | null = null;
 
   get columns() {
     return this.taskStore.deadlineColumns();
@@ -94,7 +93,19 @@ export class DeadlineComponent implements OnInit {
     return this.columns.map(col => 'deadline-col-' + col.id);
   }
 
+  onDragEntered(event: CdkDragEnter, colId: string) {
+    this.dragOverColId = colId;
+  }
+
+  onDragExited(event: CdkDragExit, colId: string) {
+    if (this.dragOverColId === colId) {
+      this.dragOverColId = null;
+    }
+  }
+
   onTaskDrop(event: CdkDragDrop<TaskItem[]>, targetColId: string) {
+    this.dragOverColId = null; // Tắt viền sáng ngay lập tức khi thả card
+
     if (event.previousContainer === event.container) {
       if (event.previousIndex !== event.currentIndex) {
         const tasks = [...event.container.data];

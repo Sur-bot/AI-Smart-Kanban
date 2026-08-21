@@ -1,0 +1,20 @@
+﻿.job-role-badge {
+  @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold select-none;
+  white-space: nowrap;
+  transition: opacity 0.15s ease;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+.badge-icon {
+  font-size: 12px !important;
+  width: 12px !important;
+  height: 12px !important;
+  line-height: 1 !important;
+}
+
+.badge-label {
+  line-height: 1;
+}

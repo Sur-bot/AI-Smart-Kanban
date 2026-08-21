@@ -1,4 +1,4 @@
-﻿import { Injectable, computed, inject, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { TaskService } from '../services/task.service';
 import { ProjectService } from '../services/project.service';
 import {
@@ -114,6 +114,8 @@ export class TaskStore {
         noDeadline.push({ ...task, stripeColor: 'col-gray' });
       }
     });
+
+    const sortByOrder = (a: TaskItem, b: TaskItem) => a.boardColumnOrder - b.boardColumnOrder;
 
     return [
       { id: 'overdue', labelKey: 'TASKS_PAGE.DEADLINE.COL_OVERDUE', color: 'col-red', count: overdue.length, tasks: overdue.sort(sortByOrder) },
@@ -281,7 +283,7 @@ export class TaskStore {
    */
   updateTaskDueDate(taskId: string, newDueDate: string | undefined | null) {
     this.tasks.update(list => list.map(t => t.id === taskId ? { ...t, dueDate: newDueDate === null ? undefined : newDueDate } : t));
-    this.taskService.updateTask(taskId, { dueDate: newDueDate }).subscribe();
+    this.taskService.updateTask(taskId, { dueDate: newDueDate === null ? undefined : newDueDate }).subscribe();
   }
 
   bulkMoveTasks(moves: { taskId: string, statusId?: string, boardColumnOrder: number }[]) {
@@ -348,5 +350,6 @@ export class TaskStore {
     });
   }
 }
+
 
 
