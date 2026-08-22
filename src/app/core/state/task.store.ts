@@ -26,7 +26,7 @@ export class TaskStore {
       if (!this.authService.isAuthenticated()) {
         this.resetState();
       }
-    }, { allowSignalWrites: true });
+    });
   }
 
   // ─── Signals ──────────────────────────────────────────
