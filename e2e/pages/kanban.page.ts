@@ -1,5 +1,5 @@
 /**
- * kanban.page.ts — Page Object Model cho Kanban Board
+ * kanban.page.ts — Page Object Model cho Kanban Board (View Hạn chót)
  */
 import { type Page, type Locator, expect } from '@playwright/test';
 
@@ -24,16 +24,22 @@ export class KanbanPage {
 
   constructor(page: Page) {
     this.page = page;
-    // Board container — sử dụng semantic role hoặc data-testid
-    this.board = page.locator('main, [data-testid="kanban-board"]').first();
-    this.columns = page.locator('[data-testid="kanban-column"], .kanban-column');
-    this.addTaskBtn = page.getByRole('button', { name: /thêm task|tạo task|new task|add task|\+/i });
-    this.taskModal = page.locator('[role="dialog"], mat-dialog-container, .modal');
-    this.taskTitleInput = page.getByLabel(/tiêu đề|title/i);
-    this.taskDescInput = page.getByLabel(/mô tả|description/i);
-    this.taskSubmitBtn = page.getByRole('button', { name: /tạo|create|lưu|save/i }).last();
-    this.taskCancelBtn = page.getByRole('button', { name: /hủy|cancel/i });
-    this.searchInput = page.getByRole('searchbox').or(page.getByPlaceholder(/tìm kiếm|search/i));
+    // Kanban board chính là Deadline View trong hệ thống
+    this.board = page.locator('.deadline-board').first();
+    this.columns = page.locator('.deadline-col-body');
+    
+    // Nút tạo task ở toolbar
+    this.addTaskBtn = page.locator('.btn-create-main');
+    
+    // Dialog tạo task
+    this.taskModal = page.locator('.create-task-dialog');
+    this.taskTitleInput = page.locator('input[formControlName="title"]');
+    this.taskDescInput = page.locator('textarea[formControlName="description"]');
+    this.taskSubmitBtn = page.locator('button[type="submit"].btn-submit');
+    this.taskCancelBtn = page.locator('button.btn-cancel');
+    
+    // Search filter ở toolbar
+    this.searchInput = page.locator('input.search-real-input');
   }
 
   async goto() {
@@ -42,7 +48,7 @@ export class KanbanPage {
   }
 
   async openCreateTaskModal() {
-    await this.addTaskBtn.first().click();
+    await this.addTaskBtn.click();
     await expect(this.taskModal).toBeVisible();
   }
 
@@ -71,7 +77,7 @@ export class KanbanPage {
     const deleteBtn = card.locator('[aria-label*="xóa"], [aria-label*="delete"], [title*="xóa"]');
     await deleteBtn.click();
     // Confirm nếu có dialog
-    const confirmBtn = this.page.getByRole('button', { name: /xác nhận|confirm|yes|ok/i });
+    const confirmBtn = this.page.getByRole('button', { name: /xác nhận|confirm|yes|ok|xóa/i }).first();
     if (await confirmBtn.isVisible()) {
       await confirmBtn.click();
     }
