@@ -1,6 +1,7 @@
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { Injectable, computed, inject, signal, effect } from '@angular/core';
 import { TaskService } from '../services/task.service';
 import { ProjectService } from '../services/project.service';
+import { AuthService } from '../auth/auth.service';
 import {
   TaskItem,
   TaskDetail,
@@ -17,6 +18,16 @@ import {
 export class TaskStore {
   private taskService = inject(TaskService);
   private projectService = inject(ProjectService);
+  private authService = inject(AuthService);
+
+  constructor() {
+    effect(() => {
+      // Khi người dùng đăng xuất (isAuthenticated = false), tiến hành reset toàn bộ state
+      if (!this.authService.isAuthenticated()) {
+        this.resetState();
+      }
+    });
+  }
 
   // ─── Signals ──────────────────────────────────────────
   readonly tasks = signal<TaskItem[]>([]);
@@ -129,6 +140,19 @@ export class TaskStore {
   });
 
   // ─── Actions ──────────────────────────────────────────
+
+  /**
+   * Đặt lại toàn bộ State khi người dùng đăng xuất
+   */
+  resetState() {
+    this.tasks.set([]);
+    this.projects.set([]);
+    this.statuses.set([]);
+    this.currentProjectId.set(null);
+    this.selectedTask.set(null);
+    this.error.set(null);
+    this.loading.set(false);
+  }
 
   /**
    * Tải danh sách tác vụ
