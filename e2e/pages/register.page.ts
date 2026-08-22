@@ -1,5 +1,6 @@
 /**
- * register.page.ts — Page Object Model cho trang Register
+ * register.page.ts — Page Object Model cho trang Đăng ký
+ * Dựa trên cấu trúc form thực tế trong Angular.
  */
 import { type Page, type Locator, expect } from '@playwright/test';
 
@@ -8,19 +9,31 @@ export class RegisterPage {
 
   readonly emailInput: Locator;
   readonly passwordInput: Locator;
-  readonly confirmPasswordInput: Locator;
+  readonly agreeUpdatesCheckbox: Locator;
+  readonly agreeTrainingCheckbox: Locator;
+  readonly recaptchaCheckbox: Locator;
   readonly submitBtn: Locator;
-  readonly errorMessage: Locator;
   readonly loginLink: Locator;
+  readonly errorToast: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.emailInput = page.getByLabel(/email/i);
-    this.passwordInput = page.getByLabel(/^mật khẩu$|^password$/i);
-    this.confirmPasswordInput = page.getByLabel(/xác nhận|confirm|nhập lại/i);
-    this.submitBtn = page.getByRole('button', { name: /đăng ký|register|sign up|tạo tài khoản/i });
-    this.errorMessage = page.locator('[role="alert"], .error-message, .alert-danger');
-    this.loginLink = page.getByRole('link', { name: /đăng nhập|sign in|login/i });
+
+    // Các field input
+    this.emailInput = page.locator('input[type="email"]');
+    this.passwordInput = page.locator('input[type="password"]');
+    
+    // Checkboxes (dựa vào formControlName)
+    this.agreeUpdatesCheckbox = page.locator('input[formControlName="agreeUpdates"]');
+    this.agreeTrainingCheckbox = page.locator('input[formControlName="agreeTraining"]');
+    this.recaptchaCheckbox = page.locator('input[formControlName="recaptchaVerified"]');
+    
+    // Buttons và Links
+    this.submitBtn = page.locator('button[type="submit"]');
+    this.loginLink = page.getByRole('link', { name: /đăng nhập|login/i });
+    
+    // Error Toast
+    this.errorToast = page.locator('.fixed.top-4.right-4[role="alert"]');
   }
 
   async goto() {
@@ -28,23 +41,13 @@ export class RegisterPage {
     await expect(this.submitBtn).toBeVisible();
   }
 
-  async register(email: string, password: string, confirmPassword?: string) {
+  async register(email: string, password: string) {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
-    if (this.confirmPasswordInput) {
-      await this.confirmPasswordInput.fill(confirmPassword ?? password);
-    }
+    
+    // Check required recaptcha
+    await this.recaptchaCheckbox.check({ force: true });
+    
     await this.submitBtn.click();
-  }
-
-  async expectError(messagePattern?: RegExp) {
-    await expect(this.errorMessage).toBeVisible();
-    if (messagePattern) {
-      await expect(this.errorMessage).toContainText(messagePattern);
-    }
-  }
-
-  async expectRedirectToVerifyEmail() {
-    await expect(this.page).toHaveURL(/verify/, { timeout: 10_000 });
   }
 }

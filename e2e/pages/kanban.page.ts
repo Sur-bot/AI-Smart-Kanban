@@ -37,7 +37,7 @@ export class KanbanPage {
   }
 
   async goto() {
-    await this.page.goto('/');
+    await this.page.goto('/app/kanban');
     await expect(this.board).toBeVisible({ timeout: 10_000 });
   }
 

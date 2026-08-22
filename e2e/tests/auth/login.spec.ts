@@ -57,15 +57,9 @@ test.describe('Auth — Login', () => {
   });
 
   // ────────────────────────────────────────────────────────────────────────────
-  test('TC-AUTH-004: Nút Tiếp tục bị disabled hoặc email không hợp lệ khi để trống', async ({ page }) => {
-    // Không điền gì, bấm Tiếp tục
-    await loginPage.continueBtn.click();
-
-    // Kiểm tra: nút disabled, hoặc HTML validation ngăn submit
-    const isDisabled = await loginPage.continueBtn.isDisabled();
-    const hasInvalidInputs = await page.locator(':invalid').count() > 0;
-
-    expect(isDisabled || hasInvalidInputs).toBeTruthy();
+  test('TC-AUTH-004: Nút Tiếp tục bị disabled khi email để trống', async ({ page }) => {
+    // Không điền gì, nút Tiếp tục phải ở trạng thái disabled
+    await expect(loginPage.continueBtn).toBeDisabled();
   });
 
   // ────────────────────────────────────────────────────────────────────────────

@@ -19,10 +19,11 @@ export class StoragePage {
 
   constructor(page: Page) {
     this.page = page;
-    this.quotaCard = page.locator('.quota-card, [data-testid="quota-card"]');
-    this.quotaProgressBar = page.locator('.quota-progress-fill, [role="progressbar"]');
-    this.quotaBadge = page.locator('.quota-badge, [data-testid="quota-badge"]');
-    this.uploadBtn = page.getByRole('button', { name: /upload|tải lên/i });
+    this.quotaCard = page.locator('.quota-card');
+    this.uploadBtn = page.locator('.upload-cta-btn');
+    
+    // Components
+    this.uploadZone = page.locator('app-image-upload-zone');
     this.fileInput = page.locator('input[type="file"]');
     this.searchInput = page.getByPlaceholder(/tìm kiếm|search/i);
     this.errorBanner = page.locator('.alert-banner.danger, [data-testid="error-banner"]');
@@ -31,7 +32,7 @@ export class StoragePage {
   }
 
   async goto() {
-    await this.page.goto('/storage');
+    await this.page.goto('/image-storage');
     await expect(this.quotaCard).toBeVisible({ timeout: 10_000 });
   }
 
