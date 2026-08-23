@@ -122,6 +122,16 @@ export class ImageStoragePageComponent implements OnInit, OnDestroy {
   toggleUploadZone(): void {
     this.showUploadZone = !this.showUploadZone;
     this.errorMessage = null;
+
+    if (this.showUploadZone) {
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const container = document.querySelector('.storage-page');
+        if (container) {
+          container.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }, 50);
+    }
   }
 
   onFilesSelected(files: File[]): void {
@@ -152,6 +162,32 @@ export class ImageStoragePageComponent implements OnInit, OnDestroy {
 
   onImageClick(image: ImageFile): void {
     this.selectedImage = image;
+  }
+
+  get selectedIndex(): number {
+    if (!this.selectedImage) return -1;
+    return this.filteredImages.findIndex(img => img.id === this.selectedImage!.id);
+  }
+
+  get hasNext(): boolean {
+    const idx = this.selectedIndex;
+    return idx >= 0 && idx < this.filteredImages.length - 1;
+  }
+
+  get hasPrev(): boolean {
+    return this.selectedIndex > 0;
+  }
+
+  onNextImage(): void {
+    if (this.hasNext) {
+      this.selectedImage = this.filteredImages[this.selectedIndex + 1];
+    }
+  }
+
+  onPrevImage(): void {
+    if (this.hasPrev) {
+      this.selectedImage = this.filteredImages[this.selectedIndex - 1];
+    }
   }
 
   onModalClose(): void {
