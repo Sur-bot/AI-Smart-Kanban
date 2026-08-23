@@ -1,79 +1,97 @@
 @if (image) {
   <div class="modal-backdrop" (click)="onBackdropClick($event)" role="dialog" aria-modal="true" aria-label="Chi tiết ảnh">
-    <article class="modal-container">
+    
+    <!-- Top left actions -->
+    <nav class="absolute top-4 left-4 flex items-center z-[600]">
+      <button type="button" class="header-action-btn" (click)="toggleInfoSidebar()" title="Thông tin chi tiết">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </nav>
 
-      <!-- Header -->
-      <header class="modal-header">
-        <h2 class="text-lg font-semibold text-gray-800 truncate flex-1">{{ image.name }}</h2>
-        <button type="button" class="close-btn" (click)="onClose()" title="Đóng" aria-label="Đóng">
+    <!-- Info Sidebar -->
+    <aside class="info-sidebar" [class.open]="showInfoSidebar" (click)="$event.stopPropagation()">
+      <div class="sidebar-header">
+        <h3 class="text-lg font-semibold text-gray-900 m-0">Thông tin chi tiết</h3>
+        <button type="button" class="close-sidebar-btn" (click)="toggleInfoSidebar()">
           <mat-icon>close</mat-icon>
         </button>
-      </header>
+      </div>
+      
+      <div class="sidebar-content">
+        <dl class="meta-list">
+          <div class="meta-item">
+            <dt>Tên file</dt>
+            <dd class="font-medium text-gray-900 break-all">{{ image.name }}</dd>
+          </div>
+          <div class="meta-item">
+            <dt>Định dạng</dt>
+            <dd><span class="format-badge">{{ image.format | uppercase }}</span></dd>
+          </div>
+          <div class="meta-item">
+            <dt>Dung lượng</dt>
+            <dd class="text-gray-600">{{ formatSize(image.size) }}</dd>
+          </div>
+          <div class="meta-item">
+            <dt>Kích thước</dt>
+            <dd class="text-gray-600">{{ image.width }} × {{ image.height }} px</dd>
+          </div>
+          <div class="meta-item">
+            <dt>Ngày tải lên</dt>
+            <dd class="text-gray-600">{{ formatDate(image.uploadedAt) }}</dd>
+          </div>
+          <div class="meta-item">
+            <dt>Người tải lên</dt>
+            <dd class="flex items-center gap-1.5 text-gray-600">
+              <span class="uploader-avatar">
+                <mat-icon class="!text-[14px] !w-3.5 !h-3.5 !leading-[14px] text-white">person</mat-icon>
+              </span>
+              {{ image.uploadedBy.name }}
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </aside>
+    
+    <!-- Top right actions -->
+    <nav class="absolute top-4 right-4 flex items-center gap-2 z-[600]">
+      <button type="button" class="header-action-btn" (click)="onRotateAndFlip()" title="Xoay lật ảnh">
+        <mat-icon>rotate_right</mat-icon>
+      </button>
+      <button type="button" class="header-action-btn" (click)="onDownload()" title="Tải xuống">
+        <mat-icon>download</mat-icon>
+      </button>
+      <button type="button" class="header-action-btn" (click)="onCopyLink()" title="Sao chép link">
+        <mat-icon>link</mat-icon>
+      </button>
+      <button type="button" class="header-action-btn text-red-400 hover:text-red-500" (click)="onDelete()" title="Xóa ảnh">
+        <mat-icon>delete_outline</mat-icon>
+      </button>
+      <button type="button" class="header-action-btn" (click)="onClose()" title="Đóng">
+        <mat-icon>close</mat-icon>
+      </button>
+    </nav>
 
-      <!-- Body -->
-      <section class="modal-body">
-        <!-- Ảnh lớn -->
-        <figure class="image-preview">
-          <img [src]="image.url" [alt]="image.name" class="preview-img" />
-        </figure>
+    <!-- Navigation Arrows (Hidden on very small screens, though swipe works) -->
+    @if (hasPrev) {
+      <button type="button" class="nav-arrow left hidden lg:flex" (click)="onPrev()" title="Ảnh trước (Mũi tên trái)">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+    }
+    @if (hasNext) {
+      <button type="button" class="nav-arrow right hidden lg:flex" (click)="onNext()" title="Ảnh sau (Mũi tên phải)">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    }
 
-        <!-- Metadata Panel -->
-        <aside class="meta-panel">
-          <h3 class="panel-title">
-            <mat-icon class="!text-[18px] !w-[18px] !h-[18px] !leading-[18px] mr-1.5 text-blue-500">info</mat-icon>
-            Thông tin chi tiết
-          </h3>
-
-          <dl class="meta-list">
-            <div class="meta-item">
-              <dt>Tên file</dt>
-              <dd class="font-medium">{{ image.name }}</dd>
-            </div>
-            <div class="meta-item">
-              <dt>Định dạng</dt>
-              <dd><span class="format-badge">{{ image.format | uppercase }}</span></dd>
-            </div>
-            <div class="meta-item">
-              <dt>Dung lượng</dt>
-              <dd>{{ formatSize(image.size) }}</dd>
-            </div>
-            <div class="meta-item">
-              <dt>Kích thước</dt>
-              <dd>{{ image.width }} × {{ image.height }} px</dd>
-            </div>
-            <div class="meta-item">
-              <dt>Ngày tải lên</dt>
-              <dd>{{ formatDate(image.uploadedAt) }}</dd>
-            </div>
-            <div class="meta-item">
-              <dt>Người tải lên</dt>
-              <dd class="flex items-center gap-1.5">
-                <span class="uploader-avatar">
-                  <mat-icon class="!text-[14px] !w-3.5 !h-3.5 !leading-[14px] text-white">person</mat-icon>
-                </span>
-                {{ image.uploadedBy.name }}
-              </dd>
-            </div>
-          </dl>
-
-          <!-- Action Buttons -->
-          <nav class="action-group" aria-label="Thao tác với ảnh">
-            <button type="button" class="action-btn primary" (click)="onDownload()" title="Tải xuống">
-              <mat-icon class="!text-[18px] !w-[18px] !h-[18px] !leading-[18px]">download</mat-icon>
-              Tải xuống
-            </button>
-            <button type="button" class="action-btn secondary" (click)="onCopyLink()" title="Sao chép link">
-              <mat-icon class="!text-[18px] !w-[18px] !h-[18px] !leading-[18px]">link</mat-icon>
-              Sao chép link
-            </button>
-            <button type="button" class="action-btn danger" (click)="onDelete()" title="Xóa ảnh">
-              <mat-icon class="!text-[18px] !w-[18px] !h-[18px] !leading-[18px]">delete_outline</mat-icon>
-              Xóa
-            </button>
-          </nav>
-        </aside>
-      </section>
-
-    </article>
+    <!-- The Image -->
+    @for (img of [image]; track img.id) {
+      <div class="image-wrapper w-full h-full flex items-center justify-center z-[500]">
+        <img [src]="img.url" 
+             [alt]="img.name" 
+             class="full-screen-img" 
+             [ngClass]="[animationClass, isRotated ? 'rotated-bounds' : 'normal-bounds']" 
+             [style.transform]="'rotate(' + rotation + 'deg)'" />
+      </div>
+    }
   </div>
 }

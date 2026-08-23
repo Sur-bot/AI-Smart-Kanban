@@ -41,7 +41,7 @@
 
         <button
           type="button"
-          class="upload-cta-btn"
+          class="upload-cta-btn hidden sm:inline-flex"
           [disabled]="isQuotaFull"
           (click)="toggleUploadZone()"
           [title]="isQuotaFull ? ('STORAGE.QUOTA_FULL_WARNING' | translate) : ('STORAGE.UPLOAD_IMAGE' | translate)"
@@ -131,15 +131,6 @@
             </div>
           </article>
 
-          <article class="stat-card">
-            <div class="stat-icon-wrapper cyan">
-              <mat-icon class="!text-[20px] !w-5 !h-5 !leading-5">auto_fix_high</mat-icon>
-            </div>
-            <div>
-              <span class="stat-value">WebP 80%</span>
-              <span class="stat-label">{{ 'STORAGE.OPTIMIZATION' | translate }}</span>
-            </div>
-          </article>
 
           <article class="stat-card">
             <div class="stat-icon-wrapper green">
@@ -196,14 +187,34 @@
       <app-image-grid
         [images]="filteredImages"
         (imageClick)="onImageClick($event)"
+        (deleteClick)="onImageDelete($event.id)"
       ></app-image-grid>
     </section>
 
     <!-- ===== DETAIL MODAL ===== -->
     <app-image-detail-modal
       [image]="selectedImage"
+      [hasNext]="hasNext"
+      [hasPrev]="hasPrev"
       (close)="onModalClose()"
       (delete)="onImageDelete($event)"
+      (next)="onNextImage()"
+      (prev)="onPrevImage()"
     ></app-image-detail-modal>
+
+    <!-- ===== FLOATING UPLOAD BUTTON ===== -->
+    <button
+      type="button"
+      class="upload-fab-btn"
+      [class.active]="showUploadZone"
+      [disabled]="isQuotaFull"
+      (click)="toggleUploadZone()"
+      [title]="isQuotaFull ? ('STORAGE.QUOTA_FULL_WARNING' | translate) : ('STORAGE.UPLOAD_IMAGE' | translate)"
+      aria-label="Tải ảnh lên"
+    >
+      <mat-icon class="!text-[28px] !w-7 !h-7 !leading-[28px]">
+        {{ showUploadZone ? 'close' : 'add' }}
+      </mat-icon>
+    </button>
   </main>
 </div>
