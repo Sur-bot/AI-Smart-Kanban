@@ -13,7 +13,8 @@ import { AuthService } from '../../../../core/auth/auth.service';
 export class SocialLoginComponent {
   private authService = inject(AuthService);
   
-  isLoading = signal<boolean>(false);
+  isLoading = signal<boolean>(false); // Dành cho Google (hoặc dùng chung)
+  isFacebookLoading = signal<boolean>(false);
   errorMessage = signal<string | null>(null);
 
   async loginWithGoogle() {
@@ -27,6 +28,19 @@ export class SocialLoginComponent {
       this.errorMessage.set(error.message || 'Đã có lỗi xảy ra khi đăng nhập bằng Google.');
     } finally {
       this.isLoading.set(false);
+    }
+  }
+
+  async loginWithFacebook() {
+    this.isFacebookLoading.set(true);
+    this.errorMessage.set(null);
+    try {
+      await this.authService.signInWithFacebook();
+    } catch (error: any) {
+      console.error('Lỗi đăng nhập Facebook:', error);
+      this.errorMessage.set(error.message || 'Đã có lỗi xảy ra khi đăng nhập bằng Facebook.');
+    } finally {
+      this.isFacebookLoading.set(false);
     }
   }
 }
