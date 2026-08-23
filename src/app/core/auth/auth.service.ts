@@ -91,6 +91,15 @@ export class AuthService {
     return data;
   }
 
+  async signInWithFacebook() {
+    const { data, error } = await this.supabase.auth.signInWithOAuth({
+      provider: 'facebook',
+      options: { redirectTo: `${window.location.origin}/auth/callback` }
+    });
+    if (error) throw error;
+    return data;
+  }
+
   async signOut() {
     if (this._isGuestMode()) {
       this._isGuestMode.set(false);

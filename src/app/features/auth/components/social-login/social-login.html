@@ -1,6 +1,11 @@
 <div class="social-login-group">
-  <button type="button" class="btn-social" aria-label="Facebook">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" alt="Facebook">
+  <button type="button" class="btn-social" aria-label="Facebook" (click)="loginWithFacebook()" [disabled]="isFacebookLoading()">
+    <ng-container *ngIf="!isFacebookLoading(); else fbLoadingIcon">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" alt="Facebook">
+    </ng-container>
+    <ng-template #fbLoadingIcon>
+      <mat-icon class="animate-spin text-gray-500">autorenew</mat-icon>
+    </ng-template>
   </button>
   <button type="button" class="btn-social" aria-label="Google" (click)="loginWithGoogle()" [disabled]="isLoading()">
     <ng-container *ngIf="!isLoading(); else loadingIcon">
