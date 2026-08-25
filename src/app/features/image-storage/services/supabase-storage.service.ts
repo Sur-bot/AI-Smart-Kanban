@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, effect } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, map, switchMap, catchError, throwError, of, tap } from 'rxjs';
 import { ImageFile, StorageQuota } from '../models/image.model';
@@ -20,6 +20,25 @@ export class SupabaseStorageService {
 
   private readonly quotaSubject = new BehaviorSubject<StorageQuota | null>(null);
   readonly quota$: Observable<StorageQuota | null> = this.quotaSubject.asObservable();
+
+  constructor() {
+    // Lắng nghe thay đổi auth để xóa cache dữ liệu khi đăng xuất
+    effect(() => {
+      const user = this.authService.user();
+      const isGuest = this.authService.isGuestMode();
+      if (!user && !isGuest) {
+        this.clearState();
+      }
+    });
+  }
+
+  /**
+   * Xóa toàn bộ dữ liệu ảnh trên RAM để không bị rò rỉ sang tài khoản khác
+   */
+  private clearState(): void {
+    this.imagesSubject.next([]);
+    this.quotaSubject.next(null);
+  }
 
   /**
    * Cập nhật thông tin Supabase Credentials động
@@ -92,14 +111,16 @@ export class SupabaseStorageService {
   }
 
   /**
-   * 1. Tải danh sách ảnh từ Supabase Database (REST API)
+   * 1. Tải danh sách ảnh từ Backend API (Đã lấy user id bảo mật từ token)
    */
   loadImages(): void {
-    const userId = this.authService.user()?.id;
-    let url = `${this.supabaseUrl}/rest/v1/storage_files?is_deleted=eq.false&order=created_at.desc`;
-    if (userId && !this.authService.isGuestMode()) {
-      url += `&user_id=eq.${userId}`;
+    if (this.authService.isGuestMode()) {
+      this.imagesSubject.next([]);
+      this.loadQuota();
+      return;
     }
+
+    const url = `${this.apiUrl}/storage/files`;
 
     this.http.get<any[]>(url, { headers: this.getHeaders() }).subscribe({
       next: (data) => {
