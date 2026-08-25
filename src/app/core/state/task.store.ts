@@ -12,6 +12,12 @@ import {
   UpdateTaskPayload
 } from '../models/task.model';
 
+/** Shape of error responses returned by the backend API. */
+interface ApiError {
+  error?: { message?: string };
+  status?: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -172,7 +178,7 @@ export class TaskStore {
         this.tasks.set(res.tasks);
         this.loading.set(false);
       },
-      error: err => {
+      error: (err: ApiError) => {
         this.error.set(err.error?.message || 'Không thể tải danh sách tác vụ');
         this.loading.set(false);
       }
@@ -235,7 +241,7 @@ export class TaskStore {
         this.loading.set(false);
         if (callback) callback(created);
       },
-      error: err => {
+      error: (err: ApiError) => {
         this.error.set(err.error?.message || 'Không thể tạo tác vụ');
         this.loading.set(false);
       }
@@ -255,7 +261,7 @@ export class TaskStore {
           this.selectedTask.set(updated);
         }
       },
-      error: err => {
+      error: (err: ApiError) => {
         this.error.set(err.error?.message || 'Không thể cập nhật tác vụ');
       }
     });
@@ -272,7 +278,7 @@ export class TaskStore {
           this.selectedTask.set(null);
         }
       },
-      error: err => {
+      error: (err: ApiError) => {
         this.error.set(err.error?.message || 'Không thể xóa tác vụ');
       }
     });
@@ -328,7 +334,7 @@ export class TaskStore {
     });
 
     this.taskService.bulkMoveTasks(moves).subscribe({
-      error: err => {
+      error: (err: ApiError) => {
         this.error.set(err.error?.message || 'Không thể cập nhật thứ tự tác vụ');
         this.loadTasks(); // Rollback về trạng thái server
       }

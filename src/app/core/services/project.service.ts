@@ -15,8 +15,8 @@ export class ProjectService {
    * Lấy danh sách dự án
    */
   getProjects(workspaceId?: string): Observable<Project[]> {
-    const params: any = {};
-    if (workspaceId) params.workspaceId = workspaceId;
+    const params: Record<string, string> = {};
+    if (workspaceId) params['workspaceId'] = workspaceId;
     return this.http.get<Project[]>(this.apiUrl, { params, withCredentials: true });
   }
 
