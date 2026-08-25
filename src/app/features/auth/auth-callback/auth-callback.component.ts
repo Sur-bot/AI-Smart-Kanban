@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+﻿import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,10 +19,10 @@ export class AuthCallbackComponent implements OnInit {
 
   status = signal<CallbackStatus>('loading');
   countdown = signal<number>(3);
-  errorMessage = signal<string>('Liên kết xác nhận đã hết hạn hoặc không hợp lệ.');
+  errorMessage = signal<string>('LiÃªn káº¿t xÃ¡c nháº­n Ä‘Ã£ háº¿t háº¡n hoáº·c khÃ´ng há»£p lá»‡.');
 
   async ngOnInit() {
-    // ─── Bước 1: Kiểm tra lỗi từ URL hash (Supabase redirect về với #error=...) ───
+    // â”€â”€â”€ BÆ°á»›c 1: Kiá»ƒm tra lá»—i tá»« URL hash (Supabase redirect vá» vá»›i #error=...) â”€â”€â”€
     const hash = window.location.hash;
 
     if (hash.includes('error=')) {
@@ -34,7 +34,7 @@ export class AuthCallbackComponent implements OnInit {
       return;
     }
 
-    // ─── Bước 2: Kiểm tra nếu được điều hướng từ VerifyPendingComponent (SIGNED_IN event) ───
+    // â”€â”€â”€ BÆ°á»›c 2: Kiá»ƒm tra náº¿u Ä‘Æ°á»£c Ä‘iá»u hÆ°á»›ng tá»« VerifyPendingComponent (SIGNED_IN event) â”€â”€â”€
     const nav = this.router.getCurrentNavigation();
     const fromVerification = nav?.extras?.state?.['fromVerification'] as boolean;
 
@@ -43,9 +43,9 @@ export class AuthCallbackComponent implements OnInit {
       return;
     }
 
-    // ─── Bước 3: Supabase redirect về /auth/callback với token trong hash hoặc query ───
-    // supabase-js v2 tự động phát hiện và xử lý token từ URL → cập nhật session
-    // Chờ 2 giây để quá trình này hoàn tất
+    // â”€â”€â”€ BÆ°á»›c 3: Supabase redirect vá» /auth/callback vá»›i token trong hash hoáº·c query â”€â”€â”€
+    // supabase-js v2 tá»± Ä‘á»™ng phÃ¡t hiá»‡n vÃ  xá»­ lÃ½ token tá»« URL â†’ cáº­p nháº­t session
+    // Chá» 2 giÃ¢y Ä‘á»ƒ quÃ¡ trÃ¬nh nÃ y hoÃ n táº¥t
     try {
       await new Promise(resolve => setTimeout(resolve, 2000));
       const { data, error } = await this.authService.getClient().auth.getSession();
@@ -55,10 +55,10 @@ export class AuthCallbackComponent implements OnInit {
       if (data.session) {
         this.showSuccess();
       } else {
-        this.showError('Không thể xác nhận tài khoản. Link có thể đã hết hạn.');
+        this.showError('KhÃ´ng thá»ƒ xÃ¡c nháº­n tÃ i khoáº£n. Link cÃ³ thá»ƒ Ä‘Ã£ háº¿t háº¡n.');
       }
     } catch (err: any) {
-      this.showError(err.message || 'Có lỗi xảy ra khi xác nhận tài khoản.');
+      this.showError(err.message || 'CÃ³ lá»—i xáº£y ra khi xÃ¡c nháº­n tÃ i khoáº£n.');
     }
   }
 
@@ -69,7 +69,7 @@ export class AuthCallbackComponent implements OnInit {
       const current = this.countdown();
       if (current <= 1) {
         clearInterval(timer);
-        this.router.navigate(['/app/kanban']);
+        this.router.navigate(['/kanban']);
       } else {
         this.countdown.set(current - 1);
       }
@@ -82,14 +82,15 @@ export class AuthCallbackComponent implements OnInit {
   }
 
   /**
-   * Ánh xạ mã lỗi Supabase sang thông điệp tiếng Việt thân thiện
+   * Ãnh xáº¡ mÃ£ lá»—i Supabase sang thÃ´ng Ä‘iá»‡p tiáº¿ng Viá»‡t thÃ¢n thiá»‡n
    */
   private mapErrorMessage(errorCode: string, errorDesc: string): string {
     const messages: Record<string, string> = {
-      'otp_expired': 'Liên kết xác nhận đã hết hạn (24 giờ). Vui lòng đăng ký lại hoặc yêu cầu gửi lại email.',
-      'access_denied': 'Liên kết không hợp lệ. Vui lòng thử lại.',
-      'invalid_token': 'Token xác nhận không đúng. Vui lòng yêu cầu gửi lại email.',
+      'otp_expired': 'LiÃªn káº¿t xÃ¡c nháº­n Ä‘Ã£ háº¿t háº¡n (24 giá»). Vui lÃ²ng Ä‘Äƒng kÃ½ láº¡i hoáº·c yÃªu cáº§u gá»­i láº¡i email.',
+      'access_denied': 'LiÃªn káº¿t khÃ´ng há»£p lá»‡. Vui lÃ²ng thá»­ láº¡i.',
+      'invalid_token': 'Token xÃ¡c nháº­n khÃ´ng Ä‘Ãºng. Vui lÃ²ng yÃªu cáº§u gá»­i láº¡i email.',
     };
-    return messages[errorCode] || decodeURIComponent(errorDesc.replace(/\+/g, ' ')) || 'Xác nhận thất bại. Vui lòng thử lại.';
+    return messages[errorCode] || decodeURIComponent(errorDesc.replace(/\+/g, ' ')) || 'XÃ¡c nháº­n tháº¥t báº¡i. Vui lÃ²ng thá»­ láº¡i.';
   }
 }
+
