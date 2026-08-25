@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, ElementRef, AfterViewInit, OnDestroy, ViewChild, ViewChildren, QueryList, NgZone } from '@angular/core';
+﻿import { Component, ChangeDetectorRef, ElementRef, AfterViewInit, OnDestroy, ViewChild, ViewChildren, QueryList, NgZone } from '@angular/core';
 import { CommonModule, NgStyle } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -31,25 +31,25 @@ export interface MoreDropdownItem {
 })
 export class SubNavComponent implements AfterViewInit, OnDestroy {
   menuList: NavItem[] = [
-    { id: 'tasks',      label: 'SUBNAV.TASKS',       route: '/app/kanban',      hasDropdown: false, overflowPriority: 8 },
-    { id: 'projects',   label: 'SUBNAV.PROJECTS',     route: '/app/kanban/projects',   hasDropdown: false, overflowPriority: 7 },
-    { id: 'stream',     label: 'SUBNAV.STREAM',       route: '/app/kanban/stream',     hasDropdown: false, overflowPriority: 6 },
-    { id: 'scrum',      label: 'SUBNAV.SCRUM',        route: '/app/kanban/scrum',      hasDropdown: false, overflowPriority: 5 },
-    { id: 'efficiency', label: 'SUBNAV.PERFORMANCE',  route: '/app/kanban/efficiency', hasDropdown: false, overflowPriority: 4, badge: '100%' },
+    { id: 'tasks',      label: 'SUBNAV.TASKS',       route: '/kanban',      hasDropdown: false, overflowPriority: 8 },
+    { id: 'projects',   label: 'SUBNAV.PROJECTS',     route: '/kanban/projects',   hasDropdown: false, overflowPriority: 7 },
+    { id: 'stream',     label: 'SUBNAV.STREAM',       route: '/kanban/stream',     hasDropdown: false, overflowPriority: 6 },
+    { id: 'scrum',      label: 'SUBNAV.SCRUM',        route: '/kanban/scrum',      hasDropdown: false, overflowPriority: 5 },
+    { id: 'efficiency', label: 'SUBNAV.PERFORMANCE',  route: '/kanban/efficiency', hasDropdown: false, overflowPriority: 4, badge: '100%' },
     { id: 'analytics',  label: 'SUBNAV.ANALYTICS',    route: '',                   hasDropdown: true,  overflowPriority: 3 },
-    { id: 'templates',  label: 'SUBNAV.TEMPLATES',    route: '/app/kanban/templates',  hasDropdown: false, overflowPriority: 2 },
-    { id: 'trash',      label: 'SUBNAV.RECYCLE_BIN',  route: '/app/kanban/trash',      hasDropdown: false, overflowPriority: 1 },
+    { id: 'templates',  label: 'SUBNAV.TEMPLATES',    route: '/kanban/templates',  hasDropdown: false, overflowPriority: 2 },
+    { id: 'trash',      label: 'SUBNAV.RECYCLE_BIN',  route: '/kanban/trash',      hasDropdown: false, overflowPriority: 1 },
     { id: 'more',       label: 'SUBNAV.MORE',         route: '',                   hasDropdown: true },
   ];
 
   readonly staticMoreItems: MoreDropdownItem[] = [
-    { id: 'section-settings', section: 'Cài đặt',      label: '' },
-    { id: 'config-menu',      label: 'Cấu hình menu',  icon: 'settings', locked: false },
-    { id: 'reset-menu',       label: 'Đặt lại menu',   locked: false },
-    { id: 'section-hidden',   section: 'Ẩn',           label: '' },
+    { id: 'section-settings', section: 'CÃ i Ä‘áº·t',      label: '' },
+    { id: 'config-menu',      label: 'Cáº¥u hÃ¬nh menu',  icon: 'settings', locked: false },
+    { id: 'reset-menu',       label: 'Äáº·t láº¡i menu',   locked: false },
+    { id: 'section-hidden',   section: 'áº¨n',           label: '' },
     { id: 'join',             label: 'Tham gia',       locked: false },
-    { id: 'report',           label: 'Báo cáo',        icon: 'lock', locked: true },
-    { id: 'access',           label: 'Quyền truy cập', icon: 'lock', locked: true },
+    { id: 'report',           label: 'BÃ¡o cÃ¡o',        icon: 'lock', locked: true },
+    { id: 'access',           label: 'Quyá»n truy cáº­p', icon: 'lock', locked: true },
   ];
 
   @ViewChild('navContainer') navContainer!: ElementRef<HTMLElement>;
@@ -70,7 +70,7 @@ export class SubNavComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    // Đo kích thước thực tế của từng mục khi khởi tạo
+    // Äo kÃ­ch thÆ°á»›c thá»±c táº¿ cá»§a tá»«ng má»¥c khi khá»Ÿi táº¡o
     this.navItemRefs.forEach((itemRef) => {
       const id = itemRef.nativeElement.getAttribute('data-id');
       if (id) {
@@ -105,9 +105,9 @@ export class SubNavComponent implements AfterViewInit, OnDestroy {
 
   private calculateOverflow(containerWidth: number) {
     const hidableItems = this.menuList.filter(item => item.id !== 'more');
-    const moreBtnWidth = this.itemWidths.get('more') || 60; // Dự phòng 60px
+    const moreBtnWidth = this.itemWidths.get('more') || 60; // Dá»± phÃ²ng 60px
     
-    // Sắp xếp các mục theo thứ tự ưu tiên ẩn (số nhỏ ẩn trước)
+    // Sáº¯p xáº¿p cÃ¡c má»¥c theo thá»© tá»± Æ°u tiÃªn áº©n (sá»‘ nhá» áº©n trÆ°á»›c)
     const sortedByPriority = [...hidableItems].sort((a, b) => {
        const pa = a.overflowPriority ?? 999;
        const pb = b.overflowPriority ?? 999;
@@ -125,11 +125,11 @@ export class SubNavComponent implements AfterViewInit, OnDestroy {
        return w;
     };
 
-    // Buffer 24px để bù trừ padding/margin và tránh scrollbar
+    // Buffer 24px Ä‘á»ƒ bÃ¹ trá»« padding/margin vÃ  trÃ¡nh scrollbar
     const safeBuffer = 24; 
     const availableWidth = containerWidth - moreBtnWidth - safeBuffer;
 
-    let currentWidth = getVisibleWidth(currentVisible) + (currentVisible.length * 2); // 2px gap mỗi item
+    let currentWidth = getVisibleWidth(currentVisible) + (currentVisible.length * 2); // 2px gap má»—i item
 
     for (const itemToHide of sortedByPriority) {
         if (currentWidth <= availableWidth) break;
@@ -140,7 +140,7 @@ export class SubNavComponent implements AfterViewInit, OnDestroy {
         currentWidth = getVisibleWidth(currentVisible) + (currentVisible.length * 2);
     }
 
-    // Giữ nguyên thứ tự ban đầu cho menu dropdown
+    // Giá»¯ nguyÃªn thá»© tá»± ban Ä‘áº§u cho menu dropdown
     const originalOrder = this.menuList.map(i => i.id);
     overflowItems.sort((a, b) => originalOrder.indexOf(a.id) - originalOrder.indexOf(b.id));
 
@@ -163,7 +163,7 @@ export class SubNavComponent implements AfterViewInit, OnDestroy {
     }));
 
     return [
-      { id: 'section-nav', section: 'Điều hướng', label: '' },
+      { id: 'section-nav', section: 'Äiá»u hÆ°á»›ng', label: '' },
       ...overflowItems,
       ...this.staticMoreItems,
     ];
@@ -187,12 +187,12 @@ export class SubNavComponent implements AfterViewInit, OnDestroy {
   onButtonMouseEnter(event: MouseEvent): void {
     this.cancelClose();
     const li = event.currentTarget as HTMLElement;
-    // Lấy rect của button bên trong li để căn thẳng hàng chính xác
+    // Láº¥y rect cá»§a button bÃªn trong li Ä‘á»ƒ cÄƒn tháº³ng hÃ ng chÃ­nh xÃ¡c
     const btn = li.querySelector('button') ?? li;
     const btnRect = btn.getBoundingClientRect();
     const hostRect = this.el.nativeElement.getBoundingClientRect();
     
-    // Tính toạ độ relative so với host component (<app-sub-nav>)
+    // TÃ­nh toáº¡ Ä‘á»™ relative so vá»›i host component (<app-sub-nav>)
     this.dropdownStyle = {
       top: `${btnRect.bottom - hostRect.top + 10}px`, // 5px gap
       left: `${btnRect.left - hostRect.left}px`,
