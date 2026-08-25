@@ -91,6 +91,11 @@ export const routes: Routes = [
     title: 'Đang kích hoạt tài khoản... - AI Smart Kanban'
   },
 
-  // 3. Trang 404 - Lỗi không tìm thấy (Phải đặt ở cuối cùng)
-  // Tính năng 404 sẽ được mở khi Shared Module hoàn thiện
+  // ─── 404 Not Found ──────────────────────────────────────────────────────────
+  // Phải đặt CUỐI CÙNG — Angular khớp route theo thứ tự từ trên xuống
+  {
+    path: '**',
+    loadComponent: () => import('./shared/components/not-found/not-found.component').then(m => m.NotFoundComponent),
+    title: 'Trang không tìm thấy - AI Smart Kanban'
+  }
 ];
