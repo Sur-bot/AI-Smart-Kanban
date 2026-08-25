@@ -1,4 +1,4 @@
-import { Injectable, inject, signal, computed } from '@angular/core';
+﻿import { Injectable, inject, signal, computed } from '@angular/core';
 import { createClient, SupabaseClient, Session, User, AuthChangeEvent } from '@supabase/supabase-js';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
@@ -57,7 +57,7 @@ export class AuthService {
   async loginAsGuest() {
     this._isGuestMode.set(true);
     localStorage.setItem('ai_smart_kanban_guest', 'true');
-    await this.router.navigate(['/app/kanban']);
+    await this.router.navigate(['/kanban']);
   }
 
   async signUp(email: string, password: string, fullName?: string) {
@@ -120,9 +120,10 @@ export class AuthService {
   }
 
   /**
-   * Lấy instance Supabase client để dùng trong các service khác (query DB, storage...).
+   * Láº¥y instance Supabase client Ä‘á»ƒ dÃ¹ng trong cÃ¡c service khÃ¡c (query DB, storage...).
    */
   getClient(): SupabaseClient {
     return this.supabase;
   }
 }
+

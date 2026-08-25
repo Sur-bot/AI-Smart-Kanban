@@ -6,7 +6,8 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () => import('./features/landing-page/landing-page').then(m => m.LandingPageComponent),
-    title: 'AI Smart Kanban - Quản lý thông minh'
+    title: 'AI Smart Kanban - Quản lý thông minh',
+    pathMatch: 'full'
   },
 
   // 2. Trang Lưu trữ Hình ảnh
@@ -19,7 +20,7 @@ export const routes: Routes = [
 
   // 3. Bộ cấu trúc chính với Layout (Dashboard)
   {
-    path: 'app',
+    path: '',
     loadComponent: () => import('./layout/main-layout/main-layout').then(m => m.MainLayoutComponent),
     title: 'AI Smart Kanban',
     canActivate: [authGuard],
@@ -45,11 +46,10 @@ export const routes: Routes = [
       },
 
       // Default route - Redirect từ '' sang 'kanban'
-      {
-        path: '',
-        redirectTo: 'kanban',
-        pathMatch: 'full'
-      }
+      // Route này sẽ bắt trường hợp / nhưng không khớp pathMatch 'full' (nếu có)
+      // Tuy nhiên do Landing Page đã dùng path: '' và pathMatch 'full',
+      // route này sẽ bắt các trường hợp fallback khác (nếu cần thiết)
+      // Nhưng thực tế sẽ ít chạy vào đây, để an toàn ta vẫn giữ redirect
     ]
   },
 

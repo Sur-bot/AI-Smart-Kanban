@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+﻿import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -82,16 +82,16 @@ export class LoginComponent {
     try {
       await this.authService.signIn(email, password);
 
-      this.toastMessage.set('Đăng nhập thành công!');
+      this.toastMessage.set('ÄÄƒng nháº­p thÃ nh cÃ´ng!');
       this.toastType.set('success');
       this.showToast.set(true);
 
       setTimeout(() => {
         this.showToast.set(false);
-        this.router.navigate(['/app/kanban']);
+        this.router.navigate(['/kanban']);
       }, 1500);
     } catch (err: any) {
-      const errorMsg = err.message || 'Email hoặc mật khẩu không đúng.';
+      const errorMsg = err.message || 'Email hoáº·c máº­t kháº©u khÃ´ng Ä‘Ãºng.';
       this.toastMessage.set(errorMsg);
       this.toastType.set('error');
       this.showToast.set(true);
@@ -101,3 +101,4 @@ export class LoginComponent {
     }
   }
 }
+
