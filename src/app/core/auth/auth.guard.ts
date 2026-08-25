@@ -13,8 +13,11 @@ export const authGuard: CanActivateFn = () => {
   // Nếu đang tải session lần đầu, chờ (trả về Promise)
   if (authService.loading()) {
     return new Promise<boolean | import('@angular/router').UrlTree>(resolve => {
+      let attempts = 0;
+      const MAX_ATTEMPTS = 100; // Timeout tối đa 5 giây (100 × 50ms)
       const interval = setInterval(() => {
-        if (!authService.loading()) {
+        attempts++;
+        if (!authService.loading() || attempts >= MAX_ATTEMPTS) {
           clearInterval(interval);
           resolve(authService.isAuthenticated() ? true : router.createUrlTree(['/login']));
         }
@@ -34,8 +37,11 @@ export const guestGuard: CanActivateFn = () => {
 
   if (authService.loading()) {
     return new Promise<boolean | import('@angular/router').UrlTree>(resolve => {
+      let attempts = 0;
+      const MAX_ATTEMPTS = 100; // Timeout tối đa 5 giây (100 × 50ms)
       const interval = setInterval(() => {
-        if (!authService.loading()) {
+        attempts++;
+        if (!authService.loading() || attempts >= MAX_ATTEMPTS) {
           clearInterval(interval);
           resolve(!authService.isAuthenticated() ? true : router.createUrlTree(['/app/kanban']));
         }

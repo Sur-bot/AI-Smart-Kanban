@@ -32,10 +32,16 @@ export class SupabaseStorageService {
     this.loadQuota();
   }
 
+  /**
+   * Build Supabase REST headers.
+   * Uses the authenticated user's JWT (access_token) as Bearer when available.
+   * Falls back to anonKey for unauthenticated/guest requests.
+   */
   private getHeaders(): HttpHeaders {
+    const userToken = this.authService.accessToken();
     return new HttpHeaders({
       'apikey': this.supabaseAnonKey,
-      'Authorization': `Bearer ${this.supabaseAnonKey}`,
+      'Authorization': `Bearer ${userToken ?? this.supabaseAnonKey}`,
       'Content-Type': 'application/json',
     });
   }
@@ -150,7 +156,9 @@ export class SupabaseStorageService {
           mime_type: file.type || 'image/png',
           extension: fileExt,
           size_bytes: file.size,
-          hash_sha256: fileId,
+          // NOTE: hash_sha256 is a placeholder; real SHA-256 hashing should
+          // be computed server-side by the backend worker after upload.
+          hash_sha256: `pending-${fileId}`,
           status: 'READY',
         };
 
