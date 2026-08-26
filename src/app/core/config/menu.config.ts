@@ -1,36 +1,44 @@
-﻿// Äá»‹nh nghÄ©a cáº¥u trÃºc dá»¯ liá»‡u cho má»™t Menu Item
+// Định nghĩa cấu trúc dữ liệu cho một Menu Item
 export interface MenuItem {
   id: string;
   label: string;
-  icon: string;          // TÃªn icon (sau nÃ y dÃ¹ng Ä‘á»ƒ map vá»›i SVG hoáº·c FontAwesome/Heroicons)
-  iconSvg?: string;      // SVG path tÃ¹y chá»‰nh cho icon
-  route?: string;        // ÄÆ°á»ng dáº«n URL (náº¿u cÃ³)
-  badge?: number;        // Sá»‘ lÆ°á»£ng thÃ´ng bÃ¡o (cháº¥m Ä‘á»)
-  hasSubMenu?: boolean;  // CÃ³ mÅ©i tÃªn xá»• xuá»‘ng hay khÃ´ng
-  isActive?: boolean;    // Tráº¡ng thÃ¡i Ä‘ang Ä‘Æ°á»£c chá»n máº·c Ä‘á»‹nh
-  isDivider?: boolean;   // DÃ¹ng Ä‘á»ƒ táº¡o dáº£i phÃ¢n cÃ¡ch (náº¿u cáº§n)
-  children?: MenuItem[]; // CÃ¡c má»¥c con (sub-menu)
-  isComingSoon?: boolean; // Cá» Ä‘Ã¡nh dáº¥u tÃ­nh nÄƒng chÆ°a phÃ¡t triá»ƒn
+  icon: string;          // Tên icon (sau này dùng để map với SVG hoặc FontAwesome/Heroicons)
+  iconSvg?: string;      // SVG path tùy chỉnh cho icon
+  route?: string;        // Đường dẫn URL (nếu có)
+  badge?: number;        // Số lượng thông báo (chấm đỏ)
+  hasSubMenu?: boolean;  // Có mũi tên xổ xuống hay không
+  isActive?: boolean;    // Trạng thái đang được chọn mặc định
+  isDivider?: boolean;   // Dùng để tạo dải phân cách (nếu cần)
+  children?: MenuItem[]; // Các mục con (sub-menu)
+  isComingSoon?: boolean; // Cờ đánh dấu tính năng chưa phát triển
+  requiredPermission?: string; // Quyền cần thiết để hiển thị menu này
+  action?: string; // Hành động khi click (nếu không dùng route)
 }
 
 export const BITRIX_SIDEBAR_MENU: MenuItem[] = [
   {
     id: 'tasks-projects',
-    label: 'TÃ¡c vá»¥ vÃ  Dá»± Ã¡n',
+    label: 'Tác vụ và Dự án',
     icon: 'check_box',
     route: '/kanban',
     isActive: true
   },
   {
     id: 'collaboration',
-    label: 'Há»£p tÃ¡c',
+    label: 'Hợp tác',
     icon: 'hub',
-    isComingSoon: true,
     hasSubMenu: true,
     children: [
       {
+        id: 'manage-members',
+        label: 'Quản lý thành viên',
+        icon: 'manage_accounts',
+        action: 'manage-members',
+        requiredPermission: 'member.invite'
+      },
+      {
         id: 'messenger',
-        label: 'TrÃ¬nh nháº¯n tin',
+        label: 'Trình nhắn tin',
         icon: 'chat_bubble',
         route: '/messenger',
         badge: 1
@@ -43,31 +51,31 @@ export const BITRIX_SIDEBAR_MENU: MenuItem[] = [
       },
       {
         id: 'collab-projects',
-        label: 'Dá»± Ã¡n há»£p tÃ¡c',
+        label: 'Dự án hợp tác',
         icon: 'groups',
         route: '/collab-projects'
       },
       {
         id: 'news-feed',
-        label: 'Báº£n tin',
+        label: 'Bản tin',
         icon: 'article',
         route: '/news-feed'
       },
       {
         id: 'calendar',
-        label: 'Lá»‹ch',
+        label: 'Lịch',
         icon: 'calendar_month',
         route: '/calendar'
       },
       {
         id: 'documents',
-        label: 'TÃ i liá»‡u',
+        label: 'Tài liệu',
         icon: 'description',
         route: '/documents'
       },
       {
         id: 'spreadsheets',
-        label: 'Báº£ng',
+        label: 'Bảng',
         icon: 'table_chart',
         route: '/spreadsheets'
       },
@@ -85,7 +93,7 @@ export const BITRIX_SIDEBAR_MENU: MenuItem[] = [
       },
       {
         id: 'workgroups',
-        label: 'NhÃ³m LÃ m viá»‡c',
+        label: 'Nhóm Làm việc',
         icon: 'group',
         route: '/workgroups'
       }
@@ -100,28 +108,28 @@ export const BITRIX_SIDEBAR_MENU: MenuItem[] = [
   },
   {
     id: 'booking',
-    label: 'Äáº·t chá»—',
+    label: 'Đặt chỗ',
     icon: 'event_available',
     route: '/booking',
     isComingSoon: true
   },
   {
     id: 'inventory',
-    label: 'Quáº£n lÃ½ kho hÃ ng',
+    label: 'Quản lý kho hàng',
     icon: 'warehouse',
     route: '/inventory',
     isComingSoon: true
   },
   {
     id: 'marketing',
-    label: 'Tiáº¿p thá»‹',
+    label: 'Tiếp thị',
     icon: 'radar',
     route: '/marketing',
     isComingSoon: true
   },
   {
     id: 'website-stores',
-    label: 'Website vÃ  cá»­a hÃ ng',
+    label: 'Website và cửa hàng',
     icon: 'shopping_cart',
     route: '/website',
     isComingSoon: true
@@ -135,21 +143,21 @@ export const BITRIX_SIDEBAR_MENU: MenuItem[] = [
   },
   {
     id: 'employees',
-    label: 'NhÃ¢n viÃªn',
+    label: 'Nhân viên',
     icon: 'badge',
     route: '/employees',
     isComingSoon: true
   },
   {
     id: 'automation',
-    label: 'Tá»± Ä‘á»™ng',
+    label: 'Tự động',
     icon: 'smart_toy',
     route: '/automation',
     isComingSoon: true
   },
   {
     id: 'applications',
-    label: 'á»¨ng dá»¥ng',
+    label: 'Ứng dụng',
     icon: 'inventory_2',
     hasSubMenu: true,
     isComingSoon: true
@@ -163,27 +171,27 @@ export const BITRIX_SIDEBAR_MENU: MenuItem[] = [
   },
   {
     id: 'esign-hr',
-    label: 'Chá»¯ kÃ½ Ä‘iá»‡n tá»­ cho NhÃ¢n sá»±',
+    label: 'Chữ ký điện tử cho Nhân sự',
     icon: 'edit_document',
     route: '/esign-hr',
     isComingSoon: true
   },
   {
     id: 'esign',
-    label: 'Chá»¯ kÃ½ Ä‘iá»‡n tá»­',
+    label: 'Chữ ký điện tử',
     icon: 'draw',
     route: '/esign',
     isComingSoon: true
   },
   {
     id: 'show-all',
-    label: 'Hiá»ƒn thá»‹ táº¥t cáº£',
+    label: 'Hiển thị tất cả',
     icon: 'expand_more',
     hasSubMenu: false,
   },
   {
     id: 'settings',
-    label: 'CÃ i Ä‘áº·t',
+    label: 'Cài đặt',
     icon: 'settings',
     route: '/settings'
   }

@@ -7,6 +7,7 @@ import { QuickTaskInputComponent } from './quick-task-input/quick-task-input';
 import { TaskCardComponent } from '../../../components/task-card/task-card';
 import { TaskStore } from '../../../../../core/state/task.store';
 import { TaskItem } from '../../../../../core/models/task.model';
+import { PermissionService } from '../../../../../core/services/permission.service';
 
 @Component({
   selector: 'app-deadline',
@@ -26,6 +27,7 @@ import { TaskItem } from '../../../../../core/models/task.model';
 })
 export class DeadlineComponent implements OnInit {
   readonly taskStore = inject(TaskStore);
+  readonly permissionService = inject(PermissionService);
 
   @Output() taskSelected = new EventEmitter<TaskItem>();
 

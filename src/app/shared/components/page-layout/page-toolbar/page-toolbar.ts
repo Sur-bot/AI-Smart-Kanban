@@ -82,6 +82,7 @@ export class PageToolbarComponent {
   
   @Input() showCreateDropdown = true;
   @Input() showToolbarRight = true;
+  @Input() canCreate = true;
 
   popupStyle: { top: string; left: string } = { top: '0px', left: '0px' };
   addFieldPopupStyle: { top?: string; bottom?: string; left: string } = { top: '0px', left: '0px' };

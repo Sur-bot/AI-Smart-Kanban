@@ -8,6 +8,7 @@ import { TaskDetailModalComponent } from '../task-detail-modal/task-detail-modal
 import { TaskViewMode, ViewTab } from '../../../../shared/models/task-list.model';
 import { TaskItem } from '../../../../core/models/task.model';
 import { TaskStore } from '../../../../core/state/task.store';
+import { PermissionService } from '../../../../core/services/permission.service';
 
 @Component({
   selector: 'app-tasks-page',
@@ -25,6 +26,7 @@ import { TaskStore } from '../../../../core/state/task.store';
 })
 export class TasksPageComponent implements OnInit {
   readonly taskStore = inject(TaskStore);
+  readonly permissionService = inject(PermissionService);
 
   activeView: TaskViewMode = 'deadline';
   selectedTask: TaskItem | any = null;

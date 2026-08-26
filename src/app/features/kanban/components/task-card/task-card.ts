@@ -1,7 +1,8 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule, DatePipe, SlicePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { TaskItem, TaskLabel, UserSummary } from '../../../../core/models/task.model';
+import { PermissionService } from '../../../../core/services/permission.service';
 
 @Component({
   selector: 'app-task-card',
@@ -13,6 +14,8 @@ import { TaskItem, TaskLabel, UserSummary } from '../../../../core/models/task.m
 })
 export class TaskCardComponent {
   @Input() task!: TaskItem;
+
+  readonly permissionService = inject(PermissionService);
 
   @Output() cardClicked = new EventEmitter<TaskItem>();
   @Output() taskStarted = new EventEmitter<TaskItem>();
