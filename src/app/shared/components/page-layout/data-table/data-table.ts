@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TaskItem } from '../../../../core/models/task.model';
+import { PermissionService } from '../../../../core/services/permission.service';
 
 export interface TableColumn {
   id: string;
@@ -22,6 +23,7 @@ export interface TableColumn {
 })
 export class DataTableComponent {
   private cdr = inject(ChangeDetectorRef);
+  readonly permissionService = inject(PermissionService);
 
   @Input() tasks: TaskItem[] = [];
   @Output() taskSelected = new EventEmitter<TaskItem>();

@@ -91,19 +91,21 @@
               (click)="onMute($event)">
         <mat-icon fontSet="material-icons-outlined">notifications_off</mat-icon>
       </button>
-      <button type="button" class="action-btn action-btn--start"
-              *ngIf="!isStarted"
-              title="Bắt đầu tác vụ"
-              aria-label="Bắt đầu tác vụ"
-              (click)="onStart($event)">
-        <mat-icon>play_arrow</mat-icon>
-      </button>
-      <button type="button" class="action-btn action-btn--done"
-              title="Hoàn tất tác vụ"
-              aria-label="Hoàn tất tác vụ"
-              (click)="onComplete($event)">
-        <mat-icon fontSet="material-icons-outlined">task_alt</mat-icon>
-      </button>
+      <ng-container *ngIf="permissionService.can('task.update')">
+        <button type="button" class="action-btn action-btn--start"
+                *ngIf="!isStarted"
+                title="Bắt đầu tác vụ"
+                aria-label="Bắt đầu tác vụ"
+                (click)="onStart($event)">
+          <mat-icon>play_arrow</mat-icon>
+        </button>
+        <button type="button" class="action-btn action-btn--done"
+                title="Hoàn tất tác vụ"
+                aria-label="Hoàn tất tác vụ"
+                (click)="onComplete($event)">
+          <mat-icon fontSet="material-icons-outlined">task_alt</mat-icon>
+        </button>
+      </ng-container>
     </div>
 
   </div>

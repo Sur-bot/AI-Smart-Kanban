@@ -157,7 +157,8 @@
                  [style.min-width.px]="col.width"
                  [style.max-width.px]="col.width"
                  (click)="$event.stopPropagation()">
-              <button type="button" 
+              <button *ngIf="permissionService.can('task.update')"
+                      type="button" 
                       class="quick-add-btn opacity-0 group-hover:opacity-100 transition-opacity" 
                       title="Thêm dự án"
                       aria-label="Thêm dự án">
@@ -173,7 +174,8 @@
                  [style.max-width.px]="col.width"
                  (click)="$event.stopPropagation()">
               <span *ngFor="let label of task.labels" class="tag-badge">{{ label.name }}</span>
-              <button type="button" 
+              <button *ngIf="permissionService.can('task.update')"
+                      type="button" 
                       class="quick-add-btn opacity-0 group-hover:opacity-100 transition-opacity" 
                       title="Thêm thẻ"
                       aria-label="Thêm thẻ">

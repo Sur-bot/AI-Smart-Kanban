@@ -5,6 +5,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TaskDetail, TaskItem } from '../../../../core/models/task.model';
 import { TaskStore } from '../../../../core/state/task.store';
+import { PermissionService } from '../../../../core/services/permission.service';
 
 @Component({
   selector: 'app-task-detail-modal',
@@ -15,6 +16,7 @@ import { TaskStore } from '../../../../core/state/task.store';
 })
 export class TaskDetailModalComponent {
   readonly taskStore = inject(TaskStore);
+  readonly permissionService = inject(PermissionService);
 
   @Input() task: TaskDetail | TaskItem | any = null;
   @Output() close = new EventEmitter<void>();
