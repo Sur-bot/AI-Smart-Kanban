@@ -2,6 +2,8 @@ import { Injectable, computed, inject, signal, effect } from '@angular/core';
 import { TaskService } from '../services/task.service';
 import { ProjectService } from '../services/project.service';
 import { AuthService } from '../auth/auth.service';
+import { PermissionService } from '../services/permission.service';
+import { MemberService } from '../services/member.service';
 import {
   TaskItem,
   TaskDetail,
@@ -25,6 +27,8 @@ export class TaskStore {
   private taskService = inject(TaskService);
   private projectService = inject(ProjectService);
   private authService = inject(AuthService);
+  private permissionService = inject(PermissionService);
+  private memberService = inject(MemberService);
 
   constructor() {
     effect(() => {
@@ -158,6 +162,7 @@ export class TaskStore {
     this.selectedTask.set(null);
     this.error.set(null);
     this.loading.set(false);
+    this.permissionService.clear();
   }
 
   /**
@@ -209,6 +214,20 @@ export class TaskStore {
     this.currentProjectId.set(projectId);
     this.loadStatuses(projectId);
     this.loadTasks({ projectId });
+
+    // Load members to determine current user's role in this project
+    const currentUserId = this.authService.user()?.id;
+    if (currentUserId) {
+      this.memberService.getMembers(projectId).subscribe({
+        next: members => {
+          this.permissionService.loadRole(projectId, members, currentUserId);
+        },
+        error: err => {
+          console.warn('[TaskStore] Could not load members for permission check:', err);
+          this.permissionService.setRole(null);
+        }
+      });
+    }
   }
 
   /**

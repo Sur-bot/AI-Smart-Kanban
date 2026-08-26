@@ -20,7 +20,7 @@
          [class.is-drag-over]="dragOverColId === col.id">
       <div class="col-drop-zone flex-1 flex flex-col w-full">
         <button
-          *ngIf="col.id !== 'overdue' && col.id !== 'completed' && activeQuickTaskCol !== col.id"
+          *ngIf="col.id !== 'overdue' && col.id !== 'completed' && activeQuickTaskCol !== col.id && permissionService.can('task.create')"
           class="col-add-btn"
           [attr.aria-label]="('TASKS_PAGE.DEADLINE.ADD_TO_COL' | translate) + ' ' + (col.labelKey | translate)"
           (click)="openQuickTask(col.id, $event)"
@@ -40,6 +40,7 @@
              [id]="getColumnDropListId(col.id)"
              [cdkDropListData]="col.tasks"
              [cdkDropListConnectedTo]="connectedColumnIds"
+             [cdkDropListDisabled]="!permissionService.can('task.update')"
              (cdkDropListDropped)="onTaskDrop($event, col.id)"
              (cdkDropListEntered)="onDragEntered($event, col.id)"
              (cdkDropListExited)="onDragExited($event, col.id)">
