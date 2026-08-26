@@ -1,16 +1,18 @@
-﻿// Äá»‹nh nghÄ©a cáº¥u trÃºc dá»¯ liá»‡u cho má»™t Menu Item
+// Äá»‹nh nghÄ©a cáº¥u trÃºc dá»¯ liá»‡u cho má»™t Menu Item
 export interface MenuItem {
   id: string;
   label: string;
   icon: string;          // TÃªn icon (sau nÃ y dÃ¹ng Ä‘á»ƒ map vá»›i SVG hoáº·c FontAwesome/Heroicons)
   iconSvg?: string;      // SVG path tÃ¹y chá»‰nh cho icon
-  route?: string;        // ÄÆ°á»ng dáº«n URL (náº¿u cÃ³)
-  badge?: number;        // Sá»‘ lÆ°á»£ng thÃ´ng bÃ¡o (cháº¥m Ä‘á»)
+  route?: string;        // Ä Æ°á» ng dáº«n URL (náº¿u cÃ³)
+  badge?: number;        // Sá»‘ lÆ°á»£ng thÃ´ng bÃ¡o (cháº¥m Ä‘á» )
   hasSubMenu?: boolean;  // CÃ³ mÅ©i tÃªn xá»• xuá»‘ng hay khÃ´ng
-  isActive?: boolean;    // Tráº¡ng thÃ¡i Ä‘ang Ä‘Æ°á»£c chá»n máº·c Ä‘á»‹nh
+  isActive?: boolean;    // Tráº¡ng thÃ¡i Ä‘ang Ä‘Æ°á»£c chá» n máº·c Ä‘á»‹nh
   isDivider?: boolean;   // DÃ¹ng Ä‘á»ƒ táº¡o dáº£i phÃ¢n cÃ¡ch (náº¿u cáº§n)
-  children?: MenuItem[]; // CÃ¡c má»¥c con (sub-menu)
-  isComingSoon?: boolean; // Cá» Ä‘Ã¡nh dáº¥u tÃ­nh nÄƒng chÆ°a phÃ¡t triá»ƒn
+  children?: MenuItem[]; // Các mục con (sub-menu)
+  isComingSoon?: boolean; // Cờ đánh dấu tính năng chưa phát triển
+  requiredPermission?: string; // Quyền cần thiết để hiển thị menu này
+  action?: string; // Hành động khi click (nếu không dùng route)
 }
 
 export const BITRIX_SIDEBAR_MENU: MenuItem[] = [
@@ -23,11 +25,17 @@ export const BITRIX_SIDEBAR_MENU: MenuItem[] = [
   },
   {
     id: 'collaboration',
-    label: 'Há»£p tÃ¡c',
+    label: 'Hợp tác',
     icon: 'hub',
-    isComingSoon: true,
     hasSubMenu: true,
     children: [
+      {
+        id: 'manage-members',
+        label: 'Quản lý thành viên',
+        icon: 'manage_accounts',
+        action: 'manage-members',
+        requiredPermission: 'member.invite'
+      },
       {
         id: 'messenger',
         label: 'TrÃ¬nh nháº¯n tin',

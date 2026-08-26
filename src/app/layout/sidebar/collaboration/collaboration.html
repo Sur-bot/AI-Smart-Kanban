@@ -2,11 +2,13 @@
 <div class="submenu-wrapper" [class.submenu-open]="isOpen">
   <div class="submenu-inner">
     <ul class="submenu-list">
-      <li *ngFor="let child of children" class="shrink-0">
-        <a [routerLink]="child.route || null" routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: false }"
-          class="submenu-item"
-          [title]="child.label">
+      <ng-container *ngFor="let child of children">
+        <li *ngIf="!child.requiredPermission || permissionService.can(child.requiredPermission)" class="shrink-0">
+          <a [routerLink]="child.route || null" routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: false }"
+            class="submenu-item"
+            [title]="child.label"
+            (click)="onChildClick(child, $event)">
 
           <div class="submenu-item-left">
             <!-- Child Icon -->
@@ -27,6 +29,7 @@
 
         </a>
       </li>
+      </ng-container>
     </ul>
   </div>
 </div>
