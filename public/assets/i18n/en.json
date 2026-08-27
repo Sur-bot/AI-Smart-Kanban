@@ -345,5 +345,20 @@
     "IMAGES_COUNT": "images",
     "QUOTA_FULL_WARNING": "Your storage quota is full (500 MB). Please delete old images to upload new ones.",
     "QUOTA_NEAR_LIMIT_WARNING": "You have used over 80% of your storage quota. Please consider cleaning up unnecessary images."
+  },
+  "PROJECT_SWITCHER": {
+    "SELECT_WORKSPACE": "Select workspace",
+    "WORKSPACE_LABEL": "Workspace",
+    "PROJECTS_TITLE": "PROJECTS",
+    "NO_PROJECTS": "No projects yet",
+    "CREATE_PROJECT": "Create new project"
+  },
+  "NOT_FOUND": {
+    "BADGE": "ERROR 404",
+    "TITLE": "Page not found",
+    "DESCRIPTION": "The link you followed may be broken, or the page may have been removed. Please check the link or go back to the homepage.",
+    "BTN_BACK": "Go back",
+    "BTN_HOME": "Go to homepage",
+    "IMG_ALT": "Lost - 404"
   }
 }

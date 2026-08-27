@@ -1,0 +1,36 @@
+<main class="not-found-page" role="main" [style.--bg-image]="'url(' + ((themeService.currentTheme$ | async) || '') + ')'">
+  <div class="overlay-backdrop"></div>
+  <section class="not-found-split-container" aria-labelledby="not-found-title">
+    <article class="glass-split-card">
+      <div class="content-side">
+        <header class="card-header">
+          <div class="badge-pill">
+            <span class="status-indicator"></span>
+            <span>{{ 'NOT_FOUND.BADGE' | translate }}</span>
+          </div>
+          <span class="error-number" aria-hidden="true">404</span>
+          <h1 id="not-found-title" class="not-found-title">{{ 'NOT_FOUND.TITLE' | translate }}</h1>
+        </header>
+        <p class="not-found-desc">
+          {{ 'NOT_FOUND.DESCRIPTION' | translate }}
+        </p>
+        <nav class="action-buttons" aria-label="Điều hướng 404">
+          <button type="button" class="btn btn-secondary" (click)="goBack()" [attr.aria-label]="'NOT_FOUND.BTN_BACK' | translate">
+            <mat-icon fontSet="material-icons-outlined">arrow_back</mat-icon>
+            <span>{{ 'NOT_FOUND.BTN_BACK' | translate }}</span>
+          </button>
+          <a routerLink="/" class="btn btn-primary" [attr.aria-label]="'NOT_FOUND.BTN_HOME' | translate">
+            <mat-icon fontSet="material-icons-outlined">home</mat-icon>
+            <span>{{ 'NOT_FOUND.BTN_HOME' | translate }}</span>
+          </a>
+        </nav>
+      </div>
+      <div class="illustration-side">
+        <div class="illustration-wrapper">
+          <img src="/assets/images/404-illustration.jpg" [attr.alt]="'NOT_FOUND.IMG_ALT' | translate" class="illustration-img" loading="lazy" />
+        </div>
+      </div>
+    </article>
+  </section>
+</main>
+
