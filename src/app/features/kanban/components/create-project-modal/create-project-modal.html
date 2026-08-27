@@ -1,0 +1,54 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <h2 class="modal-title">Tạo dự án mới</h2>
+    <button class="close-btn" (click)="close()" title="Đóng">
+      <mat-icon fontSet="material-icons-outlined">close</mat-icon>
+    </button>
+  </div>
+
+  <div class="modal-content custom-scrollbar">
+    <!-- Tên dự án -->
+    <div class="form-group">
+      <label for="projectName">Tên dự án <span class="text-red-500">*</span></label>
+      <input type="text" id="projectName" [(ngModel)]="projectName" placeholder="Nhập tên dự án, phòng ban, hoặc team..." autofocus />
+    </div>
+
+    <!-- Mô tả -->
+    <div class="form-group mt-5">
+      <label for="projectDesc">Mô tả</label>
+      <textarea id="projectDesc" [(ngModel)]="projectDescription" rows="3" placeholder="Mô tả mục đích của dự án này..."></textarea>
+    </div>
+
+    <!-- Chọn màu -->
+    <div class="form-group mt-5">
+      <label>Màu sắc đại diện</label>
+      <div class="color-picker">
+        <button type="button" *ngFor="let c of colors" class="color-swatch" [style.background-color]="c"
+          [class.active]="selectedColor === c" (click)="selectedColor = c">
+          <mat-icon *ngIf="selectedColor === c" fontSet="material-icons-outlined" class="check-mark">check</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Loại dự án (Công khai / Nội bộ) -->
+    <div class="form-group mt-6">
+      <label class="toggle-container">
+        <div class="toggle-text">
+          <span class="font-medium text-gray-800">Dự án công khai</span>
+          <span class="text-xs text-gray-500 block mt-0.5">Bất kỳ ai trong không gian làm việc đều có thể tìm và tham gia.</span>
+        </div>
+        <div class="toggle-switch">
+          <input type="checkbox" [(ngModel)]="isPublic" />
+          <span class="slider"></span>
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn-cancel" (click)="close()">Hủy</button>
+    <button class="btn-submit" [disabled]="!projectName.trim()" (click)="submit()">
+      Tạo dự án
+    </button>
+  </div>
+</div>
