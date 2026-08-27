@@ -8,6 +8,34 @@
     [showMarkRead]="false"
     (viewChange)="onViewChange($event)" />
 
-  <app-data-table [tasks]="tasks" />
+  <main class="project-content">
+    <div class="project-table-container custom-scrollbar">
+      <!-- Table Header -->
+      <header class="table-header">
+        <div class="col-checkbox">
+          <input type="checkbox" aria-label="Select all projects" class="project-checkbox" />
+        </div>
+        <div class="col-settings">
+          <mat-icon fontSet="material-icons-outlined">settings</mat-icon>
+        </div>
+        
+        <div *ngFor="let col of projectColumns" 
+             class="header-col-cell"
+             [style.width.px]="col.width" 
+             [style.min-width.px]="col.width"
+             [style.max-width.px]="col.width">
+             
+          <div class="col-label">{{ col.label }}</div>
+          <div class="col-splitter" (mousedown)="startResize($event, col)"></div>
+        </div>
+      </header>
+
+      <!-- Empty State -->
+      <div class="table-empty-state">
+        <h2 class="empty-title">Tạo một dự án</h2>
+        <p class="empty-desc">Chế độ xem này sẽ hiển thị các dự án mà bạn và đồng nghiệp đang thực hiện.</p>
+      </div>
+    </div>
+  </main>
 
 </section>
