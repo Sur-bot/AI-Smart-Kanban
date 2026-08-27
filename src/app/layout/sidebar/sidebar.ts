@@ -1,9 +1,10 @@
-import { Component, Input, Output, EventEmitter, HostBinding } from '@angular/core';
+import { Component, Input, Output, EventEmitter, HostBinding, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { BITRIX_SIDEBAR_MENU, MenuItem } from '../../core/config/menu.config';
 import { CollaborationComponent } from './collaboration/collaboration';
 import { ImageStorageBtnComponent } from './image-storage-btn/image-storage-btn';
+import { ProjectSwitcherComponent } from './project-switcher/project-switcher';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -18,6 +19,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     RouterLinkActive,
     CollaborationComponent,
     ImageStorageBtnComponent,
+    ProjectSwitcherComponent,
     MatIconModule,
     TranslatePipe
   ],
@@ -26,6 +28,8 @@ export class SidebarComponent {
   @Input() isOpen = true;
   @Output() toggleSidebar = new EventEmitter<boolean>();
   
+  @ViewChild(ProjectSwitcherComponent) projectSwitcher?: ProjectSwitcherComponent;
+
   menuItems: MenuItem[] = BITRIX_SIDEBAR_MENU;
 
   /** Các menu có submenu đang được mở rộng */
@@ -59,6 +63,8 @@ export class SidebarComponent {
     this.isCollapsed = !this.isCollapsed;
     if (!this.isCollapsed) {
       this.isHoverExpanded = false;
+    } else {
+      this.projectSwitcher?.closeDropdown();
     }
     this.toggleSidebar.emit(this.isCollapsed);
   }
@@ -70,8 +76,9 @@ export class SidebarComponent {
     }
   }
 
-  /** Khi chuột rời sidebar → thu gọn lại */
+  /** Khi chuột rời sidebar → đóng dropdown dự án và thu gọn lại */
   onMouseLeave() {
+    this.projectSwitcher?.closeDropdown();
     if (this.isCollapsed) {
       this.isHoverExpanded = false;
     }
