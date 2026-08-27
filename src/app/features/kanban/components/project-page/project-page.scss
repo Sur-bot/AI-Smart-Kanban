@@ -1,3 +1,69 @@
 .project-page {
-  @apply flex flex-col flex-1 overflow-hidden;
+  @apply flex flex-col h-full overflow-hidden;
+}
+
+.project-content {
+  @apply flex-1 bg-white m-4 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col border border-gray-200/60;
+}
+
+.project-table-container {
+  @apply flex-1 overflow-x-auto flex flex-col;
+}
+
+.table-header {
+  @apply flex items-center px-4 py-2.5 border-b border-slate-200 text-[12px] text-slate-700 font-medium min-w-[1000px] bg-slate-50 select-none whitespace-nowrap;
+
+  .col-checkbox {
+    @apply w-8 flex justify-center shrink-0;
+  }
+
+  .project-checkbox {
+    @apply w-4 h-4 border-gray-300 rounded text-blue-500 focus:ring-blue-500 cursor-pointer;
+  }
+
+  .col-settings {
+    @apply w-10 flex justify-center shrink-0 cursor-pointer text-gray-400 hover:text-gray-600 transition-colors;
+    
+    mat-icon {
+      font-size: 16px !important;
+      width: 16px !important;
+      height: 16px !important;
+      line-height: 16px !important;
+    }
+  }
+
+  .header-col-cell {
+    @apply relative flex items-center px-3 h-full shrink-0 border-r-2 border-transparent transition-colors duration-200;
+    
+    &:hover:not(:last-child) {
+      @apply border-slate-300;
+    }
+  }
+
+  .col-label {
+    @apply truncate font-medium text-slate-700 text-[12px];
+  }
+
+  .col-splitter {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    cursor: col-resize;
+    z-index: 20;
+    background-color: transparent;
+  }
+}
+
+.table-empty-state {
+  @apply flex-1 flex flex-col items-center justify-center text-center p-10 min-w-[1000px] min-h-[400px];
+
+  .empty-title {
+    @apply text-2xl text-gray-800 font-normal mb-4;
+  }
+
+  .empty-desc {
+    @apply text-sm text-gray-500 max-w-[400px] leading-relaxed m-0;
+  }
 }
