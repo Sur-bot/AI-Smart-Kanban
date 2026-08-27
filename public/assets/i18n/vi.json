@@ -505,5 +505,20 @@
     "IMAGES_COUNT": "ảnh",
     "QUOTA_FULL_WARNING": "Dung lượng lưu trữ của bạn đã đầy (500 MB). Vui lòng xóa bớt ảnh cũ để có thể tải thêm ảnh mới.",
     "QUOTA_NEAR_LIMIT_WARNING": "Bạn đã sử dụng hơn 80% hạn mức dung lượng lưu trữ. Hãy chú ý dọn dẹp ảnh không cần thiết."
+  },
+  "PROJECT_SWITCHER": {
+    "SELECT_WORKSPACE": "Chọn không gian làm việc",
+    "WORKSPACE_LABEL": "Không gian làm việc",
+    "PROJECTS_TITLE": "DỰ ÁN",
+    "NO_PROJECTS": "Chưa có dự án nào",
+    "CREATE_PROJECT": "Tạo dự án mới"
+  },
+  "NOT_FOUND": {
+    "BADGE": "LỖI 404",
+    "TITLE": "Trang không tồn tại",
+    "DESCRIPTION": "Đường dẫn bạn đang tìm kiếm không tồn tại, đã bị xóa hoặc tạm thời không thể truy cập. Hãy kiểm tra lại hoặc quay về trang chủ.",
+    "BTN_BACK": "Quay lại trang trước",
+    "BTN_HOME": "Về trang chủ",
+    "IMG_ALT": "Lạc đường - 404"
   }
 }
