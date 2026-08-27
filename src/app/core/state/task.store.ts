@@ -208,6 +208,23 @@ export class TaskStore {
   }
 
   /**
+   * Tạo dự án mới
+   */
+  createProject(payload: Partial<Project>, callback?: (project: Project) => void) {
+    this.projectService.createProject(payload).subscribe({
+      next: created => {
+        this.projects.update(list => [created, ...list]);
+        this.setCurrentProject(created.id);
+        if (callback) callback(created);
+      },
+      error: err => {
+        console.error('[TaskStore:createProject] Error:', err);
+        this.error.set(err.error?.message || 'Không thể tạo dự án');
+      }
+    });
+  }
+
+  /**
    * Đổi dự án hiện tại
    */
   setCurrentProject(projectId: string) {
