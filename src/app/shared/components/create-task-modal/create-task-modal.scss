@@ -212,15 +212,15 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 5px 12px;
-  border-radius: 10px;
+  padding: 5px 14px;
+  border-radius: 16px;
   background: #f0f7ff;
-  border: 1px solid rgba(59, 130, 246, 0.15);
+  border: none;
   color: #007aff;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: background 0.15s ease;
 
   .calendar-icon {
     font-size: 16px;
@@ -232,7 +232,6 @@
 
   &:hover {
     background: #e0effe;
-    border-color: rgba(59, 130, 246, 0.3);
   }
 }
 
@@ -272,10 +271,10 @@
   height: 30px;
   border-radius: 50%;
   background: #f0f7ff;
-  border: 1px solid rgba(59, 130, 246, 0.15);
+  border: none;
   color: #007aff;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: background 0.15s ease;
 
   mat-icon {
     font-size: 16px;
@@ -286,7 +285,6 @@
 
   &:hover {
     background: #e0effe;
-    border-color: rgba(59, 130, 246, 0.3);
   }
 }
 
@@ -304,18 +302,6 @@
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18), 0 0 1px rgba(0, 0, 0, 0.15);
   border: 1px solid #f1f5f9;
   width: 480px;
-  animation: popover-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes popover-in {
-  from {
-    opacity: 0;
-    transform: translateY(-8px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
 }
 
 .calendar-pane {
