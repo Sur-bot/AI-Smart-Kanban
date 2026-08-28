@@ -224,53 +224,81 @@
   left: 0;
   z-index: 1050;
   display: flex;
-  background: #ffffff;
-  border-radius: 18px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18), 0 0 1px rgba(0, 0, 0, 0.15);
-  border: 1px solid #f1f5f9;
-  width: 440px;
-  overflow: hidden;
+  background: transparent;
+  width: 400px;
+  overflow: visible;
+  filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.16));
 }
 
 .assignee-popover-sidebar {
-  width: 54px;
-  background: #ffffff;
-  border-right: 1px solid #f1f5f9;
+  position: absolute;
+  right: 100%;
+  top: 16px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 14px 0;
-  gap: 10px;
+  align-items: flex-end;
+  gap: 6px;
+  z-index: 10;
+  border: none;
+  background: transparent;
+  padding: 0;
+  width: auto;
 
   .sidebar-icon-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
     border: none;
-    background: transparent;
-    color: #64748b;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
     transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 
-    mat-icon {
-      font-size: 20px;
-      width: 20px;
-      height: 20px;
-      line-height: 20px;
-    }
-
     &.active {
-      background: #007aff;
+      width: 44px;
+      height: 38px;
+      background: #3ca3f1;
+      border-radius: 20px 0 0 20px;
       color: #ffffff;
-      box-shadow: 0 2px 8px rgba(0, 122, 255, 0.35);
+      box-shadow: 0 3px 0 rgba(15, 65, 95, 0.7);
+      padding-left: 4px;
+
+      &:active {
+        transform: translateY(2px);
+        box-shadow: 0 1px 0 rgba(15, 65, 95, 0.7);
+      }
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+      }
     }
 
-    &:not(.active):hover {
-      background: #f1f5f9;
-      color: #0f172a;
+    &:not(.active) {
+      width: 40px;
+      height: 34px;
+      background: #2c7dbf;
+      border-radius: 18px 0 0 18px;
+      color: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 2px 0 rgba(15, 65, 95, 0.7);
+      padding-left: 3px;
+
+      &:hover {
+        background: #3ca3f1;
+        color: #ffffff;
+      }
+
+      &:active {
+        transform: translateY(2px);
+        box-shadow: 0 0 0 rgba(15, 65, 95, 0.7);
+      }
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+      }
     }
   }
 }
@@ -280,6 +308,10 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid #f1f5f9;
+  overflow: hidden;
 }
 
 .assignee-search-container {
