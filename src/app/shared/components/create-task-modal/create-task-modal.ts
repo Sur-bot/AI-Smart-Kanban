@@ -404,6 +404,11 @@ export class CreateTaskModalComponent implements OnInit {
 
   onBackdropClick(event: MouseEvent): void {
     if ((event.target as HTMLElement).classList.contains('modal-backdrop')) {
+      if (this.isDatePickerOpen || this.isAssigneeDropdownOpen) {
+        this.isDatePickerOpen = false;
+        this.isAssigneeDropdownOpen = false;
+        return;
+      }
       this.onClose();
     }
   }
