@@ -60,6 +60,8 @@ export class CreateTaskModalComponent implements OnInit {
   assigneeName = 'Văn Anh Nguyễn';
   assigneeAvatar: string | null = null;
   assigneeId: string | null = null;
+  isAssigneeDropdownOpen = false;
+  searchMemberQuery = '';
 
   // ─── DatePicker State ────────────────────────────
   isDatePickerOpen = false;
@@ -277,12 +279,38 @@ export class CreateTaskModalComponent implements OnInit {
     }
   }
 
+  toggleAssigneeDropdown(event: Event): void {
+    event.stopPropagation();
+    this.isAssigneeDropdownOpen = !this.isAssigneeDropdownOpen;
+    if (this.isAssigneeDropdownOpen) {
+      this.isDatePickerOpen = false;
+    }
+  }
+
+  selectMember(name: string, id: string, event: Event): void {
+    event.stopPropagation();
+    this.assigneeName = name;
+    this.assigneeId = id;
+    this.form.patchValue({ assigneeId: id });
+    this.isAssigneeDropdownOpen = false;
+  }
+
+  clearAssignee(event: Event): void {
+    event.stopPropagation();
+    this.assigneeName = '';
+    this.assigneeId = null;
+    this.form.patchValue({ assigneeId: null });
+  }
+
   toggleDatePicker(event: Event): void {
     event.stopPropagation();
     this.isDatePickerOpen = !this.isDatePickerOpen;
-    if (this.isDatePickerOpen && this.selectedDate) {
-      this.viewDate = new Date(this.selectedDate);
-      this.generateCalendar();
+    if (this.isDatePickerOpen) {
+      this.isAssigneeDropdownOpen = false;
+      if (this.selectedDate) {
+        this.viewDate = new Date(this.selectedDate);
+        this.generateCalendar();
+      }
     }
   }
 
@@ -337,17 +365,29 @@ export class CreateTaskModalComponent implements OnInit {
     this.onClose();
   }
 
-  @HostListener('document:click')
-  onDocumentClick(): void {
-    if (this.isDatePickerOpen) {
+  onDialogContentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    // Neu click khong nam trong datepicker-popover hoac nut mo datepicker
+    if (!target.closest('.datepicker-popover') && !target.closest('.due-date-container')) {
       this.isDatePickerOpen = false;
     }
+    // Neu click khong nam trong assignee-popover hoac assignee-wrapper
+    if (!target.closest('.assignee-popover') && !target.closest('.assignee-wrapper')) {
+      this.isAssigneeDropdownOpen = false;
+    }
+  }
+
+  @HostListener('document:click')
+  onDocumentClick(): void {
+    this.isDatePickerOpen = false;
+    this.isAssigneeDropdownOpen = false;
   }
 
   @HostListener('keydown.escape')
   onEscape(): void {
-    if (this.isDatePickerOpen) {
+    if (this.isDatePickerOpen || this.isAssigneeDropdownOpen) {
       this.isDatePickerOpen = false;
+      this.isAssigneeDropdownOpen = false;
       return;
     }
     if (this.isOpen) this.onClose();
@@ -357,6 +397,7 @@ export class CreateTaskModalComponent implements OnInit {
     this.form.reset();
     this.isSubmitting = false;
     this.isDatePickerOpen = false;
+    this.isAssigneeDropdownOpen = false;
     this.isHighPriority = false;
     this.close.emit();
   }
