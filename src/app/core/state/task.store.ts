@@ -232,16 +232,36 @@ export class TaskStore {
     this.loadStatuses(projectId);
     this.loadTasks({ projectId });
 
-    // Load members to determine current user's role in this project
+    const currentProject = this.projects().find(p => p.id === projectId);
     const currentUserId = this.authService.user()?.id;
+
+    // 1. Kích hoạt quyền tức thì nếu là owner_id của dự án hoặc Guest mode
+    if (currentProject && currentUserId && currentProject.owner_id === currentUserId) {
+      this.permissionService.setRole('owner');
+    } else if (this.authService.isGuestMode()) {
+      this.permissionService.setRole('owner');
+    }
+
+    // 2. Đồng bộ vai trò chi tiết (owner, admin, member, viewer) từ API members
     if (currentUserId) {
       this.memberService.getMembers(projectId).subscribe({
         next: members => {
-          this.permissionService.loadRole(projectId, members, currentUserId);
+          const myMembership = members.find(m => m.user_id === currentUserId);
+          if (myMembership) {
+            this.permissionService.setRole(myMembership.role);
+          } else if (currentProject && currentProject.owner_id === currentUserId) {
+            this.permissionService.setRole('owner');
+          } else {
+            this.permissionService.setRole(null);
+          }
         },
         error: err => {
           console.warn('[TaskStore] Could not load members for permission check:', err);
-          this.permissionService.setRole(null);
+          if (currentProject && currentUserId && currentProject.owner_id === currentUserId) {
+            this.permissionService.setRole('owner');
+          } else if (!this.authService.isGuestMode()) {
+            this.permissionService.setRole(null);
+          }
         }
       });
     }

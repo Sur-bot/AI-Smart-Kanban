@@ -1,6 +1,6 @@
 /* ===== Host Element ===== */
 :host {
-  @apply block overflow-hidden;
+  @apply block overflow-hidden rounded-b-[10px];
 }
 
 
@@ -10,6 +10,7 @@
   display: grid;
   grid-template-rows: 0fr;
   transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  @apply rounded-b-[10px];
 
   &.submenu-open {
     grid-template-rows: 1fr;
@@ -22,12 +23,21 @@
 }
 
 .submenu-inner {
-  @apply overflow-hidden;
+  @apply overflow-hidden rounded-b-[10px];
 }
 
 /* ===== SubMenu List ===== */
 .submenu-list {
-  @apply list-none pl-0 opacity-0 transition-opacity duration-500 ease-in-out delay-200;
+  @apply list-none pl-0 opacity-0 transition-opacity duration-500 ease-in-out delay-200 rounded-b-[10px];
+
+  li:last-child,
+  li:last-of-type {
+    @apply rounded-b-[10px];
+
+    .submenu-item {
+      @apply rounded-b-[10px];
+    }
+  }
 }
 
 /* ===== SubMenu Item ===== */
@@ -60,4 +70,4 @@
 /* ===== SubMenu Badge ===== */
 .submenu-badge {
   @apply absolute -top-1.5 left-3.5 bg-[#ff5752] text-white text-[10px] font-bold leading-none rounded-full px-1 py-[2px] min-w-[16px] h-[16px] flex items-center justify-center;
-}
+}

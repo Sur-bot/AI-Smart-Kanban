@@ -1,9 +1,9 @@
 <!-- Wrapper dùng CSS Grid để animate height mượt mà -->
-<div class="submenu-wrapper" [class.submenu-open]="isOpen">
+<nav class="submenu-wrapper" [class.submenu-open]="isOpen" aria-label="Submenu Hợp tác">
   <div class="submenu-inner">
     <ul class="submenu-list">
       <ng-container *ngFor="let child of children">
-        <li *ngIf="!child.requiredPermission || permissionService.can(child.requiredPermission)" class="shrink-0">
+        <li *ngIf="canShowChild(child)" class="shrink-0">
           <a [routerLink]="child.route || null" routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: false }"
             class="submenu-item"
@@ -32,4 +32,4 @@
       </ng-container>
     </ul>
   </div>
-</div>
+</nav>

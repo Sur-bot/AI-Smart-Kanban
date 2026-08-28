@@ -5,131 +5,286 @@
       open
       role="dialog"
       aria-modal="true"
-      [attr.aria-labelledby]="'CREATE_TASK.TITLE_PLACEHOLDER' | translate"
-      (click)="$event.stopPropagation()"
+      aria-labelledby="create-task-title-input"
+      (click)="onDialogContentClick($event)"
     >
       <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
 
-        <!-- ── Header ─────────────────────────────── -->
         <header class="dialog-header">
           <input
             id="create-task-title-input"
             formControlName="title"
             type="text"
             class="title-input"
-            [placeholder]="'CREATE_TASK.TITLE_PLACEHOLDER' | translate"
+            placeholder="Tên tác vụ"
             autocomplete="off"
-            [attr.aria-label]="'CREATE_TASK.TITLE_PLACEHOLDER' | translate"
+            aria-label="Tên tác vụ"
             autofocus
           />
           <div class="header-actions">
             <button
               type="button"
               class="icon-btn fire-btn"
-              [title]="'CREATE_TASK.HIGH_PRIORITY' | translate"
-              [attr.aria-label]="'CREATE_TASK.HIGH_PRIORITY_ARIA' | translate"
+              [class.active]="isHighPriority"
+              aria-label="Đánh dấu ưu tiên cao"
+              (click)="toggleHighPriority()"
             >
-              <mat-icon fontSet="material-icons-outlined">local_fire_department</mat-icon>
+              <mat-icon fontSet="material-icons-outlined" [class.text-orange-500]="isHighPriority">local_fire_department</mat-icon>
             </button>
             <button
               type="button"
               class="icon-btn close-btn"
-              [title]="'COMMON.CLOSE' | translate"
-              [attr.aria-label]="'COMMON.CLOSE' | translate"
+              aria-label="Đóng"
               (click)="onClose()"
             >
-              <mat-icon>close</mat-icon>
+              <mat-icon fontSet="material-icons-outlined">close</mat-icon>
             </button>
           </div>
         </header>
 
-        <!-- ── Body ──────────────────────────────── -->
-        <section class="dialog-body" [attr.aria-label]="'CREATE_TASK.TASK_DETAILS_ARIA' | translate">
+        <section class="dialog-body" aria-label="Thông tin tác vụ">
 
-          <!-- Mô tả -->
           <div class="field-row description-row">
             <textarea
               formControlName="description"
-              class="description-input"
-              [placeholder]="'CREATE_TASK.DESCRIPTION_PLACEHOLDER' | translate"
+              class="description-input custom-scrollbar"
+              placeholder="Mô tả"
               rows="2"
-              [attr.aria-label]="'CREATE_TASK.DESCRIPTION_PLACEHOLDER' | translate"
+              aria-label="Mô tả tác vụ"
             ></textarea>
           </div>
 
-          <!-- Người được phân công -->
-          <div class="field-row">
-            <label class="field-label" for="assignee-input">{{ 'CREATE_TASK.ASSIGNEE' | translate }}</label>
-            <div class="field-value assignee-value">
-              <span class="avatar-placeholder" aria-hidden="true">
-                <mat-icon fontSet="material-icons-outlined" class="!text-[16px] !w-4 !h-4">person</mat-icon>
-              </span>
-              <input
-                id="assignee-input"
-                formControlName="assigneeId"
-                type="text"
-                class="inline-input"
-                [placeholder]="'CREATE_TASK.ASSIGNEE_PLACEHOLDER' | translate"
-                [attr.aria-label]="'CREATE_TASK.ASSIGNEE' | translate"
-              />
-            </div>
-          </div>
-
-          <!-- Hạn chót -->
-          <div class="field-row">
-            <label class="field-label" for="due-date-input">{{ 'CREATE_TASK.DUE_DATE' | translate }}</label>
+          <div class="field-row relative">
+            <label class="field-label" for="assignee-input">Người được phân công:</label>
             <div class="field-value">
-              <mat-icon fontSet="material-icons-outlined" class="field-icon">calendar_today</mat-icon>
-              <input
-                id="due-date-input"
-                formControlName="dueDate"
-                type="datetime-local"
-                class="inline-input date-input"
-                [attr.aria-label]="'CREATE_TASK.DUE_DATE' | translate"
-              />
+              <div class="assignee-wrapper">
+                <button
+                  type="button"
+                  class="assignee-badge"
+                  (click)="toggleAssigneeDropdown($event)"
+                  aria-label="Chọn người được phân công"
+                >
+                  <figure class="avatar-circle" aria-hidden="true">
+                    <img *ngIf="assigneeAvatar" [src]="assigneeAvatar" [alt]="assigneeName" class="avatar-img" />
+                    <mat-icon *ngIf="!assigneeAvatar" fontSet="material-icons-outlined" class="avatar-icon">account_circle</mat-icon>
+                  </figure>
+                  <span class="assignee-name">{{ assigneeName || 'Chọn người...' }}</span>
+                </button>
+
+                @if (isAssigneeDropdownOpen) {
+                  <section class="assignee-popover" (click)="$event.stopPropagation()" role="dialog" aria-label="Chọn người được phân công">
+                    <aside class="assignee-popover-sidebar">
+                      <button type="button" class="sidebar-icon-btn active" aria-label="Tìm kiếm">
+                        <mat-icon fontSet="material-icons-outlined">search</mat-icon>
+                      </button>
+                      <button type="button" class="sidebar-icon-btn" aria-label="Danh sách thành viên">
+                        <mat-icon fontSet="material-icons-outlined">people</mat-icon>
+                      </button>
+                    </aside>
+
+                    <div class="assignee-popover-main">
+                      <div class="assignee-search-container">
+                        <div class="selected-member-tag" *ngIf="assigneeName">
+                          <figure class="tag-avatar">
+                            <mat-icon fontSet="material-icons-outlined">account_circle</mat-icon>
+                          </figure>
+                          <span class="tag-name">{{ assigneeName }}</span>
+                          <button type="button" class="tag-close-btn" (click)="clearAssignee($event)" aria-label="Bỏ chọn">
+                            <mat-icon fontSet="material-icons-outlined">close</mat-icon>
+                          </button>
+                        </div>
+                        <input
+                          type="text"
+                          [(ngModel)]="searchMemberQuery"
+                          [ngModelOptions]="{standalone: true}"
+                          class="member-search-input"
+                          placeholder="tìm kiếm"
+                          aria-label="Tìm kiếm người dùng"
+                        />
+                      </div>
+
+                      <div class="members-list custom-scrollbar">
+                        <button
+                          type="button"
+                          class="member-item selected"
+                          (click)="selectMember(assigneeName || 'Văn Anh Nguyễn', assigneeId || 'current-user', $event)"
+                        >
+                          <figure class="avatar-circle" aria-hidden="true">
+                            <img *ngIf="assigneeAvatar" [src]="assigneeAvatar" [alt]="assigneeName" class="avatar-img" />
+                            <mat-icon *ngIf="!assigneeAvatar" fontSet="material-icons-outlined" class="avatar-icon">account_circle</mat-icon>
+                          </figure>
+                          <span class="member-name">{{ assigneeName || 'Văn Anh Nguyễn' }}</span>
+                          <mat-icon fontSet="material-icons-outlined" class="check-icon">check</mat-icon>
+                        </button>
+                      </div>
+
+                      <footer class="assignee-popover-footer">
+                        <button type="button" class="btn-add-circle" aria-label="Mời thêm">
+                          <mat-icon fontSet="material-icons-outlined">add</mat-icon>
+                        </button>
+                        <span class="footer-invite-text">
+                          <span class="invite-link">Mời một người dùng</span> hoặc <span class="invite-link">mời một khách</span>
+                          <mat-icon fontSet="material-icons-outlined" class="lock-icon">lock</mat-icon>
+                        </span>
+                      </footer>
+                    </div>
+                  </section>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="field-row relative">
+            <label class="field-label">Hạn chót:</label>
+            <div class="field-value">
+              <div class="due-date-container">
+                <div class="due-date-wrapper">
+                  <button
+                    type="button"
+                    class="due-date-badge"
+                    [class.has-date]="!!selectedDate"
+                    (click)="toggleDatePicker($event)"
+                    aria-label="Chọn hạn chót"
+                  >
+                    <mat-icon fontSet="material-icons-outlined" class="calendar-icon">calendar_today</mat-icon>
+                    <span class="due-date-text">{{ formattedDueDate }}</span>
+                  </button>
+
+                  <button
+                    *ngIf="selectedDate"
+                    type="button"
+                    class="clear-date-btn"
+                    (click)="clearDueDate($event)"
+                    aria-label="Xóa hạn chót"
+                  >
+                    <mat-icon fontSet="material-icons-outlined">close</mat-icon>
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  class="tune-btn"
+                  (click)="toggleDatePicker($event)"
+                  aria-label="Tùy chỉnh thời hạn"
+                >
+                  <mat-icon fontSet="material-icons-outlined">tune</mat-icon>
+                </button>
+              </div>
+
+              @if (isDatePickerOpen) {
+                <section class="datepicker-popover" (click)="$event.stopPropagation()" role="dialog" aria-label="Chọn ngày hạn chót">
+                  <div class="calendar-pane">
+                    <header class="calendar-nav">
+                      <button type="button" class="nav-btn" (click)="prevMonth($event)" aria-label="Tháng trước">
+                        <mat-icon fontSet="material-icons-outlined">chevron_left</mat-icon>
+                      </button>
+                      <span class="month-title">tháng {{ viewDate.getMonth() + 1 }} &nbsp;{{ viewDate.getFullYear() }}</span>
+                      <button type="button" class="nav-btn" (click)="nextMonth($event)" aria-label="Tháng sau">
+                        <mat-icon fontSet="material-icons-outlined">chevron_right</mat-icon>
+                      </button>
+                    </header>
+
+                    <div class="weekdays-grid">
+                      <span>T2</span>
+                      <span>T3</span>
+                      <span>T4</span>
+                      <span>T5</span>
+                      <span>T6</span>
+                      <span class="text-rose-500">T7</span>
+                      <span class="text-rose-500">CN</span>
+                    </div>
+
+                    <div class="days-grid">
+                      @for (day of calendarDays; track $index) {
+                        <button
+                          type="button"
+                          class="day-cell"
+                          [class.other-month]="!day.isCurrentMonth"
+                          [class.weekend]="day.isWeekend && day.isCurrentMonth"
+                          [class.selected]="day.isSelected"
+                          [class.today]="day.isToday && !day.isSelected"
+                          (click)="selectCalendarDay(day, $event)"
+                        >
+                          {{ day.dayNumber }}
+                        </button>
+                      }
+                    </div>
+
+                    <footer class="time-picker-row">
+                      <mat-icon fontSet="material-icons-outlined" class="time-icon">schedule</mat-icon>
+                      <input
+                        type="time"
+                        [value]="selectedTime"
+                        (change)="onTimeChange($event)"
+                        class="time-input"
+                        aria-label="Chọn giờ"
+                      />
+                      <span class="time-display">{{ formattedTimeDisplay }}</span>
+                    </footer>
+                  </div>
+
+                  <aside class="presets-pane">
+                    @for (preset of datePresets; track preset.id) {
+                      <button
+                        type="button"
+                        class="preset-card"
+                        (click)="selectPreset(preset, $event)"
+                      >
+                        <strong class="preset-title">{{ preset.title }}</strong>
+                        <small class="preset-subtitle">{{ preset.subtitle }}</small>
+                      </button>
+                    }
+                  </aside>
+                </section>
+              }
             </div>
           </div>
 
         </section>
 
-        <!-- ── Action Chips ───────────────────────── -->
-        <section class="dialog-chips" [attr.aria-label]="'CREATE_TASK.ADDITIONAL_OPTIONS_ARIA' | translate">
-          <button type="button" class="chip-btn" [title]="'CREATE_TASK.ATTACH_FILE' | translate" [attr.aria-label]="'CREATE_TASK.ATTACH_FILE' | translate">
-            <mat-icon fontSet="material-icons-outlined" class="!text-[14px] !w-[14px] !h-[14px]">attach_file</mat-icon>
-            <span>{{ 'CREATE_TASK.ATTACH_FILE' | translate }}</span>
+        <hr class="dialog-divider" />
+
+        <section class="dialog-chips" aria-label="Tùy chọn bổ sung">
+          <button type="button" class="chip-btn" aria-label="Đính kèm tập tin">
+            <mat-icon fontSet="material-icons-outlined" class="chip-icon">attach_file</mat-icon>
+            <span>Tập tin</span>
           </button>
-          <button type="button" class="chip-btn" [title]="'CREATE_TASK.ADD_CHECKLIST' | translate" [attr.aria-label]="'CREATE_TASK.ADD_CHECKLIST' | translate">
-            <mat-icon fontSet="material-icons-outlined" class="!text-[14px] !w-[14px] !h-[14px]">checklist</mat-icon>
-            <span>{{ 'CREATE_TASK.CHECKLIST' | translate }}</span>
+          <button type="button" class="chip-btn" aria-label="Thêm danh sách kiểm tra">
+            <mat-icon fontSet="material-icons-outlined" class="chip-icon">checklist</mat-icon>
+            <span>Danh sách kiểm tra</span>
           </button>
-          <button type="button" class="chip-btn" [title]="'CREATE_TASK.SELECT_PROJECT' | translate" [attr.aria-label]="'CREATE_TASK.SELECT_PROJECT' | translate">
-            <mat-icon fontSet="material-icons-outlined" class="!text-[14px] !w-[14px] !h-[14px]">folder_open</mat-icon>
-            <span>{{ 'CREATE_TASK.PROJECT' | translate }}</span>
+          <button type="button" class="chip-btn" aria-label="Chọn dự án">
+            <mat-icon fontSet="material-icons-outlined" class="chip-icon">folder_open</mat-icon>
+            <span>Dự án</span>
           </button>
         </section>
 
-        <!-- ── Footer ─────────────────────────────── -->
         <footer class="dialog-footer">
           <div class="footer-actions">
             <button
               type="submit"
               class="btn-submit"
               [disabled]="form.invalid || isSubmitting"
-              [attr.aria-label]="'CREATE_TASK.CREATE_BTN_ARIA' | translate"
+              aria-label="Tạo tác vụ"
             >
-              {{ isSubmitting ? ('CREATE_TASK.CREATING' | translate) : ('CREATE_TASK.CREATE_BTN' | translate) }}
+              {{ isSubmitting ? 'Đang tạo...' : 'Tạo' }}
             </button>
             <button
               type="button"
               class="btn-cancel"
               (click)="onClose()"
-              [attr.aria-label]="'COMMON.CANCEL' | translate"
+              aria-label="Hủy bỏ"
             >
-              {{ 'COMMON.CANCEL' | translate }}
+              Hủy
             </button>
           </div>
-          <button type="button" class="btn-detail-link" [attr.aria-label]="'CREATE_TASK.OPEN_DETAIL_ARIA' | translate">
-            {{ 'CREATE_TASK.DETAIL_FORM' | translate }}
+          <button
+            type="button"
+            class="btn-detail-link"
+            (click)="onDetailClick($event)"
+            aria-label="Mở biểu mẫu chi tiết"
+          >
+            Biểu mẫu chi tiết
           </button>
         </footer>
 

@@ -6,7 +6,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MemberService } from '../../../../core/services/member.service';
 import { TaskStore } from '../../../../core/state/task.store';
 import { PermissionService } from '../../../../core/services/permission.service';
-import { ProjectMember, ProjectMemberRole } from '../../../../core/models/task.model';
+import { ProjectMember, ProjectMemberRole, Project } from '../../../../core/models/task.model';
 
 @Component({
   selector: 'app-member-management-modal',
@@ -26,8 +26,24 @@ export class MemberManagementModalComponent implements OnInit {
   inviteUserId = '';
   inviteRole: ProjectMemberRole = 'member';
 
+  get currentProject(): Project | undefined {
+    const currentId = this.taskStore.currentProjectId();
+    return this.taskStore.projects().find(p => p.id === currentId);
+  }
+
   get currentProjectId(): string | null {
     return this.taskStore.currentProjectId();
+  }
+
+  get roleLabel(): string {
+    const role = this.permissionService.currentRole();
+    switch (role) {
+      case 'owner': return 'Chủ sở hữu (Owner)';
+      case 'admin': return 'Quản trị viên (Admin)';
+      case 'member': return 'Thành viên (Member)';
+      case 'viewer': return 'Người xem (Viewer)';
+      default: return 'Chưa xác định';
+    }
   }
 
   ngOnInit() {
