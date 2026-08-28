@@ -16,8 +16,8 @@
   <app-deadline *ngIf="activeView === 'deadline'" (taskSelected)="openTaskDetail($event)" />
 
   <app-task-detail-modal
-    *ngIf="selectedTask"
-    [task]="selectedTask"
+    *ngIf="selectedTask || taskStore.selectedTask()"
+    [task]="selectedTask || taskStore.selectedTask()"
     (close)="closeTaskDetail()">
   </app-task-detail-modal>
 

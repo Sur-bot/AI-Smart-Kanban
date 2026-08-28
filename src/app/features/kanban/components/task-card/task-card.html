@@ -6,13 +6,20 @@
 
     <!-- ── Header: Type icon + Title + Priority ── -->
     <header class="card-header">
-      <div class="task-title-group">
+      <div class="task-title-group flex items-center gap-1.5 flex-1 min-w-0">
         <mat-icon class="type-icon" [fontSet]="'material-icons-outlined'" [title]="task.taskType">
           {{ taskTypeIcon }}
         </mat-icon>
-        <h3 class="task-title">{{ task.title }}</h3>
+        <h3 class="task-title truncate">{{ task.title }}</h3>
+        <!-- Icon ngọn lửa đánh dấu sau tên task -->
+        <mat-icon *ngIf="task.priority === 'high'" 
+                  class="text-orange-500 !text-[17px] !w-[17px] !h-[17px] leading-none shrink-0" 
+                  fontSet="material-icons-outlined" 
+                  title="Ưu tiên cao">
+          local_fire_department
+        </mat-icon>
       </div>
-      <span *ngIf="task.priority && task.priority !== 'none'"
+      <span *ngIf="task.priority && task.priority !== 'none' && task.priority !== 'high'"
             class="priority-badge"
             [ngClass]="'priority-' + task.priority"
             [attr.aria-label]="'Độ ưu tiên: ' + task.priority">

@@ -1,8 +1,9 @@
-import { Component, Input, HostListener, ElementRef } from '@angular/core';
+import { Component, Input, HostListener, ElementRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { NgStyle } from '@angular/common';
 import { CreateTaskModalComponent } from '../../create-task-modal/create-task-modal';
+import { TaskStore } from '../../../../core/state/task.store';
 
 const TASK_FILTERS = [
   { id: 'in_progress', label: 'Đang tiến hành' },
@@ -125,6 +126,8 @@ export class PageToolbarComponent {
     this.selectedRole = 'all';
   }
 
+  readonly taskStore = inject(TaskStore);
+
   /** Trang thai hien thi popup Tao Tac Vu */
   isCreateModalOpen = false;
 
@@ -134,6 +137,25 @@ export class PageToolbarComponent {
 
   closeCreateModal(): void {
     this.isCreateModalOpen = false;
+  }
+
+  onOpenDetailForm(payload: any): void {
+    this.isCreateModalOpen = false;
+    const draftTask: any = {
+      id: 'draft-' + Date.now(),
+      title: payload.title || 'Tác vụ mới',
+      description: payload.description || '',
+      dueDate: payload.dueDate,
+      priority: payload.priority || 'none',
+      status: { id: 'pending', name: 'Đang chờ thực hiện' },
+      creator: { name: 'Văn Anh Nguyễn' },
+      assignee: { name: 'Văn Anh Nguyễn' },
+      checklistCount: 0,
+      checklistDoneCount: 0,
+      commentCount: 0,
+      createdAt: new Date().toISOString()
+    };
+    this.taskStore.selectedTask.set(draftTask);
   }
 
   @HostListener('document:click')
