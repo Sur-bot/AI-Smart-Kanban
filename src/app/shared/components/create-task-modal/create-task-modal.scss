@@ -250,21 +250,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.15s ease;
 
     &.active {
       width: 44px;
       height: 38px;
-      background: #3ca3f1;
+      background: #007aff;
       border-radius: 20px 0 0 20px;
       color: #ffffff;
-      box-shadow: 0 3px 0 rgba(15, 65, 95, 0.7);
+      box-shadow: -2px 2px 8px rgba(0, 122, 255, 0.28);
       padding-left: 4px;
-
-      &:active {
-        transform: translateY(2px);
-        box-shadow: 0 1px 0 rgba(15, 65, 95, 0.7);
-      }
 
       mat-icon {
         font-size: 20px;
@@ -277,20 +272,15 @@
     &:not(.active) {
       width: 40px;
       height: 34px;
-      background: #2c7dbf;
+      background: #2563eb;
+      opacity: 0.85;
       border-radius: 18px 0 0 18px;
-      color: rgba(255, 255, 255, 0.85);
-      box-shadow: 0 2px 0 rgba(15, 65, 95, 0.7);
+      color: #ffffff;
       padding-left: 3px;
 
       &:hover {
-        background: #3ca3f1;
-        color: #ffffff;
-      }
-
-      &:active {
-        transform: translateY(2px);
-        box-shadow: 0 0 0 rgba(15, 65, 95, 0.7);
+        opacity: 1;
+        background: #007aff;
       }
 
       mat-icon {
