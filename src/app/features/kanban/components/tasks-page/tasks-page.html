@@ -1,6 +1,6 @@
 <main class="tasks-page" role="main">
 
-  <app-page-toolbar title="Tác vụ của tôi" [canCreate]="permissionService.can('task.create')" />
+  <app-page-toolbar pageTitle="Tác vụ của tôi" [canCreate]="permissionService.can('task.create')" />
 
   <app-view-filter-bar
     [viewTabs]="viewTabs"

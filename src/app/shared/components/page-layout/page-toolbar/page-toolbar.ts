@@ -1,4 +1,4 @@
-import { Component, Input, HostListener, ElementRef, inject } from '@angular/core';
+import { Component, Input, HostListener, ElementRef, inject, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { NgStyle } from '@angular/common';
@@ -33,7 +33,7 @@ export const DEFAULT_TASK_FIELDS: ToolbarField[] = [
   { id: 'created_by',          label: 'Được tạo bởi',                  checked: false, type: 'text'   },
   { id: 'assignee',            label: 'Người được phân công',           checked: false, type: 'text'   },
   { id: 'status',              label: 'Trạng thái',                    checked: true,  type: 'tags', isDefault: true, options: ['Đang chờ thực hiện', 'Đang tiến hành', 'Đang chờ xem xét', 'Đang trì hoãn'] },
-  { id: 'due_date',            label: 'Hạn chốt',                      checked: false, type: 'date'   },
+  { id: 'due_date',            label: 'Hạn chót',                      checked: false, type: 'date'   },
   { id: 'project',             label: 'Dự án (nhóm)',                  checked: false, type: 'select' },
   { id: 'attention',           label: 'Cần chú ý',                     checked: true,  type: 'select', isDefault: true },
   { id: 'task_params',         label: 'Tham số tác vụ',                checked: false, type: 'text'   },
@@ -65,7 +65,8 @@ export const DEFAULT_TASK_FIELDS: ToolbarField[] = [
   styleUrls: ['./page-toolbar.scss'],
 })
 export class PageToolbarComponent {
-  @Input() title = '';
+  @Input() pageTitle = '';
+  @HostBinding('attr.title') hostTitle = null;
   
   private _showRoleDropdown = true;
   @Input() set showRoleDropdown(value: boolean) {

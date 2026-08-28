@@ -1,6 +1,6 @@
 <header class="tasks-toolbar">
     <nav class="toolbar-left" aria-label="Toolbar Primary">
-        <h1 class="toolbar-title m-0 text-base font-normal">{{ title }}</h1>
+        <h1 class="toolbar-title m-0 text-base font-normal">{{ pageTitle }}</h1>
         <div class="btn-create-group" role="group" aria-label="Create Actions" *ngIf="canCreate">
             <button class="btn-create-main" type="button" (click)="openCreateModal(); $event.stopPropagation()">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
