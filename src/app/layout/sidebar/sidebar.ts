@@ -36,7 +36,7 @@ export class SidebarComponent {
   expandedMenuIds = new Set<string>();
 
   /** Trạng thái thu gọn (chỉ hiện icon) */
-  isCollapsed = true;
+  isCollapsed = false;
 
   /** Trạng thái hover mở rộng tạm thời khi sidebar đang thu gọn */
   isHoverExpanded = false;
@@ -125,6 +125,6 @@ export class SidebarComponent {
 
   /** Xác định xem menu item có đang bị ẩn bởi nút Thu gọn không */
   isHidden(item: MenuItem): boolean {
-    return this.isOtherItemsHidden && item.id !== 'tasks-projects' && item.id !== 'show-all' && item.id !== 'settings';
+    return this.isOtherItemsHidden && item.id !== 'tasks-projects' && item.id !== 'collaboration' && item.id !== 'show-all' && item.id !== 'settings';
   }
 }
