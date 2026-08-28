@@ -76,10 +76,10 @@
             <label class="field-label">Hạn chót:</label>
             <div class="field-value">
               <div class="due-date-container">
-                <div class="relative inline-flex items-center">
+                <div class="due-date-wrapper">
                   <button
                     type="button"
-                    class="due-date-badge group"
+                    class="due-date-badge"
                     [class.has-date]="!!selectedDate"
                     (click)="toggleDatePicker($event)"
                     aria-label="Chọn hạn chót"

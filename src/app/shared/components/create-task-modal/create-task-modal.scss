@@ -208,6 +208,18 @@
   gap: 8px;
 }
 
+.due-date-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  &:hover {
+    .clear-date-btn {
+      display: flex;
+    }
+  }
+}
+
 .due-date-badge {
   display: inline-flex;
   align-items: center;
@@ -242,12 +254,13 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: #64748b;
-  color: #ffffff;
+  background: #ffffff;
+  color: #000000;
   display: none;
   align-items: center;
   justify-content: center;
-  border: 1.5px solid #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
   cursor: pointer;
   z-index: 10;
 
@@ -256,11 +269,13 @@
     width: 10px !important;
     height: 10px !important;
     line-height: 10px !important;
+    color: #000000;
   }
-}
 
-.relative:hover .clear-date-btn {
-  display: flex;
+  &:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+  }
 }
 
 .tune-btn {
