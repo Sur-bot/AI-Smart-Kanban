@@ -286,8 +286,15 @@ export class CreateTaskModalComponent implements OnInit {
     }
   }
 
+  clearDueDate(event: Event): void {
+    event.stopPropagation();
+    this.selectedDate = null;
+    this.form.patchValue({ dueDate: null });
+    this.isDatePickerOpen = false;
+  }
+
   get formattedDueDate(): string {
-    if (!this.selectedDate) return 'Chọn thời hạn...';
+    if (!this.selectedDate) return 'Không có hạn chót';
     const day = this.selectedDate.getDate();
     const month = this.selectedDate.getMonth() + 1;
     let hours = this.selectedDate.getHours();
@@ -328,6 +335,13 @@ export class CreateTaskModalComponent implements OnInit {
       projectId: this.taskStore.currentProjectId() || undefined,
     });
     this.onClose();
+  }
+
+  @HostListener('document:click')
+  onDocumentClick(): void {
+    if (this.isDatePickerOpen) {
+      this.isDatePickerOpen = false;
+    }
   }
 
   @HostListener('keydown.escape')

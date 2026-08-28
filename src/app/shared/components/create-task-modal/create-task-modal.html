@@ -27,7 +27,6 @@
               type="button"
               class="icon-btn fire-btn"
               [class.active]="isHighPriority"
-              title="Ưu tiên cao"
               aria-label="Đánh dấu ưu tiên cao"
               (click)="toggleHighPriority()"
             >
@@ -36,7 +35,6 @@
             <button
               type="button"
               class="icon-btn close-btn"
-              title="Đóng"
               aria-label="Đóng"
               (click)="onClose()"
             >
@@ -77,16 +75,41 @@
           <div class="field-row relative">
             <label class="field-label">Hạn chót:</label>
             <div class="field-value">
-              <button
-                type="button"
-                class="due-date-badge"
-                [class.has-date]="!!selectedDate"
-                (click)="toggleDatePicker($event)"
-                aria-label="Chọn hạn chót"
-              >
-                <mat-icon fontSet="material-icons-outlined" class="calendar-icon">calendar_today</mat-icon>
-                <span class="due-date-text">{{ formattedDueDate }}</span>
-              </button>
+              <div class="due-date-container">
+                <div class="relative inline-flex items-center">
+                  <button
+                    type="button"
+                    class="due-date-badge group"
+                    [class.has-date]="!!selectedDate"
+                    (click)="toggleDatePicker($event)"
+                    aria-label="Chọn hạn chót"
+                  >
+                    <mat-icon fontSet="material-icons-outlined" class="calendar-icon">calendar_today</mat-icon>
+                    <span class="due-date-text">{{ formattedDueDate }}</span>
+                  </button>
+
+                  <!-- Nút Xóa ngày ✕ xuất hiện khi hover và có ngày -->
+                  <button
+                    *ngIf="selectedDate"
+                    type="button"
+                    class="clear-date-btn"
+                    (click)="clearDueDate($event)"
+                    aria-label="Xóa hạn chót"
+                  >
+                    <mat-icon fontSet="material-icons-outlined">close</mat-icon>
+                  </button>
+                </div>
+
+                <!-- Nút Tune (Cài đặt thời hạn) -->
+                <button
+                  type="button"
+                  class="tune-btn"
+                  (click)="toggleDatePicker($event)"
+                  aria-label="Tùy chỉnh thời hạn"
+                >
+                  <mat-icon fontSet="material-icons-outlined">tune</mat-icon>
+                </button>
+              </div>
 
               <!-- ── DatePicker Popover 2 Cột (Ảnh 3) ── -->
               @if (isDatePickerOpen) {
@@ -167,15 +190,15 @@
 
         <!-- ── Action Chips ───────────────────────── -->
         <section class="dialog-chips" aria-label="Tùy chọn bổ sung">
-          <button type="button" class="chip-btn" title="Tập tin" aria-label="Đính kèm tập tin">
+          <button type="button" class="chip-btn" aria-label="Đính kèm tập tin">
             <mat-icon fontSet="material-icons-outlined" class="chip-icon">attach_file</mat-icon>
             <span>Tập tin</span>
           </button>
-          <button type="button" class="chip-btn" title="Danh sách kiểm tra" aria-label="Thêm danh sách kiểm tra">
+          <button type="button" class="chip-btn" aria-label="Thêm danh sách kiểm tra">
             <mat-icon fontSet="material-icons-outlined" class="chip-icon">checklist</mat-icon>
             <span>Danh sách kiểm tra</span>
           </button>
-          <button type="button" class="chip-btn" title="Dự án" aria-label="Chọn dự án">
+          <button type="button" class="chip-btn" aria-label="Chọn dự án">
             <mat-icon fontSet="material-icons-outlined" class="chip-icon">folder_open</mat-icon>
             <span>Dự án</span>
           </button>
