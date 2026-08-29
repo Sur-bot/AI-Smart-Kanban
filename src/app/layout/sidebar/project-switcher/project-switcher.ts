@@ -1,4 +1,4 @@
-import { Component, inject, HostListener, Input } from '@angular/core';
+import { Component, inject, HostListener, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { TaskStore } from '../../../core/state/task.store';
@@ -14,9 +14,15 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './project-switcher.html',
   styleUrls: ['./project-switcher.scss'],
 })
-export class ProjectSwitcherComponent {
+export class ProjectSwitcherComponent implements OnInit {
   taskStore = inject(TaskStore);
   private dialog = inject(MatDialog);
+
+  ngOnInit() {
+    if (this.taskStore.projects().length === 0) {
+      this.taskStore.loadProjects();
+    }
+  }
 
   private _isCollapsed = false;
   @Input() set isCollapsed(value: boolean) {

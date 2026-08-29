@@ -4,6 +4,7 @@ import { PageToolbarComponent, ToolbarField } from '../../../../shared/component
 import { ViewFilterBarComponent, QuickFilter } from '../../../../shared/components/page-layout/view-filter-bar/view-filter-bar';
 import { PreferencesService } from '../../../../core/services/preferences.service';
 import { AuthService } from '../../../../core/auth/auth.service';
+import { TaskStore } from '../../../../core/state/task.store';
 import { MatIconModule } from '@angular/material/icon';
 import { TaskViewMode } from '../../../../shared/models/task-list.model';
 import { TaskItem } from '../../../../core/models/task.model';
@@ -24,6 +25,7 @@ export class ProjectPageComponent implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   private preferencesService = inject(PreferencesService);
   private authService = inject(AuthService);
+  readonly taskStore = inject(TaskStore);
   private readonly CONTEXT_KEY = 'kanban_projects';
 
   tasks: TaskItem[] = [];
@@ -60,6 +62,7 @@ export class ProjectPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.taskStore.loadProjects();
     this.loadColumnState();
   }
 
