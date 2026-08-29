@@ -46,6 +46,8 @@ export class TaskStore {
   readonly currentProjectId = signal<string | null>(null);
   readonly statuses = signal<TaskStatus[]>([]);
   readonly loading = signal<boolean>(false);
+  readonly projectsLoading = signal<boolean>(true);
+  readonly isProjectsInitialized = signal<boolean>(false);
   readonly detailLoading = signal<boolean>(false);
   readonly error = signal<string | null>(null);
   readonly filter = signal<TaskFilterParams>({ role: 'all' });
@@ -162,6 +164,8 @@ export class TaskStore {
     this.selectedTask.set(null);
     this.error.set(null);
     this.loading.set(false);
+    this.projectsLoading.set(true);
+    this.isProjectsInitialized.set(false);
     this.permissionService.clear();
   }
 
@@ -177,6 +181,12 @@ export class TaskStore {
       ...customFilter,
       projectId: this.currentProjectId() || undefined
     };
+
+    if (this.projects().length === 0 && !customFilter?.projectId) {
+      this.tasks.set([]);
+      this.loading.set(false);
+      return;
+    }
 
     this.taskService.getTasks(mergedFilter).subscribe({
       next: res => {
@@ -194,15 +204,28 @@ export class TaskStore {
    * Tải danh sách dự án
    */
   loadProjects() {
+    this.projectsLoading.set(true);
     this.projectService.getProjects().subscribe({
       next: projects => {
         this.projects.set(projects);
-        if (projects.length > 0 && !this.currentProjectId()) {
-          this.setCurrentProject(projects[0].id);
+        this.projectsLoading.set(false);
+        this.isProjectsInitialized.set(true);
+
+        if (projects.length > 0) {
+          if (!this.currentProjectId() || !projects.some(p => p.id === this.currentProjectId())) {
+            this.setCurrentProject(projects[0].id);
+          }
+        } else {
+          this.currentProjectId.set(null);
+          this.tasks.set([]);
+          this.statuses.set([]);
+          this.permissionService.clear();
         }
       },
       error: err => {
         console.error('[TaskStore:loadProjects] Error:', err);
+        this.projectsLoading.set(false);
+        this.isProjectsInitialized.set(true);
       }
     });
   }
