@@ -1,25 +1,53 @@
 <main class="tasks-page" role="main">
 
-  <app-page-toolbar pageTitle="Tác vụ của tôi" [canCreate]="permissionService.can('task.create')" />
+  <!-- Trạng thái 1: Chưa có dự án nào (Empty State) -->
+  <section
+    *ngIf="taskStore.projects().length === 0 && !taskStore.loading()"
+    class="flex flex-col items-center justify-center min-h-[480px] p-8 m-6 text-center bg-white dark:bg-slate-900 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 shadow-sm"
+    aria-labelledby="empty-project-heading"
+  >
+    <figure class="w-16 h-16 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-4 shadow-inner" aria-hidden="true">
+      <mat-icon fontSet="material-icons-outlined" class="text-3xl">folder_off</mat-icon>
+    </figure>
+    <h2 id="empty-project-heading" class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">
+      Bạn chưa tham gia dự án nào
+    </h2>
+    <p class="text-sm text-slate-500 dark:text-slate-400 max-w-md mb-6 leading-relaxed">
+      Hãy tạo dự án mới để bắt đầu quản lý tác vụ và cộng tác cùng các thành viên trong nhóm, hoặc chờ quản trị viên gửi lời mời tham gia.
+    </p>
+    <button
+      type="button"
+      (click)="openCreateProject()"
+      class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-medium text-sm shadow-md shadow-indigo-500/20 transition-all duration-200"
+    >
+      <mat-icon fontSet="material-icons-outlined">add</mat-icon>
+      <span>Tạo dự án mới</span>
+    </button>
+  </section>
 
-  <app-view-filter-bar
-    [viewTabs]="viewTabs"
-    [quickFilters]="quickFilters"
-    [activeView]="activeView"
-    (viewChange)="onViewChange($event)" />
+  <!-- Trạng thái 2: Đã có dự án -->
+  <ng-container *ngIf="taskStore.projects().length > 0">
+    <app-page-toolbar pageTitle="Tác vụ của tôi" [canCreate]="permissionService.can('task.create')" />
 
-  <app-data-table
-    *ngIf="activeView === 'list'"
-    [tasks]="tasks"
-    (taskSelected)="openTaskDetail($event)" />
+    <app-view-filter-bar
+      [viewTabs]="viewTabs"
+      [quickFilters]="quickFilters"
+      [activeView]="activeView"
+      (viewChange)="onViewChange($event)" />
 
-  <app-deadline *ngIf="activeView === 'deadline'" (taskSelected)="openTaskDetail($event)" />
+    <app-data-table
+      *ngIf="activeView === 'list'"
+      [tasks]="tasks"
+      (taskSelected)="openTaskDetail($event)" />
 
-  <app-task-detail-modal
-    *ngIf="selectedTask || taskStore.selectedTask()"
-    [task]="selectedTask || taskStore.selectedTask()"
-    (close)="closeTaskDetail()">
-  </app-task-detail-modal>
+    <app-deadline *ngIf="activeView === 'deadline'" (taskSelected)="openTaskDetail($event)" />
+
+    <app-task-detail-modal
+      *ngIf="selectedTask || taskStore.selectedTask()"
+      [task]="selectedTask || taskStore.selectedTask()"
+      (close)="closeTaskDetail()">
+    </app-task-detail-modal>
+  </ng-container>
 
 </main>
 

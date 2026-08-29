@@ -178,6 +178,12 @@ export class TaskStore {
       projectId: this.currentProjectId() || undefined
     };
 
+    if (this.projects().length === 0 && !customFilter?.projectId) {
+      this.tasks.set([]);
+      this.loading.set(false);
+      return;
+    }
+
     this.taskService.getTasks(mergedFilter).subscribe({
       next: res => {
         this.tasks.set(res.tasks);
@@ -197,8 +203,15 @@ export class TaskStore {
     this.projectService.getProjects().subscribe({
       next: projects => {
         this.projects.set(projects);
-        if (projects.length > 0 && !this.currentProjectId()) {
-          this.setCurrentProject(projects[0].id);
+        if (projects.length > 0) {
+          if (!this.currentProjectId() || !projects.some(p => p.id === this.currentProjectId())) {
+            this.setCurrentProject(projects[0].id);
+          }
+        } else {
+          this.currentProjectId.set(null);
+          this.tasks.set([]);
+          this.statuses.set([]);
+          this.permissionService.clear();
         }
       },
       error: err => {

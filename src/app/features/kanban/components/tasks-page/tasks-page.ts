@@ -1,10 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIcon } from '@angular/material/icon';
 import { PageToolbarComponent } from '../../../../shared/components/page-layout/page-toolbar/page-toolbar';
 import { ViewFilterBarComponent, QuickFilter } from '../../../../shared/components/page-layout/view-filter-bar/view-filter-bar';
 import { DataTableComponent } from '../../../../shared/components/page-layout/data-table/data-table';
 import { DeadlineComponent } from './deadline/deadline';
 import { TaskDetailModalComponent } from '../task-detail-modal/task-detail-modal';
+import { CreateProjectModalComponent } from '../create-project-modal/create-project-modal';
 import { TaskViewMode, ViewTab } from '../../../../shared/models/task-list.model';
 import { TaskItem } from '../../../../core/models/task.model';
 import { TaskStore } from '../../../../core/state/task.store';
@@ -15,6 +18,7 @@ import { PermissionService } from '../../../../core/services/permission.service'
   standalone: true,
   imports: [
     CommonModule,
+    MatIcon,
     PageToolbarComponent,
     ViewFilterBarComponent,
     DataTableComponent,
@@ -25,6 +29,7 @@ import { PermissionService } from '../../../../core/services/permission.service'
   styleUrls: ['./tasks-page.scss'],
 })
 export class TasksPageComponent implements OnInit {
+  private readonly dialog = inject(MatDialog);
   readonly taskStore = inject(TaskStore);
   readonly permissionService = inject(PermissionService);
 
@@ -61,6 +66,17 @@ export class TasksPageComponent implements OnInit {
   openTaskDetail(task: TaskItem) {
     this.selectedTask = task;
     this.taskStore.selectTask(task.id);
+  }
+
+  openCreateProject() {
+    this.dialog.open(CreateProjectModalComponent, {
+      panelClass: 'custom-dialog-container',
+      backdropClass: 'custom-backdrop',
+      autoFocus: false,
+      restoreFocus: true,
+      hasBackdrop: true,
+      disableClose: false,
+    });
   }
 
   closeTaskDetail() {
