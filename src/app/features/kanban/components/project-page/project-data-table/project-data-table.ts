@@ -161,7 +161,7 @@ export class ProjectDataTableComponent {
     if (project.owner_id === this.currentUserId) {
       return { label: 'Chủ sở hữu', className: 'bg-amber-50 text-amber-700 border-amber-200' };
     }
-    const member = (project as any).project_members?.find((m: any) => m.user_id === this.currentUserId);
+    const member = project.project_members?.find(m => m.user_id === this.currentUserId);
     if (member) {
       switch (member.role) {
         case 'admin': return { label: 'Quản trị viên', className: 'bg-purple-50 text-purple-700 border-purple-200' };
@@ -187,13 +187,11 @@ export class ProjectDataTableComponent {
   }
 
   getVisibleMembers(project: Project, max: number = 4): any[] {
-    const members = (project as any).project_members || [];
-    return members.slice(0, max);
+    return project.project_members?.slice(0, max) || [];
   }
 
   getRemainingMembersCount(project: Project, max: number = 4): number {
-    const members = (project as any).project_members || [];
-    return Math.max(0, members.length - max);
+    return Math.max(0, (project.project_members?.length || 0) - max);
   }
 
   onColumnDrop(event: CdkDragDrop<ProjectTableColumn[]>) {
