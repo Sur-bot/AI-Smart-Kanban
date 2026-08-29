@@ -8,6 +8,7 @@ import { DataTableComponent } from '../../../../shared/components/page-layout/da
 import { DeadlineComponent } from './deadline/deadline';
 import { TaskDetailModalComponent } from '../task-detail-modal/task-detail-modal';
 import { CreateProjectModalComponent } from '../create-project-modal/create-project-modal';
+import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner';
 import { TaskViewMode, ViewTab } from '../../../../shared/models/task-list.model';
 import { TaskItem } from '../../../../core/models/task.model';
 import { TaskStore } from '../../../../core/state/task.store';
@@ -19,6 +20,7 @@ import { PermissionService } from '../../../../core/services/permission.service'
   imports: [
     CommonModule,
     MatIcon,
+    LoadingSpinnerComponent,
     PageToolbarComponent,
     ViewFilterBarComponent,
     DataTableComponent,
