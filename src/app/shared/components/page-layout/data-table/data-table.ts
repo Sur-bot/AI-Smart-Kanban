@@ -135,9 +135,24 @@ export class DataTableComponent {
     if (isNaN(date.getTime())) return dateStr;
     const day = date.getDate();
     const month = date.getMonth() + 1;
-    const hours = date.getHours().toString().padStart(2, '0');
+    let hours = date.getHours();
     const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${day} Thg ${month}, ${hours}:${minutes}`;
+    const ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    const formattedHours = hours.toString().padStart(2, '0');
+    return `${day} Thg ${month}, ${formattedHours}:${minutes} ${ampm}`;
+  }
+
+  getInitials(name?: string): string {
+    if (!name) return 'U';
+    const parts = name.trim().split(' ');
+    if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+
+  getAssignee(task: TaskItem): any {
+    return task.assignee || (task.assignees && task.assignees[0]) || null;
   }
 
   onColumnDrop(event: CdkDragDrop<TableColumn[]>) {

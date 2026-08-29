@@ -1,0 +1,343 @@
+<section class="projects-table-wrapper" aria-label="Bảng danh sách dự án">
+
+  <!-- Table Container (Co giãn tự động theo số lượng dự án) -->
+  <div class="table-container custom-scrollbar">
+
+    <!-- Table Header -->
+    <header class="table-header">
+      <div class="table-row header-row">
+
+        <!-- Cột 1: Cố định Checkbox all + Cài đặt -->
+        <div class="table-cell cell-settings">
+          <input
+            type="checkbox"
+            [checked]="isAllSelected"
+            [indeterminate]="isIndeterminate"
+            (change)="toggleSelectAll($any($event.target).checked)"
+            class="project-checkbox"
+            aria-label="Chọn tất cả dự án"
+          />
+          <button type="button" class="btn-icon" title="Cài đặt cột" aria-label="Cài đặt cột">
+            <mat-icon class="icon-center text-[16px]">settings</mat-icon>
+          </button>
+        </div>
+
+        <!-- Cột 2: Cố định cột TÊN (Không thể kéo thả, có thể resize) -->
+        <div
+          class="table-cell header-col-cell header-fixed-name"
+          [style.width.px]="nameColumn.width"
+          [style.min-width.px]="nameColumn.width"
+          [style.max-width.px]="nameColumn.width"
+        >
+          <div class="col-static-handle">
+            <span class="col-label">{{ nameColumn.label }}</span>
+            <mat-icon class="sort-arrow">expand_more</mat-icon>
+          </div>
+          <!-- Splitter điều chỉnh độ rộng cột Tên -->
+          <div class="col-splitter" (mousedown)="startResize($event, nameColumn)"></div>
+        </div>
+
+        <!-- Các cột kéo thả sắp xếp thứ tự (Angular CDK) -->
+        <div
+          class="draggable-header-list flex items-center"
+          cdkDropList
+          cdkDropListOrientation="horizontal"
+          (cdkDropListDropped)="onColumnDrop($event)"
+        >
+          <div
+            *ngFor="let col of draggableColumns"
+            class="table-cell header-col-cell"
+            cdkDrag
+            [style.width.px]="col.width"
+            [style.min-width.px]="col.width"
+            [style.max-width.px]="col.width"
+          >
+            <div class="col-drag-handle" cdkDragHandle>
+              <span class="col-label">{{ col.label }}</span>
+              <mat-icon *ngIf="col.hasDropdown || col.sortable" class="sort-arrow">
+                expand_more
+              </mat-icon>
+            </div>
+
+            <!-- Splitter điều chỉnh độ rộng cột -->
+            <div class="col-splitter" (mousedown)="startResize($event, col)"></div>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Table Body -->
+    <div class="table-body">
+      <div *ngIf="projects.length > 0" class="table-rows">
+        <article
+          *ngFor="let project of projects"
+          class="table-row data-row group"
+          [class.row-selected]="isRowSelected(project)"
+          (click)="toggleRowSelection(project, $event)"
+        >
+          <!-- Cột Checkbox & Menu Icon của dòng -->
+          <div class="table-cell cell-settings" (click)="$event.stopPropagation()">
+            <input
+              type="checkbox"
+              [checked]="isRowSelected(project)"
+              (change)="toggleRowSelection(project)"
+              class="project-checkbox"
+              aria-label="Chọn dự án"
+            />
+            <button type="button" class="btn-icon" aria-label="Menu dự án">
+              <mat-icon class="icon-center text-[16px] text-slate-400 cursor-grab">menu</mat-icon>
+            </button>
+          </div>
+
+          <!-- Nội dung từng cột (Đồng bộ thứ tự theo allColumns) -->
+          <ng-container *ngFor="let col of allColumns">
+
+            <!-- Tên dự án (Chỉ hiển thị tên, không hiển thị figure) -->
+            <div
+              *ngIf="col.id === 'name'"
+              class="table-cell cell-name"
+              [style.width.px]="col.width"
+              [style.min-width.px]="col.width"
+              [style.max-width.px]="col.width"
+            >
+              <span
+                class="project-title-link truncate font-medium text-slate-900 hover:text-blue-600 hover:underline cursor-pointer"
+                (click)="onTitleClick(project, $event)"
+                [title]="project.name"
+              >
+                {{ project.name }}
+              </span>
+              <button
+                type="button"
+                class="btn-edit-project opacity-0 group-hover:opacity-100 transition-opacity ml-1.5 shrink-0"
+                (click)="onEditClick(project, $event)"
+                title="Chỉnh sửa dự án"
+                aria-label="Chỉnh sửa dự án"
+              >
+                <mat-icon class="icon-center text-[14px]">edit</mat-icon>
+              </button>
+            </div>
+
+            <!-- Mã định danh ID -->
+            <div
+              *ngIf="col.id === 'id'"
+              class="table-cell cell-id"
+              [style.width.px]="col.width"
+              [style.min-width.px]="col.width"
+              [style.max-width.px]="col.width"
+            >
+              <span class="font-mono text-xs text-slate-500 truncate" [title]="project.id">
+                #{{ project.id.substring(0, 8) }}
+              </span>
+            </div>
+
+            <!-- Hoạt động (Định dạng am/pm) -->
+            <div
+              *ngIf="col.id === 'activity'"
+              class="table-cell cell-activity"
+              [style.width.px]="col.width"
+              [style.min-width.px]="col.width"
+              [style.max-width.px]="col.width"
+            >
+              <time class="text-slate-600 text-[13px] whitespace-nowrap">
+                {{ formatDate(project.created_at) || '5 Thg 8, 03:45 pm' }}
+              </time>
+            </div>
+
+            <!-- Performance (Dấu chấm đỏ trước số %) -->
+            <div
+              *ngIf="col.id === 'performance'"
+              class="table-cell cell-performance"
+              [style.width.px]="col.width"
+              [style.min-width.px]="col.width"
+              [style.max-width.px]="col.width"
+            >
+              <span class="inline-flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0"></span>
+                <span class="text-[13px] font-normal text-slate-700">100%</span>
+              </span>
+            </div>
+
+            <!-- Xem các thành viên (Avatars xếp chồng ngang + số dư còn lại) -->
+            <div
+              *ngIf="col.id === 'members'"
+              class="table-cell cell-members cursor-pointer"
+              [style.width.px]="col.width"
+              [style.min-width.px]="col.width"
+              [style.max-width.px]="col.width"
+              (click)="onMemberClick(project, $event)"
+              title="Xem danh sách thành viên"
+            >
+              <div class="flex items-center -space-x-1.5 overflow-hidden py-0.5">
+                <ng-container *ngFor="let m of getVisibleMembers(project)">
+                  <img
+                    *ngIf="m.user?.avatar_url"
+                    [src]="m.user.avatar_url"
+                    [alt]="m.user?.name || 'Member'"
+                    class="inline-block w-6 h-6 rounded-full ring-2 ring-white object-cover shadow-xs"
+                    [title]="m.user?.name || 'Thành viên'"
+                  />
+                  <div
+                    *ngIf="!m.user?.avatar_url"
+                    class="inline-flex items-center justify-center w-6 h-6 rounded-full ring-2 ring-white bg-slate-600 text-white text-[10px] font-bold uppercase shadow-xs select-none"
+                    [title]="m.user?.name || 'Thành viên'"
+                  >
+                    {{ getInitials(m.user?.name) }}
+                  </div>
+                </ng-container>
+
+                <!-- Vòng tròn số thành viên còn lại nếu vượt quá 4 -->
+                <div
+                  *ngIf="getRemainingMembersCount(project) > 0"
+                  class="inline-flex items-center justify-center w-6 h-6 rounded-full ring-2 ring-white bg-slate-200 text-slate-700 text-[10px] font-bold shadow-xs select-none"
+                  title="Và các thành viên khác"
+                >
+                  +{{ getRemainingMembersCount(project) }}
+                </div>
+
+                <!-- Fallback nếu chưa có thành viên -->
+                <span *ngIf="getVisibleMembers(project).length === 0" class="text-xs text-slate-400 font-normal ml-1">
+                  Chưa có
+                </span>
+              </div>
+            </div>
+
+            <!-- Vai trò (Role của user hiện tại) -->
+            <div
+              *ngIf="col.id === 'role'"
+              class="table-cell cell-role"
+              [style.width.px]="col.width"
+              [style.min-width.px]="col.width"
+              [style.max-width.px]="col.width"
+            >
+              <span
+                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold border"
+                [ngClass]="getRole(project).className"
+              >
+                {{ getRole(project).label }}
+              </span>
+            </div>
+
+            <!-- Quyền riêng tư (Chỉ hiện trạng thái text đơn giản, không border không icon) -->
+            <div
+              *ngIf="col.id === 'privacy'"
+              class="table-cell cell-privacy"
+              [style.width.px]="col.width"
+              [style.min-width.px]="col.width"
+              [style.max-width.px]="col.width"
+            >
+              <span class="text-[13px] font-normal text-slate-700">
+                {{ project.is_public ? 'Công khai' : 'Riêng tư' }}
+              </span>
+            </div>
+
+          </ng-container>
+
+        </article>
+      </div>
+
+      <!-- Trạng thái khi không có dự án nào -->
+      <section
+        *ngIf="projects.length === 0"
+        class="flex flex-col items-center justify-center p-12 text-center bg-white"
+        aria-label="Chưa có dự án nào"
+      >
+        <figure class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 mb-3 m-0" aria-hidden="true">
+          <mat-icon fontSet="material-icons-outlined" class="text-3xl">folder_off</mat-icon>
+        </figure>
+        <h2 class="text-base font-bold text-slate-800 mb-1">Chưa có dự án nào</h2>
+        <p class="text-xs text-slate-500 max-w-sm m-0">Tạo dự án mới để bắt đầu quản lý công việc và cộng tác cùng nhóm của bạn.</p>
+      </section>
+    </div>
+
+  </div>
+
+  <!-- Thanh Thống kê & Phân trang (Summary Footer Bar) -->
+  <footer class="table-summary-bar">
+    <div class="summary-left">
+      <span class="summary-stat">
+        ĐÃ CHỌN: <strong>{{ selectedIds.size }} / {{ projects.length }}</strong>
+      </span>
+      <span class="summary-stat">
+        TỔNG: <button type="button" class="btn-show-total">HIỂN THỊ</button>
+      </span>
+    </div>
+
+    <div class="summary-center">
+      <span class="summary-stat">
+        TRANG: <strong>1</strong>
+      </span>
+    </div>
+
+    <div class="summary-right">
+      <span class="summary-stat">BẢN GHI:</span>
+      <div class="records-dropdown-box">
+        <select [(ngModel)]="pageSize" class="records-select" aria-label="Số bản ghi hiển thị">
+          <option *ngFor="let opt of pageSizeOptions" [value]="opt">{{ opt }}</option>
+        </select>
+        <mat-icon class="dropdown-icon">expand_more</mat-icon>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Thanh Thao tác hàng loạt (Batch Action Bottom Bar) -->
+  <section class="batch-action-bar" aria-label="Thao tác hàng loạt">
+    <div class="action-dropdown-box" [class.box-disabled]="selectedIds.size === 0">
+      <select
+        [(ngModel)]="selectedAction"
+        [disabled]="selectedIds.size === 0"
+        class="action-select"
+        aria-label="Chọn hành động hàng loạt"
+      >
+        <option value="" disabled selected>CHỌN HÀNH ĐỘNG</option>
+        <option *ngFor="let action of actionOptions" [value]="action">{{ action }}</option>
+      </select>
+      <mat-icon class="dropdown-icon">expand_more</mat-icon>
+    </div>
+
+    <button
+      type="button"
+      (click)="onApplyBatchAction()"
+      class="btn-apply"
+      [disabled]="selectedIds.size === 0"
+      [class.btn-apply-active]="selectedIds.size > 0"
+    >
+      ÁP DỤNG
+    </button>
+
+    <label class="apply-all-label">
+      <input
+        type="checkbox"
+        [checked]="applyToAll"
+        (change)="onApplyAllCheckboxClick($event)"
+        class="project-checkbox"
+      />
+      <span>DÀNH CHO TẤT CẢ</span>
+    </label>
+  </section>
+
+  <!-- Popup Modal Xác nhận "Dành cho tất cả" -->
+  <div
+    *ngIf="showApplyAllModal"
+    class="modal-backdrop-center"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-project-apply-title"
+  >
+    <div class="modal-dialog-card">
+      <p id="modal-project-apply-title" class="modal-message-text">
+        Hành động này sẽ được áp dụng cho tất cả các mục được chọn bởi bộ lọc, bao gồm các mục ở những trang khác
+      </p>
+      <div class="modal-actions-row">
+        <button type="button" class="btn-confirm-gray" (click)="confirmApplyAll()">
+          Xác nhận
+        </button>
+        <button type="button" class="btn-cancel-underline" (click)="cancelApplyAll()">
+          Hủy bỏ
+        </button>
+      </div>
+    </div>
+  </div>
+
+</section>

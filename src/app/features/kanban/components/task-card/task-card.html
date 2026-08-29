@@ -12,10 +12,10 @@
         </mat-icon>
         <h3 class="task-title truncate">{{ task.title }}</h3>
         <!-- Icon ngọn lửa đánh dấu sau tên task -->
-        <mat-icon *ngIf="task.priority === 'high'" 
+        <mat-icon *ngIf="task.priority === 'high' || task.priority === 'urgent'" 
                   class="text-orange-500 !text-[17px] !w-[17px] !h-[17px] leading-none shrink-0" 
                   fontSet="material-icons-outlined" 
-                  title="Ưu tiên cao">
+                  title="Ưu tiên cao / Khẩn cấp">
           local_fire_department
         </mat-icon>
       </div>
