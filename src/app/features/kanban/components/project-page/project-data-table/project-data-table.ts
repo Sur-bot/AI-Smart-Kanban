@@ -148,9 +148,13 @@ export class ProjectDataTableComponent {
     if (isNaN(date.getTime())) return dateStr;
     const day = date.getDate();
     const month = date.getMonth() + 1;
-    const hours = date.getHours().toString().padStart(2, '0');
+    let hours = date.getHours();
     const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${day} Thg ${month}, ${hours}:${minutes}`;
+    const ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    const formattedHours = hours.toString().padStart(2, '0');
+    return `${day} Thg ${month}, ${formattedHours}:${minutes} ${ampm}`;
   }
 
   getRole(project: Project): { label: string; className: string } {

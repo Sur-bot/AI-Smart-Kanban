@@ -93,7 +93,7 @@
           <!-- Nội dung từng cột (Đồng bộ thứ tự theo allColumns) -->
           <ng-container *ngFor="let col of allColumns">
 
-            <!-- Tên dự án (Click chuyển sang trang Tác vụ / Kanban) -->
+            <!-- Tên dự án (Chỉ hiển thị tên, không hiển thị figure) -->
             <div
               *ngIf="col.id === 'name'"
               class="table-cell cell-name"
@@ -101,13 +101,6 @@
               [style.min-width.px]="col.width"
               [style.max-width.px]="col.width"
             >
-              <figure
-                class="w-6 h-6 rounded-lg flex items-center justify-center text-white text-[11px] font-bold shrink-0 mr-2.5 shadow-sm m-0"
-                [style.background-color]="project.color || '#3b82f6'"
-                aria-hidden="true"
-              >
-                {{ getInitials(project.name) }}
-              </figure>
               <span
                 class="project-title-link truncate font-medium text-slate-900 hover:text-blue-600 hover:underline cursor-pointer"
                 (click)="onTitleClick(project, $event)"
@@ -139,7 +132,7 @@
               </span>
             </div>
 
-            <!-- Hoạt động (Activity / Ngày tạo) -->
+            <!-- Hoạt động (Định dạng am/pm) -->
             <div
               *ngIf="col.id === 'activity'"
               class="table-cell cell-activity"
@@ -148,11 +141,11 @@
               [style.max-width.px]="col.width"
             >
               <time class="text-slate-600 text-[13px] whitespace-nowrap">
-                {{ formatDate(project.created_at) || '5 Thg 8, 15:45' }}
+                {{ formatDate(project.created_at) || '5 Thg 8, 03:45 pm' }}
               </time>
             </div>
 
-            <!-- Performance / Trạng thái -->
+            <!-- Performance (Chỉ hiển thị số %) -->
             <div
               *ngIf="col.id === 'performance'"
               class="table-cell cell-performance"
@@ -160,10 +153,7 @@
               [style.min-width.px]="col.width"
               [style.max-width.px]="col.width"
             >
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[12px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                100% Hoạt động
-              </span>
+              <span class="text-[13px] font-normal text-slate-700">100%</span>
             </div>
 
             <!-- Xem các thành viên -->
@@ -202,7 +192,7 @@
               </span>
             </div>
 
-            <!-- Quyền riêng tư (Privacy) -->
+            <!-- Quyền riêng tư (Chỉ hiện trạng thái text đơn giản, không border không icon) -->
             <div
               *ngIf="col.id === 'privacy'"
               class="table-cell cell-privacy"
@@ -210,12 +200,8 @@
               [style.min-width.px]="col.width"
               [style.max-width.px]="col.width"
             >
-              <span
-                class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-medium border"
-                [ngClass]="getPrivacy(project).className"
-              >
-                <mat-icon class="text-[13px] w-3 h-3 leading-none">{{ getPrivacy(project).icon }}</mat-icon>
-                {{ getPrivacy(project).label }}
+              <span class="text-[13px] font-normal text-slate-700">
+                {{ project.is_public ? 'Công khai' : 'Riêng tư' }}
               </span>
             </div>
 
