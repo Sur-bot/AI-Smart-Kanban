@@ -95,8 +95,9 @@
               <span class="task-title-link" (click)="onTitleClick(task, $event)">
                 {{ task.title }}
               </span>
+              <mat-icon class="icon-center text-[16px] text-amber-500 ml-1.5 shrink-0" title="Tác vụ">local_fire_department</mat-icon>
               <button type="button" 
-                      class="btn-edit-task opacity-0 group-hover:opacity-100 transition-opacity ml-1.5" 
+                      class="btn-edit-task opacity-0 group-hover:opacity-100 transition-opacity ml-1 shrink-0" 
                       (click)="onTitleClick(task, $event)" 
                       title="Chỉnh sửa tác vụ"
                       aria-label="Chỉnh sửa tác vụ">
@@ -111,7 +112,7 @@
                  [style.min-width.px]="col.width"
                  [style.max-width.px]="col.width">
               <time class="text-slate-600 text-[13px] whitespace-nowrap">
-                {{ formatDate(task.updatedAt || task.createdAt) || '5 Thg 8, 15:45' }}
+                {{ formatDate(task.updatedAt || task.createdAt) || '5 Thg 8, 03:45 pm' }}
               </time>
             </div>
 
@@ -122,7 +123,7 @@
                  [style.min-width.px]="col.width"
                  [style.max-width.px]="col.width">
               <span class="due-badge">
-                {{ formatDate(task.dueDate) || '12 Thg 8, 19:00' }}
+                {{ formatDate(task.dueDate) || '12 Thg 8, 07:00 pm' }}
               </span>
             </div>
 
@@ -132,8 +133,13 @@
                  [style.width.px]="col.width" 
                  [style.min-width.px]="col.width"
                  [style.max-width.px]="col.width">
-              <figure class="user-avatar-circle bg-slate-700">
-                <mat-icon class="icon-center text-[13px]">person</mat-icon>
+              <img *ngIf="task.creator?.avatar_url" 
+                   [src]="task.creator.avatar_url" 
+                   [alt]="task.creator?.name || 'User'" 
+                   class="w-5 h-5 rounded-full object-cover shrink-0 shadow-sm" />
+              <figure *ngIf="!task.creator?.avatar_url" class="user-avatar-circle bg-slate-700">
+                <span *ngIf="task.creator?.name" class="text-[10px] font-semibold uppercase leading-none">{{ getInitials(task.creator.name) }}</span>
+                <mat-icon *ngIf="!task.creator?.name" class="icon-center text-[13px]">person</mat-icon>
               </figure>
               <span class="user-name-text">{{ task.creator?.name || 'Văn Anh Nguyễn' }}</span>
             </div>
@@ -144,10 +150,15 @@
                  [style.width.px]="col.width" 
                  [style.min-width.px]="col.width"
                  [style.max-width.px]="col.width">
-              <figure class="user-avatar-circle bg-slate-500">
-                <mat-icon class="icon-center text-[13px]">person</mat-icon>
+              <img *ngIf="getAssignee(task)?.avatar_url" 
+                   [src]="getAssignee(task).avatar_url" 
+                   [alt]="getAssignee(task)?.name || 'Assignee'" 
+                   class="w-5 h-5 rounded-full object-cover shrink-0 shadow-sm" />
+              <figure *ngIf="!getAssignee(task)?.avatar_url" class="user-avatar-circle bg-slate-500">
+                <span *ngIf="getAssignee(task)?.name" class="text-[10px] font-semibold uppercase leading-none">{{ getInitials(getAssignee(task).name) }}</span>
+                <mat-icon *ngIf="!getAssignee(task)?.name" class="icon-center text-[13px]">person</mat-icon>
               </figure>
-              <span class="user-name-text font-normal text-slate-800">{{ task.assignee?.name || (task.assignees && task.assignees[0]?.name) || 'Văn Anh Nguyễn' }}</span>
+              <span class="user-name-text font-normal text-slate-800">{{ getAssignee(task)?.name || (task.assignees && task.assignees[0]?.name) || 'Văn Anh Nguyễn' }}</span>
             </div>
 
             <!-- Dự án (Hiện nút + khi hover) -->

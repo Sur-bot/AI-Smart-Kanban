@@ -186,6 +186,16 @@ export class ProjectDataTableComponent {
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
   }
 
+  getVisibleMembers(project: Project, max: number = 4): any[] {
+    const members = (project as any).project_members || [];
+    return members.slice(0, max);
+  }
+
+  getRemainingMembersCount(project: Project, max: number = 4): number {
+    const members = (project as any).project_members || [];
+    return Math.max(0, members.length - max);
+  }
+
   onColumnDrop(event: CdkDragDrop<ProjectTableColumn[]>) {
     moveItemInArray(this.draggableColumns, event.previousIndex, event.currentIndex);
   }
