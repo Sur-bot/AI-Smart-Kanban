@@ -39,11 +39,13 @@ export class DeadlineComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.taskStore.loadProjects();
-    this.taskStore.loadTasks();
+    // Luồng dữ liệu được điều phối từ TaskStore và TasksPageComponent
   }
 
   isEmpty(): boolean {
+    if (this.taskStore.loading() || this.taskStore.projectsLoading() || !this.taskStore.isProjectsInitialized()) {
+      return false;
+    }
     const noTasks = this.columns.every(col => col.tasks.length === 0);
     return noTasks && !this.activeQuickTaskCol;
   }

@@ -62,7 +62,9 @@ export class ProjectPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.taskStore.loadProjects();
+    if (!this.taskStore.isProjectsInitialized()) {
+      this.taskStore.loadProjects();
+    }
     this.loadColumnState();
   }
 

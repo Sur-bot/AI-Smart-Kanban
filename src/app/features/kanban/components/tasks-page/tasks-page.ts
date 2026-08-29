@@ -55,8 +55,9 @@ export class TasksPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.taskStore.loadProjects();
-    this.taskStore.loadTasks();
+    if (!this.taskStore.isProjectsInitialized()) {
+      this.taskStore.loadProjects();
+    }
   }
 
   onViewChange(view: TaskViewMode) {

@@ -1,8 +1,22 @@
 <main class="tasks-page" role="main">
 
-  <!-- Trạng thái 1: Chưa có dự án nào (Empty State) -->
+  <!-- Trạng thái 1: Đang tải khởi tạo (Loading State) - Đồng bộ phong cách với modal và auth -->
   <section
-    *ngIf="taskStore.projects().length === 0 && !taskStore.loading()"
+    *ngIf="!taskStore.isProjectsInitialized() || taskStore.projectsLoading()"
+    class="flex flex-col items-center justify-center min-h-[480px] p-8 m-6 text-center"
+    aria-live="polite"
+    aria-label="Đang tải không gian làm việc"
+  >
+    <figure class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-3 shadow-inner" aria-hidden="true">
+      <mat-icon fontSet="material-icons-outlined" class="animate-spin text-2xl">autorenew</mat-icon>
+    </figure>
+    <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200 m-0">Đang tải không gian làm việc...</h2>
+    <p class="text-xs text-slate-400 dark:text-slate-500 mt-1 mb-0">Vui lòng chờ trong giây lát</p>
+  </section>
+
+  <!-- Trạng thái 2: Chưa có dự án nào (Chỉ hiển thị khi ĐÃ TẢI XONG và danh sách rỗng) -->
+  <section
+    *ngIf="taskStore.isProjectsInitialized() && !taskStore.projectsLoading() && taskStore.projects().length === 0"
     class="flex flex-col items-center justify-center min-h-[480px] p-8 m-6 text-center bg-white dark:bg-slate-900 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 shadow-sm"
     aria-labelledby="empty-project-heading"
   >
@@ -25,8 +39,8 @@
     </button>
   </section>
 
-  <!-- Trạng thái 2: Đã có dự án -->
-  <ng-container *ngIf="taskStore.projects().length > 0">
+  <!-- Trạng thái 3: Đã có dự án -->
+  <ng-container *ngIf="taskStore.isProjectsInitialized() && !taskStore.projectsLoading() && taskStore.projects().length > 0">
     <app-page-toolbar pageTitle="Tác vụ của tôi" [canCreate]="permissionService.can('task.create')" />
 
     <app-view-filter-bar
