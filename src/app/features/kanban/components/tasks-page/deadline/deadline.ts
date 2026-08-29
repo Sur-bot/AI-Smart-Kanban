@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, inject, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { CdkDropList, CdkDrag, CdkDropListGroup, CdkDragDrop, CdkDragEnter, CdkDragExit, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
@@ -25,7 +25,7 @@ import { PermissionService } from '../../../../../core/services/permission.servi
   templateUrl: './deadline.html',
   styleUrls: ['./deadline.scss'],
 })
-export class DeadlineComponent implements OnInit {
+export class DeadlineComponent {
   readonly taskStore = inject(TaskStore);
   readonly permissionService = inject(PermissionService);
 
@@ -36,10 +36,6 @@ export class DeadlineComponent implements OnInit {
 
   get columns() {
     return this.taskStore.deadlineColumns();
-  }
-
-  ngOnInit() {
-    // Luồng dữ liệu được điều phối từ TaskStore và TasksPageComponent
   }
 
   isEmpty(): boolean {
