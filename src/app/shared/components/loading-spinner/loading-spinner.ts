@@ -10,9 +10,9 @@ export type SpinnerColor = 'white' | 'indigo' | 'slate' | 'primary';
   imports: [CommonModule],
   template: `
     <section
-      class="flex items-center justify-center select-none"
-      [class.min-h-[480px]]="fullHeight()"
-      [class.w-full]="fullHeight()"
+      class="flex flex-1 items-center justify-center w-full select-none"
+      [class.min-h-[calc(100vh-140px)]]="fullHeight()"
+      [class.h-full]="fullHeight()"
       role="status"
       [attr.aria-label]="ariaLabel()"
     >
@@ -23,9 +23,19 @@ export type SpinnerColor = 'white' | 'indigo' | 'slate' | 'primary';
       <span class="sr-only">{{ ariaLabel() }}</span>
     </section>
   `,
+  styles: [`
+    :host {
+      display: flex;
+      flex: 1;
+      height: 100%;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+    }
+  `]
 })
 export class LoadingSpinnerComponent {
-  /** Kích thước vòng xoay: 'sm' (nhỏ), 'md' (vừa), 'lg' (lớn), 'xl' (rất lớn) */
+  /** Kích thước vòng xoay: 'sm' (24px), 'md' (48px), 'lg' (80px), 'xl' (112px) */
   size = input<SpinnerSize>('lg');
 
   /** Màu sắc: 'white' (mặc định), 'indigo', 'slate', 'primary' */
@@ -40,10 +50,10 @@ export class LoadingSpinnerComponent {
   get sizeClasses(): string {
     switch (this.size()) {
       case 'sm': return 'w-6 h-6 border-2';
-      case 'md': return 'w-10 h-10 border-[3px]';
-      case 'xl': return 'w-20 h-20 border-[4px]';
+      case 'md': return 'w-12 h-12 border-[3px]';
+      case 'xl': return 'w-28 h-28 border-[5.5px]';
       case 'lg':
-      default: return 'w-14 h-14 border-[3.5px]';
+      default: return 'w-20 h-20 border-[4.5px]';
     }
   }
 
@@ -57,3 +67,4 @@ export class LoadingSpinnerComponent {
     }
   }
 }
+
