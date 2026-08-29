@@ -1,17 +1,15 @@
 <main class="tasks-page" role="main">
 
-  <!-- Trạng thái 1: Đang tải khởi tạo (Loading State) - Đồng bộ phong cách với modal và auth -->
+  <!-- Trạng thái 1: Đang tải khởi tạo (Loading State) - Dark Card với vòng tròn màu trắng theo mẫu thiết kế -->
   <section
     *ngIf="!taskStore.isProjectsInitialized() || taskStore.projectsLoading()"
-    class="flex flex-col items-center justify-center min-h-[480px] p-8 m-6 text-center"
+    class="flex-1 flex items-center justify-center min-h-[480px] w-full p-6 select-none"
     aria-live="polite"
-    aria-label="Đang tải không gian làm việc"
+    aria-label="Đang tải dữ liệu"
   >
-    <figure class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-3 shadow-inner" aria-hidden="true">
-      <mat-icon fontSet="material-icons-outlined" class="animate-spin text-2xl">autorenew</mat-icon>
+    <figure class="flex items-center justify-center w-52 h-40 rounded-3xl bg-[#18191f]/90 dark:bg-[#111215]/95 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/50 m-0" aria-hidden="true">
+      <div class="w-14 h-14 rounded-full border-[3.5px] border-white/15 border-t-white animate-spin"></div>
     </figure>
-    <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200 m-0">Đang tải không gian làm việc...</h2>
-    <p class="text-xs text-slate-400 dark:text-slate-500 mt-1 mb-0">Vui lòng chờ trong giây lát</p>
   </section>
 
   <!-- Trạng thái 2: Chưa có dự án nào (Chỉ hiển thị khi ĐÃ TẢI XONG và danh sách rỗng) -->
