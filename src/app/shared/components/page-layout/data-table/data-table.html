@@ -95,7 +95,7 @@
               <span class="task-title-link" (click)="onTitleClick(task, $event)">
                 {{ task.title }}
               </span>
-              <mat-icon class="icon-center text-[16px] text-amber-500 ml-1.5 shrink-0" title="Tác vụ">local_fire_department</mat-icon>
+              <mat-icon *ngIf="task.priority === 'high' || task.priority === 'urgent'" class="icon-center text-[16px] text-amber-500 ml-1.5 shrink-0" title="Ưu tiên cao / Khẩn cấp">local_fire_department</mat-icon>
               <button type="button" 
                       class="btn-edit-task opacity-0 group-hover:opacity-100 transition-opacity ml-1 shrink-0" 
                       (click)="onTitleClick(task, $event)" 
