@@ -30,7 +30,7 @@
 
   <!-- Trạng thái 3: Đã có dự án -->
   <ng-container *ngIf="taskStore.isProjectsInitialized() && !taskStore.projectsLoading() && taskStore.projects().length > 0">
-    <app-page-toolbar pageTitle="Tác vụ của tôi" [canCreate]="permissionService.can('task.create')" />
+    <app-page-toolbar [pageTitle]="pageTitle" [canCreate]="permissionService.can('task.create')" />
 
     <app-view-filter-bar
       [viewTabs]="viewTabs"

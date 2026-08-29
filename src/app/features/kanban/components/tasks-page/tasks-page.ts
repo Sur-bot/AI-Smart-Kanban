@@ -59,6 +59,11 @@ export class TasksPageComponent implements OnInit {
     return this.taskStore.tasks() as any;
   }
 
+  get pageTitle(): string {
+    const project = this.taskStore.currentProject();
+    return project?.name || 'Tác vụ của tôi';
+  }
+
   ngOnInit() {
     if (!this.taskStore.isProjectsInitialized()) {
       this.taskStore.loadProjects();

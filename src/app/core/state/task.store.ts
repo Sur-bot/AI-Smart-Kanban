@@ -54,6 +54,10 @@ export class TaskStore {
 
   // ─── Computed Selectors ───────────────────────────────
   readonly totalTasks = computed(() => this.tasks().length);
+  readonly currentProject = computed(() => {
+    const id = this.currentProjectId();
+    return this.projects().find(p => p.id === id) || null;
+  });
 
   /**
    * Gom nhóm tác vụ theo Cột Hạn chót (Deadline View)
