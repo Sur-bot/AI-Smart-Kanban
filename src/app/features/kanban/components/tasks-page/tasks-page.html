@@ -1,15 +1,15 @@
 <main class="tasks-page" role="main">
 
-  <!-- Trạng thái 1: Đang tải khởi tạo (Loading State) - Dark Card với vòng tròn màu trắng theo mẫu thiết kế -->
+  <!-- Trạng thái 1: Đang tải khởi tạo (Loading State) - Spinner vòng tròn màu trắng tinh gọn -->
   <section
     *ngIf="!taskStore.isProjectsInitialized() || taskStore.projectsLoading()"
     class="flex-1 flex items-center justify-center min-h-[480px] w-full p-6 select-none"
     aria-live="polite"
     aria-label="Đang tải dữ liệu"
   >
-    <figure class="flex items-center justify-center w-52 h-40 rounded-3xl bg-[#18191f]/90 dark:bg-[#111215]/95 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/50 m-0" aria-hidden="true">
-      <div class="w-14 h-14 rounded-full border-[3.5px] border-white/15 border-t-white animate-spin"></div>
-    </figure>
+    <div class="w-14 h-14 rounded-full border-[3.5px] border-white/20 border-t-white animate-spin" role="status">
+      <span class="sr-only">Đang tải...</span>
+    </div>
   </section>
 
   <!-- Trạng thái 2: Chưa có dự án nào (Chỉ hiển thị khi ĐÃ TẢI XONG và danh sách rỗng) -->
