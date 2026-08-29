@@ -1,13 +1,18 @@
-import { Component, ChangeDetectorRef, inject, OnInit, effect } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import { MatDialog } from '@angular/material/dialog';
 import { PageToolbarComponent, ToolbarField } from '../../../../shared/components/page-layout/page-toolbar/page-toolbar';
 import { ViewFilterBarComponent, QuickFilter } from '../../../../shared/components/page-layout/view-filter-bar/view-filter-bar';
-import { PreferencesService } from '../../../../core/services/preferences.service';
+import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner';
+import { ProjectDataTableComponent } from './project-data-table/project-data-table';
+import { MemberManagementModalComponent } from '../member-management-modal/member-management-modal';
+import { CreateProjectModalComponent } from '../create-project-modal/create-project-modal';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { TaskStore } from '../../../../core/state/task.store';
-import { MatIconModule } from '@angular/material/icon';
+import { Project } from '../../../../core/models/task.model';
 import { TaskViewMode } from '../../../../shared/models/task-list.model';
-import { TaskItem } from '../../../../core/models/task.model';
 
 @Component({
   selector: 'app-project-page',
@@ -16,73 +21,30 @@ import { TaskItem } from '../../../../core/models/task.model';
     CommonModule,
     PageToolbarComponent,
     ViewFilterBarComponent,
-    MatIconModule,
+    LoadingSpinnerComponent,
+    ProjectDataTableComponent,
   ],
   templateUrl: './project-page.html',
   styleUrls: ['./project-page.scss'],
 })
 export class ProjectPageComponent implements OnInit {
-  private cdr = inject(ChangeDetectorRef);
-  private preferencesService = inject(PreferencesService);
+  private router = inject(Router);
+  private dialog = inject(MatDialog);
   private authService = inject(AuthService);
+  private titleService = inject(Title);
   readonly taskStore = inject(TaskStore);
-  private readonly CONTEXT_KEY = 'kanban_projects';
 
-  tasks: TaskItem[] = [];
   activeView: TaskViewMode = 'list';
 
-  projectColumns = [
-    { id: 'id', label: 'ID', width: 60 },
-    { id: 'name', label: 'Tên', width: 280 },
-    { id: 'activity', label: 'Hoạt động', width: 150 },
-    { id: 'performance', label: 'Performance', width: 120 },
-    { id: 'members', label: 'Xem các thành viên', width: 180 },
-    { id: 'role', label: 'Vai trò', width: 120 },
-    { id: 'privacy', label: 'Quyền riêng tư', width: 150 },
-  ];
-
-  private resizingCol: any = null;
-  private startX: number = 0;
-  private startWidth: number = 0;
+  get currentUserId(): string | null {
+    return this.authService.user()?.id || null;
+  }
 
   quickFilters: QuickFilter[] = [
     { id: 'overdue', label: 'Quá hạn', icon: 'clock', count: 0, isActive: false },
     { id: 'comments', label: 'Bình luận', icon: 'comment', count: 0, isActive: false },
     { id: 'markallread', label: 'Đánh dấu đã đọc tất cả', icon: 'eye', count: 0, isActive: false },
   ];
-
-  constructor() {
-    effect(() => {
-      const user = this.authService.user();
-      if (user || this.authService.isGuestMode()) {
-        this.loadColumnState();
-        this.cdr.detectChanges();
-      }
-    });
-  }
-
-  ngOnInit() {
-    if (!this.taskStore.isProjectsInitialized()) {
-      this.taskStore.loadProjects();
-    }
-    this.loadColumnState();
-  }
-
-  private loadColumnState() {
-    const savedCols = this.preferencesService.getColumnWidths(this.CONTEXT_KEY);
-    if (savedCols && Array.isArray(savedCols) && savedCols.length === this.projectColumns.length) {
-      this.projectColumns.forEach(col => {
-        const savedCol = savedCols.find(c => c.id === col.id);
-        if (savedCol && savedCol.width) {
-          col.width = savedCol.width;
-        }
-      });
-    }
-  }
-
-  private saveColumnState() {
-    this.preferencesService.saveColumnWidths(this.CONTEXT_KEY, this.projectColumns);
-  }
 
   projectFields: ToolbarField[] = [
     { id: 'id', label: 'ID', checked: false, type: 'text' },
@@ -99,35 +61,75 @@ export class ProjectPageComponent implements OnInit {
     { id: 'urgent', label: 'Bao gồm các tác vụ khẩn cấp', checked: false, type: 'select' },
   ];
 
+  ngOnInit() {
+    this.titleService.setTitle('Dự án - AI Smart Kanban');
+    if (!this.taskStore.isProjectsInitialized()) {
+      this.taskStore.loadProjects();
+    }
+  }
+
   onViewChange(view: TaskViewMode) {
     this.activeView = view;
   }
 
-  startResize(event: MouseEvent, col: any) {
-    event.stopPropagation();
-    event.preventDefault();
-    this.resizingCol = col;
-    this.startX = event.clientX;
-    this.startWidth = col.width;
+  /**
+   * Khi click vào Tên dự án -> Chuyển hướng sang trang Tác vụ (Danh sách / Kanban)
+   */
+  onProjectSelect(project: Project) {
+    this.taskStore.setCurrentProject(project.id);
+    this.router.navigate(['/kanban'], { queryParams: { view: 'list' } });
+  }
 
-    const onMouseMove = (e: MouseEvent) => {
-      if (!this.resizingCol) return;
-      const diff = e.clientX - this.startX;
-      // name column needs minimum 150px, others 60px
-      const minWidth = this.resizingCol.id === 'name' ? 150 : 60;
-      this.resizingCol.width = Math.max(minWidth, this.startWidth + diff);
-      this.cdr.detectChanges();
-    };
+  /**
+   * Mở modal quản lý thành viên của dự án
+   */
+  openMemberModal(project: Project) {
+    this.taskStore.setCurrentProject(project.id);
+    this.dialog.open(MemberManagementModalComponent, {
+      width: '560px',
+      panelClass: 'custom-dialog-container',
+      autoFocus: false,
+    });
+  }
 
-    const onMouseUp = () => {
-      this.resizingCol = null;
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseup', onMouseUp);
-      this.saveColumnState();
-      this.cdr.detectChanges();
-    };
+  /**
+   * Mở modal chỉnh sửa dự án
+   */
+  openEditProject(project: Project) {
+    this.taskStore.setCurrentProject(project.id);
+    this.dialog.open(CreateProjectModalComponent, {
+      width: '500px',
+      panelClass: 'custom-dialog-container',
+      autoFocus: false,
+    });
+  }
 
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseup', onMouseUp);
+  /**
+   * Xử lý hành động hàng loạt
+   */
+  onBatchAction(event: { action: string; projectIds: string[]; applyToAll: boolean }) {
+    const { action, projectIds } = event;
+    if (projectIds.length === 0) return;
+
+    switch (action) {
+      case 'Xóa':
+        projectIds.forEach(id => this.taskStore.deleteProject(id));
+        break;
+      case 'Lưu trữ':
+        projectIds.forEach(id => this.taskStore.archiveProject(id));
+        break;
+      case 'Kích hoạt lại':
+        projectIds.forEach(id => this.taskStore.updateProject(id, { status: 'active' }));
+        break;
+      case 'Thay đổi quyền riêng tư':
+        projectIds.forEach(id => {
+          const p = this.taskStore.projects().find(item => item.id === id);
+          if (p) {
+            this.taskStore.updateProject(id, { is_public: !p.is_public });
+          }
+        });
+        break;
+    }
   }
 }
+

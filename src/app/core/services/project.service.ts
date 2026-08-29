@@ -28,9 +28,31 @@ export class ProjectService {
   }
 
   /**
+   * Cập nhật thông tin dự án
+   */
+  updateProject(projectId: string, payload: Partial<Project>): Observable<Project> {
+    return this.http.patch<Project>(`${this.apiUrl}/${projectId}`, payload, { withCredentials: true });
+  }
+
+  /**
+   * Xóa dự án
+   */
+  deleteProject(projectId: string): Observable<{ success: boolean }> {
+    return this.http.delete<{ success: boolean }>(`${this.apiUrl}/${projectId}`, { withCredentials: true });
+  }
+
+  /**
+   * Lưu trữ dự án
+   */
+  archiveProject(projectId: string): Observable<Project> {
+    return this.http.patch<Project>(`${this.apiUrl}/${projectId}/archive`, {}, { withCredentials: true });
+  }
+
+  /**
    * Lấy danh sách trạng thái của dự án
    */
   getProjectStatuses(projectId: string): Observable<TaskStatus[]> {
     return this.http.get<TaskStatus[]>(`${this.apiUrl}/${projectId}/statuses`, { withCredentials: true });
   }
 }
+

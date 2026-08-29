@@ -1,5 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
 import { PageToolbarComponent } from '../../../../shared/components/page-layout/page-toolbar/page-toolbar';
@@ -32,11 +34,25 @@ import { PermissionService } from '../../../../core/services/permission.service'
 })
 export class TasksPageComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly titleService = inject(Title);
   readonly taskStore = inject(TaskStore);
   readonly permissionService = inject(PermissionService);
 
-  activeView: TaskViewMode = 'deadline';
+  activeView: TaskViewMode = 'list';
   selectedTask: TaskItem | any = null;
+
+  constructor() {
+    effect(() => {
+      const project = this.taskStore.currentProject();
+      if (project) {
+        this.titleService.setTitle(`${project.name} - AI Smart Kanban`);
+      } else {
+        this.titleService.setTitle('Tác vụ của tôi - AI Smart Kanban');
+      }
+    });
+  }
 
   viewTabs: ViewTab[] = [
     { id: 'list', label: 'Danh sách' },
@@ -56,14 +72,32 @@ export class TasksPageComponent implements OnInit {
     return this.taskStore.tasks() as any;
   }
 
+  get pageTitle(): string {
+    const project = this.taskStore.currentProject();
+    return project?.name || 'Tác vụ của tôi';
+  }
+
   ngOnInit() {
     if (!this.taskStore.isProjectsInitialized()) {
       this.taskStore.loadProjects();
     }
+
+    this.route.queryParams.subscribe(params => {
+      if (params['view'] && ['list', 'deadline', 'planner', 'calendar', 'gantt'].includes(params['view'])) {
+        this.activeView = params['view'] as TaskViewMode;
+      } else if (!params['view']) {
+        this.activeView = 'list';
+      }
+    });
   }
 
   onViewChange(view: TaskViewMode) {
     this.activeView = view;
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { view },
+      queryParamsHandling: 'merge',
+    });
   }
 
   openTaskDetail(task: TaskItem) {
@@ -87,3 +121,4 @@ export class TasksPageComponent implements OnInit {
     this.taskStore.clearSelectedTask();
   }
 }
+

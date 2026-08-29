@@ -239,6 +239,7 @@ export interface Project {
   is_public: boolean;
   created_at: string;
   statuses?: TaskStatus[];
+  project_members?: ProjectMember[];
 }
 
 export type ProjectMemberRole = 'owner' | 'admin' | 'member' | 'viewer';

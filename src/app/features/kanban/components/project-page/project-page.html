@@ -1,41 +1,35 @@
-<section class="project-page">
+<section class="project-page" aria-label="Trang quản lý dự án">
 
-  <app-page-toolbar pageTitle="Dự án" searchContext="project" [availableFields]="projectFields" [showRoleDropdown]="false" [showCreateDropdown]="false" [showToolbarRight]="false" />
+  <app-page-toolbar
+    pageTitle="Dự án"
+    searchContext="project"
+    [availableFields]="projectFields"
+    [showRoleDropdown]="false"
+    [showCreateDropdown]="false"
+    [showToolbarRight]="false"
+  />
 
   <app-view-filter-bar
     [quickFilters]="quickFilters"
     [activeView]="activeView"
     [showMarkRead]="false"
-    (viewChange)="onViewChange($event)" />
+    (viewChange)="onViewChange($event)"
+  />
 
   <main class="project-content">
-    <div class="project-table-container custom-scrollbar">
-      <!-- Table Header -->
-      <header class="table-header">
-        <div class="col-checkbox">
-          <input type="checkbox" aria-label="Select all projects" class="project-checkbox" />
-        </div>
-        <div class="col-settings">
-          <mat-icon fontSet="material-icons-outlined">settings</mat-icon>
-        </div>
-        
-        <div *ngFor="let col of projectColumns" 
-             class="header-col-cell"
-             [style.width.px]="col.width" 
-             [style.min-width.px]="col.width"
-             [style.max-width.px]="col.width">
-             
-          <div class="col-label">{{ col.label }}</div>
-          <div class="col-splitter" (mousedown)="startResize($event, col)"></div>
-        </div>
-      </header>
+    <!-- Trạng thái 1: Đang tải khởi tạo -->
+    <app-loading-spinner *ngIf="!taskStore.isProjectsInitialized() || taskStore.projectsLoading()" />
 
-      <!-- Empty State -->
-      <div class="table-empty-state">
-        <h2 class="empty-title">Tạo một dự án</h2>
-        <p class="empty-desc">Chế độ xem này sẽ hiển thị các dự án mà bạn và đồng nghiệp đang thực hiện.</p>
-      </div>
-    </div>
+    <!-- Trạng thái 2: Hiển thị bảng danh sách dự án hoàn chỉnh -->
+    <app-project-data-table
+      *ngIf="taskStore.isProjectsInitialized() && !taskStore.projectsLoading()"
+      [projects]="taskStore.projects()"
+      [currentUserId]="currentUserId"
+      (projectSelected)="onProjectSelect($event)"
+      (memberManage)="openMemberModal($event)"
+      (projectEdit)="openEditProject($event)"
+      (batchAction)="onBatchAction($event)"
+    />
   </main>
 
-</section>
+</section>
