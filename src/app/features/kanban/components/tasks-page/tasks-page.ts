@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
 import { PageToolbarComponent } from '../../../../shared/components/page-layout/page-toolbar/page-toolbar';
@@ -32,10 +33,12 @@ import { PermissionService } from '../../../../core/services/permission.service'
 })
 export class TasksPageComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   readonly taskStore = inject(TaskStore);
   readonly permissionService = inject(PermissionService);
 
-  activeView: TaskViewMode = 'deadline';
+  activeView: TaskViewMode = 'list';
   selectedTask: TaskItem | any = null;
 
   viewTabs: ViewTab[] = [
@@ -60,10 +63,23 @@ export class TasksPageComponent implements OnInit {
     if (!this.taskStore.isProjectsInitialized()) {
       this.taskStore.loadProjects();
     }
+
+    this.route.queryParams.subscribe(params => {
+      if (params['view'] && ['list', 'deadline', 'planner', 'calendar', 'gantt'].includes(params['view'])) {
+        this.activeView = params['view'] as TaskViewMode;
+      } else if (!params['view']) {
+        this.activeView = 'list';
+      }
+    });
   }
 
   onViewChange(view: TaskViewMode) {
     this.activeView = view;
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { view },
+      queryParamsHandling: 'merge',
+    });
   }
 
   openTaskDetail(task: TaskItem) {
@@ -87,3 +103,4 @@ export class TasksPageComponent implements OnInit {
     this.taskStore.clearSelectedTask();
   }
 }
+
