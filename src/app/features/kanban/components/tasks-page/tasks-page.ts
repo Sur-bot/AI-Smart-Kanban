@@ -1,6 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
 import { PageToolbarComponent } from '../../../../shared/components/page-layout/page-toolbar/page-toolbar';
@@ -35,11 +36,23 @@ export class TasksPageComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly titleService = inject(Title);
   readonly taskStore = inject(TaskStore);
   readonly permissionService = inject(PermissionService);
 
   activeView: TaskViewMode = 'list';
   selectedTask: TaskItem | any = null;
+
+  constructor() {
+    effect(() => {
+      const project = this.taskStore.currentProject();
+      if (project) {
+        this.titleService.setTitle(`${project.name} - AI Smart Kanban`);
+      } else {
+        this.titleService.setTitle('Tác vụ của tôi - AI Smart Kanban');
+      }
+    });
+  }
 
   viewTabs: ViewTab[] = [
     { id: 'list', label: 'Danh sách' },

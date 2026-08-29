@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { PageToolbarComponent, ToolbarField } from '../../../../shared/components/page-layout/page-toolbar/page-toolbar';
 import { ViewFilterBarComponent, QuickFilter } from '../../../../shared/components/page-layout/view-filter-bar/view-filter-bar';
@@ -30,6 +31,7 @@ export class ProjectPageComponent implements OnInit {
   private router = inject(Router);
   private dialog = inject(MatDialog);
   private authService = inject(AuthService);
+  private titleService = inject(Title);
   readonly taskStore = inject(TaskStore);
 
   activeView: TaskViewMode = 'list';
@@ -60,6 +62,7 @@ export class ProjectPageComponent implements OnInit {
   ];
 
   ngOnInit() {
+    this.titleService.setTitle('Dự án - AI Smart Kanban');
     if (!this.taskStore.isProjectsInitialized()) {
       this.taskStore.loadProjects();
     }

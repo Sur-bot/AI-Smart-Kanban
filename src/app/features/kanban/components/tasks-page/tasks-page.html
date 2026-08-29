@@ -1,11 +1,11 @@
 <main class="tasks-page" role="main">
 
-  <!-- Trạng thái 1: Đang tải khởi tạo (Loading State) -->
-  <app-loading-spinner *ngIf="!taskStore.isProjectsInitialized() || taskStore.projectsLoading()" />
+  <!-- Trạng thái 1: Đang tải khởi tạo hoặc đang tải tác vụ khi đổi dự án -->
+  <app-loading-spinner *ngIf="!taskStore.isProjectsInitialized() || taskStore.projectsLoading() || taskStore.loading()" />
 
   <!-- Trạng thái 2: Chưa có dự án nào (Chỉ hiển thị khi ĐÃ TẢI XONG và danh sách rỗng) -->
   <section
-    *ngIf="taskStore.isProjectsInitialized() && !taskStore.projectsLoading() && taskStore.projects().length === 0"
+    *ngIf="taskStore.isProjectsInitialized() && !taskStore.projectsLoading() && !taskStore.loading() && taskStore.projects().length === 0"
     class="flex flex-col items-center justify-center min-h-[480px] p-8 m-6 text-center bg-white dark:bg-slate-900 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 shadow-sm"
     aria-labelledby="empty-project-heading"
   >
@@ -29,7 +29,7 @@
   </section>
 
   <!-- Trạng thái 3: Đã có dự án -->
-  <ng-container *ngIf="taskStore.isProjectsInitialized() && !taskStore.projectsLoading() && taskStore.projects().length > 0">
+  <ng-container *ngIf="taskStore.isProjectsInitialized() && !taskStore.projectsLoading() && !taskStore.loading() && taskStore.projects().length > 0">
     <app-page-toolbar [pageTitle]="pageTitle" [canCreate]="permissionService.can('task.create')" />
 
     <app-view-filter-bar
