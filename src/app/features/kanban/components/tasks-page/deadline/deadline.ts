@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, inject, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { CdkDropList, CdkDrag, CdkDropListGroup, CdkDragDrop, CdkDragEnter, CdkDragExit, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
@@ -25,7 +25,7 @@ import { PermissionService } from '../../../../../core/services/permission.servi
   templateUrl: './deadline.html',
   styleUrls: ['./deadline.scss'],
 })
-export class DeadlineComponent implements OnInit {
+export class DeadlineComponent {
   readonly taskStore = inject(TaskStore);
   readonly permissionService = inject(PermissionService);
 
@@ -38,12 +38,10 @@ export class DeadlineComponent implements OnInit {
     return this.taskStore.deadlineColumns();
   }
 
-  ngOnInit() {
-    this.taskStore.loadProjects();
-    this.taskStore.loadTasks();
-  }
-
   isEmpty(): boolean {
+    if (this.taskStore.loading() || this.taskStore.projectsLoading() || !this.taskStore.isProjectsInitialized()) {
+      return false;
+    }
     const noTasks = this.columns.every(col => col.tasks.length === 0);
     return noTasks && !this.activeQuickTaskCol;
   }
