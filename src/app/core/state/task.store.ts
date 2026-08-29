@@ -248,6 +248,72 @@ export class TaskStore {
   }
 
   /**
+   * Cập nhật dự án
+   */
+  updateProject(projectId: string, payload: Partial<Project>, callback?: (project: Project) => void) {
+    this.projectService.updateProject(projectId, payload).subscribe({
+      next: updated => {
+        this.projects.update(list => list.map(p => p.id === projectId ? { ...p, ...updated } : p));
+        if (callback) callback(updated);
+      },
+      error: err => {
+        console.error('[TaskStore:updateProject] Error:', err);
+        this.error.set(err.error?.message || 'Không thể cập nhật dự án');
+      }
+    });
+  }
+
+  /**
+   * Lưu trữ dự án
+   */
+  archiveProject(projectId: string, callback?: () => void) {
+    this.projectService.archiveProject(projectId).subscribe({
+      next: () => {
+        this.projects.update(list => list.filter(p => p.id !== projectId));
+        if (this.currentProjectId() === projectId) {
+          const remaining = this.projects();
+          if (remaining.length > 0) {
+            this.setCurrentProject(remaining[0].id);
+          } else {
+            this.currentProjectId.set(null);
+            this.tasks.set([]);
+          }
+        }
+        if (callback) callback();
+      },
+      error: err => {
+        console.error('[TaskStore:archiveProject] Error:', err);
+        this.error.set(err.error?.message || 'Không thể lưu trữ dự án');
+      }
+    });
+  }
+
+  /**
+   * Xóa dự án
+   */
+  deleteProject(projectId: string, callback?: () => void) {
+    this.projectService.deleteProject(projectId).subscribe({
+      next: () => {
+        this.projects.update(list => list.filter(p => p.id !== projectId));
+        if (this.currentProjectId() === projectId) {
+          const remaining = this.projects();
+          if (remaining.length > 0) {
+            this.setCurrentProject(remaining[0].id);
+          } else {
+            this.currentProjectId.set(null);
+            this.tasks.set([]);
+          }
+        }
+        if (callback) callback();
+      },
+      error: err => {
+        console.error('[TaskStore:deleteProject] Error:', err);
+        this.error.set(err.error?.message || 'Không thể xóa dự án');
+      }
+    });
+  }
+
+  /**
    * Đổi dự án hiện tại
    */
   setCurrentProject(projectId: string) {
