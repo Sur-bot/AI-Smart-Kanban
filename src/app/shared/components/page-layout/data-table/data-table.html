@@ -78,8 +78,10 @@
                    (change)="toggleRowSelection(task)" 
                    class="task-checkbox" 
                    aria-label="Chọn tác vụ">
-            <button type="button" class="btn-icon" aria-label="Menu tác vụ">
-              <mat-icon class="icon-center text-[16px] text-slate-400 cursor-grab">menu</mat-icon>
+            <button type="button" class="btn-icon cursor-grab" aria-label="Menu tác vụ" title="Menu tác vụ">
+              <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.5 4H13.5M2.5 8H13.5M2.5 12H13.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
             </button>
           </div>
 
@@ -96,12 +98,23 @@
                 {{ task.title }}
               </span>
               <mat-icon *ngIf="task.priority === 'high' || task.priority === 'urgent'" class="icon-center text-[16px] text-amber-500 ml-1.5 shrink-0" title="Ưu tiên cao / Khẩn cấp">local_fire_department</mat-icon>
+              
+              <!-- Biểu tượng Ghim (Pin): Nghiêng khi hover, khi click đổi sang đứng dọc và ghim lên đầu -->
               <button type="button" 
-                      class="btn-edit-task opacity-0 group-hover:opacity-100 transition-opacity ml-1 shrink-0" 
-                      (click)="onTitleClick(task, $event)" 
-                      title="Chỉnh sửa tác vụ"
-                      aria-label="Chỉnh sửa tác vụ">
-                <mat-icon class="icon-center text-[14px]">edit</mat-icon>
+                      class="btn-pin-task ml-1.5 shrink-0 transition-all" 
+                      [class.pinned]="isTaskPinned(task)"
+                      [class.opacity-0]="!isTaskPinned(task)"
+                      [class.group-hover:opacity-100]="!isTaskPinned(task)"
+                      (click)="togglePinTask(task, $event)" 
+                      [title]="isTaskPinned(task) ? 'Bỏ ghim tác vụ' : 'Ghim tác vụ lên đầu'"
+                      [attr.aria-label]="isTaskPinned(task) ? 'Bỏ ghim tác vụ' : 'Ghim tác vụ lên đầu'">
+                <mat-icon class="icon-center text-[15px]" 
+                          [class.-rotate-45]="!isTaskPinned(task)" 
+                          [class.text-slate-400]="!isTaskPinned(task)"
+                          [class.text-blue-600]="isTaskPinned(task)"
+                          [class.rotate-0]="isTaskPinned(task)">
+                  push_pin
+                </mat-icon>
               </button>
             </div>
 
@@ -133,11 +146,11 @@
                  [style.width.px]="col.width" 
                  [style.min-width.px]="col.width"
                  [style.max-width.px]="col.width">
-              <img *ngIf="task.creator?.avatar_url" 
-                   [src]="task.creator.avatar_url" 
+              <img *ngIf="getCreatorAvatar(task)" 
+                   [src]="getCreatorAvatar(task)" 
                    [alt]="task.creator?.name || 'User'" 
                    class="w-5 h-5 rounded-full object-cover shrink-0 shadow-sm" />
-              <figure *ngIf="!task.creator?.avatar_url" class="user-avatar-circle bg-slate-700">
+              <figure *ngIf="!getCreatorAvatar(task)" class="user-avatar-circle bg-slate-700">
                 <span *ngIf="task.creator?.name" class="text-[10px] font-semibold uppercase leading-none">{{ getInitials(task.creator.name) }}</span>
                 <mat-icon *ngIf="!task.creator?.name" class="icon-center text-[13px]">person</mat-icon>
               </figure>
@@ -150,18 +163,18 @@
                  [style.width.px]="col.width" 
                  [style.min-width.px]="col.width"
                  [style.max-width.px]="col.width">
-              <img *ngIf="getAssignee(task)?.avatar_url" 
-                   [src]="getAssignee(task).avatar_url" 
+              <img *ngIf="getAssigneeAvatar(task)" 
+                   [src]="getAssigneeAvatar(task)" 
                    [alt]="getAssignee(task)?.name || 'Assignee'" 
                    class="w-5 h-5 rounded-full object-cover shrink-0 shadow-sm" />
-              <figure *ngIf="!getAssignee(task)?.avatar_url" class="user-avatar-circle bg-slate-500">
+              <figure *ngIf="!getAssigneeAvatar(task)" class="user-avatar-circle bg-slate-500">
                 <span *ngIf="getAssignee(task)?.name" class="text-[10px] font-semibold uppercase leading-none">{{ getInitials(getAssignee(task).name) }}</span>
                 <mat-icon *ngIf="!getAssignee(task)?.name" class="icon-center text-[13px]">person</mat-icon>
               </figure>
               <span class="user-name-text font-normal text-slate-800">{{ getAssignee(task)?.name || (task.assignees && task.assignees[0]?.name) || 'Văn Anh Nguyễn' }}</span>
             </div>
 
-            <!-- Dự án (Hiện nút + khi hover) -->
+            <!-- Dự án (Nút hình oval nằm ngang) -->
             <div *ngIf="col.id === 'project'" 
                  class="table-cell cell-project" 
                  [style.width.px]="col.width" 
@@ -170,10 +183,10 @@
                  (click)="$event.stopPropagation()">
               <button *ngIf="permissionService.can('task.update')"
                       type="button" 
-                      class="quick-add-btn opacity-0 group-hover:opacity-100 transition-opacity" 
+                      class="project-add-oval-btn opacity-0 group-hover:opacity-100 transition-opacity" 
                       title="Thêm dự án"
                       aria-label="Thêm dự án">
-                <mat-icon class="icon-center text-[14px]">add</mat-icon>
+                <mat-icon class="icon-center text-[13px] leading-none">add</mat-icon>
               </button>
             </div>
 
@@ -208,7 +221,7 @@
   <footer class="table-summary-bar">
     <div class="summary-left">
       <span class="summary-stat">
-        ĐÃ CHỌN: <strong>{{ selectedIds.size }} / {{ tasks.length }}</strong>
+        ĐÃ CHỌN: <span class="stat-value">{{ selectedIds.size }} / {{ tasks.length }}</span>
       </span>
       <span class="summary-stat">
         TỔNG: <button type="button" class="btn-show-total">HIỂN THỊ</button>
@@ -217,7 +230,7 @@
 
     <div class="summary-center">
       <span class="summary-stat">
-        TRANG: <strong>1</strong>
+        TRANG: <span class="stat-value">1</span>
       </span>
     </div>
 

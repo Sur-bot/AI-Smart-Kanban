@@ -25,7 +25,18 @@ export class DataTableComponent {
   private cdr = inject(ChangeDetectorRef);
   readonly permissionService = inject(PermissionService);
 
-  @Input() tasks: TaskItem[] = [];
+  private _tasks: TaskItem[] = [];
+  pinnedTaskIds = new Set<string>();
+
+  @Input()
+  set tasks(val: TaskItem[]) {
+    this._tasks = val ? [...val] : [];
+    this.sortTasks();
+  }
+  get tasks(): TaskItem[] {
+    return this._tasks;
+  }
+
   @Output() taskSelected = new EventEmitter<TaskItem>();
 
   selectedIds = new Set<string>();
@@ -144,6 +155,35 @@ export class DataTableComponent {
     return `${day} Thg ${month}, ${formattedHours}:${minutes} ${ampm}`;
   }
 
+  togglePinTask(task: TaskItem, event: MouseEvent) {
+    event.stopPropagation();
+    if (this.pinnedTaskIds.has(task.id)) {
+      this.pinnedTaskIds.delete(task.id);
+      task.isPinned = false;
+    } else {
+      this.pinnedTaskIds.add(task.id);
+      task.isPinned = true;
+    }
+    this.sortTasks();
+    this.cdr.detectChanges();
+  }
+
+  isTaskPinned(task: TaskItem): boolean {
+    return this.pinnedTaskIds.has(task.id) || !!task.isPinned;
+  }
+
+  private sortTasks() {
+    if (!this._tasks || this._tasks.length === 0) return;
+    this._tasks.sort((a, b) => {
+      const aPinned = this.isTaskPinned(a) ? 1 : 0;
+      const bPinned = this.isTaskPinned(b) ? 1 : 0;
+      if (aPinned !== bPinned) {
+        return bPinned - aPinned;
+      }
+      return 0;
+    });
+  }
+
   getInitials(name?: string): string {
     if (!name) return 'U';
     const parts = name.trim().split(' ');
@@ -153,6 +193,20 @@ export class DataTableComponent {
 
   getAssignee(task: TaskItem): any {
     return task.assignee || (task.assignees && task.assignees[0]) || null;
+  }
+
+  getAssigneeAvatar(task: TaskItem): string | null {
+    const assignee = this.getAssignee(task);
+    if (assignee?.avatar_url) return assignee.avatar_url;
+    if (assignee?.avatar) return assignee.avatar;
+    if (task.creator?.avatar_url && (task.assigneeId === task.creatorId || !task.assigneeId || assignee?.name === task.creator?.name || assignee?.id === task.creator?.id)) {
+      return task.creator.avatar_url;
+    }
+    return null;
+  }
+
+  getCreatorAvatar(task: TaskItem): string | null {
+    return task.creator?.avatar_url || (task.creator as any)?.avatar || null;
   }
 
   onColumnDrop(event: CdkDragDrop<TableColumn[]>) {
