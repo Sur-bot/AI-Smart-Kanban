@@ -1,0 +1,289 @@
+:host {
+  display: inline-flex;
+  position: relative;
+  font-family: inherit;
+}
+
+.due-date-container {
+  @apply relative flex items-center;
+}
+
+.due-date-wrapper {
+  @apply relative inline-flex items-center;
+
+  &:hover {
+    .clear-date-btn {
+      @apply flex;
+    }
+  }
+}
+
+.due-date-badge {
+  @apply inline-flex items-center gap-1.5 py-0.5 px-2.5 rounded-full bg-[#f0f7ff] border border-sky-300/80 text-[#007aff] text-[12px] font-normal cursor-pointer transition-colors duration-150 hover:bg-blue-100/70 whitespace-nowrap select-none;
+
+  .calendar-icon {
+    @apply text-[13px] w-3.5 h-3.5 leading-none text-[#007aff];
+  }
+
+  .due-date-text {
+    @apply text-[#007aff];
+  }
+
+  &:hover {
+    @apply text-[#007aff];
+
+    .calendar-icon,
+    .due-date-text {
+      @apply text-[#007aff];
+    }
+  }
+
+  &.due-date-overdue {
+    @apply bg-red-50/80 border-red-400 text-red-600 hover:bg-red-100/70;
+
+    .calendar-icon,
+    .due-date-text {
+      @apply text-red-600;
+    }
+
+    &:hover {
+      @apply text-red-600;
+
+      .calendar-icon,
+      .due-date-text {
+        @apply text-red-600;
+      }
+    }
+  }
+}
+
+.due-date-empty-oval-btn {
+  @apply inline-flex items-center gap-1.5 py-0.5 px-2.5 rounded-full border border-dashed border-slate-300 text-slate-400 bg-slate-50/50 hover:bg-slate-100 hover:border-slate-400 hover:text-black text-[12px] font-normal transition-all cursor-pointer select-none whitespace-nowrap;
+
+  .calendar-icon {
+    @apply text-[13px] w-3.5 h-3.5 leading-none text-slate-400 transition-colors;
+  }
+
+  &:hover .calendar-icon {
+    @apply text-black;
+  }
+}
+
+.clear-date-btn {
+  @apply absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-white text-black hidden items-center justify-center border border-slate-300 shadow-sm cursor-pointer z-10 hover:bg-slate-100;
+
+  mat-icon {
+    @apply text-[9px] w-2.5 h-2.5 leading-[9px] text-black;
+  }
+}
+
+.tune-btn {
+  @apply flex items-center justify-center w-[26px] h-[26px] ml-1.5 rounded-full bg-[#f0f7ff] border-none text-[#007aff] cursor-pointer transition-colors duration-150 hover:bg-blue-100/70;
+
+  mat-icon {
+    @apply text-[15px] w-3.5 h-3.5 leading-none;
+  }
+}
+
+/* ===== Datepicker Popover ===== */
+.datepicker-popover {
+  @apply flex gap-4 bg-white rounded-[18px] p-4 shadow-[0_16px_40px_rgba(0,0,0,0.18),0_0_1px_rgba(0,0,0,0.15)] border border-slate-100 w-[470px] select-none text-left;
+}
+
+/* ===== Calendar View ===== */
+.calendar-pane {
+  @apply flex-1 flex flex-col;
+}
+
+.calendar-nav {
+  @apply relative flex items-center justify-between mb-3 min-h-[26px];
+
+  .calendar-title-group {
+    @apply flex items-center justify-center gap-1 flex-1;
+  }
+
+  .nav-title-btn {
+    @apply text-[13.5px] font-semibold text-slate-800 px-1 py-0.5 border-none bg-transparent cursor-pointer transition-colors duration-150 select-none;
+
+    &:hover {
+      color: #007AFF !important;
+      background-color: transparent !important;
+    }
+  }
+
+  .nav-btn {
+    @apply flex items-center justify-center w-[26px] h-[26px] rounded-md border-none bg-transparent cursor-pointer text-slate-500 transition-colors duration-150 hover:bg-slate-100 hover:text-slate-900 shrink-0;
+
+    mat-icon {
+      @apply text-[18px] w-[18px] h-[18px] leading-[18px];
+    }
+  }
+}
+
+.weekdays-grid {
+  @apply grid grid-cols-7 text-center text-[11.5px] font-semibold text-slate-400 mb-1.5;
+}
+
+.days-grid {
+  @apply grid grid-cols-7 gap-0.5 text-center;
+}
+
+.day-cell {
+  @apply flex items-center justify-center w-7 h-7 mx-auto rounded-full border-none bg-transparent text-[12.5px] text-slate-700 cursor-pointer transition-colors duration-100 hover:bg-slate-100;
+
+  &.weekend {
+    @apply text-[#f43f5e];
+  }
+
+  &.other-month {
+    @apply text-slate-300 opacity-60;
+  }
+
+  &.selected {
+    @apply text-white font-bold bg-[#00a2ff] !important;
+  }
+
+  &.today:not(.selected) {
+    @apply text-[#007aff] font-bold;
+  }
+}
+
+.time-picker-row {
+  @apply flex items-center mt-3 pt-2.5 border-t border-slate-100;
+}
+
+.time-trigger-btn {
+  @apply inline-flex items-center justify-center gap-1.5 px-3 py-1 rounded-full bg-[#e0f2fe] text-slate-700 hover:bg-[#bae6fd] text-[12.5px] font-medium cursor-pointer transition-all border-none select-none;
+
+  .time-icon {
+    @apply text-[15px] w-4 h-4 leading-none text-[#00a2ff];
+  }
+
+  .time-display {
+    @apply text-slate-700 text-[12.5px] font-normal;
+  }
+}
+
+/* ===== Month & Year Selection Views ===== */
+.month-select-pane,
+.year-select-pane {
+  @apply flex-1 flex flex-col justify-between;
+}
+
+.decade-title {
+  @apply flex-1 text-center text-[13.5px] font-semibold text-slate-800;
+}
+
+.selection-grid-container {
+  @apply flex-1 flex flex-col justify-between select-none py-3 gap-3;
+}
+
+.selection-row {
+  @apply grid grid-cols-3 gap-3 text-center items-center flex-1;
+}
+
+.selection-cell-btn {
+  @apply w-full h-9 py-1.5 px-2 rounded-xl border-none bg-transparent text-[13px] text-slate-700 cursor-pointer transition-all duration-100 hover:bg-slate-100 font-normal flex items-center justify-center whitespace-nowrap;
+
+  &.selected {
+    @apply bg-[#00a2ff] text-white font-semibold rounded-2xl shadow-sm !important;
+  }
+
+  &.is-today-highlight {
+    @apply text-[#00a2ff] font-semibold;
+  }
+}
+
+/* ===== Time View (Giao diện chọn Giờ / Phút) ===== */
+.time-pane {
+  @apply flex-1 flex flex-col;
+}
+
+.time-nav {
+  @apply relative flex items-center justify-center mb-2 min-h-[26px] w-full;
+
+  .nav-btn {
+    @apply absolute left-0 top-1/2 -translate-y-1/2 flex items-center justify-center w-[26px] h-[26px] rounded-md border-none bg-transparent cursor-pointer text-slate-500 transition-colors duration-150 hover:bg-slate-100 hover:text-slate-900;
+
+    mat-icon {
+      @apply text-[18px] w-[18px] h-[18px] leading-[18px];
+    }
+  }
+
+  .time-header-title {
+    @apply text-[13.5px] font-semibold text-slate-800 text-center w-full;
+  }
+}
+
+.time-columns-header {
+  @apply flex items-center text-[12px] font-normal text-slate-400 mb-1.5 select-none;
+
+  .sub-label-hours {
+    @apply flex-1 text-center pl-6;
+  }
+
+  .sub-label-minutes {
+    @apply w-[76px] text-center;
+  }
+}
+
+.time-grid-container {
+  @apply flex items-stretch select-none;
+}
+
+.hours-pane {
+  @apply flex-1 flex flex-col gap-0.5;
+}
+
+.hours-row-wrapper {
+  @apply flex items-center gap-1;
+}
+
+.period-label {
+  @apply w-6 text-[10.5px] font-medium text-slate-400 uppercase tracking-tight shrink-0;
+}
+
+.period-label-empty {
+  @apply w-6 shrink-0;
+}
+
+.hours-row {
+  @apply flex-1 grid grid-cols-4 gap-0.5 text-center;
+}
+
+.time-vertical-divider {
+  @apply w-px bg-slate-100 mx-2 self-stretch;
+}
+
+.minutes-pane {
+  @apply w-[76px] flex flex-col gap-0.5;
+}
+
+.minutes-row {
+  @apply grid grid-cols-2 gap-0.5 text-center;
+}
+
+.time-cell {
+  @apply flex items-center justify-center w-7 h-7 mx-auto rounded-full border-none bg-transparent text-[12.5px] text-slate-700 cursor-pointer transition-colors duration-100 hover:bg-slate-100 font-normal;
+
+  &.selected {
+    @apply text-white font-bold bg-[#00a2ff] !important;
+  }
+}
+
+/* ===== Presets Column ===== */
+.presets-pane {
+  @apply w-[160px] flex flex-col gap-2;
+}
+
+.preset-card {
+  @apply flex flex-col p-2 px-3 rounded-xl border border-blue-500/20 bg-white text-left cursor-pointer transition-colors duration-150 hover:bg-blue-50/70 hover:border-blue-500/40;
+
+  .preset-title {
+    @apply text-[12.5px] font-semibold text-slate-800;
+  }
+
+  .preset-subtitle {
+    @apply text-[10.5px] text-slate-400 mt-0.5;
+  }
+}

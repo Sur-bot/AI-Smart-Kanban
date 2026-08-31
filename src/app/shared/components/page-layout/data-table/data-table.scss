@@ -1,6 +1,6 @@
 :host {
   @apply block w-full px-5 py-3 overflow-x-auto;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: inherit;
 }
 
 /* Global Icon Centering Reset for Data Table */
@@ -23,7 +23,7 @@ mat-icon {
 }
 
 .table-container {
-  @apply w-full overflow-x-auto bg-white rounded-t-lg border border-slate-200 shadow-sm;
+  @apply w-full overflow-x-auto bg-white rounded-xl border border-slate-200 shadow-sm;
 }
 
 /* ===== Table Header ===== */
@@ -32,28 +32,32 @@ mat-icon {
 }
 
 .header-row {
-  @apply text-slate-600 text-[12px] font-semibold select-none whitespace-nowrap;
+  @apply text-slate-600 text-[12px] font-medium select-none whitespace-nowrap border-b border-slate-200;
 
   .cell-settings {
-    @apply border-b border-slate-200 border-r-0;
+    @apply border-r border-slate-200/60;
   }
 }
 
 .header-col-cell {
-  @apply relative flex items-center justify-between px-3 py-2.5 border-b border-slate-200 transition-colors shrink-0;
+  @apply relative flex items-center justify-between px-3 py-2.5 transition-colors shrink-0 box-border;
 }
 
-/* Toàn bộ cột Người được phân công nổi bật nền xanh lam nhạt như mẫu */
-.col-assignee-highlight {
+.draggable-header-list {
+  @apply flex items-stretch self-stretch;
+}
+
+/* Toàn bộ cột đang được thực hiện Sort nổi bật nền xanh lam nhạt */
+.col-sorted-highlight {
   background-color: #f0f9ff !important;
   
   .col-label {
-    @apply text-slate-800 font-semibold;
+    @apply text-slate-800 font-medium;
   }
 }
 
 .header-fixed-name {
-  @apply bg-slate-50 font-semibold text-slate-800;
+  @apply bg-slate-50 font-medium text-slate-800;
 }
 
 .col-static-handle {
@@ -68,8 +72,20 @@ mat-icon {
   @apply truncate font-medium text-slate-700 text-[12px];
 }
 
+.btn-sort-arrow {
+  @apply inline-flex items-center justify-center p-0 border-none bg-transparent cursor-pointer shrink-0 transition-colors z-10;
+
+  &:hover .sort-arrow {
+    @apply text-slate-800;
+  }
+}
+
 .sort-arrow {
-  @apply text-[16px] w-4 h-4 text-slate-400 shrink-0 flex items-center justify-center;
+  @apply text-[16px] w-4 h-4 text-slate-400 shrink-0 flex items-center justify-center transition-colors;
+
+  &:hover {
+    @apply text-slate-700;
+  }
 }
 
 /* ===== Column Splitter Resizer (Ẩn hoàn toàn, chỉ hiện đường xám khi rê chuột vào mép) ===== */
@@ -121,6 +137,30 @@ mat-icon {
     @apply border-b border-slate-100;
   }
 
+  &.row-overdue {
+    background-color: #F4FCDE !important;
+
+    .table-cell {
+      background-color: #F4FCDE !important;
+    }
+
+    .col-sorted-highlight {
+      background-color: #e6f5c6 !important;
+    }
+
+    &:hover {
+      background-color: #ebf7ce !important;
+
+      .table-cell {
+        background-color: #ebf7ce !important;
+      }
+
+      .col-sorted-highlight {
+        background-color: #dfeebe !important;
+      }
+    }
+  }
+
   &:hover {
     @apply bg-sky-50/70;
 
@@ -128,7 +168,7 @@ mat-icon {
       @apply bg-sky-50/70;
     }
 
-    .col-assignee-highlight {
+    .col-sorted-highlight {
       background-color: #e2f2fe !important;
     }
   }
@@ -140,7 +180,7 @@ mat-icon {
       @apply bg-blue-50/80;
     }
 
-    .col-assignee-highlight {
+    .col-sorted-highlight {
       background-color: #dbeafe !important;
     }
   }
@@ -158,44 +198,49 @@ mat-icon {
 }
 
 .cell-settings {
-  @apply w-14 justify-center gap-1.5 border-r border-slate-200/60 shrink-0 flex items-center;
+  @apply w-[72px] min-w-[72px] max-w-[72px] pl-4 pr-2.5 justify-start items-center gap-2 border-r border-slate-200/60 shrink-0 flex box-border;
 }
 
 .btn-icon {
-  @apply inline-flex items-center justify-center w-5 h-5 p-0 text-slate-400 hover:text-slate-600 rounded transition-colors bg-transparent border-none cursor-pointer;
+  @apply inline-flex items-center justify-center w-6 h-6 p-0 text-slate-400 hover:text-slate-600 rounded transition-colors bg-transparent border-none cursor-pointer shrink-0;
 }
 
 .task-checkbox {
-  @apply w-4 h-4 rounded border-slate-300 bg-white cursor-pointer shrink-0 transition-colors;
-  accent-color: #0f172a;
+  appearance: none;
+  -webkit-appearance: none;
+  @apply w-4 h-4 rounded-[2px] border border-slate-600 bg-white cursor-pointer shrink-0 inline-flex items-center justify-center p-0 m-0 box-border;
+  outline: none;
+  transition: border-color 0.15s ease;
+
+  &:hover {
+    border-color: #0f172a !important;
+  }
 
   &:checked {
     background-color: #ffffff !important;
-    border-color: #0f172a !important;
-    color: #0f172a !important;
-    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%230f172a' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e") !important;
-    background-size: 100% 100% !important;
-    background-position: center !important;
+    border-color: #334155 !important;
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M3.4 8.4L6.6 11.8L13 4.6' stroke='%23000000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e") !important;
+    background-size: 13px 13px !important;
+    background-position: center center !important;
     background-repeat: no-repeat !important;
   }
 
   &:indeterminate {
     background-color: #ffffff !important;
-    border-color: #0f172a !important;
-    color: #0f172a !important;
-    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%230f172a' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M4 8h8' stroke='%230f172a' stroke-width='2' stroke-linecap='round'/%3e%3c/svg%3e") !important;
-    background-size: 100% 100% !important;
-    background-position: center !important;
+    border-color: #334155 !important;
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M2.8 8h10.4' stroke='%23000000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e") !important;
+    background-size: 13px 13px !important;
+    background-position: center center !important;
     background-repeat: no-repeat !important;
   }
 }
 
 .cell-name {
-  @apply flex items-center font-medium;
+  @apply flex items-center font-normal;
 }
 
 .task-title-link {
-  @apply text-slate-900 hover:text-blue-600 hover:underline cursor-pointer truncate font-medium;
+  @apply text-slate-800 hover:text-blue-600 hover:underline cursor-pointer truncate font-normal;
 }
 
 .btn-pin-task {
@@ -214,8 +259,9 @@ mat-icon {
   }
 }
 
-.due-badge {
-  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-medium border border-sky-400 text-sky-600 bg-sky-50/60 whitespace-nowrap;
+/* ===== Due Date Styles ===== */
+.cell-due {
+  @apply overflow-visible relative flex items-center;
 }
 
 .cell-user {
@@ -223,10 +269,10 @@ mat-icon {
 }
 
 .user-avatar-circle {
-  @apply w-5 h-5 rounded-full bg-slate-500 text-white flex items-center justify-center shrink-0 m-0 overflow-hidden shadow-sm;
+  @apply w-6 h-6 rounded-full bg-slate-500 text-white flex items-center justify-center shrink-0 m-0 overflow-hidden shadow-sm;
 
   mat-icon {
-    @apply text-[13px] w-3.5 h-3.5 leading-none flex items-center justify-center;
+    @apply text-[15px] w-4 h-4 leading-none flex items-center justify-center;
   }
 }
 
@@ -250,7 +296,7 @@ mat-icon {
 
 /* ===== Summary Bar ===== */
 .table-summary-bar {
-  @apply flex items-center justify-between px-4 py-2.5 bg-white border-x border-b border-slate-200 rounded-b-lg text-[11px] text-slate-500 tracking-normal select-none shadow-sm;
+  @apply flex items-center justify-between px-4 py-2.5 bg-white border-t border-slate-200 text-[11px] text-slate-500 tracking-normal select-none;
 }
 
 .summary-left,
@@ -260,7 +306,7 @@ mat-icon {
 }
 
 .summary-stat {
-  @apply flex items-center gap-1 font-normal uppercase text-slate-500;
+  @apply flex items-center gap-1 font-normal uppercase text-slate-500 text-[11px];
 }
 
 .stat-value {
@@ -272,7 +318,7 @@ mat-icon {
 }
 
 .records-dropdown-box {
-  @apply relative flex items-center border border-slate-300 rounded bg-white px-2.5 py-1 shadow-sm hover:border-slate-400 transition-colors;
+  @apply relative flex items-center border border-slate-200 rounded bg-white px-2 py-1 hover:border-slate-300 transition-colors;
 }
 
 .records-select {
@@ -285,35 +331,23 @@ mat-icon {
 
 /* ===== Batch Action Bottom Bar ===== */
 .batch-action-bar {
-  @apply flex items-center gap-4 mt-3 p-3.5 bg-white rounded-lg border border-slate-200 shadow-sm;
+  @apply flex items-center gap-3.5 px-4 py-2.5 bg-white border-t border-slate-200;
 }
 
 .action-dropdown-box {
-  @apply relative flex items-center border border-slate-300 rounded-md bg-white px-4 py-2 shadow-sm transition-all;
-
-  &.box-disabled {
-    @apply bg-slate-50 border-slate-200 opacity-60 pointer-events-none;
-  }
+  @apply relative flex items-center border border-slate-200 rounded-md bg-white px-3 py-1.5 hover:border-slate-300 transition-colors;
 }
 
 .action-select {
-  @apply appearance-none bg-transparent pr-7 text-[13px] font-normal text-slate-700 outline-none cursor-pointer min-w-[200px] border-none;
-
-  &:disabled {
-    @apply cursor-not-allowed text-slate-400;
-  }
+  @apply appearance-none bg-transparent pr-6 text-[12px] font-normal text-slate-600 outline-none cursor-pointer min-w-[150px] border-none;
 }
 
 .btn-apply {
-  @apply px-6 py-2 rounded-md text-[13px] font-bold uppercase tracking-wider text-slate-400 bg-sky-100 border-none transition-all cursor-not-allowed;
-
-  &.btn-apply-active {
-    @apply bg-sky-400 text-white hover:bg-sky-500 shadow-sm cursor-pointer;
-  }
+  @apply px-4 py-1.5 rounded-md text-[12px] font-semibold uppercase tracking-wider text-white bg-sky-400 hover:bg-sky-500 border-none transition-all cursor-pointer shadow-sm flex items-center justify-center;
 }
 
 .apply-all-label {
-  @apply flex items-center gap-2 text-[13px] font-normal text-slate-700 select-none cursor-pointer hover:text-slate-900;
+  @apply flex items-center gap-2 text-[12px] font-medium text-slate-600 select-none cursor-pointer hover:text-slate-900;
 }
 
 /* ===== Popup Modal Xác nhận ===== */

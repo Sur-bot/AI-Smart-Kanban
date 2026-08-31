@@ -153,6 +153,7 @@ export interface TaskItem {
   stripeColor?: string;
   badgeCount?: number;
   isPinned?: boolean;
+  projectName?: string;
 }
 
 /**

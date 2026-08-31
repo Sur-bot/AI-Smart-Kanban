@@ -20,28 +20,36 @@
           </button>
         </div>
 
-        <!-- Cột 2: Cố định cột TÊN (Không thể kéo thả, có thể resize) -->
-        <div class="table-cell header-col-cell header-fixed-name" 
+        <!-- Cột 2: Cố định cột TÊN (Không thể kéo thả, có thể resize, click để sort) -->
+        <div class="table-cell header-col-cell header-fixed-name cursor-pointer select-none" 
+             [class.col-sorted-highlight]="isColumnSorted('name')"
              [style.width.px]="nameColumn.width" 
              [style.min-width.px]="nameColumn.width"
-             [style.max-width.px]="nameColumn.width">
+             [style.max-width.px]="nameColumn.width"
+             (click)="toggleSortColumn('name', $event)">
           <div class="col-static-handle">
             <span class="col-label">{{ nameColumn.label }}</span>
-            <mat-icon class="sort-arrow">expand_more</mat-icon>
           </div>
+          <button type="button" 
+                  class="btn-sort-arrow" 
+                  (click)="toggleSortColumn('name', $event)" 
+                  (mousedown)="$event.stopPropagation()"
+                  aria-label="Sắp xếp theo Tên">
+            <mat-icon class="sort-arrow" [class.text-blue-600]="isColumnSorted('name')">{{ getSortIcon('name') }}</mat-icon>
+          </button>
           <!-- Splitter điều chỉnh độ rộng cột Tên -->
           <div class="col-splitter" (mousedown)="startResize($event, nameColumn)"></div>
         </div>
 
-        <!-- Các cột kéo thả sắp xếp thứ tự (Angular CDK) -->
-        <div class="draggable-header-list flex items-center" 
+        <!-- Các cột kéo thả sắp xếp thứ tự (Angular CDK, click mũi tên để sort) -->
+        <div class="draggable-header-list flex items-stretch self-stretch" 
              cdkDropList 
              cdkDropListOrientation="horizontal" 
              (cdkDropListDropped)="onColumnDrop($event)">
           
-          <div *ngFor="let col of draggableColumns" 
-               class="table-cell header-col-cell" 
-               [class.col-assignee-highlight]="col.id === 'assignee'"
+          <div *ngFor="let col of draggableColumns; trackBy: trackByColId" 
+               class="table-cell header-col-cell select-none" 
+               [class.col-sorted-highlight]="isColumnSorted(col.id)"
                cdkDrag 
                [style.width.px]="col.width" 
                [style.min-width.px]="col.width"
@@ -49,10 +57,18 @@
             
             <div class="col-drag-handle" cdkDragHandle>
               <span class="col-label">{{ col.label }}</span>
-              <mat-icon *ngIf="col.hasDropdown || col.sortable" class="sort-arrow">
-                {{ col.id === 'assignee' ? 'expand_less' : 'expand_more' }}
-              </mat-icon>
             </div>
+
+            <button *ngIf="col.sortable || col.hasDropdown" 
+                    type="button" 
+                    class="btn-sort-arrow" 
+                    (click)="toggleSortColumn(col.id, $event)" 
+                    (mousedown)="$event.stopPropagation()"
+                    [attr.aria-label]="'Sắp xếp theo ' + col.label">
+              <mat-icon class="sort-arrow" [class.text-blue-600]="isColumnSorted(col.id)">
+                {{ getSortIcon(col.id) }}
+              </mat-icon>
+            </button>
 
             <!-- Splitter điều chỉnh độ rộng cột (Không có tooltip, không có padding thô) -->
             <div class="col-splitter" (mousedown)="startResize($event, col)"></div>
@@ -66,21 +82,22 @@
     <!-- Table Body -->
     <div class="table-body">
       <div *ngIf="tasks.length > 0" class="table-rows">
-        <article *ngFor="let task of tasks" 
+        <article *ngFor="let task of tasks; trackBy: trackByTaskId" 
                  class="table-row data-row group" 
                  [class.row-selected]="isRowSelected(task)"
+                 [class.row-overdue]="isTaskOverdue(task)"
                  (click)="toggleRowSelection(task, $event)">
           
-          <!-- Cột Checkbox & Menu Icon của dòng -->
+          <!-- Cột Checkbox & Menu Icon của dòng (Đã bỏ tooltip) -->
           <div class="table-cell cell-settings" (click)="$event.stopPropagation()">
             <input type="checkbox" 
                    [checked]="isRowSelected(task)" 
                    (change)="toggleRowSelection(task)" 
                    class="task-checkbox" 
                    aria-label="Chọn tác vụ">
-            <button type="button" class="btn-icon cursor-grab" aria-label="Menu tác vụ" title="Menu tác vụ">
-              <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2.5 4H13.5M2.5 8H13.5M2.5 12H13.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <button type="button" class="btn-icon cursor-grab" aria-label="Menu tác vụ">
+              <svg class="w-4 h-4 text-slate-400" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.5 4H14.5M1.5 8H14.5M1.5 12H14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
             </button>
           </div>
@@ -91,6 +108,7 @@
             <!-- Tên task -->
             <div *ngIf="col.id === 'name'" 
                  class="table-cell cell-name" 
+                 [class.col-sorted-highlight]="isColumnSorted('name')"
                  [style.width.px]="col.width" 
                  [style.min-width.px]="col.width"
                  [style.max-width.px]="col.width">
@@ -121,6 +139,7 @@
             <!-- Hoạt động -->
             <div *ngIf="col.id === 'activity'" 
                  class="table-cell cell-activity" 
+                 [class.col-sorted-highlight]="isColumnSorted('activity')"
                  [style.width.px]="col.width" 
                  [style.min-width.px]="col.width"
                  [style.max-width.px]="col.width">
@@ -129,47 +148,56 @@
               </time>
             </div>
 
-            <!-- Hạn chót -->
+            <!-- Hạn chót (Due Date Picker Component) -->
             <div *ngIf="col.id === 'dueDate'" 
                  class="table-cell cell-due" 
+                 [class.col-sorted-highlight]="isColumnSorted('dueDate')"
                  [style.width.px]="col.width" 
                  [style.min-width.px]="col.width"
-                 [style.max-width.px]="col.width">
-              <span class="due-badge">
-                {{ formatDate(task.dueDate) || '12 Thg 8, 07:00 pm' }}
-              </span>
+                 [style.max-width.px]="col.width"
+                 (click)="$event.stopPropagation()">
+              <app-due-date-picker
+                [value]="task.dueDate"
+                emptyVariant="oval"
+                emptyTextKey="DUE_DATE_PICKER.NO_DUE_DATE"
+                [isOverdue]="isTaskOverdue(task)"
+                [disabled]="!permissionService.can('task.update')"
+                (valueChange)="onDueDateChange(task, $event)">
+              </app-due-date-picker>
             </div>
 
             <!-- Người tạo -->
             <div *ngIf="col.id === 'creator'" 
                  class="table-cell cell-user" 
+                 [class.col-sorted-highlight]="isColumnSorted('creator')" 
                  [style.width.px]="col.width" 
                  [style.min-width.px]="col.width"
                  [style.max-width.px]="col.width">
               <img *ngIf="getCreatorAvatar(task)" 
                    [src]="getCreatorAvatar(task)" 
                    [alt]="task.creator?.name || 'User'" 
-                   class="w-5 h-5 rounded-full object-cover shrink-0 shadow-sm" />
+                   class="w-6 h-6 rounded-full object-cover shrink-0 shadow-sm" />
               <figure *ngIf="!getCreatorAvatar(task)" class="user-avatar-circle bg-slate-700">
-                <span *ngIf="task.creator?.name" class="text-[10px] font-semibold uppercase leading-none">{{ getInitials(task.creator.name) }}</span>
-                <mat-icon *ngIf="!task.creator?.name" class="icon-center text-[13px]">person</mat-icon>
+                <span *ngIf="task.creator?.name" class="text-[11px] font-semibold uppercase leading-none">{{ getInitials(task.creator.name) }}</span>
+                <mat-icon *ngIf="!task.creator?.name" class="icon-center text-[15px]">person</mat-icon>
               </figure>
               <span class="user-name-text">{{ task.creator?.name || 'Văn Anh Nguyễn' }}</span>
             </div>
 
-            <!-- Người được phân công (Nổi bật toàn bộ cột với nền xanh nhạt + avatar theo mẫu) -->
+            <!-- Người được phân công -->
             <div *ngIf="col.id === 'assignee'" 
-                 class="table-cell cell-user col-assignee-highlight" 
+                 class="table-cell cell-user" 
+                 [class.col-sorted-highlight]="isColumnSorted('assignee')" 
                  [style.width.px]="col.width" 
                  [style.min-width.px]="col.width"
                  [style.max-width.px]="col.width">
               <img *ngIf="getAssigneeAvatar(task)" 
                    [src]="getAssigneeAvatar(task)" 
                    [alt]="getAssignee(task)?.name || 'Assignee'" 
-                   class="w-5 h-5 rounded-full object-cover shrink-0 shadow-sm" />
+                   class="w-6 h-6 rounded-full object-cover shrink-0 shadow-sm" />
               <figure *ngIf="!getAssigneeAvatar(task)" class="user-avatar-circle bg-slate-500">
-                <span *ngIf="getAssignee(task)?.name" class="text-[10px] font-semibold uppercase leading-none">{{ getInitials(getAssignee(task).name) }}</span>
-                <mat-icon *ngIf="!getAssignee(task)?.name" class="icon-center text-[13px]">person</mat-icon>
+                <span *ngIf="getAssignee(task)?.name" class="text-[11px] font-semibold uppercase leading-none">{{ getInitials(getAssignee(task).name) }}</span>
+                <mat-icon *ngIf="!getAssignee(task)?.name" class="icon-center text-[15px]">person</mat-icon>
               </figure>
               <span class="user-name-text font-normal text-slate-800">{{ getAssignee(task)?.name || (task.assignees && task.assignees[0]?.name) || 'Văn Anh Nguyễn' }}</span>
             </div>
@@ -177,6 +205,7 @@
             <!-- Dự án (Nút hình oval nằm ngang) -->
             <div *ngIf="col.id === 'project'" 
                  class="table-cell cell-project" 
+                 [class.col-sorted-highlight]="isColumnSorted('project')"
                  [style.width.px]="col.width" 
                  [style.min-width.px]="col.width"
                  [style.max-width.px]="col.width"
@@ -190,20 +219,21 @@
               </button>
             </div>
 
-            <!-- Thẻ (Hiện nút + khi hover) -->
+            <!-- Thẻ (Nút hình oval nằm ngang đồng bộ với nút Dự án) -->
             <div *ngIf="col.id === 'tags'" 
-                 class="table-cell cell-tags" 
+                 class="table-cell cell-tags flex items-center gap-1.5" 
+                 [class.col-sorted-highlight]="isColumnSorted('tags')"
                  [style.width.px]="col.width" 
-                 [style.min-width.px]="col.width"
-                 [style.max-width.px]="col.width"
+                 [style.min-width.px]="col.width" 
+                 [style.max-width.px]="col.width" 
                  (click)="$event.stopPropagation()">
               <span *ngFor="let label of task.labels" class="tag-badge">{{ label.name }}</span>
               <button *ngIf="permissionService.can('task.update')"
                       type="button" 
-                      class="quick-add-btn opacity-0 group-hover:opacity-100 transition-opacity" 
+                      class="project-add-oval-btn opacity-0 group-hover:opacity-100 transition-opacity" 
                       title="Thêm thẻ"
                       aria-label="Thêm thẻ">
-                <mat-icon class="icon-center text-[14px]">add</mat-icon>
+                <mat-icon class="icon-center text-[13px] leading-none">add</mat-icon>
               </button>
             </div>
 
@@ -215,64 +245,63 @@
       <ng-content select="[emptyState]"></ng-content>
     </div>
 
-  </div>
+    <!-- Thanh Thống kê & Phân trang (Summary Footer Bar) -->
+    <footer class="table-summary-bar">
+      <div class="summary-left">
+        <span class="summary-stat">
+          ĐÃ CHỌN: <span class="stat-value">{{ selectedIds.size }} / {{ tasks.length }}</span>
+        </span>
+        <span class="summary-stat">
+          TỔNG: <button type="button" class="btn-show-total">HIỂN THỊ</button>
+        </span>
+      </div>
 
-  <!-- Thanh Thống kê & Phân trang (Summary Footer Bar) -->
-  <footer class="table-summary-bar">
-    <div class="summary-left">
-      <span class="summary-stat">
-        ĐÃ CHỌN: <span class="stat-value">{{ selectedIds.size }} / {{ tasks.length }}</span>
-      </span>
-      <span class="summary-stat">
-        TỔNG: <button type="button" class="btn-show-total">HIỂN THỊ</button>
-      </span>
-    </div>
+      <div class="summary-center">
+        <span class="summary-stat">
+          TRANG: <span class="stat-value">1</span>
+        </span>
+      </div>
 
-    <div class="summary-center">
-      <span class="summary-stat">
-        TRANG: <span class="stat-value">1</span>
-      </span>
-    </div>
+      <div class="summary-right">
+        <span class="summary-stat">BẢN GHI:</span>
+        <div class="records-dropdown-box">
+          <select [(ngModel)]="pageSize" class="records-select" aria-label="Số bản ghi hiển thị">
+            <option *ngFor="let opt of pageSizeOptions" [value]="opt">{{ opt }}</option>
+          </select>
+          <mat-icon class="dropdown-icon">expand_more</mat-icon>
+        </div>
+      </div>
+    </footer>
 
-    <div class="summary-right">
-      <span class="summary-stat">BẢN GHI:</span>
-      <div class="records-dropdown-box">
-        <select [(ngModel)]="pageSize" class="records-select" aria-label="Số bản ghi hiển thị">
-          <option *ngFor="let opt of pageSizeOptions" [value]="opt">{{ opt }}</option>
+    <!-- Thanh Thao tác hàng loạt (Batch Action Bottom Bar) gắn liền bên dưới -->
+    <section class="batch-action-bar" aria-label="Thao tác hàng loạt">
+      <div class="action-dropdown-box">
+        <select [(ngModel)]="selectedAction" 
+                class="action-select" 
+                aria-label="Chọn hành động hàng loạt">
+          <option value="" disabled selected>CHỌN HÀNH ĐỘNG</option>
+          <option *ngFor="let action of actionOptions" [value]="action">{{ action }}</option>
         </select>
         <mat-icon class="dropdown-icon">expand_more</mat-icon>
       </div>
-    </div>
-  </footer>
 
-  <!-- Thanh Thao tác hàng loạt (Batch Action Bottom Bar) -->
-  <section class="batch-action-bar" aria-label="Thao tác hàng loạt">
-    <div class="action-dropdown-box" [class.box-disabled]="selectedIds.size === 0">
-      <select [(ngModel)]="selectedAction" 
-              [disabled]="selectedIds.size === 0" 
-              class="action-select" 
-              aria-label="Chọn hành động hàng loạt">
-        <option value="" disabled selected>CHỌN HÀNH ĐỘNG</option>
-        <option *ngFor="let action of actionOptions" [value]="action">{{ action }}</option>
-      </select>
-      <mat-icon class="dropdown-icon">expand_more</mat-icon>
-    </div>
+      <button type="button" 
+              class="btn-apply" 
+              [class.opacity-80]="selectedIds.size === 0"
+              [class.cursor-not-allowed]="selectedIds.size === 0">
+        ÁP DỤNG
+      </button>
 
-    <button type="button" 
-            class="btn-apply" 
-            [disabled]="selectedIds.size === 0" 
-            [class.btn-apply-active]="selectedIds.size > 0">
-      ÁP DỤNG
-    </button>
+      <label class="apply-all-label">
+        <input type="checkbox" 
+               [checked]="applyToAll" 
+               (change)="onApplyAllCheckboxClick($event)" 
+               class="task-checkbox">
+        <span>DÀNH CHO TẤT CẢ</span>
+      </label>
+    </section>
 
-    <label class="apply-all-label">
-      <input type="checkbox" 
-             [checked]="applyToAll" 
-             (change)="onApplyAllCheckboxClick($event)" 
-             class="task-checkbox">
-      <span>DÀNH CHO TẤT CẢ</span>
-    </label>
-  </section>
+  </div>
 
   <!-- Popup Modal Xác nhận "Dành cho tất cả" -->
   <div *ngIf="showApplyAllModal" 

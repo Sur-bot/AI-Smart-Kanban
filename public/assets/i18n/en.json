@@ -360,5 +360,38 @@
     "BTN_BACK": "Go back",
     "BTN_HOME": "Go to homepage",
     "IMG_ALT": "Lost - 404"
+  },
+  "DUE_DATE_PICKER": {
+    "NO_DUE_DATE": "No due date",
+    "SELECT_DUE_DATE": "Select due date",
+    "CLEAR_DUE_DATE": "Clear due date",
+    "CUSTOMIZE_DEADLINE": "Customize deadline",
+    "PREV_MONTH": "Previous month",
+    "NEXT_MONTH": "Next month",
+    "PREV_YEAR": "Previous year",
+    "NEXT_YEAR": "Next year",
+    "PREV_DECADE": "Previous 12 years",
+    "NEXT_DECADE": "Next 12 years",
+    "BACK_TO_CALENDAR": "Back to calendar",
+    "OPEN_TIME_PICKER": "Open time picker",
+    "HOURS": "Hours",
+    "MINUTES": "Minutes",
+    "MONTH": "Month",
+    "PRESETS": {
+      "TODAY": "Today",
+      "TOMORROW": "Tomorrow",
+      "THIS_WEEKEND": "This weekend",
+      "IN_A_WEEK": "In a week",
+      "END_OF_MONTH": "End of month"
+    },
+    "DAYS": {
+      "MON": "Mon",
+      "TUE": "Tue",
+      "WED": "Wed",
+      "THU": "Thu",
+      "FRI": "Fri",
+      "SAT": "Sat",
+      "SUN": "Sun"
+    }
   }
 }

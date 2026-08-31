@@ -5,6 +5,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TaskItem } from '../../../../core/models/task.model';
 import { PermissionService } from '../../../../core/services/permission.service';
+import { TaskStore } from '../../../../core/state/task.store';
+import { DueDatePickerComponent } from '../../due-date-picker/due-date-picker';
 
 export interface TableColumn {
   id: string;
@@ -17,13 +19,14 @@ export interface TableColumn {
 @Component({
   selector: 'app-data-table',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatIconModule, DragDropModule],
+  imports: [CommonModule, FormsModule, MatIconModule, DragDropModule, DueDatePickerComponent],
   templateUrl: './data-table.html',
   styleUrls: ['./data-table.scss'],
 })
 export class DataTableComponent {
   private cdr = inject(ChangeDetectorRef);
   readonly permissionService = inject(PermissionService);
+  readonly taskStore = inject(TaskStore);
 
   private _tasks: TaskItem[] = [];
   pinnedTaskIds = new Set<string>();
@@ -38,6 +41,7 @@ export class DataTableComponent {
   }
 
   @Output() taskSelected = new EventEmitter<TaskItem>();
+  @Output() taskUpdated = new EventEmitter<TaskItem>();
 
   selectedIds = new Set<string>();
   applyToAll: boolean = false;
@@ -45,6 +49,9 @@ export class DataTableComponent {
   selectedAction: string = '';
   pageSize: number = 50;
   readonly pageSizeOptions: number[] = [5, 10, 20, 50];
+
+  sortColumnId: string = '';
+  sortDirection: 'asc' | 'desc' | 'none' = 'none';
 
   nameColumn: TableColumn = { id: 'name', label: 'Tên', width: 280, sortable: true, hasDropdown: true };
 
@@ -54,7 +61,7 @@ export class DataTableComponent {
     { id: 'creator', label: 'Người tạo', width: 180, sortable: true },
     { id: 'assignee', label: 'Người được phân công', width: 220, sortable: true },
     { id: 'project', label: 'Dự án', width: 150, sortable: true },
-    { id: 'tags', label: 'Thẻ', width: 140, sortable: false },
+    { id: 'tags', label: 'Thẻ', width: 140, sortable: true },
   ];
 
   get allColumns(): TableColumn[] {
@@ -172,15 +179,100 @@ export class DataTableComponent {
     return this.pinnedTaskIds.has(task.id) || !!task.isPinned;
   }
 
+  toggleSortColumn(colId: string, event?: MouseEvent) {
+    if (event) event.stopPropagation();
+    if (this.sortColumnId === colId) {
+      if (this.sortDirection === 'asc') {
+        this.sortDirection = 'desc';
+      } else if (this.sortDirection === 'desc') {
+        this.sortDirection = 'none';
+        this.sortColumnId = '';
+      } else {
+        this.sortDirection = 'asc';
+      }
+    } else {
+      this.sortColumnId = colId;
+      this.sortDirection = 'asc';
+    }
+    this.sortTasks();
+    this.cdr.detectChanges();
+  }
+
+  getSortIcon(colId: string): string {
+    if (this.sortColumnId === colId) {
+      return this.sortDirection === 'asc' ? 'expand_less' : 'expand_more';
+    }
+    return 'expand_more';
+  }
+
+  isColumnSorted(colId: string): boolean {
+    return this.sortColumnId === colId && this.sortDirection !== 'none';
+  }
+
   private sortTasks() {
     if (!this._tasks || this._tasks.length === 0) return;
     this._tasks.sort((a, b) => {
+      // 1. Pinned tasks always stay at the top
       const aPinned = this.isTaskPinned(a) ? 1 : 0;
       const bPinned = this.isTaskPinned(b) ? 1 : 0;
       if (aPinned !== bPinned) {
         return bPinned - aPinned;
       }
-      return 0;
+
+      // 2. Column Sorting
+      if (!this.sortColumnId || this.sortDirection === 'none') {
+        return 0;
+      }
+
+      let comparison = 0;
+      switch (this.sortColumnId) {
+        case 'name': {
+          const nameA = (a.title || '').toLowerCase();
+          const nameB = (b.title || '').toLowerCase();
+          comparison = nameA.localeCompare(nameB, 'vi');
+          break;
+        }
+        case 'activity': {
+          const timeA = new Date(a.updatedAt || a.createdAt || 0).getTime();
+          const timeB = new Date(b.updatedAt || b.createdAt || 0).getTime();
+          comparison = timeA - timeB;
+          break;
+        }
+        case 'dueDate': {
+          const timeA = a.dueDate ? new Date(a.dueDate).getTime() : (this.sortDirection === 'asc' ? Number.MAX_SAFE_INTEGER : -1);
+          const timeB = b.dueDate ? new Date(b.dueDate).getTime() : (this.sortDirection === 'asc' ? Number.MAX_SAFE_INTEGER : -1);
+          comparison = timeA - timeB;
+          break;
+        }
+        case 'creator': {
+          const creatorA = (a.creator?.name || '').toLowerCase();
+          const creatorB = (b.creator?.name || '').toLowerCase();
+          comparison = creatorA.localeCompare(creatorB, 'vi');
+          break;
+        }
+        case 'assignee': {
+          const assigneeA = (this.getAssignee(a)?.name || '').toLowerCase();
+          const assigneeB = (this.getAssignee(b)?.name || '').toLowerCase();
+          comparison = assigneeA.localeCompare(assigneeB, 'vi');
+          break;
+        }
+        case 'project': {
+          const projA = (a.projectName || (a as any).project?.name || '').toLowerCase();
+          const projB = (b.projectName || (b as any).project?.name || '').toLowerCase();
+          comparison = projA.localeCompare(projB, 'vi');
+          break;
+        }
+        case 'tags': {
+          const countA = a.labels?.length || 0;
+          const countB = b.labels?.length || 0;
+          comparison = countA - countB;
+          break;
+        }
+        default:
+          comparison = 0;
+      }
+
+      return this.sortDirection === 'desc' ? -comparison : comparison;
     });
   }
 
@@ -207,6 +299,14 @@ export class DataTableComponent {
 
   getCreatorAvatar(task: TaskItem): string | null {
     return task.creator?.avatar_url || (task.creator as any)?.avatar || null;
+  }
+
+  trackByTaskId(index: number, task: TaskItem): string {
+    return task.id;
+  }
+
+  trackByColId(index: number, col: TableColumn): string {
+    return col.id;
   }
 
   onColumnDrop(event: CdkDragDrop<TableColumn[]>) {
@@ -236,5 +336,19 @@ export class DataTableComponent {
 
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);
+  }
+
+  onDueDateChange(task: TaskItem, newDueDate: string | null): void {
+    task.dueDate = newDueDate || undefined;
+    this.taskStore.updateTask(task.id, { dueDate: newDueDate === null ? (null as any) : newDueDate });
+    this.taskUpdated.emit(task);
+    this.cdr.detectChanges();
+  }
+
+  isTaskOverdue(task: TaskItem): boolean {
+    if (!task.dueDate || task.completedAt) return false;
+    if (task.status?.category === 'done') return false;
+    const dueTime = new Date(task.dueDate).getTime();
+    return !isNaN(dueTime) && dueTime < Date.now();
   }
 }

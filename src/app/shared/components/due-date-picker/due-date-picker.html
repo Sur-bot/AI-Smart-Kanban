@@ -1,0 +1,312 @@
+<div class="due-date-container relative" cdkOverlayOrigin #trigger="cdkOverlayOrigin" (click)="$event.stopPropagation()">
+  <div *ngIf="selectedDate" class="due-date-wrapper">
+    <button
+      type="button"
+      class="due-date-badge has-date"
+      [class.due-date-overdue]="computedIsOverdue"
+      [disabled]="disabled"
+      [class.cursor-default]="disabled"
+      (click)="togglePopover($event)"
+      [attr.aria-label]="formattedDisplay"
+    >
+      <mat-icon *ngIf="showBadgeIcon" fontSet="material-icons-outlined" class="calendar-icon">calendar_today</mat-icon>
+      <span class="due-date-text">{{ formattedDisplay }}</span>
+    </button>
+
+    <button
+      *ngIf="!disabled"
+      type="button"
+      class="clear-date-btn"
+      (click)="clearDate($event)"
+      [attr.aria-label]="'DUE_DATE_PICKER.CLEAR_DUE_DATE' | translate"
+      [title]="'DUE_DATE_PICKER.CLEAR_DUE_DATE' | translate"
+    >
+      <mat-icon fontSet="material-icons-outlined">close</mat-icon>
+    </button>
+  </div>
+
+  <ng-container *ngIf="!selectedDate">
+    <button
+      *ngIf="emptyVariant === 'oval'"
+      type="button"
+      class="due-date-empty-oval-btn"
+      [disabled]="disabled"
+      [class.cursor-default]="disabled"
+      (click)="togglePopover($event)"
+      [attr.aria-label]="emptyTextKey | translate"
+    >
+      <mat-icon *ngIf="showBadgeIcon" fontSet="material-icons-outlined" class="calendar-icon">calendar_today</mat-icon>
+      <span class="due-date-text">{{ emptyTextKey | translate }}</span>
+    </button>
+
+    <button
+      *ngIf="emptyVariant === 'badge'"
+      type="button"
+      class="due-date-badge"
+      [disabled]="disabled"
+      [class.cursor-default]="disabled"
+      (click)="togglePopover($event)"
+      [attr.aria-label]="emptyTextKey | translate"
+    >
+      <mat-icon *ngIf="showBadgeIcon" fontSet="material-icons-outlined" class="calendar-icon">calendar_today</mat-icon>
+      <span class="due-date-text">{{ emptyTextKey | translate }}</span>
+    </button>
+  </ng-container>
+
+  <button
+    *ngIf="showTuneBtn && !disabled"
+    type="button"
+    class="tune-btn"
+    (click)="togglePopover($event)"
+    [attr.aria-label]="'DUE_DATE_PICKER.CUSTOMIZE_DEADLINE' | translate"
+  >
+    <mat-icon fontSet="material-icons-outlined">tune</mat-icon>
+  </button>
+</div>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayOpen]="isOpen"
+  [cdkConnectedOverlayHasBackdrop]="true"
+  cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+  [cdkConnectedOverlayPositions]="overlayPositions"
+  (backdropClick)="isOpen = false"
+  (detach)="isOpen = false"
+>
+  <section class="datepicker-popover" (click)="$event.stopPropagation()" role="dialog" [attr.aria-label]="'DUE_DATE_PICKER.SELECT_DUE_DATE' | translate">
+    
+    @if (currentView === 'calendar') {
+      <div class="calendar-pane">
+        <header class="calendar-nav">
+          <button type="button" class="nav-btn" (click)="prevMonth($event)" [attr.aria-label]="'DUE_DATE_PICKER.PREV_MONTH' | translate">
+            <mat-icon fontSet="material-icons-outlined">chevron_left</mat-icon>
+          </button>
+
+          <div class="calendar-title-group">
+            <button type="button" class="nav-title-btn month-title" (click)="switchToMonthView($event)">
+              {{ 'DUE_DATE_PICKER.MONTH' | translate }} {{ viewDate.getMonth() + 1 }}
+            </button>
+            <button type="button" class="nav-title-btn year-title" (click)="switchToYearView($event)">
+              {{ viewDate.getFullYear() }}
+            </button>
+          </div>
+
+          <button type="button" class="nav-btn" (click)="nextMonth($event)" [attr.aria-label]="'DUE_DATE_PICKER.NEXT_MONTH' | translate">
+            <mat-icon fontSet="material-icons-outlined">chevron_right</mat-icon>
+          </button>
+        </header>
+
+        <div class="weekdays-grid">
+          <span>{{ 'DUE_DATE_PICKER.DAYS.MON' | translate }}</span>
+          <span>{{ 'DUE_DATE_PICKER.DAYS.TUE' | translate }}</span>
+          <span>{{ 'DUE_DATE_PICKER.DAYS.WED' | translate }}</span>
+          <span>{{ 'DUE_DATE_PICKER.DAYS.THU' | translate }}</span>
+          <span>{{ 'DUE_DATE_PICKER.DAYS.FRI' | translate }}</span>
+          <span class="text-rose-500">{{ 'DUE_DATE_PICKER.DAYS.SAT' | translate }}</span>
+          <span class="text-rose-500">{{ 'DUE_DATE_PICKER.DAYS.SUN' | translate }}</span>
+        </div>
+
+        <div class="days-grid">
+          @for (day of calendarDays; track $index) {
+            <button
+              type="button"
+              class="day-cell"
+              [class.other-month]="!day.isCurrentMonth"
+              [class.weekend]="day.isWeekend && day.isCurrentMonth"
+              [class.selected]="day.isSelected"
+              [class.today]="day.isToday && !day.isSelected"
+              (click)="selectCalendarDay(day, $event)"
+            >
+              {{ day.dayNumber }}
+            </button>
+          }
+        </div>
+
+        <footer class="time-picker-row">
+          <button type="button" class="time-trigger-btn" (click)="switchToTimeView($event)" [attr.aria-label]="'DUE_DATE_PICKER.OPEN_TIME_PICKER' | translate">
+            <mat-icon fontSet="material-icons-outlined" class="time-icon">schedule</mat-icon>
+            <span class="time-display">{{ formattedTimeDisplay }}</span>
+          </button>
+        </footer>
+      </div>
+    }
+
+    @if (currentView === 'month') {
+      <div class="month-select-pane">
+        <header class="calendar-nav">
+          <button type="button" class="nav-btn" (click)="prevYear($event)" [attr.aria-label]="'DUE_DATE_PICKER.PREV_YEAR' | translate">
+            <mat-icon fontSet="material-icons-outlined">chevron_left</mat-icon>
+          </button>
+          <button type="button" class="nav-title-btn year-title text-[14px]" (click)="switchToYearView($event)">
+            {{ viewDate.getFullYear() }}
+          </button>
+          <button type="button" class="nav-btn" (click)="nextYear($event)" [attr.aria-label]="'DUE_DATE_PICKER.NEXT_YEAR' | translate">
+            <mat-icon fontSet="material-icons-outlined">chevron_right</mat-icon>
+          </button>
+        </header>
+
+        <div class="selection-grid-container">
+          @for (row of monthsGrid; track $index) {
+            <div class="selection-row">
+              @for (m of row; track m) {
+                <button
+                  type="button"
+                  class="selection-cell-btn"
+                  [class.selected]="isSelectedMonth(m)"
+                  [class.is-today-highlight]="isCurrentMonthToday(m) && !isSelectedMonth(m)"
+                  (click)="selectMonth(m, $event)"
+                >
+                  {{ 'DUE_DATE_PICKER.MONTH' | translate }} {{ m + 1 }}
+                </button>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    @if (currentView === 'year') {
+      <div class="year-select-pane">
+        <header class="calendar-nav">
+          <button type="button" class="nav-btn" (click)="prevDecade($event)" [attr.aria-label]="'DUE_DATE_PICKER.PREV_DECADE' | translate">
+            <mat-icon fontSet="material-icons-outlined">chevron_left</mat-icon>
+          </button>
+          <span class="decade-title text-[13.5px] font-semibold text-slate-800">
+            {{ decadeStartYear }} — {{ decadeStartYear + 11 }}
+          </span>
+          <button type="button" class="nav-btn" (click)="nextDecade($event)" [attr.aria-label]="'DUE_DATE_PICKER.NEXT_DECADE' | translate">
+            <mat-icon fontSet="material-icons-outlined">chevron_right</mat-icon>
+          </button>
+        </header>
+
+        <div class="selection-grid-container">
+          @for (row of yearGrid; track $index) {
+            <div class="selection-row">
+              @for (y of row; track y) {
+                <button
+                  type="button"
+                  class="selection-cell-btn"
+                  [class.selected]="isSelectedYear(y)"
+                  [class.is-today-highlight]="isCurrentYearToday(y) && !isSelectedYear(y)"
+                  (click)="selectYear(y, $event)"
+                >
+                  {{ y }}
+                </button>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    @if (currentView === 'time') {
+      <div class="time-pane">
+        <header class="time-nav">
+          <button type="button" class="nav-btn" (click)="switchToCalendarView($event)" [attr.aria-label]="'DUE_DATE_PICKER.BACK_TO_CALENDAR' | translate">
+            <mat-icon fontSet="material-icons-outlined">chevron_left</mat-icon>
+          </button>
+          <strong class="time-header-title">{{ formattedFullDateTimeHeader }}</strong>
+        </header>
+
+        <div class="time-columns-header">
+          <span class="sub-label-hours">{{ 'DUE_DATE_PICKER.HOURS' | translate }}</span>
+          <span class="sub-label-minutes">{{ 'DUE_DATE_PICKER.MINUTES' | translate }}</span>
+        </div>
+
+        <div class="time-grid-container">
+          <div class="hours-pane">
+            <div class="hours-row-wrapper">
+              <span class="period-label">AM</span>
+              <div class="hours-row">
+                @for (h of amHoursGrid[0]; track h) {
+                  <button type="button" class="time-cell" [class.selected]="isHourSelected(h, 'am')" (click)="selectHour(h, 'am', $event)">
+                    {{ h }}
+                  </button>
+                }
+              </div>
+            </div>
+            <div class="hours-row-wrapper">
+              <span class="period-label-empty"></span>
+              <div class="hours-row">
+                @for (h of amHoursGrid[1]; track h) {
+                  <button type="button" class="time-cell" [class.selected]="isHourSelected(h, 'am')" (click)="selectHour(h, 'am', $event)">
+                    {{ h }}
+                  </button>
+                }
+              </div>
+            </div>
+            <div class="hours-row-wrapper">
+              <span class="period-label-empty"></span>
+              <div class="hours-row">
+                @for (h of amHoursGrid[2]; track h) {
+                  <button type="button" class="time-cell" [class.selected]="isHourSelected(h, 'am')" (click)="selectHour(h, 'am', $event)">
+                    {{ h }}
+                  </button>
+                }
+              </div>
+            </div>
+
+            <div class="hours-row-wrapper mt-2.5">
+              <span class="period-label">PM</span>
+              <div class="hours-row">
+                @for (h of pmHoursGrid[0]; track h) {
+                  <button type="button" class="time-cell" [class.selected]="isHourSelected(h, 'pm')" (click)="selectHour(h, 'pm', $event)">
+                    {{ h }}
+                  </button>
+                }
+              </div>
+            </div>
+            <div class="hours-row-wrapper">
+              <span class="period-label-empty"></span>
+              <div class="hours-row">
+                @for (h of pmHoursGrid[1]; track h) {
+                  <button type="button" class="time-cell" [class.selected]="isHourSelected(h, 'pm')" (click)="selectHour(h, 'pm', $event)">
+                    {{ h }}
+                  </button>
+                }
+              </div>
+            </div>
+            <div class="hours-row-wrapper">
+              <span class="period-label-empty"></span>
+              <div class="hours-row">
+                @for (h of pmHoursGrid[2]; track h) {
+                  <button type="button" class="time-cell" [class.selected]="isHourSelected(h, 'pm')" (click)="selectHour(h, 'pm', $event)">
+                    {{ h }}
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="time-vertical-divider"></div>
+
+          <div class="minutes-pane">
+            @for (row of minutesGrid; track $index) {
+              <div class="minutes-row">
+                @for (m of row; track m) {
+                  <button type="button" class="time-cell" [class.selected]="isMinuteSelected(m)" (click)="selectMinute(m, $event)">
+                    {{ m < 10 ? '0' + m : m }}
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <aside class="presets-pane">
+      @for (preset of datePresets; track preset.id) {
+        <button
+          type="button"
+          class="preset-card"
+          (click)="selectPreset(preset, $event)"
+        >
+          <strong class="preset-title">{{ preset.titleKey | translate }}</strong>
+          <small class="preset-subtitle">{{ preset.subtitle }}</small>
+        </button>
+      }
+    </aside>
+  </section>
+</ng-template>
