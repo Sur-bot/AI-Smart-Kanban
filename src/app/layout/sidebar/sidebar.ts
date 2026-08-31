@@ -25,7 +25,14 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class SidebarComponent {
-  @Input() isOpen = true;
+  @Input()
+  set isOpen(value: boolean) {
+    this.isCollapsed = !value;
+  }
+  get isOpen(): boolean {
+    return !this.isCollapsed;
+  }
+
   @Output() toggleSidebar = new EventEmitter<boolean>();
   
   @ViewChild(ProjectSwitcherComponent) projectSwitcher?: ProjectSwitcherComponent;
@@ -35,8 +42,8 @@ export class SidebarComponent {
   /** Các menu có submenu đang được mở rộng */
   expandedMenuIds = new Set<string>();
 
-  /** Trạng thái thu gọn (chỉ hiện icon) */
-  isCollapsed = false;
+  /** Trạng thái thu gọn (chỉ hiện icon) - Mặc định luôn đóng */
+  isCollapsed = true;
 
   /** Trạng thái hover mở rộng tạm thời khi sidebar đang thu gọn */
   isHoverExpanded = false;
