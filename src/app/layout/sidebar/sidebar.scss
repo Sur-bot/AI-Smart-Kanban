@@ -10,7 +10,7 @@
 
 /* ===== Sidebar Container ===== */
 .sidebar-container {
-  @apply w-[260px] h-full flex flex-col text-white font-['Inter',sans-serif] bg-black/20 backdrop-blur-md overflow-hidden;
+  @apply w-[260px] h-full flex flex-col text-white font-sans bg-black/20 backdrop-blur-md overflow-hidden;
   transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.25s ease, box-shadow 0.25s ease;
 
   &.collapsed {

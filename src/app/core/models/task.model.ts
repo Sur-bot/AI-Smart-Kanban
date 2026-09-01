@@ -147,11 +147,13 @@ export interface TaskItem {
   createdAt: string;
   updatedAt: string;
 
-  // Thuộc tính phục vụ hiển thị trên Kanban/Deadline Board
+  // Thuộc tính phục vụ hiển thị trên Kanban/Deadline Board / Data Table
   timeLabel?: string;
   timeColor?: 'red' | 'green' | 'default';
   stripeColor?: string;
   badgeCount?: number;
+  isPinned?: boolean;
+  projectName?: string;
 }
 
 /**
