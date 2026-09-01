@@ -137,30 +137,6 @@ mat-icon {
     @apply border-b border-slate-100;
   }
 
-  &.row-overdue {
-    background-color: #F4FCDE !important;
-
-    .table-cell {
-      background-color: #F4FCDE !important;
-    }
-
-    .col-sorted-highlight {
-      background-color: #e6f5c6 !important;
-    }
-
-    &:hover {
-      background-color: #ebf7ce !important;
-
-      .table-cell {
-        background-color: #ebf7ce !important;
-      }
-
-      .col-sorted-highlight {
-        background-color: #dfeebe !important;
-      }
-    }
-  }
-
   &:hover {
     @apply bg-sky-50/70;
 
@@ -182,6 +158,30 @@ mat-icon {
 
     .col-sorted-highlight {
       background-color: #dbeafe !important;
+    }
+
+    &.row-overdue {
+      background-color: #F4FCDE !important;
+
+      .table-cell {
+        background-color: #F4FCDE !important;
+      }
+
+      .col-sorted-highlight {
+        background-color: #e6f5c6 !important;
+      }
+
+      &:hover {
+        background-color: #ebf7ce !important;
+
+        .table-cell {
+          background-color: #ebf7ce !important;
+        }
+
+        .col-sorted-highlight {
+          background-color: #dfeebe !important;
+        }
+      }
     }
   }
 
