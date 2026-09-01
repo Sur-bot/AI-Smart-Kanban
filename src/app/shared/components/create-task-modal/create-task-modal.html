@@ -137,106 +137,13 @@
           <div class="field-row relative">
             <label class="field-label">Hạn chót:</label>
             <div class="field-value">
-              <div class="due-date-container">
-                <div class="due-date-wrapper">
-                  <button
-                    type="button"
-                    class="due-date-badge"
-                    [class.has-date]="!!selectedDate"
-                    (click)="toggleDatePicker($event)"
-                    aria-label="Chọn hạn chót"
-                  >
-                    <mat-icon fontSet="material-icons-outlined" class="calendar-icon">calendar_today</mat-icon>
-                    <span class="due-date-text">{{ formattedDueDate }}</span>
-                  </button>
-
-                  <button
-                    *ngIf="selectedDate"
-                    type="button"
-                    class="clear-date-btn"
-                    (click)="clearDueDate($event)"
-                    aria-label="Xóa hạn chót"
-                  >
-                    <mat-icon fontSet="material-icons-outlined">close</mat-icon>
-                  </button>
-                </div>
-
-                <button
-                  type="button"
-                  class="tune-btn"
-                  (click)="toggleDatePicker($event)"
-                  aria-label="Tùy chỉnh thời hạn"
-                >
-                  <mat-icon fontSet="material-icons-outlined">tune</mat-icon>
-                </button>
-              </div>
-
-              @if (isDatePickerOpen) {
-                <section class="datepicker-popover" (click)="$event.stopPropagation()" role="dialog" aria-label="Chọn ngày hạn chót">
-                  <div class="calendar-pane">
-                    <header class="calendar-nav">
-                      <button type="button" class="nav-btn" (click)="prevMonth($event)" aria-label="Tháng trước">
-                        <mat-icon fontSet="material-icons-outlined">chevron_left</mat-icon>
-                      </button>
-                      <span class="month-title">tháng {{ viewDate.getMonth() + 1 }} &nbsp;{{ viewDate.getFullYear() }}</span>
-                      <button type="button" class="nav-btn" (click)="nextMonth($event)" aria-label="Tháng sau">
-                        <mat-icon fontSet="material-icons-outlined">chevron_right</mat-icon>
-                      </button>
-                    </header>
-
-                    <div class="weekdays-grid">
-                      <span>T2</span>
-                      <span>T3</span>
-                      <span>T4</span>
-                      <span>T5</span>
-                      <span>T6</span>
-                      <span class="text-rose-500">T7</span>
-                      <span class="text-rose-500">CN</span>
-                    </div>
-
-                    <div class="days-grid">
-                      @for (day of calendarDays; track $index) {
-                        <button
-                          type="button"
-                          class="day-cell"
-                          [class.other-month]="!day.isCurrentMonth"
-                          [class.weekend]="day.isWeekend && day.isCurrentMonth"
-                          [class.selected]="day.isSelected"
-                          [class.today]="day.isToday && !day.isSelected"
-                          (click)="selectCalendarDay(day, $event)"
-                        >
-                          {{ day.dayNumber }}
-                        </button>
-                      }
-                    </div>
-
-                    <footer class="time-picker-row">
-                      <mat-icon fontSet="material-icons-outlined" class="time-icon">schedule</mat-icon>
-                      <input
-                        type="time"
-                        [value]="selectedTime"
-                        (change)="onTimeChange($event)"
-                        class="time-input"
-                        aria-label="Chọn giờ"
-                      />
-                      <span class="time-display">{{ formattedTimeDisplay }}</span>
-                    </footer>
-                  </div>
-
-                  <aside class="presets-pane">
-                    @for (preset of datePresets; track preset.id) {
-                      <button
-                        type="button"
-                        class="preset-card"
-                        (click)="selectPreset(preset, $event)"
-                      >
-                        <strong class="preset-title">{{ preset.title }}</strong>
-                        <small class="preset-subtitle">{{ preset.subtitle }}</small>
-                      </button>
-                    }
-                  </aside>
-                </section>
-              }
+              <app-due-date-picker
+                [value]="form.get('dueDate')?.value"
+                emptyVariant="badge"
+                emptyTextKey="DUE_DATE_PICKER.NO_DUE_DATE"
+                [showTuneBtn]="true"
+                (valueChange)="onDueDateChange($event)">
+              </app-due-date-picker>
             </div>
           </div>
 

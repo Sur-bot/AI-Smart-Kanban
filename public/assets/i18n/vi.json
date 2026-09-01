@@ -520,5 +520,38 @@
     "BTN_BACK": "Quay lại trang trước",
     "BTN_HOME": "Về trang chủ",
     "IMG_ALT": "Lạc đường - 404"
+  },
+  "DUE_DATE_PICKER": {
+    "NO_DUE_DATE": "Chưa có hạn chót",
+    "SELECT_DUE_DATE": "Chọn hạn chót",
+    "CLEAR_DUE_DATE": "Xóa hạn chót",
+    "CUSTOMIZE_DEADLINE": "Tùy chỉnh thời hạn",
+    "PREV_MONTH": "Tháng trước",
+    "NEXT_MONTH": "Tháng sau",
+    "PREV_YEAR": "Năm trước",
+    "NEXT_YEAR": "Năm sau",
+    "PREV_DECADE": "12 năm trước",
+    "NEXT_DECADE": "12 năm sau",
+    "BACK_TO_CALENDAR": "Quay lại lịch",
+    "OPEN_TIME_PICKER": "Mở bảng chọn giờ",
+    "HOURS": "Giờ",
+    "MINUTES": "Phút",
+    "MONTH": "tháng",
+    "PRESETS": {
+      "TODAY": "Hôm nay",
+      "TOMORROW": "Ngày mai",
+      "THIS_WEEKEND": "Cuối tuần này",
+      "IN_A_WEEK": "Trong một tuần",
+      "END_OF_MONTH": "Cuối tháng này"
+    },
+    "DAYS": {
+      "MON": "T2",
+      "TUE": "T3",
+      "WED": "T4",
+      "THU": "T5",
+      "FRI": "T6",
+      "SAT": "T7",
+      "SUN": "CN"
+    }
   }
 }
