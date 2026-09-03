@@ -71,17 +71,7 @@
   left: 0 !important;
 }
 
-.modal-close-btn {
-  @apply w-12 h-10 bg-[#3ca3f1] rounded-l-full flex items-center justify-center pl-2 pt-1 text-white cursor-pointer transition-all hover:bg-[#4eaef5] border-0 outline-none;
-  border: none;
-  outline: none;
-  box-shadow: none;
-
-  &:active {
-    transform: translateY(2px);
-    box-shadow: none;
-  }
-}
+/* .modal-close-btn — được định nghĩa global tại styles.scss, không cần khai báo lại */
 
 .drawer-main-content {
   @apply relative z-10 flex-1 overflow-y-auto overflow-x-hidden flex flex-col p-6 lg:p-8;
@@ -95,7 +85,23 @@
 }
 
 .drawer-header-avatar {
-  @apply w-16 h-16 rounded-full bg-[#00a2ff] flex items-center justify-center text-white shrink-0 shadow-md m-0;
+  @apply w-16 h-16 rounded-full bg-[#00a2ff] text-white shrink-0 shadow-md m-0;
+  display: grid;
+  place-items: center;
+
+  mat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 32px !important;
+    line-height: 1 !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: translateY(0.5px);
+  }
 }
 
 .drawer-header-title {
@@ -183,11 +189,23 @@
 }
 
 .form-input {
-  @apply h-10 px-3.5 text-[13px] rounded-lg border border-slate-300 bg-white text-slate-800 focus:outline-none focus:border-[#00a2ff] focus:ring-2 focus:ring-[#00a2ff]/10 transition-all;
+  @apply h-10 px-3.5 text-[13px] rounded-lg border border-slate-300 bg-white text-slate-800;
+  outline: none;
+  transition: border-color 200ms ease;
+
+  &:focus {
+    border-color: #00a2ff;
+  }
 }
 
 .form-textarea {
-  @apply p-3.5 text-[13px] rounded-lg border border-slate-300 bg-white text-slate-800 focus:outline-none focus:border-[#00a2ff] focus:ring-2 focus:ring-[#00a2ff]/10 transition-all resize-none;
+  @apply p-3.5 text-[13px] rounded-lg border border-slate-300 bg-white text-slate-800 resize-none;
+  outline: none;
+  transition: border-color 200ms ease;
+
+  &:focus {
+    border-color: #00a2ff;
+  }
 }
 
 .color-btn {
@@ -218,11 +236,11 @@
 }
 
 .privacy-card-title {
-  @apply text-sm font-semibold text-slate-800;
+  @apply text-base font-semibold text-slate-800;
 }
 
 .privacy-card-desc {
-  @apply text-[12px] text-slate-500 mt-1 leading-relaxed;
+  @apply text-sm text-slate-500 mt-1 leading-relaxed;
 }
 
 .privacy-radio-indicator {
@@ -290,11 +308,6 @@
   }
 }
 
-/* ==========================================================================
-   11. Project Icon Button
-   ========================================================================== */
-// Dùng display:grid + place-items:center thay vì flexbox để căn giữa tuyệt đối
-// icon trong Material vì glyph font có offset riêng mà flexbox không xử lý được.
 .project-icon-btn {
   display: grid;
   place-items: center;
@@ -313,102 +326,3 @@
     padding: 0 !important;
   }
 }
-
-/* ==========================================================================
-   12. Tags Popup (Thêm thẻ)
-   ========================================================================== */
-.tags-popup-container {
-  @apply absolute top-full left-0 mt-2 z-40 bg-white rounded-2xl border border-slate-100/90 flex overflow-visible;
-  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.18), 0 0 1px rgba(0, 0, 0, 0.15);
-  animation: tagsPopupSlideDown 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes tagsPopupSlideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-8px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-// Cột tab điều hướng mép trái
-.tags-popup-tabs-group {
-  @apply flex flex-col gap-2.5 p-3.5 pr-2 select-none border-r border-slate-100/80;
-
-  // Khi hover vào nhóm tabs, cả hai nút cùng trượt mở rộng đồng thời!
-  &:hover {
-    .tags-popup-tab-btn {
-      width: 115px;
-      padding: 0 12px;
-      justify-content: flex-start;
-
-      .tab-label {
-        max-width: 80px;
-        opacity: 1;
-        margin-left: 8px;
-      }
-    }
-  }
-}
-
-.tags-popup-tab-btn {
-  @apply h-9 w-9 rounded-xl flex items-center justify-center transition-all duration-300 ease-out cursor-pointer border-none overflow-hidden shrink-0;
-
-  .tab-icon-box {
-    display: grid;
-    place-items: center;
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-
-    mat-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 19px !important;
-      height: 19px !important;
-      font-size: 19px !important;
-      line-height: 1 !important;
-      margin: 0 !important;
-      padding: 0 !important;
-    }
-  }
-
-  .tab-label {
-    @apply text-[13px] font-semibold whitespace-nowrap overflow-hidden transition-all duration-300 ease-out;
-    max-width: 0;
-    opacity: 0;
-  }
-
-  // Nút Gần đây (Màu xanh)
-  &.tab-recent {
-    @apply bg-[#0088ff] text-white shadow-sm hover:bg-[#0077ee];
-
-    .tab-label {
-      @apply text-white;
-    }
-  }
-
-  // Nút Thẻ (Màu xám)
-  &.tab-all {
-    @apply bg-[#f1f5f9] text-slate-600 hover:bg-[#e2e8f0] hover:text-slate-800;
-
-    .tab-label {
-      @apply text-slate-700;
-    }
-  }
-}
-
-// Khối nội dung chính của Popup
-.tags-popup-body {
-  @apply flex flex-col items-center justify-center p-6 w-[280px] select-none;
-
-  .tags-popup-figure {
-    @apply m-0 p-0 flex items-center justify-center;
-  }
-}
-
-

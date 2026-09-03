@@ -20,6 +20,7 @@ import { TaskStore } from '../../../../core/state/task.store';
 import { Project, ProjectMemberRole } from '../../../../core/models/task.model';
 import { ThemeModalComponent } from '../../../../shared/components/theme-modal/theme-modal';
 import { DueDatePickerComponent } from '../../../../shared/components/due-date-picker/due-date-picker';
+import { AddTagBadgeComponent } from '../../../../shared/components/add-tag-badge/add-tag-badge';
 
 export type ProjectWizardType = 'project' | 'collaborative' | 'workgroup';
 export type ProjectPrivacyType = 'public' | 'private' | 'secret';
@@ -27,7 +28,7 @@ export type ProjectPrivacyType = 'public' | 'private' | 'secret';
 @Component({
   selector: 'app-project-drawer-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatIconModule, MatTooltipModule, MatDialogModule, DueDatePickerComponent],
+  imports: [CommonModule, FormsModule, MatIconModule, MatTooltipModule, MatDialogModule, TranslatePipe, DueDatePickerComponent, AddTagBadgeComponent],
   templateUrl: './project-drawer-modal.html',
   styleUrls: ['./project-drawer-modal.scss']
 })
@@ -45,32 +46,25 @@ export class ProjectDrawerModalComponent implements OnInit {
   isSubmitting = false;
 
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
-  @ViewChild('tagsContainer') tagsContainer?: ElementRef;
 
   currentStep: 1 | 2 | 3 | 4 = 1;
 
-  // Step 1: Loại dự án
+  // Step 1
   projectType: ProjectWizardType = 'project';
 
-  // Step 2: Thông tin & Tính năng
+  // Step 2
   projectName = '';
   projectDescription = '';
   showDescription = false;
-  selectedColor = '#0ea5e9'; // Mặc định Sky 500
+  selectedColor = '#0ea5e9';
   selectedIcon = 'folder';
-
-  // Chủ đề thị giác
   currentThemeUrl = '/assets/images/bg_abstract_12.jpg';
   themeName = 'Mây mờ ảo';
-
-  // Tham số mở rộng
   showExtendedParams = false;
   startDate: string | null = null;
   endDate: string | null = null;
   tags = '';
-  isTagsPopupOpen = false;
   selectedTags: string[] = [];
-  activeTagTab: 'recent' | 'all' = 'recent';
 
   readonly colors = [
     '#3b82f6',
@@ -96,13 +90,13 @@ export class ProjectDrawerModalComponent implements OnInit {
   privacyType: ProjectPrivacyType = 'public';
 
   // Step 4: Thành viên
+  ownerName = 'Văn Anh Nguyễn';
+  showModerators = false;
   searchMemberQuery = '';
   selectedMemberIds = new Set<string>();
   memberRoles: Record<string, ProjectMemberRole> = {};
 
-  ngOnInit(): void {
-    // Khởi tạo
-  }
+  ngOnInit(): void {}
 
   setStep(step: 1 | 2 | 3 | 4): void {
     if (step === 2 && !this.projectType) return;
@@ -169,15 +163,11 @@ export class ProjectDrawerModalComponent implements OnInit {
   toggleDescription(): void {
     this.showDescription = !this.showDescription;
     
-    // Tự động cuộn xuống khi mở form Nhập mô tả
     if (this.showDescription) {
       setTimeout(() => {
         if (this.scrollContainer) {
           const el = this.scrollContainer.nativeElement;
-          el.scrollTo({
-            top: el.scrollHeight,
-            behavior: 'smooth'
-          });
+          el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
         }
       }, 300);
     }
@@ -186,22 +176,26 @@ export class ProjectDrawerModalComponent implements OnInit {
   toggleExtendedParams(): void {
     this.showExtendedParams = !this.showExtendedParams;
     
-    // Tự động cuộn xuống khi mở Tham số mở rộng
     if (this.showExtendedParams) {
       setTimeout(() => {
         if (this.scrollContainer) {
           const el = this.scrollContainer.nativeElement;
-          el.scrollTo({
-            top: el.scrollHeight,
-            behavior: 'smooth'
-          });
+          el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
         }
-      }, 300); // Đợi CSS transition chạy được một nửa để cuộn mượt mà
+      }, 300);
     }
+  }
+
+  toggleModerators(): void {
+    this.showModerators = !this.showModerators;
   }
 
   toggleFullscreen(): void {
     this.isFullscreen = !this.isFullscreen;
+  }
+
+  onCopyLink(): void {
+    navigator.clipboard?.writeText(window.location.href);
   }
 
   onClose(): void {
@@ -218,39 +212,9 @@ export class ProjectDrawerModalComponent implements OnInit {
 
   @HostListener('document:keydown.escape')
   onEscape(): void {
-    if (this.isTagsPopupOpen) {
-      this.closeTagsPopup();
-      return;
-    }
     if (this.isOpen && !this.isClosing) {
       this.onClose();
     }
-  }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    if (!this.isTagsPopupOpen) return;
-    if (this.tagsContainer && !this.tagsContainer.nativeElement.contains(event.target as Node)) {
-      this.closeTagsPopup();
-    }
-  }
-
-  toggleTagsPopup(event?: MouseEvent): void {
-    if (event) {
-      event.stopPropagation();
-    }
-    this.isTagsPopupOpen = !this.isTagsPopupOpen;
-  }
-
-  closeTagsPopup(): void {
-    this.isTagsPopupOpen = false;
-  }
-
-  removeTag(index: number, event?: MouseEvent): void {
-    if (event) {
-      event.stopPropagation();
-    }
-    this.selectedTags.splice(index, 1);
   }
 
   resetWizard(): void {
@@ -260,12 +224,10 @@ export class ProjectDrawerModalComponent implements OnInit {
     this.projectDescription = '';
     this.showDescription = false;
     this.showExtendedParams = false;
+    this.showModerators = false;
     this.startDate = null;
     this.endDate = null;
     this.tags = '';
-    this.isTagsPopupOpen = false;
-    this.selectedTags = [];
-    this.activeTagTab = 'recent';
     this.selectedColor = '#3b82f6';
     this.selectedIcon = 'folder';
     this.privacyType = 'public';
