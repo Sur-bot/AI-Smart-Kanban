@@ -1,0 +1,24 @@
+<div class="btn-create-group" role="group" [attr.aria-label]="context === 'project' ? 'Tạo dự án mới' : 'Tạo tác vụ mới'">
+  <button
+    class="btn-create-main"
+    type="button"
+    [disabled]="disabled"
+    (click)="onCreateClick($event)"
+  >
+    <mat-icon fontSet="material-icons-outlined" class="icon-add">add</mat-icon>
+    <span>{{ labelKey }}</span>
+  </button>
+
+  @if (showDropdown) {
+    <div class="btn-create-divider"></div>
+    <button
+      class="btn-create-dropdown"
+      type="button"
+      [disabled]="disabled"
+      (click)="onDropdownClick($event)"
+      aria-label="Tùy chọn tạo"
+    >
+      <mat-icon fontSet="material-icons-outlined" class="icon-dropdown">keyboard_arrow_down</mat-icon>
+    </button>
+  }
+</div>

@@ -205,35 +205,7 @@ mat-icon {
   @apply inline-flex items-center justify-center w-6 h-6 p-0 text-slate-400 hover:text-slate-600 rounded transition-colors bg-transparent border-none cursor-pointer shrink-0;
 }
 
-.task-checkbox {
-  appearance: none;
-  -webkit-appearance: none;
-  @apply w-4 h-4 rounded-[2px] border border-slate-600 bg-white cursor-pointer shrink-0 inline-flex items-center justify-center p-0 m-0 box-border;
-  outline: none;
-  transition: border-color 0.15s ease;
-
-  &:hover {
-    border-color: #0f172a !important;
-  }
-
-  &:checked {
-    background-color: #ffffff !important;
-    border-color: #334155 !important;
-    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M3.4 8.4L6.6 11.8L13 4.6' stroke='%23000000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e") !important;
-    background-size: 13px 13px !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-  }
-
-  &:indeterminate {
-    background-color: #ffffff !important;
-    border-color: #334155 !important;
-    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M2.8 8h10.4' stroke='%23000000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e") !important;
-    background-size: 13px 13px !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-  }
-}
+/* .task-checkbox — được định nghĩa global tại styles.scss, không cần khai báo lại */
 
 .cell-name {
   @apply flex items-center font-normal;

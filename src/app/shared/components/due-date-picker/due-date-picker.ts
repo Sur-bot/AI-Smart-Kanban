@@ -45,7 +45,7 @@ export class DueDatePickerComponent implements OnInit, OnChanges {
   @Input() value: string | null | undefined = null;
   @Input() disabled: boolean = false;
   @Input() showTuneBtn: boolean = false;
-  @Input() emptyVariant: 'oval' | 'badge' = 'badge';
+  @Input() emptyVariant: 'oval' | 'badge' | 'rectangle' = 'badge';
   @Input() showBadgeIcon: boolean = false;
   @Input() isOverdue: boolean = false;
   @Input() emptyTextKey: string = 'DUE_DATE_PICKER.NO_DUE_DATE';

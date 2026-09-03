@@ -72,33 +72,7 @@
   left: 0 !important;
 }
 
-.modal-close-btn {
-  @apply w-12 h-10 bg-[#3ca3f1] rounded-l-full flex items-center justify-center pl-2 text-white/90 cursor-pointer transition-all hover:bg-[#4eaef5] hover:text-white;
-  box-shadow: 0 3px 0 rgba(15, 65, 95, 0.7);
-  
-  &:active {
-    transform: translateY(2px);
-    box-shadow: 0 1px 0 rgba(15, 65, 95, 0.7);
-  }
-  
-  mat-icon {
-    @apply text-[20px] w-[20px] h-[20px] leading-[20px];
-  }
-}
-
-.modal-action-btn {
-  @apply w-11 h-9 bg-[#2c7dbf] rounded-l-full flex items-center justify-center pl-1.5 text-white/80 cursor-pointer transition-all hover:bg-[#3ca3f1] hover:text-white;
-  box-shadow: 0 2px 0 rgba(15, 65, 95, 0.7);
-  
-  &:active {
-    transform: translateY(2px);
-    box-shadow: 0 0px 0 rgba(15, 65, 95, 0.7);
-  }
-  
-  mat-icon {
-    @apply text-[18px] w-[18px] h-[18px] leading-[18px];
-  }
-}
+/* .modal-close-btn, .modal-action-btn — được định nghĩa global tại styles.scss, không cần khai báo lại */
 
 .left-pane {
   @apply flex flex-col min-w-[300px] bg-white h-full relative z-0;

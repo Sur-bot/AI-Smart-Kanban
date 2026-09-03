@@ -1,0 +1,68 @@
+<article class="add-tag-badge-host" (click)="$event.stopPropagation()">
+
+  <!-- Nút badge trigger -->
+  <button
+    type="button"
+    class="add-tag-badge-btn"
+    [style.--badge-color]="color"
+    [attr.aria-label]="label"
+    [attr.title]="label"
+    (click)="togglePopup($event)"
+  >
+    <span class="badge-label">{{ label }}</span>
+  </button>
+
+  <!-- Popup chọn thẻ — tự xuất hiện bên dưới nút -->
+  @if (isOpen()) {
+    <aside
+      class="tag-popup-container"
+      aria-label="Chọn từ khoá"
+      (click)="$event.stopPropagation()"
+    >
+      <!-- Thanh tab dọc bên trái (hover trượt label ra) -->
+      <nav class="tag-popup-tabs" aria-label="Danh mục">
+        <button
+          type="button"
+          class="tab-btn"
+          [class.active]="activeTab === 'recent'"
+          (click)="activeTab = 'recent'"
+          title="Gần đây"
+        >
+          <span class="tab-icon">
+            <mat-icon fontSet="material-icons-outlined">search</mat-icon>
+          </span>
+          <span class="tab-label">Gần đây</span>
+        </button>
+
+        <button
+          type="button"
+          class="tab-btn"
+          [class.active]="activeTab === 'all'"
+          (click)="activeTab = 'all'"
+          title="Thẻ"
+        >
+          <span class="tab-icon">
+            <mat-icon fontSet="material-icons-outlined">east</mat-icon>
+          </span>
+          <span class="tab-label">Thẻ</span>
+        </button>
+      </nav>
+
+      <!-- Khu vực nội dung -->
+      <section class="tag-popup-body">
+        <figure class="tag-popup-figure" aria-hidden="true">
+          <img
+            src="assets/images/tags-empty-state.jpg"
+            alt=""
+            class="w-28 h-28 object-contain select-none pointer-events-none"
+          />
+        </figure>
+        <p class="tag-popup-empty-text">
+          Không tìm thấy gì trong danh mục<br />
+          <strong>"{{ activeTab === 'recent' ? 'Gần đây' : 'Thẻ' }}"</strong>
+        </p>
+      </section>
+    </aside>
+  }
+
+</article>

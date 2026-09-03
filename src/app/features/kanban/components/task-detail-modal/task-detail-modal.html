@@ -13,22 +13,22 @@
   
   <nav class="modal-actions-sidebar" aria-label="Thao tác điều khiển hộp thoại">
     <button type="button" class="modal-close-btn" (click)="triggerClose()"
-            [matTooltip]="'TASK_DETAIL.CLOSE' | translate" matTooltipPosition="right"
+            matTooltip="Đóng" matTooltipPosition="left"
             [attr.aria-label]="'TASK_DETAIL.CLOSE' | translate">
       <mat-icon>close</mat-icon>
     </button>
     <button type="button" class="modal-action-btn"
-            [matTooltip]="'TASK_DETAIL.COPY_LINK' | translate" matTooltipPosition="right"
+            matTooltip="Sao chép liên kết" matTooltipPosition="left"
             [attr.aria-label]="'TASK_DETAIL.COPY_LINK' | translate">
       <mat-icon>link</mat-icon>
     </button>
     <button type="button" class="modal-action-btn" (click)="toggleFullscreen()"
-            [matTooltip]="(isFullscreen ? 'TASK_DETAIL.MINIMIZE' : 'TASK_DETAIL.EXPAND') | translate" matTooltipPosition="right"
+            [matTooltip]="isFullscreen ? 'Thu nhỏ' : 'Toàn màn hình'" matTooltipPosition="left"
             [attr.aria-label]="(isFullscreen ? 'TASK_DETAIL.MINIMIZE' : 'TASK_DETAIL.EXPAND') | translate">
       <mat-icon>{{ isFullscreen ? 'fullscreen_exit' : 'fullscreen' }}</mat-icon>
     </button>
     <button type="button" class="modal-action-btn"
-            [matTooltip]="'TASK_DETAIL.PRINT' | translate" matTooltipPosition="right"
+            matTooltip="In tác vụ" matTooltipPosition="left"
             [attr.aria-label]="'TASK_DETAIL.PRINT' | translate">
       <mat-icon>print</mat-icon>
     </button>
