@@ -393,5 +393,10 @@
       "SAT": "Sat",
       "SUN": "Sun"
     }
+  },
+  "PROJECT_DRAWER": {
+    "CLOSE": "Close",
+    "COPY_LINK": "Copy link",
+    "ARIA_LABEL": "Create new project"
   }
 }

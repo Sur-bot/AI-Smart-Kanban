@@ -553,5 +553,10 @@
       "SAT": "T7",
       "SUN": "CN"
     }
+  },
+  "PROJECT_DRAWER": {
+    "CLOSE": "Đóng",
+    "COPY_LINK": "Sao chép liên kết",
+    "ARIA_LABEL": "Tạo dự án mới"
   }
 }
