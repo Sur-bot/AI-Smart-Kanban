@@ -1,0 +1,168 @@
+:host {
+  display: inline-block;
+  position: relative;
+}
+
+.add-tag-badge-host {
+  display: inline-block;
+  position: relative;
+}
+
+// ── Nút Badge ─────────────────────────────────────────────────────────────
+.add-tag-badge-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--badge-color, #0154c8);
+  white-space: nowrap;
+  line-height: 1.4;
+  transition: color 0.15s ease;
+
+  .badge-label {
+    display: inline-block;
+    border-bottom: 1.5px solid transparent;
+    padding-bottom: 0.5px;
+    transition: border-color 0.15s ease;
+  }
+
+  &:hover .badge-label {
+    border-bottom-color: var(--badge-color, #0154c8);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--badge-color, #0154c8);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+}
+
+// ── Popup container ────────────────────────────────────────────────────────
+.tag-popup-container {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: -12px;          // căn lề để popup không bị dán sát mép trái ô input
+  z-index: 200;
+  display: flex;
+  align-items: stretch;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  min-width: 340px;
+  max-width: 420px;
+  overflow: hidden;
+  animation: tag-popup-appear 0.18s cubic-bezier(0.34, 1.26, 0.64, 1) both;
+}
+
+@keyframes tag-popup-appear {
+  from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+// ── Thanh tab dọc ─────────────────────────────────────────────────────────
+.tag-popup-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 0;
+  border-right: 1px solid #f1f5f9;
+  flex-shrink: 0;
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  // Icon box cố định
+  .tab-icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 40px;
+    flex-shrink: 0;
+    color: #94a3b8;
+    transition: color 0.15s ease;
+
+    mat-icon {
+      font-size: 18px !important;
+      width: 18px !important;
+      height: 18px !important;
+      line-height: 1 !important;
+      margin: 0 !important;
+    }
+  }
+
+  // Label: ẩn, trượt ra khi hover
+  .tab-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #475569;
+    white-space: nowrap;
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding-right: 0;
+    transition: max-width 0.22s ease, opacity 0.15s ease, padding-right 0.22s ease;
+  }
+
+  &:hover {
+    background: #f8fafc;
+
+    .tab-icon { color: #334155; }
+
+    .tab-label {
+      max-width: 100px;
+      opacity: 1;
+      padding-right: 16px;
+    }
+  }
+
+  &.active {
+    background: #0154C8;
+
+    .tab-icon { color: #ffffff; }
+    .tab-label { color: #ffffff; }
+
+    &:hover {
+      background: #0147ae;
+      .tab-label { max-width: 100px; opacity: 1; padding-right: 16px; }
+    }
+  }
+}
+
+// ── Khu vực nội dung ──────────────────────────────────────────────────────
+.tag-popup-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 20px;
+  min-height: 200px;
+}
+
+.tag-popup-figure {
+  margin: 0;
+  padding: 0;
+}
+
+.tag-popup-empty-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  text-align: center;
+  line-height: 1.5;
+  margin-top: 10px;
+}
