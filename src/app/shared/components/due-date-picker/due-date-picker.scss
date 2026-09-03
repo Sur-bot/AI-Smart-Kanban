@@ -5,11 +5,11 @@
 }
 
 .due-date-container {
-  @apply relative flex items-center;
+  @apply relative flex items-center w-full;
 }
 
 .due-date-wrapper {
-  @apply relative inline-flex items-center;
+  @apply relative inline-flex items-center w-full;
 
   &:hover {
     .clear-date-btn {
@@ -66,6 +66,42 @@
 
   &:hover .calendar-icon {
     @apply text-black;
+  }
+}
+
+.due-date-rectangle-btn {
+  @apply flex items-center h-[42px] px-3.5 bg-white border border-slate-200 rounded-md hover:bg-slate-50 hover:border-slate-300 cursor-pointer select-none w-full gap-2 text-[14.5px] justify-start;
+  outline: none;
+  transition: border-color 200ms ease, background-color 200ms ease;
+
+  &:focus {
+    border-color: #00a2ff;
+  }
+  
+  .calendar-icon {
+    @apply text-[18px] w-[18px] h-[18px] leading-none text-slate-400 shrink-0;
+  }
+  
+  .due-date-text {
+    @apply text-slate-700 font-medium truncate;
+  }
+  
+  &.has-date {
+    .calendar-icon {
+      @apply text-[#00a2ff];
+    }
+    .due-date-text {
+      @apply text-[#00a2ff];
+    }
+  }
+  
+  &.due-date-overdue {
+    @apply border-red-300 bg-red-50 hover:bg-red-100;
+    
+    .calendar-icon,
+    .due-date-text {
+      @apply text-red-600;
+    }
   }
 }
 

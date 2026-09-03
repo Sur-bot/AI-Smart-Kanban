@@ -56,3 +56,159 @@ input, button, select, textarea {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+/* Global Checkbox chuẩn cho Tác vụ và Công cụ */
+.task-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  @apply w-4 h-4 rounded-[2px] border border-slate-600 bg-white cursor-pointer shrink-0 inline-flex items-center justify-center p-0 m-0 box-border;
+  outline: none;
+  transition: border-color 0.15s ease;
+
+  &:hover {
+    border-color: #0f172a !important;
+  }
+
+  &:checked {
+    background-color: #ffffff !important;
+    border-color: #334155 !important;
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M3.4 8.4L6.6 11.8L13 4.6' stroke='%23000000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e") !important;
+    background-size: 13px 13px !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+  }
+
+  &:indeterminate {
+    background-color: #ffffff !important;
+    border-color: #334155 !important;
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M2.8 8h10.4' stroke='%23000000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e") !important;
+    background-size: 13px 13px !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+  }
+}
+
+/* ==========================================================================
+   Global Modal / Drawer Edge Action Buttons (Flat Design, không border/shadow)
+   ========================================================================== */
+.modal-close-btn {
+  @apply w-12 h-10 bg-[#3ca3f1] rounded-l-full flex items-center justify-center pl-2 text-white cursor-pointer transition-all hover:bg-[#4eaef5] border-0 outline-none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+
+  &:active {
+    transform: translateY(2px);
+    box-shadow: none;
+  }
+
+  mat-icon {
+    @apply text-[20px] w-[20px] h-[20px] flex items-center justify-center leading-none;
+  }
+}
+
+.modal-action-btn {
+  @apply w-11 h-9 bg-[#2c7dbf] rounded-l-full flex items-center justify-center pl-1.5 text-white/90 cursor-pointer transition-all hover:bg-[#3ca3f1] hover:text-white border-0 outline-none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+
+  &:active {
+    transform: translateY(2px);
+    box-shadow: none;
+  }
+
+  mat-icon {
+    @apply text-[18px] w-[18px] h-[18px] flex items-center justify-center leading-none;
+  }
+}
+
+/* ==========================================================================
+   Global Badge & Action Trigger System (Hệ thống Badge & Nút hành động chuẩn)
+   ========================================================================== */
+// 1. Nút hành động dạng badge text link (+ Thêm thẻ, + Thêm nhân viên, + Sửa...)
+.badge-action-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--badge-color, #0154c8);
+  white-space: nowrap;
+  line-height: 1.4;
+  transition: color 0.15s ease;
+
+  .badge-label {
+    display: inline-block;
+    border-bottom: 1.5px solid transparent;
+    padding-bottom: 0.5px;
+    transition: border-color 0.15s ease;
+  }
+
+  &:hover .badge-label {
+    border-bottom-color: var(--badge-color, #0154c8);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--badge-color, #0154c8);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+}
+
+// 2. Chip / Entity Badge hiển thị đối tượng đã chọn (người dùng, nhãn, role...)
+.badge-entity {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background-color: var(--badge-bg, #bceefc);
+  color: var(--badge-color, #0284c7);
+  font-size: 13px;
+  font-weight: 400;
+  user-select: none;
+  line-height: 1;
+
+  .badge-entity-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+    color: currentColor;
+  }
+
+  .badge-entity-remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin-left: 2px;
+    cursor: pointer;
+    color: currentColor;
+    opacity: 0.6;
+    transition: opacity 0.15s ease;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    mat-icon {
+      font-size: 14px !important;
+      width: 14px !important;
+      height: 14px !important;
+      line-height: 1 !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}

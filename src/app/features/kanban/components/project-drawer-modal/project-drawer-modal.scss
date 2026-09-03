@@ -1,0 +1,328 @@
+:host {
+  @apply fixed inset-0 z-[1000] pointer-events-none;
+}
+
+.modal-frame {
+  &.slide-up {
+    animation: slideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  &.slide-down {
+    animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(100%); opacity: 0; }
+}
+
+/* ==========================================================================
+   1. Base Drawer Modal Frame & Layout
+   ========================================================================== */
+.drawer-container {
+  @apply flex flex-col overflow-hidden shadow-2xl relative rounded-tl-3xl rounded-tr-3xl;
+  margin-right: 64px;
+  width: 70vw;
+  max-width: calc(100vw - 64px - 48px);
+  min-width: 640px;
+  height: calc(100vh - 56px);
+  margin-top: 56px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.fullscreen-mode {
+    margin-right: 0 !important;
+    margin-top: 0 !important;
+    width: calc(100% - 48px) !important;
+    height: 100% !important;
+    border-radius: 0 !important;
+  }
+}
+
+.modal-backdrop {
+  @apply fixed inset-0 backdrop-blur-[4px] transition-opacity duration-300 pointer-events-auto;
+  background: linear-gradient(
+    to top,
+    rgba(46, 16, 101, 0.78) 0%,
+    rgba(88, 28, 135, 0.45) 40%,
+    rgba(126, 34, 206, 0.18) 75%,
+    rgba(15, 23, 42, 0.08) 100%
+  );
+}
+
+.drawer-bg {
+  @apply absolute inset-0 z-0 pointer-events-none bg-cover bg-center;
+  background-image: url('/assets/images/bg_abstract_12.jpg');
+}
+
+.modal-actions-sidebar {
+  top: 76px;
+  right: calc(64px + 70vw);
+  transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:host:has(.fullscreen-mode) .modal-actions-sidebar {
+  right: calc(100% - 48px) !important;
+  left: 0 !important;
+}
+
+/* .modal-close-btn — được định nghĩa global tại styles.scss, không cần khai báo lại */
+
+.drawer-main-content {
+  @apply relative z-10 flex-1 overflow-y-auto overflow-x-hidden flex flex-col p-6 lg:p-8;
+}
+
+/* ==========================================================================
+   2. Header Card
+   ========================================================================== */
+.drawer-header-card {
+  @apply flex items-center gap-4 bg-[#DAD7ED] backdrop-blur-md rounded-2xl p-4 lg:p-5 shadow-sm mb-0 shrink-0 border border-[#c8c4e3]/60;
+}
+
+.drawer-header-avatar {
+  @apply w-16 h-16 rounded-full bg-[#00a2ff] text-white shrink-0 shadow-md m-0;
+  display: grid;
+  place-items: center;
+
+  mat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 32px !important;
+    line-height: 1 !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: translateY(0.5px);
+  }
+}
+
+.drawer-header-title {
+  @apply text-lg lg:text-xl font-normal text-[#202020] tracking-tight;
+}
+
+.drawer-header-desc {
+  @apply text-xs lg:text-sm text-slate-500 mt-0.5 leading-relaxed max-w-[440px];
+}
+
+/* ==========================================================================
+   3. Body Card & Stepper
+   ========================================================================== */
+.drawer-body-card {
+  @apply bg-white rounded-2xl shadow-xl w-full flex flex-col shrink-0 overflow-hidden relative;
+}
+
+.drawer-stepper {
+  @apply bg-[#DAD7ED] border-b border-[#c8c4e3] px-6 py-3.5 select-none pointer-events-none shrink-0;
+}
+
+.drawer-stepper-list {
+  @apply flex items-center gap-2.5 m-0 p-0 list-none;
+}
+
+.drawer-stepper-item {
+  @apply flex items-center gap-2;
+}
+
+.drawer-stepper-label {
+  @apply text-[13.5px] select-none font-semibold;
+}
+
+.stepper-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.step-content-container {
+  @apply p-6 relative min-h-[520px] border-t border-r border-slate-100;
+}
+
+.step-section-title {
+  @apply text-base lg:text-lg font-normal text-[#00a2ff] mb-3 px-1;
+}
+
+.step-body {
+  @apply w-full max-w-[510px] flex flex-col;
+}
+
+/* ==========================================================================
+   4. Step 1: Option Cards
+   ========================================================================== */
+.option-cards-container {
+  @apply bg-white rounded-xl p-3 flex flex-col gap-2.5;
+}
+
+.option-card {
+  @apply flex items-center gap-4 p-3.5 rounded-xl border-2 cursor-pointer transition-colors duration-150;
+}
+
+.option-card-avatar {
+  @apply w-[52px] h-[52px] min-w-[52px] min-h-[52px] rounded-full flex items-center justify-center shrink-0 m-0;
+}
+
+.option-card-title {
+  @apply text-base font-semibold text-slate-800;
+}
+
+.option-card-desc {
+  @apply text-sm text-slate-500 mt-1 leading-relaxed;
+}
+
+/* ==========================================================================
+   5. Step 2: Form Controls & Tools
+   ========================================================================== */
+.form-group {
+  @apply flex flex-col gap-1.5 border-none p-0 m-0;
+}
+
+.form-label {
+  @apply text-[13px] font-semibold text-slate-700;
+}
+
+.form-input {
+  @apply h-10 px-3.5 text-[13px] rounded-lg border border-slate-300 bg-white text-slate-800;
+  outline: none;
+  transition: border-color 200ms ease;
+
+  &:focus {
+    border-color: #00a2ff;
+  }
+}
+
+.form-textarea {
+  @apply p-3.5 text-[13px] rounded-lg border border-slate-300 bg-white text-slate-800 resize-none;
+  outline: none;
+  transition: border-color 200ms ease;
+
+  &:focus {
+    border-color: #00a2ff;
+  }
+}
+
+.color-btn {
+  @apply w-8 h-8 rounded-full border border-black/10 cursor-pointer flex items-center justify-center text-white transition-transform duration-150 hover:scale-110;
+}
+
+.tools-grid {
+  @apply grid grid-cols-2 sm:grid-cols-3 gap-3;
+}
+
+.tool-btn {
+  @apply flex items-center gap-2 p-3 rounded-lg border text-xs font-medium cursor-pointer transition-all;
+}
+
+/* ==========================================================================
+   6. Step 3: Privacy Cards
+   ========================================================================== */
+.privacy-cards-container {
+  @apply flex flex-col gap-3 p-1;
+}
+
+.privacy-card {
+  @apply flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-colors duration-150;
+}
+
+.privacy-card-avatar {
+  @apply w-12 h-12 rounded-full flex items-center justify-center shrink-0 m-0;
+}
+
+.privacy-card-title {
+  @apply text-base font-semibold text-slate-800;
+}
+
+.privacy-card-desc {
+  @apply text-sm text-slate-500 mt-1 leading-relaxed;
+}
+
+.privacy-radio-indicator {
+  @apply w-5 h-5 rounded-full border-2 shrink-0 transition-all;
+}
+
+/* ==========================================================================
+   7. Step 4: Summary
+   ========================================================================== */
+.member-search-box {
+  @apply flex items-center gap-2 px-4 py-2.5 rounded-lg border border-slate-300 bg-slate-50 focus-within:bg-white focus-within:border-[#00a2ff] transition-all;
+}
+
+.project-summary-card {
+  @apply flex flex-col gap-2.5 p-4 rounded-xl border border-[#00a2ff]/30 bg-[#00a2ff]/5 mt-1;
+}
+
+.summary-row {
+  @apply flex items-center justify-between text-[13px];
+}
+
+/* ==========================================================================
+   8. Illustration Aside
+   ========================================================================== */
+.illustration-aside {
+  @apply hidden lg:block absolute left-[552px] top-[16px] z-30 w-[58%] max-w-[660px] pointer-events-none select-none;
+}
+
+.illustration-window {
+  @apply rounded-3xl bg-white overflow-hidden flex flex-col border-[2.5px] border-[#2fc6f6] min-h-[450px] lg:min-h-[480px];
+}
+
+.illustration-titlebar {
+  @apply bg-[#2fc6f6] px-5 py-3 flex items-center gap-2;
+}
+
+.illustration-body {
+  @apply p-5 lg:p-6 bg-white flex-1 flex flex-col;
+}
+
+/* ==========================================================================
+   9. Footer
+   ========================================================================== */
+.drawer-footer {
+  @apply bg-white border-t border-slate-200 px-6 py-3.5 select-none relative z-20 shrink-0;
+}
+
+.footer-prev-btn {
+  @apply px-2 py-2 text-[12.5px] font-semibold text-slate-500 hover:text-slate-800 transition-colors cursor-pointer bg-transparent border-none;
+}
+
+.footer-primary-btn {
+  @apply px-4 py-2 rounded-full bg-[#BBED21] hover:bg-[#b9ea12] text-slate-900 font-semibold text-[12.5px] uppercase tracking-wider transition-all cursor-pointer border-none disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none;
+}
+
+/* ==========================================================================
+   10. Custom Scrollbar
+   ========================================================================== */
+.custom-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+}
+
+.project-icon-btn {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+
+  mat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px !important;
+    height: 20px !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}

@@ -2,7 +2,8 @@
   <div *ngIf="selectedDate" class="due-date-wrapper">
     <button
       type="button"
-      class="due-date-badge has-date"
+      class="has-date"
+      [ngClass]="emptyVariant === 'rectangle' ? 'due-date-rectangle-btn' : 'due-date-badge'"
       [class.due-date-overdue]="computedIsOverdue"
       [disabled]="disabled"
       [class.cursor-default]="disabled"
@@ -50,6 +51,19 @@
     >
       <mat-icon *ngIf="showBadgeIcon" fontSet="material-icons-outlined" class="calendar-icon">calendar_today</mat-icon>
       <span class="due-date-text">{{ emptyTextKey | translate }}</span>
+    </button>
+
+    <button
+      *ngIf="emptyVariant === 'rectangle'"
+      type="button"
+      class="due-date-rectangle-btn w-full"
+      [disabled]="disabled"
+      [class.cursor-default]="disabled"
+      (click)="togglePopover($event)"
+      [attr.aria-label]="emptyTextKey | translate"
+    >
+      <mat-icon fontSet="material-icons-outlined" class="calendar-icon text-slate-400">event</mat-icon>
+      <span class="due-date-text" *ngIf="emptyTextKey">{{ emptyTextKey | translate }}</span>
     </button>
   </ng-container>
 
