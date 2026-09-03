@@ -72,11 +72,14 @@
 }
 
 .modal-close-btn {
-  @apply w-12 h-10 bg-[#3ca3f1] rounded-l-full flex items-center justify-center pl-2 pt-1 text-white cursor-pointer transition-all hover:bg-[#4eaef5];
-  box-shadow: 0 3px 0 rgba(15, 65, 95, 0.7);
+  @apply w-12 h-10 bg-[#3ca3f1] rounded-l-full flex items-center justify-center pl-2 pt-1 text-white cursor-pointer transition-all hover:bg-[#4eaef5] border-0 outline-none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+
   &:active {
     transform: translateY(2px);
-    box-shadow: 0 1px 0 rgba(15, 65, 95, 0.7);
+    box-shadow: none;
   }
 }
 
