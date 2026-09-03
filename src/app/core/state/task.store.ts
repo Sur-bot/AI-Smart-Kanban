@@ -11,7 +11,8 @@ import {
   TaskStatus,
   TaskFilterParams,
   CreateTaskPayload,
-  UpdateTaskPayload
+  UpdateTaskPayload,
+  CreateProjectPayload
 } from '../models/task.model';
 
 /** Shape of error responses returned by the backend API. */
@@ -237,7 +238,7 @@ export class TaskStore {
   /**
    * Tạo dự án mới
    */
-  createProject(payload: Partial<Project>, callback?: (project: Project) => void) {
+  createProject(payload: CreateProjectPayload, callback?: (project: Project) => void) {
     this.projectService.createProject(payload).subscribe({
       next: created => {
         this.projects.update(list => [created, ...list]);
