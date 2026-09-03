@@ -235,16 +235,24 @@ export interface Project {
   color?: string;
   icon?: string;
   cover_url?: string;
+  theme_url?: string;
   owner_id: string;
   start_date?: string;
   end_date?: string;
-  is_public: boolean;
+  /** @deprecated Use `privacy` instead */
+  is_public?: boolean;
+  privacy: ProjectPrivacy;
+  project_type: ProjectType;
+  tags?: string[];
+  enabled_tools?: Record<string, boolean>;
   created_at: string;
   statuses?: TaskStatus[];
   project_members?: ProjectMember[];
 }
 
-export type ProjectMemberRole = 'owner' | 'admin' | 'member' | 'viewer';
+export type ProjectType    = 'project' | 'collaborative' | 'workgroup';
+export type ProjectPrivacy = 'public'  | 'private'       | 'secret';
+export type ProjectMemberRole = 'owner' | 'admin' | 'moderator' | 'member' | 'viewer';
 export type JobRoleId = 'PM' | 'FE' | 'BE' | 'QA' | 'DevOps' | 'Designer' | 'Mobile' | 'DataAnalyst' | 'Other';
 
 export interface ProjectMember {
@@ -260,4 +268,22 @@ export interface ProjectMember {
     email: string;
     avatar_url?: string;
   };
+}
+
+export interface CreateProjectPayload {
+  name: string;
+  description?: string;
+  project_type: ProjectType;
+  privacy: ProjectPrivacy;
+  color?: string;
+  icon?: string;
+  theme_url?: string;
+  start_date?: string;
+  end_date?: string;
+  tags?: string[];
+  enabled_tools?: Record<string, boolean>;
+  initial_members?: Array<{
+    user_id: string;
+    role: ProjectMemberRole;
+  }>;
 }
