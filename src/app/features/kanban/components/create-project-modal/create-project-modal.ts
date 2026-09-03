@@ -37,7 +37,8 @@ export class CreateProjectModalComponent {
       name: this.projectName.trim(),
       description: this.projectDescription.trim(),
       color: this.selectedColor,
-      is_public: this.isPublic
+      privacy: this.isPublic ? 'public' : 'private',
+      project_type: 'project'
     }, () => {
       // On success, close modal
       this.close();

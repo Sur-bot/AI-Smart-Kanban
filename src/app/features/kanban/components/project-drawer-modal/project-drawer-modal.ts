@@ -157,7 +157,7 @@ export class ProjectDrawerModalComponent implements OnInit {
     }
   }
 
-  selectProjectType(type: ProjectWizardType): void {
+  selectProjectType(type: ProjectType): void {
     this.projectType = type;
   }
 
