@@ -17,13 +17,18 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TaskStore } from '../../../../core/state/task.store';
-import { Project, ProjectMemberRole } from '../../../../core/models/task.model';
+import { AuthService } from '../../../../core/auth/auth.service';
+import {
+  Project,
+  ProjectType,
+  ProjectPrivacy,
+  ProjectMemberRole,
+  UserSummary,
+  CreateProjectPayload
+} from '../../../../core/models/task.model';
 import { ThemeModalComponent } from '../../../../shared/components/theme-modal/theme-modal';
 import { DueDatePickerComponent } from '../../../../shared/components/due-date-picker/due-date-picker';
 import { AddTagBadgeComponent } from '../../../../shared/components/add-tag-badge/add-tag-badge';
-
-export type ProjectWizardType = 'project' | 'collaborative' | 'workgroup';
-export type ProjectPrivacyType = 'public' | 'private' | 'secret';
 
 @Component({
   selector: 'app-project-drawer-modal',
@@ -47,10 +52,12 @@ export class ProjectDrawerModalComponent implements OnInit {
 
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
 
+  private authService = inject(AuthService);
+
   currentStep: 1 | 2 | 3 | 4 = 1;
 
   // Step 1
-  projectType: ProjectWizardType = 'project';
+  projectType: ProjectType = 'project';
 
   // Step 2
   projectName = '';
@@ -86,15 +93,20 @@ export class ProjectDrawerModalComponent implements OnInit {
     chat: true
   };
 
-  // Step 3: Quyền riêng tư
-  privacyType: ProjectPrivacyType = 'public';
+  // Step 3
+  privacyType: ProjectPrivacy = 'public';
 
   // Step 4: Thành viên
   ownerName = 'Văn Anh Nguyễn';
+  ownerId = '';
   showModerators = false;
   searchMemberQuery = '';
+  searchModeratorQuery = '';
+  moderatorIds: string[] = [];
   selectedMemberIds = new Set<string>();
   memberRoles: Record<string, ProjectMemberRole> = {};
+  searchResults: UserSummary[] = [];
+  moderatorResults: UserSummary[] = [];
 
   ngOnInit(): void {}
 
@@ -241,13 +253,29 @@ export class ProjectDrawerModalComponent implements OnInit {
     if (!this.projectName.trim() || this.isSubmitting) return;
 
     this.isSubmitting = true;
-    const payload: Partial<Project> = {
-      name: this.projectName.trim(),
-      description: this.projectDescription.trim() || undefined,
-      color: this.selectedColor,
-      icon: this.selectedIcon,
-      is_public: this.privacyType === 'public',
-      status: 'active'
+
+    const currentUser = this.authService.user();
+    const ownerId = currentUser?.id || '';
+
+    const initialMembers: CreateProjectPayload['initial_members'] = [
+      { user_id: ownerId, role: 'owner' },
+      ...this.moderatorIds.map(id => ({ user_id: id, role: 'moderator' as ProjectMemberRole })),
+      ...[...this.selectedMemberIds].map(id => ({ user_id: id, role: this.memberRoles[id] ?? 'member' as ProjectMemberRole })),
+    ];
+
+    const payload: CreateProjectPayload = {
+      name:          this.projectName.trim(),
+      description:   this.projectDescription.trim() || undefined,
+      project_type:  this.projectType,
+      privacy:       this.privacyType,
+      color:         this.selectedColor,
+      icon:          this.selectedIcon,
+      theme_url:     this.currentThemeUrl,
+      start_date:    this.startDate || undefined,
+      end_date:      this.endDate   || undefined,
+      tags:          this.selectedTags.length ? this.selectedTags : undefined,
+      enabled_tools: this.enabledTools as Record<string, boolean>,
+      initial_members: initialMembers.filter(m => m.user_id),
     };
 
     this.taskStore.createProject(payload, (createdProject: Project) => {
