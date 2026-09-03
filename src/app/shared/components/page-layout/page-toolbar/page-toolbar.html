@@ -1,22 +1,12 @@
 <header class="tasks-toolbar">
     <nav class="toolbar-left" aria-label="Toolbar Primary">
         <h1 class="toolbar-title m-0 text-base font-normal">{{ pageTitle }}</h1>
-        <div class="btn-create-group" role="group" aria-label="Create Actions" *ngIf="canCreate">
-            <button class="btn-create-main" type="button" (click)="openCreateModal(); $event.stopPropagation()">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
-                    stroke="currentColor" class="w-4 h-4">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-                <span>Tạo</span>
-            </button>
-            <div class="btn-create-divider" *ngIf="showCreateDropdown"></div>
-            <button class="btn-create-dropdown" *ngIf="showCreateDropdown">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
-                    stroke="currentColor" class="w-3.5 h-3.5 opacity-80">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                </svg>
-            </button>
-        </div>
+        <app-create-button
+          *ngIf="canCreate"
+          [context]="currentSearchContext"
+          [showDropdown]="showCreateDropdown"
+          (create)="openCreateModal()"
+        ></app-create-button>
         <div class="relative" *ngIf="showRoleDropdown">
             <button class="btn-role" (click)="toggleRoleDropdown($event)" [class.active]="isRoleDropdownOpen">
                 <span>{{ getSelectedRoleLabel() }}</span>
@@ -157,9 +147,15 @@
     </div>
 </header>
 
-<!-- Modal Tao Tac Vu nhanh -->
+<!-- Modal Tao Tac Vu nhanh (khi context === 'task') -->
 <app-create-task-modal
   [isOpen]="isCreateModalOpen"
   (close)="closeCreateModal()"
   (openDetail)="onOpenDetailForm($event)"
 ></app-create-task-modal>
+
+<!-- Modal Tao Du An dang Drawer truot tu goc phai (khi context === 'project') -->
+<app-project-drawer-modal
+  [isOpen]="isCreateProjectDrawerOpen"
+  (close)="closeCreateProjectDrawer()"
+></app-project-drawer-modal>

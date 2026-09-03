@@ -70,7 +70,13 @@
 }
 
 .due-date-rectangle-btn {
-  @apply flex items-center h-[42px] px-3.5 bg-white border border-slate-200 rounded-md transition-all hover:bg-slate-50 hover:border-slate-300 focus:border-[#00a2ff] focus:ring-1 focus:ring-[#00a2ff] cursor-pointer select-none w-full gap-2 text-[14.5px] justify-start;
+  @apply flex items-center h-[42px] px-3.5 bg-white border border-slate-200 rounded-md hover:bg-slate-50 hover:border-slate-300 cursor-pointer select-none w-full gap-2 text-[14.5px] justify-start;
+  outline: none;
+  transition: border-color 200ms ease, background-color 200ms ease;
+
+  &:focus {
+    border-color: #00a2ff;
+  }
   
   .calendar-icon {
     @apply text-[18px] w-[18px] h-[18px] leading-none text-slate-400 shrink-0;

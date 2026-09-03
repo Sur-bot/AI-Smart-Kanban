@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { NgStyle } from '@angular/common';
 import { CreateTaskModalComponent } from '../../create-task-modal/create-task-modal';
+import { CreateButtonComponent } from '../../create-button/create-button';
+import { ProjectDrawerModalComponent } from '../../../../features/kanban/components/project-drawer-modal/project-drawer-modal';
 import { TaskStore } from '../../../../core/state/task.store';
 
 const TASK_FILTERS = [
@@ -60,7 +62,7 @@ export const DEFAULT_TASK_FIELDS: ToolbarField[] = [
 @Component({
   selector: 'app-page-toolbar',
   standalone: true,
-  imports: [CommonModule, MatIconModule, NgStyle, CreateTaskModalComponent],
+  imports: [CommonModule, MatIconModule, NgStyle, CreateButtonComponent, CreateTaskModalComponent, ProjectDrawerModalComponent],
   templateUrl: './page-toolbar.html',
   styleUrls: ['./page-toolbar.scss'],
 })
@@ -129,15 +131,26 @@ export class PageToolbarComponent {
 
   readonly taskStore = inject(TaskStore);
 
-  /** Trang thai hien thi popup Tao Tac Vu */
+  /** Trạng thái hiển thị popup Tạo Tác Vụ */
   isCreateModalOpen = false;
 
+  /** Trạng thái hiển thị drawer Tạo Dự Án */
+  isCreateProjectDrawerOpen = false;
+
   openCreateModal(): void {
-    this.isCreateModalOpen = true;
+    if (this.currentSearchContext === 'project') {
+      this.isCreateProjectDrawerOpen = true;
+    } else {
+      this.isCreateModalOpen = true;
+    }
   }
 
   closeCreateModal(): void {
     this.isCreateModalOpen = false;
+  }
+
+  closeCreateProjectDrawer(): void {
+    this.isCreateProjectDrawerOpen = false;
   }
 
   onOpenDetailForm(payload: any): void {
@@ -252,7 +265,10 @@ export class PageToolbarComponent {
     return this.availableFields.find(f => f.id === fieldId)?.checked || false;
   }
 
+  currentSearchContext: 'task' | 'project' = 'task';
+
   @Input() set searchContext(context: 'task' | 'project') {
+    this.currentSearchContext = context;
     this.searchFilters = context === 'project' ? PROJECT_FILTERS : TASK_FILTERS;
     this.selectedSearchFilter = this.searchFilters[0].id;
   }
