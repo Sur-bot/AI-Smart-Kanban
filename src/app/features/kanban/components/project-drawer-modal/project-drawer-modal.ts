@@ -17,13 +17,19 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TaskStore } from '../../../../core/state/task.store';
-import { Project, ProjectMemberRole } from '../../../../core/models/task.model';
+import { AuthService } from '../../../../core/auth/auth.service';
+import {
+  Project,
+  ProjectType,
+  ProjectPrivacy,
+  ProjectMemberRole,
+  UserSummary,
+  CreateProjectPayload
+} from '../../../../core/models/task.model';
 import { ThemeModalComponent } from '../../../../shared/components/theme-modal/theme-modal';
 import { DueDatePickerComponent } from '../../../../shared/components/due-date-picker/due-date-picker';
 import { AddTagBadgeComponent } from '../../../../shared/components/add-tag-badge/add-tag-badge';
-
-export type ProjectWizardType = 'project' | 'collaborative' | 'workgroup';
-export type ProjectPrivacyType = 'public' | 'private' | 'secret';
+import { UserService, UserSearchResult } from '../../../../core/services/user.service';
 
 @Component({
   selector: 'app-project-drawer-modal',
@@ -35,6 +41,7 @@ export type ProjectPrivacyType = 'public' | 'private' | 'secret';
 export class ProjectDrawerModalComponent implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   private dialog = inject(MatDialog);
+  private userService = inject(UserService);
   readonly taskStore = inject(TaskStore);
 
   @Input() isOpen = false;
@@ -47,10 +54,12 @@ export class ProjectDrawerModalComponent implements OnInit {
 
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
 
+  private authService = inject(AuthService);
+
   currentStep: 1 | 2 | 3 | 4 = 1;
 
   // Step 1
-  projectType: ProjectWizardType = 'project';
+  projectType: ProjectType = 'project';
 
   // Step 2
   projectName = '';
@@ -86,17 +95,38 @@ export class ProjectDrawerModalComponent implements OnInit {
     chat: true
   };
 
-  // Step 3: Quyền riêng tư
-  privacyType: ProjectPrivacyType = 'public';
+  // Step 3
+  privacyType: ProjectPrivacy = 'public';
 
   // Step 4: Thành viên
-  ownerName = 'Văn Anh Nguyễn';
+  ownerName = '';
+  ownerId = '';
+
+  // Moderators
   showModerators = false;
+  searchModeratorQuery = '';
+  moderatorIds: string[] = [];
+  moderators: UserSearchResult[] = [];
+  moderatorResults: UserSearchResult[] = [];
+  isSearchingModerator = false;
+  private _modSearchTimer: any;
+
+  // Members
   searchMemberQuery = '';
   selectedMemberIds = new Set<string>();
   memberRoles: Record<string, ProjectMemberRole> = {};
+  members: UserSearchResult[] = [];
+  searchResults: UserSearchResult[] = [];
+  isSearchingMember = false;
+  private _memberSearchTimer: any;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const user = this.authService.user();
+    if (user) {
+      this.ownerName = user.user_metadata?.['name'] || user.email || 'Chủ sở hữu';
+      this.ownerId = user.id;
+    }
+  }
 
   setStep(step: 1 | 2 | 3 | 4): void {
     if (step === 2 && !this.projectType) return;
@@ -127,7 +157,7 @@ export class ProjectDrawerModalComponent implements OnInit {
     }
   }
 
-  selectProjectType(type: ProjectWizardType): void {
+  selectProjectType(type: ProjectType): void {
     this.projectType = type;
   }
 
@@ -188,6 +218,92 @@ export class ProjectDrawerModalComponent implements OnInit {
 
   toggleModerators(): void {
     this.showModerators = !this.showModerators;
+    if (!this.showModerators) {
+      this.searchModeratorQuery = '';
+      this.moderatorResults = [];
+    }
+  }
+
+  // ─── Moderator search ──────────────────────────────
+
+  onModeratorSearchInput(query: string): void {
+    this.searchModeratorQuery = query;
+    clearTimeout(this._modSearchTimer);
+    if (!query.trim()) { this.moderatorResults = []; return; }
+    this.isSearchingModerator = true;
+    this._modSearchTimer = setTimeout(() => this._searchModerators(query.trim()), 300);
+  }
+
+  private _searchModerators(q: string): void {
+    const wsId = this.taskStore.currentProject()?.workspace_id || '';
+    this.userService.searchUsers(q, wsId).subscribe({
+      next: results => {
+        this.moderatorResults = results.filter(
+          u => u.id !== this.ownerId && !this.moderatorIds.includes(u.id)
+        );
+        this.isSearchingModerator = false;
+        this.cdr.detectChanges();
+      },
+      error: () => { this.isSearchingModerator = false; }
+    });
+  }
+
+  addModerator(user: UserSearchResult): void {
+    if (this.moderatorIds.includes(user.id)) return;
+    this.moderatorIds.push(user.id);
+    this.moderators.push(user);
+    this.searchModeratorQuery = '';
+    this.moderatorResults = [];
+  }
+
+  removeModerator(userId: string): void {
+    this.moderatorIds = this.moderatorIds.filter(id => id !== userId);
+    this.moderators = this.moderators.filter(u => u.id !== userId);
+  }
+
+  // ─── Member search ─────────────────────────────────
+
+  onMemberSearchInput(query: string): void {
+    this.searchMemberQuery = query;
+    clearTimeout(this._memberSearchTimer);
+    if (!query.trim()) { this.searchResults = []; return; }
+    this.isSearchingMember = true;
+    this._memberSearchTimer = setTimeout(() => this._searchMembers(query.trim()), 300);
+  }
+
+  private _searchMembers(q: string): void {
+    const wsId = this.taskStore.currentProject()?.workspace_id || '';
+    this.userService.searchUsers(q, wsId).subscribe({
+      next: results => {
+        this.searchResults = results.filter(
+          u => u.id !== this.ownerId
+            && !this.moderatorIds.includes(u.id)
+            && !this.selectedMemberIds.has(u.id)
+        );
+        this.isSearchingMember = false;
+        this.cdr.detectChanges();
+      },
+      error: () => { this.isSearchingMember = false; }
+    });
+  }
+
+  addMember(user: UserSearchResult, role: ProjectMemberRole = 'member'): void {
+    if (this.selectedMemberIds.has(user.id)) return;
+    this.selectedMemberIds.add(user.id);
+    this.memberRoles[user.id] = role;
+    this.members.push(user);
+    this.searchMemberQuery = '';
+    this.searchResults = [];
+  }
+
+  removeMember(userId: string): void {
+    this.selectedMemberIds.delete(userId);
+    delete this.memberRoles[userId];
+    this.members = this.members.filter(u => u.id !== userId);
+  }
+
+  changeMemberRole(userId: string, role: ProjectMemberRole): void {
+    this.memberRoles[userId] = role;
   }
 
   toggleFullscreen(): void {
@@ -241,13 +357,29 @@ export class ProjectDrawerModalComponent implements OnInit {
     if (!this.projectName.trim() || this.isSubmitting) return;
 
     this.isSubmitting = true;
-    const payload: Partial<Project> = {
-      name: this.projectName.trim(),
-      description: this.projectDescription.trim() || undefined,
-      color: this.selectedColor,
-      icon: this.selectedIcon,
-      is_public: this.privacyType === 'public',
-      status: 'active'
+
+    const currentUser = this.authService.user();
+    const ownerId = currentUser?.id || '';
+
+    const initialMembers: CreateProjectPayload['initial_members'] = [
+      { user_id: ownerId, role: 'owner' },
+      ...this.moderatorIds.map(id => ({ user_id: id, role: 'moderator' as ProjectMemberRole })),
+      ...[...this.selectedMemberIds].map(id => ({ user_id: id, role: this.memberRoles[id] ?? 'member' as ProjectMemberRole })),
+    ];
+
+    const payload: CreateProjectPayload = {
+      name:          this.projectName.trim(),
+      description:   this.projectDescription.trim() || undefined,
+      project_type:  this.projectType,
+      privacy:       this.privacyType,
+      color:         this.selectedColor,
+      icon:          this.selectedIcon,
+      theme_url:     this.currentThemeUrl,
+      start_date:    this.startDate || undefined,
+      end_date:      this.endDate   || undefined,
+      tags:          this.selectedTags.length ? this.selectedTags : undefined,
+      enabled_tools: this.enabledTools as Record<string, boolean>,
+      initial_members: initialMembers.filter(m => m.user_id),
     };
 
     this.taskStore.createProject(payload, (createdProject: Project) => {

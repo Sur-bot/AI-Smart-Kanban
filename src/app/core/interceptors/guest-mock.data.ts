@@ -26,7 +26,8 @@ export const GUEST_PROJECT: Project = {
   name: 'Dự án Sản phẩm AI Smart',
   status: 'active',
   owner_id: 'user-1',
-  is_public: true,
+  privacy: 'public',
+  project_type: 'project',
   created_at: new Date().toISOString(),
   statuses: GUEST_STATUSES
 };

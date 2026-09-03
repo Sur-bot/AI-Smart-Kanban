@@ -1,7 +1,9 @@
-import { Component, Input, HostListener, ElementRef, inject, HostBinding } from '@angular/core';
+import { Component, Input, HostListener, ElementRef, inject, HostBinding, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { NgStyle } from '@angular/common';
+import { Subscription } from 'rxjs';
 import { CreateTaskModalComponent } from '../../create-task-modal/create-task-modal';
 import { CreateButtonComponent } from '../../create-button/create-button';
 import { ProjectDrawerModalComponent } from '../../../../features/kanban/components/project-drawer-modal/project-drawer-modal';
@@ -66,7 +68,7 @@ export const DEFAULT_TASK_FIELDS: ToolbarField[] = [
   templateUrl: './page-toolbar.html',
   styleUrls: ['./page-toolbar.scss'],
 })
-export class PageToolbarComponent {
+export class PageToolbarComponent implements OnInit, OnDestroy {
   @Input() pageTitle = '';
   @HostBinding('attr.title') hostTitle = null;
   
@@ -92,6 +94,20 @@ export class PageToolbarComponent {
   addFieldPopupStyle: { top?: string; bottom?: string; left: string } = { top: '0px', left: '0px' };
 
   constructor(private el: ElementRef) {}
+
+  private router     = inject(Router);
+  private route      = inject(ActivatedRoute);
+  private _routeSub?: Subscription;
+
+  ngOnInit(): void {
+    this._routeSub = this.route.queryParams.subscribe(params => {
+      this.isCreateProjectDrawerOpen = params['action'] === 'create';
+    });
+  }
+
+  ngOnDestroy(): void {
+    this._routeSub?.unsubscribe();
+  }
 
   activeFilters = [
     { id: 'status', label: 'Đang tiến hành' },
@@ -139,7 +155,11 @@ export class PageToolbarComponent {
 
   openCreateModal(): void {
     if (this.currentSearchContext === 'project') {
-      this.isCreateProjectDrawerOpen = true;
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { action: 'create' },
+        queryParamsHandling: 'merge'
+      });
     } else {
       this.isCreateModalOpen = true;
     }
@@ -150,7 +170,11 @@ export class PageToolbarComponent {
   }
 
   closeCreateProjectDrawer(): void {
-    this.isCreateProjectDrawerOpen = false;
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { action: null },
+      queryParamsHandling: 'merge'
+    });
   }
 
   onOpenDetailForm(payload: any): void {

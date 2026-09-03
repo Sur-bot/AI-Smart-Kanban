@@ -1,4 +1,4 @@
-﻿import { Injectable, inject, signal, computed } from '@angular/core';
+import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { ProjectMemberRole } from '../../core/models/task.model';
@@ -9,35 +9,37 @@ import { ProjectMemberRole } from '../../core/models/task.model';
  */
 const PERMISSION_MATRIX: Record<string, ProjectMemberRole[]> = {
   // Project
-  'project.view':            ['owner', 'admin', 'member', 'viewer'],
+  'project.view':            ['owner', 'admin', 'moderator', 'member', 'viewer'],
   'project.update':          ['owner', 'admin'],
   'project.delete':          ['owner'],
   'project.archive':         ['owner', 'admin'],
   'project.transferOwner':   ['owner'],
 
   // Members
-  'member.view':             ['owner', 'admin', 'member', 'viewer'],
-  'member.invite':           ['owner', 'admin'],
+  'member.view':             ['owner', 'admin', 'moderator', 'member', 'viewer'],
+  'member.invite':           ['owner', 'admin', 'moderator'],
+  'member.inviteLink':       ['owner', 'admin', 'moderator', 'member'], // public project only
   'member.remove':           ['owner', 'admin'],
   'member.changeRole':       ['owner', 'admin'],
-  'member.leave':            ['admin', 'member', 'viewer'],
+  'member.leave':            ['admin', 'moderator', 'member', 'viewer'],
 
   // Tasks
-  'task.view':               ['owner', 'admin', 'member', 'viewer'],
-  'task.create':             ['owner', 'admin', 'member'],
-  'task.update':             ['owner', 'admin', 'member'],
-  'task.delete':             ['owner', 'admin'],
-  'task.assign':             ['owner', 'admin', 'member'],
+  'task.view':               ['owner', 'admin', 'moderator', 'member', 'viewer'],
+  'task.create':             ['owner', 'admin', 'moderator', 'member'],
+  'task.update':             ['owner', 'admin', 'moderator', 'member'],
+  'task.delete':             ['owner', 'admin', 'moderator'],
+  'task.assign':             ['owner', 'admin', 'moderator', 'member'],
 
   // Board configuration
   'status.manage':           ['owner', 'admin'],
-  'label.create':            ['owner', 'admin', 'member'],
+  'label.create':            ['owner', 'admin', 'moderator', 'member'],
 
   // Comments & Checklists
-  'comment.create':          ['owner', 'admin', 'member'],
-  'checklist.create':        ['owner', 'admin', 'member'],
-  'checklist.toggle':        ['owner', 'admin', 'member'],
+  'comment.create':          ['owner', 'admin', 'moderator', 'member'],
+  'checklist.create':        ['owner', 'admin', 'moderator', 'member'],
+  'checklist.toggle':        ['owner', 'admin', 'moderator', 'member'],
 };
+
 
 export type PermissionAction = keyof typeof PERMISSION_MATRIX;
 
