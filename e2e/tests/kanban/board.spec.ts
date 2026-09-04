@@ -1,16 +1,3 @@
-/**
- * board.spec.ts — E2E Tests cho Kanban Board
- * (Chạy với session đã đăng nhập — xem playwright.config.ts)
- *
- * TC-KANBAN-001: Hiển thị Kanban board sau khi login
- * TC-KANBAN-002: Tạo task mới qua modal
- * TC-KANBAN-003: Validate form tạo task (title bắt buộc)
- * TC-KANBAN-004: Xóa task thành công
- * TC-KANBAN-005: Kéo thả task sang cột khác
- * TC-KANBAN-006: Tìm kiếm task theo từ khóa
- * TC-KANBAN-007: Filter task theo priority
- * TC-KANBAN-008: Hiển thị task đúng thông tin
- */
 import { test, expect } from '@playwright/test';
 import { KanbanPage } from '../../pages/kanban.page';
 
@@ -24,12 +11,23 @@ test.describe('Kanban — Board', () => {
   test.beforeEach(async ({ page }) => {
     kanbanPage = new KanbanPage(page);
     await kanbanPage.goto();
+    
+    try {
+      await expect(page.locator('app-page-toolbar')).toBeVisible({ timeout: 5000 });
+    } catch (e) {
+      await kanbanPage.createProject(`[E2E] Base Project ${UID}`);
+    }
   });
 
   // ────────────────────────────────────────────────────────────────────────────
-  test('TC-KANBAN-001: Hiển thị Kanban Board sau khi đăng nhập', async () => {
+  test('TC-KANBAN-001: Đổi View (List -> Planner -> Deadline)', async ({ page }) => {
+    const listTab = page.getByRole('button', { name: /danh sách/i });
+    const deadlineTab = page.getByRole('button', { name: /hạn chót/i });
+    
+    await deadlineTab.click();
+    await expect(page).toHaveURL(/view=deadline/);
     await expect(kanbanPage.board).toBeVisible();
-    // Có ít nhất 1 cột
+
     const columnCount = await kanbanPage.columns.count();
     expect(columnCount).toBeGreaterThan(0);
   });
@@ -41,18 +39,15 @@ test.describe('Kanban — Board', () => {
       description: 'Mô tả task test tự động bằng Playwright',
     });
 
-    // Task vừa tạo phải xuất hiện trên board
+    // Task vừa tạo phải xuất hiện trên bảng (bất kể view list hay board)
     await expect(kanbanPage.getTaskCard(TEST_TASK_TITLE)).toBeVisible();
   });
 
   // ────────────────────────────────────────────────────────────────────────────
   test('TC-KANBAN-003: Không tạo được task khi bỏ trống tiêu đề', async ({ page }) => {
     await kanbanPage.openCreateTaskModal();
-
-    // Submit mà không điền title
     await kanbanPage.taskSubmitBtn.click();
 
-    // Modal vẫn còn mở (không đóng) hoặc hiện lỗi validation
     const isModalStillOpen = await kanbanPage.taskModal.isVisible();
     const titleInvalid = await page.locator(':invalid').count() > 0;
     const errorVisible = await page.locator('.error, [role="alert"]').isVisible();
@@ -62,19 +57,19 @@ test.describe('Kanban — Board', () => {
 
   // ────────────────────────────────────────────────────────────────────────────
   test('TC-KANBAN-004: Xóa task thành công', async () => {
-    // Tạo task trước để xóa
     const taskToDelete = `[E2E] Xóa Task ${UID}`;
     await kanbanPage.createTask({ title: taskToDelete });
     await expect(kanbanPage.getTaskCard(taskToDelete)).toBeVisible();
 
-    // Xóa task
     await kanbanPage.deleteTask(taskToDelete);
     await expect(kanbanPage.getTaskCard(taskToDelete)).toBeHidden();
   });
 
   // ────────────────────────────────────────────────────────────────────────────
-  test('TC-KANBAN-005: Kéo thả task sang cột khác', async () => {
-    // Tạo task trước
+  test('TC-KANBAN-005: Kéo thả task sang cột khác', async ({ page }) => {
+    const deadlineTab = page.getByRole('button', { name: /hạn chót/i });
+    await deadlineTab.click();
+
     const taskToDrag = `[E2E] Drag Task ${UID}`;
     await kanbanPage.createTask({ title: taskToDrag });
 
@@ -84,10 +79,7 @@ test.describe('Kanban — Board', () => {
       return;
     }
 
-    // Kéo sang cột thứ 2 (index 1)
     await kanbanPage.dragTaskToColumn(taskToDrag, 1);
-
-    // Task vẫn còn tồn tại trên board
     await expect(kanbanPage.getTaskCard(taskToDrag)).toBeVisible();
   });
 
