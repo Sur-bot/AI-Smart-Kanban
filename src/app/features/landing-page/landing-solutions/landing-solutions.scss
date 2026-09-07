@@ -67,7 +67,7 @@
 // ─── Floating Kanban Decorations (Vertical Marquee) ────────────────
 .solutions-deco-left,
 .solutions-deco-right {
-  @apply absolute top-32 sm:top-48 w-[380px] sm:w-[480px] h-[200%] pointer-events-none select-none z-0 opacity-70;
+  @apply hidden md:block absolute top-32 sm:top-48 w-[380px] sm:w-[480px] h-[200%] pointer-events-none select-none z-0 opacity-70;
 }
 
 .solutions-deco-left {
