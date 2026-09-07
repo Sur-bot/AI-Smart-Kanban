@@ -14,6 +14,8 @@ export interface NavMenuItem {
   descKey?: string;
   /** Material Icon name shown next to the item (used in 'wide' with icons) */
   matIcon?: string;
+  /** Custom HEX color for the icon (optional) */
+  iconColor?: string;
   /** Internal route for routerLink */
   route?: string;
   /** Whether to show an external-link icon */
@@ -28,6 +30,8 @@ export interface NavMenuGroup {
   titleKey: string;
   /** Material Icon name for the group header */
   matIcon: string;
+  /** Custom HEX color for the group icon (optional) */
+  iconColor?: string;
   /** List of items in this group */
   items: NavMenuItem[];
   /**
