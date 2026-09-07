@@ -6,7 +6,7 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { routes } from './app.routes';
 import { authInterceptor } from './core/auth/auth.interceptor';
-import { guestMockInterceptor } from './core/interceptors/guest-mock.interceptor';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,7 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimationsAsync(),
     provideHttpClient(
-      withInterceptors([guestMockInterceptor, authInterceptor])
+      withInterceptors([authInterceptor])
     ),
     provideTranslateService({
       fallbackLang: 'vi',
