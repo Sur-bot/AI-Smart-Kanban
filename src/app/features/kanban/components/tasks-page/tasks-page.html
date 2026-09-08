@@ -40,8 +40,8 @@
 
     <app-data-table
       *ngIf="activeView === 'list'"
-      [tasks]="tasks"
-      (taskSelected)="openTaskDetail($event)" />
+      [data]="tasks"
+      (itemSelected)="openTaskDetail($event)" />
 
     <app-deadline *ngIf="activeView === 'deadline'" (taskSelected)="openTaskDetail($event)" />
 

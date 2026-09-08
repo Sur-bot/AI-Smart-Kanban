@@ -14,11 +14,12 @@ import { TaskStore } from '../../../core/state/task.store';
 import { AuthService } from '../../../core/auth/auth.service';
 import { CreateTaskPayload } from '../../../core/models/task.model';
 import { DueDatePickerComponent } from '../due-date-picker/due-date-picker';
+import { AssigneePopoverComponent } from '../assignee-popover/assignee-popover';
 
 @Component({
   selector: 'app-create-task-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, MatIconModule, DueDatePickerComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, MatIconModule, DueDatePickerComponent, AssigneePopoverComponent],
   templateUrl: './create-task-modal.html',
   styleUrls: ['./create-task-modal.scss'],
 })
@@ -45,7 +46,6 @@ export class CreateTaskModalComponent implements OnInit {
   assigneeAvatar: string | null = null;
   assigneeId: string | null = null;
   isAssigneeDropdownOpen = false;
-  searchMemberQuery = '';
 
   ngOnInit(): void {
     this.initAssignee();
@@ -84,18 +84,18 @@ export class CreateTaskModalComponent implements OnInit {
     this.isAssigneeDropdownOpen = !this.isAssigneeDropdownOpen;
   }
 
-  selectMember(name: string, id: string, event: Event): void {
-    event.stopPropagation();
-    this.assigneeName = name;
-    this.assigneeId = id;
-    this.form.patchValue({ assigneeId: id });
+  onMemberSelected(event: {id: string, name: string, avatar: string | null}): void {
+    this.assigneeName = event.name;
+    this.assigneeId = event.id;
+    this.assigneeAvatar = event.avatar;
+    this.form.patchValue({ assigneeId: event.id });
     this.isAssigneeDropdownOpen = false;
   }
 
-  clearAssignee(event: Event): void {
-    event.stopPropagation();
+  clearAssignee(): void {
     this.assigneeName = '';
     this.assigneeId = null;
+    this.assigneeAvatar = null;
     this.form.patchValue({ assigneeId: null });
   }
 
