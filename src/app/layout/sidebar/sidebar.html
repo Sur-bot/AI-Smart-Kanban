@@ -1,6 +1,6 @@
 <div class="sidebar-wrapper" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
 
-  <aside class="sidebar-container" [class.collapsed]="isCollapsed && !isHoverExpanded"
+  <aside class="sidebar-container" [class.expanded]="!isCollapsed"
     [class.hover-expanded]="isCollapsed && isHoverExpanded">
 
     <!-- Header: Logo + Toggle Button -->

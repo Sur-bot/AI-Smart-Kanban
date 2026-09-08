@@ -65,8 +65,8 @@ export class TaskService {
   /**
    * Cập nhật hàng loạt (Drag & Drop)
    */
-  bulkMoveTasks(moves: { taskId: string, statusId?: string, boardColumnOrder: number }[]): Observable<{ success: boolean; count: number }> {
-    return this.http.post<{ success: boolean; count: number }>(`${this.apiUrl}/bulk-move`, { moves }, { withCredentials: true });
+  bulkMoveTasks(moves: { taskId: string, statusId?: string, boardColumnOrder: number }[], projectId?: string): Observable<{ success: boolean; count: number }> {
+    return this.http.post<{ success: boolean; count: number }>(`${this.apiUrl}/bulk-move`, { moves, projectId }, { withCredentials: true });
   }
 
   /**

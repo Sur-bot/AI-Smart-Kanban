@@ -10,11 +10,11 @@
 
 /* ===== Sidebar Container ===== */
 .sidebar-container {
-  @apply w-[260px] h-full flex flex-col text-white font-sans bg-black/20 backdrop-blur-md overflow-hidden;
+  @apply w-[68px] h-full flex flex-col text-white font-sans bg-black/20 backdrop-blur-md overflow-hidden;
   transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.25s ease, box-shadow 0.25s ease;
 
-  &.collapsed {
-    @apply w-[68px];
+  &.expanded {
+    @apply w-[260px];
   }
 
   &.hover-expanded {
@@ -43,16 +43,15 @@
 
 /* ===== Menu ===== */
 .sidebar-menu {
-  @apply flex-1 overflow-x-hidden py-2 px-3;
-  overflow-y: auto;
+  @apply flex-1 py-2 px-3 overflow-y-hidden overflow-x-hidden;
   scrollbar-width: none;
 
   &::-webkit-scrollbar {
     display: none;
   }
 
-  .collapsed & {
-    @apply py-2 px-3 overflow-y-hidden;
+  :is(.expanded, .hover-expanded) & {
+    @apply overflow-y-auto;
   }
 }
 
@@ -137,24 +136,24 @@
 }
 
 .upgrade-btn {
-  @apply flex items-center justify-start gap-3 py-2.5 px-3 rounded-[10px] w-[236px] h-[44px] text-[13px] font-medium text-white border-none cursor-pointer bg-gradient-to-br from-[#ff8c72] via-[#e56ab3] to-[#b36af5] whitespace-nowrap overflow-hidden;
+  @apply flex items-center justify-start gap-3 py-2.5 px-3 rounded-[10px] w-[44px] h-[44px] text-[13px] font-medium text-white border-none cursor-pointer bg-gradient-to-br from-[#ff8c72] via-[#e56ab3] to-[#b36af5] whitespace-nowrap overflow-hidden;
   transition: width 0.18s cubic-bezier(0.4, 0, 0.2, 1), filter 0.15s ease;
 
   &:hover {
     @apply brightness-110;
   }
 
-  .collapsed & {
-    @apply w-[44px];
+  :is(.expanded, .hover-expanded) & {
+    @apply w-[236px];
   }
 }
 
 .upgrade-text {
-  @apply opacity-100;
+  @apply opacity-0;
   transition: opacity 0.18s ease;
 
-  .collapsed & {
-    @apply opacity-0;
+  :is(.expanded, .hover-expanded) & {
+    @apply opacity-100;
   }
 }
 

@@ -124,7 +124,7 @@ export class DeadlineComponent {
       transferArrayItem(prevTasks, currTasks, event.previousIndex, event.currentIndex);
       
       // Calculate new due date based on the target column
-      let newDueDate: string | undefined = task.dueDate;
+      let newDueDate: string | undefined | null = task.dueDate;
       const now = new Date();
       if (targetColId === 'today') {
         newDueDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59).toISOString();
@@ -144,10 +144,8 @@ export class DeadlineComponent {
         const twoWeeksFriday = new Date(now.getTime() + diffToTwoWeeks * 24 * 60 * 60 * 1000);
         newDueDate = new Date(twoWeeksFriday.getFullYear(), twoWeeksFriday.getMonth(), twoWeeksFriday.getDate(), 18, 0, 0).toISOString();
       } else if (targetColId === 'no-deadline') {
-        newDueDate = undefined; // actually taskService.updateTask needs null or to omit? The backend allows update.
+        newDueDate = null;
       } else if (targetColId === 'overdue' || targetColId === 'completed') {
-        // Can't really drop here and change due date sensibly. Let's just block or do nothing
-        // Or if dropped into completed, maybe mark as completed? But that's not due date change.
         return;
       }
       
