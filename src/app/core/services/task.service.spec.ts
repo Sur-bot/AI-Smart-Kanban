@@ -88,14 +88,14 @@ describe('TaskService (Integration)', () => {
     it('gọi POST /bulk-move', () => {
       const moves = [{ taskId: 't1', statusId: 's2', boardColumnOrder: 1 }];
       
-      service.bulkMoveTasks(moves).subscribe(res => {
+      service.bulkMoveTasks(moves, 'p1').subscribe(res => {
         expect(res.success).toBe(true);
         expect(res.count).toBe(1);
       });
 
       const req = httpMock.expectOne(`${apiUrl}/bulk-move`);
       expect(req.request.method).toBe('POST');
-      expect(req.request.body).toEqual({ moves });
+      expect(req.request.body).toEqual({ moves, projectId: 'p1' });
       req.flush({ success: true, count: 1 });
     });
   });
