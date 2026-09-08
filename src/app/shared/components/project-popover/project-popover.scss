@@ -1,0 +1,39 @@
+:host {
+  display: contents;
+}
+
+.project-item {
+  @apply w-full flex items-center gap-2.5 py-1.5 px-2.5 rounded-lg border-none bg-slate-50 cursor-pointer text-left transition-colors duration-150 hover:bg-slate-100;
+
+  .project-icon-box {
+    @apply w-8 h-8 rounded-full bg-transparent flex items-center justify-center m-0;
+
+    mat-icon {
+      @apply text-[24px] w-6 h-6 leading-6 text-emerald-500;
+    }
+  }
+
+  .project-info {
+    @apply flex flex-col;
+
+    .project-label {
+      @apply text-[10px] uppercase font-semibold text-slate-400 mb-0.5 leading-none tracking-wider;
+    }
+
+    .project-name {
+      @apply text-[14px] font-medium text-emerald-500 leading-none;
+    }
+  }
+
+  &.selected {
+    @apply bg-emerald-50 ring-1 ring-emerald-200;
+  }
+}
+
+.btn-add-circle {
+  @apply w-5 h-5 rounded-full bg-[#007aff] text-white border-none flex items-center justify-center cursor-pointer;
+
+  mat-icon {
+    @apply text-[15px] w-[15px] h-[15px] leading-[15px];
+  }
+}

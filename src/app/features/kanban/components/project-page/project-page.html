@@ -21,11 +21,12 @@
     <app-loading-spinner *ngIf="!taskStore.isProjectsInitialized() || taskStore.projectsLoading()" />
 
     <!-- Trạng thái 2: Hiển thị bảng danh sách dự án hoàn chỉnh -->
-    <app-project-data-table
+    <app-data-table
       *ngIf="taskStore.isProjectsInitialized() && !taskStore.projectsLoading()"
-      [projects]="taskStore.projects()"
+      mode="project"
+      [data]="taskStore.projects()"
       [currentUserId]="currentUserId"
-      (projectSelected)="onProjectSelect($event)"
+      (itemSelected)="onProjectSelect($event)"
       (memberManage)="openMemberModal($event)"
       (projectEdit)="openEditProject($event)"
       (batchAction)="onBatchAction($event)"
