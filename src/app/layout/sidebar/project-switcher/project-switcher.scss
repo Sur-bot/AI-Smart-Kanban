@@ -17,19 +17,33 @@
     }
   }
 
-  &.collapsed {
+  .project-info {
+    opacity: 0;
+    max-width: 0;
+    margin-left: 0;
+    pointer-events: none;
+  }
+
+  .switcher-arrow {
+    opacity: 0;
+    width: 0;
+    margin-left: 0;
+    pointer-events: none;
+  }
+
+  &.expanded {
     .project-info {
-      opacity: 0;
-      max-width: 0;
-      margin-left: 0;
-      pointer-events: none;
+      opacity: 1;
+      max-width: 180px;
+      margin-left: 10px;
+      pointer-events: auto;
     }
 
     .switcher-arrow {
-      opacity: 0;
-      width: 0;
-      margin-left: 0;
-      pointer-events: none;
+      opacity: 1;
+      width: 18px;
+      margin-left: 4px;
+      pointer-events: auto;
     }
   }
 }
@@ -69,15 +83,12 @@
   }
 
   .project-info {
-    margin-left: 10px;
     flex: 1;
     min-width: 0;
-    max-width: 180px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
     white-space: nowrap;
-    opacity: 1;
     transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
                 max-width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
                 margin-left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -106,12 +117,9 @@
   .switcher-arrow {
     color: rgba(255, 255, 255, 0.45);
     font-size: 18px;
-    width: 18px;
     height: 18px;
     line-height: 18px;
     flex-shrink: 0;
-    margin-left: 4px;
-    opacity: 1;
     overflow: hidden;
     transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
                 opacity 0.2s ease,

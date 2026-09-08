@@ -13,21 +13,21 @@
       </svg>
     </a>
 
-    <!-- Nav Links (data-driven: adding/removing items = edit navItems[] in .ts) -->
-    <ul class="nav-links">
+    <!-- Nav Links (data-driven) -->
+    <ul class="nav-links" [class.is-open]="isMobileMenuOpen()">
       <li
         *ngFor="let item of navItems"
         [class.relative]="item.dropdown"
       >
         <button
           type="button"
-          class="nav-item"
+          class="nav-item w-full lg:w-auto"
           [class.nav-item--active]="activeDropdown() === item.key"
           [attr.aria-haspopup]="item.dropdown ? 'true' : null"
           [attr.aria-expanded]="item.dropdown ? activeDropdown() === item.key : null"
           (click)="item.dropdown && toggleDropdown(item.key, $event)"
         >
-          <span>{{ item.labelKey | translate }}</span>
+          <span class="flex-1 text-left">{{ item.labelKey | translate }}</span>
           <mat-icon
             *ngIf="item.dropdown"
             fontSet="material-icons-outlined"
@@ -36,20 +36,158 @@
           >keyboard_arrow_down</mat-icon>
         </button>
 
-        <!-- Render dropdown component if item has config and is active -->
-        <app-nav-dropdown
+        <!-- Render Desktop Dropdown -->
+        <div class="hidden lg:block" *ngIf="item.dropdown && activeDropdown() === item.key">
+          <app-nav-dropdown [config]="item.dropdown" />
+        </div>
+
+        <!-- Render Mobile Accordion -->
+        <div 
           *ngIf="item.dropdown && activeDropdown() === item.key"
-          [config]="item.dropdown"
-        />
+          class="lg:hidden flex flex-col gap-1 mt-2 mb-2 bg-slate-50/50 rounded-xl overflow-hidden"
+        >
+          <!-- For Mega-Tabbed (e.g. TÍNH NĂNG) -->
+          <ng-container *ngIf="item.dropdown.variant === 'mega-tabbed'">
+            <div *ngFor="let tab of item.dropdown.tabs" class="border-b border-slate-100 last:border-0">
+              <button
+                type="button"
+                class="flex items-center w-full px-4 py-3 gap-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                (click)="toggleMobileSubDropdown(tab.key, $event)"
+              >
+                <mat-icon
+                  *ngIf="tab.matIcon"
+                  fontSet="material-icons-outlined"
+                  class="!text-[20px] !w-[20px] !h-[20px] shrink-0"
+                  [style.color]="tab.iconColor"
+                >{{ tab.matIcon }}</mat-icon>
+                <span class="flex-1 text-left">{{ tab.labelKey | translate }}</span>
+                <mat-icon 
+                  fontSet="material-icons-outlined" 
+                  class="!text-[18px] text-slate-400 transition-transform duration-200"
+                  [class.rotate-180]="activeMobileSubDropdown() === tab.key"
+                >keyboard_arrow_down</mat-icon>
+              </button>
+              
+              <!-- Sub-items (Level 2) -->
+              <div 
+                *ngIf="activeMobileSubDropdown() === tab.key" 
+                class="flex flex-col py-2 px-4 bg-white/60 pl-11 gap-2"
+              >
+                <button
+                  type="button"
+                  *ngFor="let sub of tab.items"
+                  class="text-sm font-medium text-slate-500 hover:text-blue-600 py-1 text-left w-full"
+                >
+                  {{ sub.labelKey | translate }}
+                </button>
+              </div>
+            </div>
+          </ng-container>
+
+          <!-- For Wide (e.g. GIẢI PHÁP, CÔNG NGHỆ, ĐỐI TÁC) -->
+          <ng-container *ngIf="item.dropdown.variant === 'wide'">
+             <!-- Render groups -->
+             <div *ngFor="let group of item.dropdown.groups" class="border-b border-slate-100 last:border-0">
+              <button
+                type="button"
+                class="flex items-center w-full px-4 py-3 gap-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                (click)="toggleMobileSubDropdown(group.id, $event)"
+              >
+                <mat-icon
+                  *ngIf="group.matIcon"
+                  fontSet="material-icons-outlined"
+                  class="!text-[20px] !w-[20px] !h-[20px] shrink-0"
+                  [style.color]="group.iconColor"
+                >{{ group.matIcon }}</mat-icon>
+                <span class="flex-1 text-left uppercase text-xs tracking-wider font-bold">{{ group.titleKey | translate }}</span>
+                <mat-icon 
+                  fontSet="material-icons-outlined" 
+                  class="!text-[18px] text-slate-400 transition-transform duration-200"
+                  [class.rotate-180]="activeMobileSubDropdown() === group.id"
+                >keyboard_arrow_down</mat-icon>
+              </button>
+              
+              <!-- Sub-items -->
+              <div 
+                *ngIf="activeMobileSubDropdown() === group.id" 
+                class="flex flex-col py-2 px-4 bg-white/60 pl-11 gap-2"
+              >
+                <button
+                  type="button"
+                  *ngFor="let sub of group.items"
+                  class="text-sm font-medium text-slate-500 hover:text-blue-600 py-1 text-left flex items-center gap-2 w-full"
+                >
+                  <mat-icon *ngIf="sub.matIcon" fontSet="material-icons-outlined" class="!text-[18px] !w-[18px] !h-[18px] text-slate-400 shrink-0" [style.color]="sub.iconColor">{{ sub.matIcon }}</mat-icon>
+                  {{ sub.labelKey | translate }}
+                </button>
+              </div>
+             </div>
+             
+             <!-- Render aside groups if exist -->
+             <ng-container *ngIf="item.dropdown.asideGroups">
+               <div *ngFor="let group of item.dropdown.asideGroups" class="border-b border-slate-100 last:border-0">
+                <button
+                  type="button"
+                  class="flex items-center w-full px-4 py-3 gap-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                  (click)="toggleMobileSubDropdown(group.id, $event)"
+                >
+                  <mat-icon
+                    *ngIf="group.matIcon"
+                    fontSet="material-icons-outlined"
+                    class="!text-[20px] !w-[20px] !h-[20px] shrink-0"
+                    [style.color]="group.iconColor"
+                  >{{ group.matIcon }}</mat-icon>
+                  <span class="flex-1 text-left uppercase text-xs tracking-wider font-bold">{{ group.titleKey | translate }}</span>
+                  <mat-icon 
+                    fontSet="material-icons-outlined" 
+                    class="!text-[18px] text-slate-400 transition-transform duration-200"
+                    [class.rotate-180]="activeMobileSubDropdown() === group.id"
+                  >keyboard_arrow_down</mat-icon>
+                </button>
+                
+                <!-- Sub-items -->
+                <div 
+                  *ngIf="activeMobileSubDropdown() === group.id" 
+                  class="flex flex-col py-2 px-4 bg-white/60 pl-11 gap-2"
+                >
+                  <button
+                    type="button"
+                    *ngFor="let sub of group.items"
+                    class="text-sm font-medium text-slate-500 hover:text-blue-600 py-1 text-left flex items-center gap-2 w-full"
+                  >
+                    <mat-icon *ngIf="sub.matIcon" fontSet="material-icons-outlined" class="!text-[18px] !w-[18px] !h-[18px] text-slate-400 shrink-0" [style.color]="sub.iconColor">{{ sub.matIcon }}</mat-icon>
+                    {{ sub.labelKey | translate }}
+                  </button>
+                </div>
+               </div>
+             </ng-container>
+          </ng-container>
+        </div>
+
+      <!-- Language Switcher (Mobile Only - inside drawer) -->
+      <li class="mt-4 pt-4 border-t border-slate-100 lg:hidden flex flex-col gap-2">
+        <span class="px-2 text-sm font-bold text-slate-500">Ngôn ngữ / Language</span>
+        <div class="flex gap-2 px-2">
+          <button
+            *ngFor="let lang of languages"
+            type="button"
+            (click)="changeLanguage(lang.code)"
+            class="flex-1 py-2 text-center rounded-lg border text-sm font-medium transition-colors"
+            [ngClass]="lang.code === currentLang() ? 'bg-blue-50 border-blue-200 text-blue-700' : 'border-slate-200 text-slate-600 hover:bg-slate-50'"
+          >
+            {{ lang.label }}
+          </button>
+        </div>
       </li>
     </ul>
 
-    <!-- CTA + Language Switcher -->
-    <div class="cta-container">
-      <a routerLink="/login"    class="btn-login" [title]="'LANDING.LOGIN' | translate">{{ 'LANDING.LOGIN' | translate }}</a>
+    <!-- CTA + Language Switcher (Desktop) -->
+    <div class="cta-container ml-auto">
+      <a routerLink="/login" class="btn-login" [title]="'LANDING.LOGIN' | translate">{{ 'LANDING.LOGIN' | translate }}</a>
       <a routerLink="/register" class="btn-start" [title]="'LANDING.START' | translate">{{ 'LANDING.START' | translate }}</a>
 
-      <div class="relative">
+      <!-- Language Switcher (Desktop Only) -->
+      <div class="relative hidden lg:block">
         <button
           type="button"
           (click)="toggleLangPopup($event)"
@@ -79,5 +217,18 @@
         </div>
       </div>
     </div>
+
+    <!-- Hamburger Menu Button (Mobile Only) - Moved to far right -->
+    <button
+      type="button"
+      class="lg:hidden flex items-center justify-center w-12 h-12 text-slate-500 shrink-0"
+      (click)="toggleMobileMenu($event)"
+      [attr.aria-expanded]="isMobileMenuOpen()"
+      aria-label="Toggle navigation menu"
+    >
+      <mat-icon fontSet="material-icons-outlined" class="!w-9 !h-9 !text-[36px]">
+        {{ isMobileMenuOpen() ? 'close' : 'menu' }}
+      </mat-icon>
+    </button>
   </nav>
 </header>

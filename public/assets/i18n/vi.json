@@ -401,7 +401,7 @@
     "BACK_TO_HOME": "Về trang chủ"
   },
   "LANDING_HERO": {
-    "HEADLINE": "Không gian làm việc lý tưởng.",
+    "HEADLINE": "Digit24. Không gian làm việc lý tưởng.",
     "SUBHEADLINE": "Nền tảng quản lý công việc thông minh tích hợp Kanban Board, AI Worker xử lý ảnh ngầm và lưu trữ đám mây bảo mật.",
     "TAB_NAV_ARIA": "Danh mục tính năng",
     "CTA": "Bắt đầu miễn phí",
@@ -558,5 +558,44 @@
     "CLOSE": "Đóng",
     "COPY_LINK": "Sao chép liên kết",
     "ARIA_LABEL": "Tạo dự án mới"
+  },
+  "LANDING_FOOTER": {
+    "PRODUCT": "Sản phẩm",
+    "KANBAN": "Bảng Kanban",
+    "IMAGE_STORAGE": "Lưu trữ Ảnh",
+    "FEATURES": "Tính năng",
+    "TECH": "Công nghệ",
+    "SUPPORT": "Hỗ trợ",
+    "DOCS": "Tài liệu",
+    "GUIDE": "Hướng dẫn",
+    "FAQ": "FAQ",
+    "CONTACT": "Liên hệ",
+    "RESOURCES": "Tài nguyên",
+    "BLOG": "Blog",
+    "UPDATE": "Cập nhật",
+    "WEBINAR": "Webinar",
+    "API_DOCS": "API Docs",
+    "COMPARE": "So sánh",
+    "VS_TRELLO": "vs Trello",
+    "VS_ASANA": "vs Asana",
+    "VS_CLICKUP": "vs ClickUp",
+    "VS_MONDAY": "vs Monday",
+    "LEGAL": "Pháp lý",
+    "TERMS": "Điều khoản",
+    "PRIVACY": "Quyền riêng tư",
+    "GDPR": "GDPR",
+    "SECURITY": "Bảo mật",
+    "COPYRIGHT": "© 2026 Digit24. Xây dựng cho tương lai."
+  },
+  "LANDING_CTA": {
+    "TITLE_1": "Khám phá AI Smart Kanban:",
+    "TITLE_2": "Giải pháp toàn diện của bạn!",
+    "DESCRIPTION": "Thay thế nhiều công cụ rời rạc bằng một nền tảng duy nhất có tất cả: Kanban, Tối ưu ảnh AI, Lưu trữ đám mây và Quản lý dự án.",
+    "BUTTON": "Dùng thử miễn phí",
+    "BUTTON_TITLE": "Dùng thử AI Smart Kanban miễn phí"
+  },
+  "LANDING_TECH": {
+    "SUBTITLE": "Nền tảng công nghệ",
+    "TITLE": "Được xây dựng trên những công nghệ hàng đầu"
   }
 }

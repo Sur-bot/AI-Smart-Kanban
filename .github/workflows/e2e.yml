@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node.js 24
         uses: actions/setup-node@v4
         with:
-          node-version: '24.16.0'
+          node-version: '24.x'
           cache: 'npm'
 
       - name: Cache Playwright Browsers
@@ -38,8 +38,8 @@ jobs:
           NODE_ENV: production
 
       - name: Serve built app
-        run: npm install -g http-server
-          http-server dist/ai-smart-kanban/browser -p 4200 --silent &
+        run: |
+          npx serve -s dist/ai-smart-kanban/browser -l 4200 &
           echo "Server started on port 4200"
           npx wait-on http://localhost:4200 --timeout 60000
       - name: Run Playwright E2E Tests

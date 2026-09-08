@@ -1,4 +1,4 @@
-<button class="upgrade-btn" [class.collapsed]="isCollapsed" title="Trung tâm lưu trữ" (click)="navigateToStorage()">
+<button class="upgrade-btn" [class.expanded]="!isCollapsed" title="Trung tâm lưu trữ" (click)="navigateToStorage()">
   <mat-icon fontSet="material-icons-outlined" class="shrink-0 text-white !w-5 !h-5 !text-[20px] !leading-[20px]">cloud_upload</mat-icon>
   <span class="upgrade-text">Trung tâm lưu trữ</span>
 </button>

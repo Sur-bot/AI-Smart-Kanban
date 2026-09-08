@@ -463,7 +463,7 @@ export class TaskStore {
    */
   updateTaskDueDate(taskId: string, newDueDate: string | undefined | null) {
     this.tasks.update(list => list.map(t => t.id === taskId ? { ...t, dueDate: newDueDate === null ? undefined : newDueDate } : t));
-    this.taskService.updateTask(taskId, { dueDate: newDueDate === null ? undefined : newDueDate }).subscribe();
+    this.taskService.updateTask(taskId, { dueDate: newDueDate === null ? null : newDueDate } as any).subscribe();
   }
 
   bulkMoveTasks(moves: { taskId: string, statusId?: string, boardColumnOrder: number }[]) {
@@ -483,7 +483,7 @@ export class TaskStore {
       return listCopy;
     });
 
-    this.taskService.bulkMoveTasks(moves).subscribe({
+    this.taskService.bulkMoveTasks(moves, this.currentProjectId() || undefined).subscribe({
       error: (err: ApiError) => {
         this.error.set(err.error?.message || 'Không thể cập nhật thứ tự tác vụ');
         this.loadTasks(); // Rollback về trạng thái server

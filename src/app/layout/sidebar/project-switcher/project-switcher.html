@@ -1,4 +1,4 @@
-<nav class="project-switcher" [class.is-open]="isOpen" [class.collapsed]="isCollapsed" aria-label="Chuyển đổi dự án">
+<nav class="project-switcher" [class.is-open]="isOpen" [class.expanded]="!isCollapsed" aria-label="Chuyển đổi dự án">
   <button type="button" class="switcher-btn group" (click)="toggleDropdown($event)" [class.active]="isOpen" [attr.aria-expanded]="isOpen" aria-haspopup="true">
     <figure class="project-icon" [style.background-color]="currentProject?.color || '#3b82f6'" aria-hidden="true">
       {{ currentProject?.name ? currentProject!.name.charAt(0).toUpperCase() : 'P' }}

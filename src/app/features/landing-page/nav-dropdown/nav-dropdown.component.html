@@ -40,7 +40,7 @@
         [attr.aria-labelledby]="group.id"
       >
         <header class="nd-col-header" [id]="group.id">
-          <mat-icon fontSet="material-icons-outlined">{{ group.matIcon }}</mat-icon>
+          <mat-icon fontSet="material-icons-outlined" [style.color]="group.iconColor">{{ group.matIcon }}</mat-icon>
           <h3>{{ group.titleKey | translate }}</h3>
         </header>
 
@@ -71,6 +71,7 @@
                   *ngIf="item.matIcon"
                   fontSet="material-icons-outlined"
                   class="nd-item-icon"
+                  [style.color]="item.iconColor"
                 >{{ item.matIcon }}</mat-icon>
                 <mat-icon
                   *ngIf="item.isExternal"
@@ -92,7 +93,7 @@
           [attr.aria-labelledby]="group.id"
         >
           <header class="nd-col-header" [id]="group.id">
-            <mat-icon fontSet="material-icons-outlined">{{ group.matIcon }}</mat-icon>
+            <mat-icon fontSet="material-icons-outlined" [style.color]="group.iconColor">{{ group.matIcon }}</mat-icon>
             <h3>{{ group.titleKey | translate }}</h3>
           </header>
           <ul class="nd-list">
@@ -103,10 +104,10 @@
         </section>
 
         <footer *ngIf="config.seeAllKey" class="nd-aside__footer">
-          <a [routerLink]="config.seeAllRoute" class="nd-see-all">
+          <button type="button" class="nd-see-all">
             {{ config.seeAllKey | translate }}
             <mat-icon fontSet="material-icons-outlined">chevron_right</mat-icon>
-          </a>
+          </button>
         </footer>
       </aside>
 
@@ -143,14 +144,14 @@
         </li>
       </ul>
 
-      <a
+      <button
+        type="button"
         *ngIf="config.seeAllTabsKey"
-        [routerLink]="config.seeAllTabsRoute"
         class="nd-see-all nd-mega__see-all-tabs"
       >
         {{ config.seeAllTabsKey | translate }}
         <mat-icon fontSet="material-icons-outlined">chevron_right</mat-icon>
-      </a>
+      </button>
     </nav>
 
     <!-- Right content panel -->
@@ -183,14 +184,14 @@
       </div>
 
       <footer class="nd-mega__content-footer">
-        <a
+        <button
+          type="button"
           *ngIf="tab.seeAllFeaturesKey"
-          [routerLink]="tab.seeAllFeaturesRoute"
           class="nd-see-all"
         >
           {{ tab.seeAllFeaturesKey | translate }}
           <mat-icon fontSet="material-icons-outlined">chevron_right</mat-icon>
-        </a>
+        </button>
       </footer>
     </section>
   </div>

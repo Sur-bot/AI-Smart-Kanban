@@ -17,24 +17,40 @@
 // ─── Nav links ──────────────────────────────────────────────────────────────
 
 .nav-links {
-  @apply flex items-center justify-center gap-1 list-none p-0 m-0 flex-1;
+  // Mobile drawer style by default
+  @apply absolute top-16 left-0 right-0 bg-white z-40 p-4 overflow-y-auto;
+  height: calc(100vh - 4rem);
+  @apply flex-col items-stretch gap-2 list-none m-0 shadow-xl border-t border-slate-100;
+  display: none;
+
+  &.is-open {
+    display: flex;
+  }
+
+  // Desktop horizontal layout
+  @media (min-width: 1024px) {
+    @apply static top-auto bottom-auto left-auto right-auto bg-transparent p-0 z-auto overflow-y-visible shadow-none border-none;
+    @apply flex-row items-center justify-center gap-1 flex-1;
+    height: auto;
+    display: flex !important;
+  }
 }
 
 .nav-item {
-  @apply flex items-center gap-0.5 px-2 py-1.5 rounded-lg;
-  @apply text-[13px] font-semibold text-slate-700;
-  @apply bg-transparent border-none cursor-pointer;
+  @apply flex items-center gap-0.5 px-3 py-3 lg:px-2 lg:py-1.5 rounded-lg;
+  @apply text-base lg:text-[13px] font-semibold text-slate-700;
+  @apply bg-slate-50 lg:bg-transparent border-none cursor-pointer;
   @apply transition-colors duration-150;
   @apply whitespace-nowrap;
 
-  &:hover { @apply text-[#2563EB]; }
+  &:hover { @apply text-[#2563EB] bg-slate-100 lg:bg-transparent; }
 
   .nav-icon {
     @apply text-slate-400;
   }
 
   &--active {
-    @apply text-blue-600;
+    @apply text-blue-600 bg-blue-50 lg:bg-transparent;
     .nav-icon { @apply text-blue-500; }
   }
 }
@@ -47,14 +63,25 @@
 
 .btn-login {
   @apply hidden sm:inline-flex items-center justify-center shrink-0;
-  @apply px-3 py-2.5 text-[14px] font-semibold;
-  @apply text-blue-600 border border-blue-500 rounded-lg;
-  @apply hover:bg-blue-50 transition-all duration-200 !whitespace-nowrap;
+  @apply px-4 py-2.5 text-[14px] font-semibold text-blue-600 border border-blue-500 rounded-full;
+  @apply hover:bg-blue-50 transition-colors duration-150 !whitespace-nowrap;
+
+  @media (min-width: 1024px) {
+    @apply px-3 rounded-lg;
+  }
 }
 
 .btn-start {
-  @apply inline-flex items-center justify-center shrink-0;
-  @apply px-3 py-2.5 text-[14px] font-semibold;
-  @apply text-[#1A1B1F] bg-[#BDF300] rounded-lg;
-  @apply hover:brightness-95 transition-all duration-200 !whitespace-nowrap;
+  @apply inline-flex items-center justify-center shrink-0 !whitespace-nowrap;
+  @apply text-[#1A1B1F] bg-[#BDF300];
+  @apply transition-colors duration-150;
+  @apply hover:bg-[#aee000];
+  
+  // Mobile Style
+  @apply px-5 py-2.5 text-[14px] font-bold rounded-full;
+
+  // Desktop Style
+  @media (min-width: 1024px) {
+    @apply px-3 font-semibold rounded-lg;
+  }
 }

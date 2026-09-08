@@ -1,0 +1,39 @@
+.footer-wrapper {
+  @apply bg-slate-900 text-slate-400;
+}
+
+.footer-container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 py-16;
+}
+
+.footer-grid {
+  @apply grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 mb-12;
+}
+
+.footer-col-title {
+  @apply text-sm font-bold text-white uppercase tracking-wider mb-4;
+}
+
+.footer-links {
+  @apply space-y-2.5 text-sm;
+}
+
+.footer-link {
+  @apply hover:text-white transition-colors;
+}
+
+.footer-bottom {
+  @apply border-t border-slate-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4;
+}
+
+.footer-copyright {
+  @apply text-sm text-slate-500 text-center sm:text-left;
+}
+
+.social-links {
+  @apply flex items-center gap-3;
+}
+
+.social-btn {
+  @apply w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-all;
+}
