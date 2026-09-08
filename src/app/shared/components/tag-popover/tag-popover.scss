@@ -1,0 +1,15 @@
+:host {
+  display: contents;
+}
+
+.empty-state {
+  @apply flex flex-col items-center justify-center pt-8 pb-10 px-6 text-center;
+
+  .empty-icon-box {
+    @apply m-0 mb-8 flex justify-center w-full;
+  }
+
+  .empty-text {
+    @apply text-[15px] font-semibold text-slate-700 m-0 leading-snug max-w-[200px];
+  }
+}

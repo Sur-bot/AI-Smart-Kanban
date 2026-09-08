@@ -253,6 +253,10 @@ mat-icon {
 }
 
 /* Nút Thêm dự án dạng hình oval nằm ngang */
+.cell-project {
+  @apply overflow-visible relative flex items-center;
+}
+
 .project-add-oval-btn {
   @apply h-4 px-2 rounded-full border border-slate-300 text-slate-400 hover:border-blue-500 hover:text-blue-600 inline-flex items-center justify-center bg-white hover:bg-blue-50 transition-all cursor-pointer shadow-sm shrink-0 p-0;
 }
@@ -260,6 +264,10 @@ mat-icon {
 /* Dấu + thêm nhanh căn giữa tuyệt đối */
 .quick-add-btn {
   @apply w-5 h-5 rounded-full border border-slate-300 text-slate-400 hover:border-blue-500 hover:text-blue-600 inline-flex items-center justify-center bg-white hover:bg-blue-50 transition-all cursor-pointer shadow-sm shrink-0 p-0;
+}
+
+.cell-tags {
+  @apply overflow-visible relative flex items-center gap-1.5;
 }
 
 .tag-badge {

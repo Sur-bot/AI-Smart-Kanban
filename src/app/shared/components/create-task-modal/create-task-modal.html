@@ -72,63 +72,14 @@
                 </button>
 
                 @if (isAssigneeDropdownOpen) {
-                  <section class="assignee-popover" (click)="$event.stopPropagation()" role="dialog" aria-label="Chọn người được phân công">
-                    <aside class="assignee-popover-sidebar">
-                      <button type="button" class="sidebar-icon-btn active" aria-label="Tìm kiếm">
-                        <mat-icon fontSet="material-icons-outlined">search</mat-icon>
-                      </button>
-                      <button type="button" class="sidebar-icon-btn" aria-label="Danh sách thành viên">
-                        <mat-icon fontSet="material-icons-outlined">people</mat-icon>
-                      </button>
-                    </aside>
-
-                    <div class="assignee-popover-main">
-                      <div class="assignee-search-container">
-                        <div class="selected-member-tag" *ngIf="assigneeName">
-                          <figure class="tag-avatar">
-                            <mat-icon fontSet="material-icons-outlined">account_circle</mat-icon>
-                          </figure>
-                          <span class="tag-name">{{ assigneeName }}</span>
-                          <button type="button" class="tag-close-btn" (click)="clearAssignee($event)" aria-label="Bỏ chọn">
-                            <mat-icon fontSet="material-icons-outlined">close</mat-icon>
-                          </button>
-                        </div>
-                        <input
-                          type="text"
-                          [(ngModel)]="searchMemberQuery"
-                          [ngModelOptions]="{standalone: true}"
-                          class="member-search-input"
-                          placeholder="tìm kiếm"
-                          aria-label="Tìm kiếm người dùng"
-                        />
-                      </div>
-
-                      <div class="members-list custom-scrollbar">
-                        <button
-                          type="button"
-                          class="member-item selected"
-                          (click)="selectMember(assigneeName || 'Văn Anh Nguyễn', assigneeId || 'current-user', $event)"
-                        >
-                          <figure class="avatar-circle" aria-hidden="true">
-                            <img *ngIf="assigneeAvatar" [src]="assigneeAvatar" [alt]="assigneeName" class="avatar-img" />
-                            <mat-icon *ngIf="!assigneeAvatar" fontSet="material-icons-outlined" class="avatar-icon">account_circle</mat-icon>
-                          </figure>
-                          <span class="member-name">{{ assigneeName || 'Văn Anh Nguyễn' }}</span>
-                          <mat-icon fontSet="material-icons-outlined" class="check-icon">check</mat-icon>
-                        </button>
-                      </div>
-
-                      <footer class="assignee-popover-footer">
-                        <button type="button" class="btn-add-circle" aria-label="Mời thêm">
-                          <mat-icon fontSet="material-icons-outlined">add</mat-icon>
-                        </button>
-                        <span class="footer-invite-text">
-                          <span class="invite-link">Mời một người dùng</span> hoặc <span class="invite-link">mời một khách</span>
-                          <mat-icon fontSet="material-icons-outlined" class="lock-icon">lock</mat-icon>
-                        </span>
-                      </footer>
-                    </div>
-                  </section>
+                  <app-assignee-popover
+                    [assigneeId]="assigneeId"
+                    [assigneeName]="assigneeName"
+                    [assigneeAvatar]="assigneeAvatar"
+                    (memberSelected)="onMemberSelected($event)"
+                    (clearSelection)="clearAssignee()"
+                    (close)="isAssigneeDropdownOpen = false"
+                  ></app-assignee-popover>
                 }
               </div>
             </div>

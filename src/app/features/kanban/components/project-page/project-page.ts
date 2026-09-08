@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PageToolbarComponent, ToolbarField } from '../../../../shared/components/page-layout/page-toolbar/page-toolbar';
 import { ViewFilterBarComponent, QuickFilter } from '../../../../shared/components/page-layout/view-filter-bar/view-filter-bar';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner';
-import { ProjectDataTableComponent } from './project-data-table/project-data-table';
+import { DataTableComponent } from '../../../../shared/components/page-layout/data-table/data-table';
 import { MemberManagementModalComponent } from '../member-management-modal/member-management-modal';
 import { CreateProjectModalComponent } from '../create-project-modal/create-project-modal';
 import { AuthService } from '../../../../core/auth/auth.service';
@@ -22,7 +22,7 @@ import { TaskViewMode } from '../../../../shared/models/task-list.model';
     PageToolbarComponent,
     ViewFilterBarComponent,
     LoadingSpinnerComponent,
-    ProjectDataTableComponent,
+    DataTableComponent,
   ],
   templateUrl: './project-page.html',
   styleUrls: ['./project-page.scss'],
@@ -107,22 +107,22 @@ export class ProjectPageComponent implements OnInit {
   /**
    * Xử lý hành động hàng loạt
    */
-  onBatchAction(event: { action: string; projectIds: string[]; applyToAll: boolean }) {
-    const { action, projectIds } = event;
-    if (projectIds.length === 0) return;
+  onBatchAction(event: { action: string; itemIds: string[]; applyToAll: boolean }) {
+    const { action, itemIds } = event;
+    if (itemIds.length === 0) return;
 
     switch (action) {
       case 'Xóa':
-        projectIds.forEach(id => this.taskStore.deleteProject(id));
+        itemIds.forEach(id => this.taskStore.deleteProject(id));
         break;
       case 'Lưu trữ':
-        projectIds.forEach(id => this.taskStore.archiveProject(id));
+        itemIds.forEach(id => this.taskStore.archiveProject(id));
         break;
       case 'Kích hoạt lại':
-        projectIds.forEach(id => this.taskStore.updateProject(id, { status: 'active' }));
+        itemIds.forEach(id => this.taskStore.updateProject(id, { status: 'active' }));
         break;
       case 'Thay đổi quyền riêng tư':
-        projectIds.forEach(id => {
+        itemIds.forEach(id => {
           const p = this.taskStore.projects().find(item => item.id === id);
           if (p) {
             this.taskStore.updateProject(id, { is_public: !p.is_public });
