@@ -5,41 +5,53 @@
   <div class="hero-header-container">
     <div class="hero-title-wrapper">
       <h1 class="hero-title">
-        <br class="hidden sm:block"/>
-        <span class="hero-title-highlight">
-          {{ 'LANDING_HERO.HEADLINE' | translate }}
-        </span>
+        {{ 'LANDING_HERO.HEADLINE' | translate }}
       </h1>
-      <p class="hero-subtitle">
-        {{ 'LANDING_HERO.SUBHEADLINE' | translate }}
-      </p>
     </div>
 
     <div class="hero-features-container" id="features">
-      <div class="relative mb-10">
-        <nav
-          class="hero-tab-nav flex items-center justify-between gap-1 overflow-x-auto scrollbar-hide"
-          [attr.aria-label]="'LANDING_HERO.TAB_NAV_ARIA' | translate"
-        >
-          @for (tab of tabs(); track tab.labelKey; let i = $index) {
-            <button
-              type="button"
-              class="hero-tab-btn flex items-center gap-2 px-4 py-3 text-base font-semibold whitespace-nowrap"
-              [class.is-active]="activeTab() === i"
-              [style.--tab-progress]="hoveredTab() !== null ? (activeTab() === i ? '100%' : '0%') : (activeTab() === i ? (progress() + '%') : '0%')"
-              (mouseenter)="onMouseEnter(i)"
-              (mouseleave)="onMouseLeave()"
-              [attr.aria-selected]="activeTab() === i"
-              role="tab">
-              <mat-icon fontSet="material-icons-outlined" class="text-[20px] w-5 h-5">{{ tab.icon }}</mat-icon>
-              <span class="hidden sm:inline">{{ tab.labelKey | translate }}</span>
-            </button>
-          }
-        </nav>
-      </div>
-
       <div class="hero-features-grid">
-        <div class="space-y-1">
+        <div class="relative lg:col-span-2 order-2 sm:order-1 w-full">
+          <!-- Mobile Carousel Navigation -->
+          <nav class="flex sm:hidden items-center justify-between px-1 py-1 text-[#0046A4]">
+            <button (click)="prevTab()" type="button" class="p-2 hover:bg-blue-50 rounded-full transition-colors flex items-center justify-center shrink-0" aria-label="Previous tab">
+              <mat-icon fontSet="material-icons-outlined" class="w-6 h-6 text-[24px]">arrow_back_ios_new</mat-icon>
+            </button>
+            
+            @if (tabs().length > 0) {
+              <h3 class="text-xl font-extrabold text-center flex-1 px-2 line-clamp-1">
+                {{ tabs()[activeTab()].labelKey | translate }}
+              </h3>
+            }
+            
+            <button (click)="nextTab()" type="button" class="p-2 hover:bg-blue-50 rounded-full transition-colors flex items-center justify-center shrink-0" aria-label="Next tab">
+              <mat-icon fontSet="material-icons-outlined" class="w-6 h-6 text-[24px]">arrow_forward_ios</mat-icon>
+            </button>
+          </nav>
+
+          <!-- Desktop Tab Navigation -->
+          <nav
+            class="hero-tab-nav hidden sm:flex items-center justify-between gap-1 overflow-x-auto scrollbar-hide"
+            [attr.aria-label]="'LANDING_HERO.TAB_NAV_ARIA' | translate"
+          >
+            @for (tab of tabs(); track tab.labelKey; let i = $index) {
+              <button
+                type="button"
+                class="hero-tab-btn flex items-center gap-2 px-4 py-3 text-base font-semibold whitespace-nowrap"
+                [class.is-active]="activeTab() === i"
+                [style.--tab-progress]="hoveredTab() !== null ? (activeTab() === i ? '100%' : '0%') : (activeTab() === i ? (progress() + '%') : '0%')"
+                (mouseenter)="onMouseEnter(i)"
+                (mouseleave)="onMouseLeave()"
+                [attr.aria-selected]="activeTab() === i"
+                role="tab">
+                <mat-icon fontSet="material-icons-outlined" class="text-[20px] w-5 h-5">{{ tab.icon }}</mat-icon>
+                <span class="hidden sm:inline">{{ tab.labelKey | translate }}</span>
+              </button>
+            }
+          </nav>
+        </div>
+
+        <div class="space-y-1 order-3 sm:order-2 w-full">
           <ul class="hero-feature-list">
             @if (tabs().length > 0) {
               @for (featureKey of tabs()[activeTab()].featureKeys; track featureKey) {
@@ -51,7 +63,7 @@
             }
           </ul>
 
-          <div class="pt-8">
+          <div class="pt-8 flex justify-center sm:justify-start">
             <a
               routerLink="/register"
               class="hero-cta-btn"
@@ -62,7 +74,7 @@
           </div>
         </div>
 
-        <figure class="relative">
+        <figure class="relative order-1 sm:order-3 w-full">
           <div class="hero-mockup-wrapper">
             <div class="hero-mockup-header">
               <span class="w-3 h-3 rounded-full bg-red-400"></span>

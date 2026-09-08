@@ -114,6 +114,20 @@ export class LandingHeroComponent {
     }, TICK_MS);
   }
 
+  prevTab(): void {
+    const total = this.tabs().length;
+    if (total === 0) return;
+    this.progress.set(0);
+    this.activeTab.update(i => (i - 1 + total) % total);
+  }
+
+  nextTab(): void {
+    const total = this.tabs().length;
+    if (total === 0) return;
+    this.progress.set(0);
+    this.activeTab.update(i => (i + 1) % total);
+  }
+
   private clearTimer(): void {
     if (this.timer !== null) {
       clearInterval(this.timer);

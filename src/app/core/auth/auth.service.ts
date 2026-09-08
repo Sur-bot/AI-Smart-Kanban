@@ -1,4 +1,4 @@
-﻿import { Injectable, inject, signal, computed } from '@angular/core';
+import { Injectable, inject, signal, computed } from '@angular/core';
 import { createClient, SupabaseClient, Session, User, AuthChangeEvent } from '@supabase/supabase-js';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
@@ -55,9 +55,13 @@ export class AuthService {
   }
 
   async loginAsGuest() {
+    const { data, error } = await this.supabase.auth.signInAnonymously();
+    if (error) throw error;
+    
     this._isGuestMode.set(true);
     localStorage.setItem('ai_smart_kanban_guest', 'true');
     await this.router.navigate(['/kanban']);
+    return data;
   }
 
   async signUp(email: string, password: string, fullName?: string) {

@@ -398,5 +398,44 @@
     "CLOSE": "Close",
     "COPY_LINK": "Copy link",
     "ARIA_LABEL": "Create new project"
+  },
+  "LANDING_FOOTER": {
+    "PRODUCT": "Products",
+    "KANBAN": "Kanban Board",
+    "IMAGE_STORAGE": "Image Storage",
+    "FEATURES": "Features",
+    "TECH": "Technology",
+    "SUPPORT": "Support",
+    "DOCS": "Documentation",
+    "GUIDE": "Guides",
+    "FAQ": "FAQ",
+    "CONTACT": "Contact",
+    "RESOURCES": "Resources",
+    "BLOG": "Blog",
+    "UPDATE": "Updates",
+    "WEBINAR": "Webinars",
+    "API_DOCS": "API Docs",
+    "COMPARE": "Compare",
+    "VS_TRELLO": "vs Trello",
+    "VS_ASANA": "vs Asana",
+    "VS_CLICKUP": "vs ClickUp",
+    "VS_MONDAY": "vs Monday",
+    "LEGAL": "Legal",
+    "TERMS": "Terms",
+    "PRIVACY": "Privacy",
+    "GDPR": "GDPR",
+    "SECURITY": "Security",
+    "COPYRIGHT": "© 2026 Digit24. Building for the future."
+  },
+  "LANDING_CTA": {
+    "TITLE_1": "Discover AI Smart Kanban:",
+    "TITLE_2": "Your all-in-one solution!",
+    "DESCRIPTION": "Replace disconnected tools with a single platform that has it all: Kanban, AI Image Optimization, Cloud Storage, and Project Management.",
+    "BUTTON": "Try it for free",
+    "BUTTON_TITLE": "Try AI Smart Kanban for free"
+  },
+  "LANDING_TECH": {
+    "SUBTITLE": "Technology Platform",
+    "TITLE": "Built on leading technologies"
   }
 }

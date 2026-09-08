@@ -20,7 +20,9 @@ export class LandingHeaderComponent implements OnInit {
   // ─── UI State ───────────────────────────────────────────────
   /** Tracks which nav dropdown is open. null = all closed. */
   activeDropdown = signal<string | null>(null);
+  activeMobileSubDropdown = signal<string | null>(null);
   isLangPopupOpen = signal(false);
+  isMobileMenuOpen = signal(false);
   currentLang = signal('vi');
 
   // ─── Language Options ────────────────────────────────────────
@@ -172,6 +174,7 @@ export class LandingHeaderComponent implements OnInit {
         id: 'dd-industry',
         titleKey: 'LANDING.DD.INDUSTRY_TITLE',
         matIcon: 'apartment',
+        iconColor: '#409EEF',
         twoColumns: true,
         items: [
           { labelKey: 'LANDING.DD.IND_TRANSPORT' },
@@ -192,6 +195,7 @@ export class LandingHeaderComponent implements OnInit {
         id: 'dd-goal',
         titleKey: 'LANDING.DD.GOAL_TITLE',
         matIcon: 'track_changes',
+        iconColor: '#28CC43',
         items: [
           { labelKey: 'LANDING.DD.GOAL_EFFICIENCY' },
           { labelKey: 'LANDING.DD.GOAL_COMMUNICATION' },
@@ -203,6 +207,7 @@ export class LandingHeaderComponent implements OnInit {
         id: 'dd-tool',
         titleKey: 'LANDING.DD.TOOL_TITLE',
         matIcon: 'build',
+        iconColor: '#FF9500',
         items: [
           { labelKey: 'LANDING.DD.TOOL_PHONE' },
           { labelKey: 'LANDING.DD.TOOL_CRM' },
@@ -218,6 +223,7 @@ export class LandingHeaderComponent implements OnInit {
         id: 'dd-size',
         titleKey: 'LANDING.DD.SIZE_TITLE',
         matIcon: 'corporate_fare',
+        iconColor: '#804DF0',
         items: [
           { labelKey: 'LANDING.DD.SIZE_SOLO' },
           { labelKey: 'LANDING.DD.SIZE_SMB' },
@@ -228,6 +234,7 @@ export class LandingHeaderComponent implements OnInit {
         id: 'dd-role',
         titleKey: 'LANDING.DD.ROLE_TITLE',
         matIcon: 'groups',
+        iconColor: '#FF4782',
         items: [
           { labelKey: 'LANDING.DD.ROLE_MARKETING' },
           { labelKey: 'LANDING.DD.ROLE_HR' },
@@ -247,49 +254,51 @@ export class LandingHeaderComponent implements OnInit {
         id: 'dd-tech-import',
         titleKey: 'LANDING.DD.TECH_IMPORT_TITLE',
         matIcon: 'import_export',
+        iconColor: '#00629A',
         items: [
-          { labelKey: 'LANDING.DD.TECH_IMPORT_FRAMEWORKS', matIcon: 'code' },
-          { labelKey: 'LANDING.DD.TECH_IMPORT_MAKE',       matIcon: 'auto_fix_high' },
-          { labelKey: 'LANDING.DD.TECH_IMPORT_SHEET',      matIcon: 'table_chart' },
-          { labelKey: 'LANDING.DD.TECH_IMPORT_TASKS',      matIcon: 'task_alt' },
+          { labelKey: 'LANDING.DD.TECH_IMPORT_FRAMEWORKS', matIcon: 'code', iconColor: '#409EEF' },
+          { labelKey: 'LANDING.DD.TECH_IMPORT_MAKE',       matIcon: 'auto_fix_high', iconColor: '#804DF0' },
+          { labelKey: 'LANDING.DD.TECH_IMPORT_SHEET',      matIcon: 'table_chart', iconColor: '#28CC43' },
+          { labelKey: 'LANDING.DD.TECH_IMPORT_TASKS',      matIcon: 'task_alt', iconColor: '#FF9500' },
         ],
       },
       {
         id: 'dd-tech-sales',
         titleKey: 'LANDING.DD.TECH_SALES_TITLE',
         matIcon: 'point_of_sale',
+        iconColor: '#28CC43',
         items: [
-          { labelKey: 'LANDING.DD.TECH_SALES_SHIPPER',    matIcon: 'local_shipping' },
-          { labelKey: 'LANDING.DD.TECH_SALES_ANALYTICS',  matIcon: 'analytics' },
-          { labelKey: 'LANDING.DD.TECH_SALES_REPORT',     matIcon: 'bar_chart' },
-          { labelKey: 'LANDING.DD.TECH_SALES_DEALS',      matIcon: 'handshake' },
+          { labelKey: 'LANDING.DD.TECH_SALES_SHIPPER',    matIcon: 'local_shipping', iconColor: '#FF9500' },
+          { labelKey: 'LANDING.DD.TECH_SALES_ANALYTICS',  matIcon: 'analytics', iconColor: '#409EEF' },
+          { labelKey: 'LANDING.DD.TECH_SALES_REPORT',     matIcon: 'bar_chart', iconColor: '#FF4782' },
+          { labelKey: 'LANDING.DD.TECH_SALES_DEALS',      matIcon: 'handshake', iconColor: '#BEEB00' },
         ],
       },
       {
         id: 'dd-tech-marketing',
         titleKey: 'LANDING.DD.TECH_MARKET_TITLE',
         matIcon: 'campaign',
+        iconColor: '#FF4782',
         items: [
-          { labelKey: 'LANDING.DD.TECH_MARKET_SMS',       matIcon: 'sms' },
-          { labelKey: 'LANDING.DD.TECH_MARKET_FONTUMI',   matIcon: 'message' },
-          { labelKey: 'LANDING.DD.TECH_MARKET_VOICE',     matIcon: 'record_voice_over' },
-          { labelKey: 'LANDING.DD.TECH_MARKET_SOCIAL',    matIcon: 'share' },
+          { labelKey: 'LANDING.DD.TECH_MARKET_SMS',       matIcon: 'sms', iconColor: '#409EEF' },
+          { labelKey: 'LANDING.DD.TECH_MARKET_FONTUMI',   matIcon: 'message', iconColor: '#28CC43' },
+          { labelKey: 'LANDING.DD.TECH_MARKET_VOICE',     matIcon: 'record_voice_over', iconColor: '#FF9500' },
+          { labelKey: 'LANDING.DD.TECH_MARKET_SOCIAL',    matIcon: 'share', iconColor: '#804DF0' },
         ],
       },
       {
         id: 'dd-tech-tasks',
         titleKey: 'LANDING.DD.TECH_TASKS_TITLE',
         matIcon: 'task',
+        iconColor: '#FF9500',
         items: [
-          { labelKey: 'LANDING.DD.TECH_TASKS_BURNUP',     matIcon: 'trending_up' },
-          { labelKey: 'LANDING.DD.TECH_TASKS_IQDESK',     matIcon: 'support_agent' },
-          { labelKey: 'LANDING.DD.TECH_TASKS_HELPDESK',   matIcon: 'help_center' },
-          { labelKey: 'LANDING.DD.TECH_TASKS_TRACKER',    matIcon: 'timer' },
+          { labelKey: 'LANDING.DD.TECH_TASKS_BURNUP',     matIcon: 'trending_up', iconColor: '#FF4782' },
+          { labelKey: 'LANDING.DD.TECH_TASKS_IQDESK',     matIcon: 'support_agent', iconColor: '#409EEF' },
+          { labelKey: 'LANDING.DD.TECH_TASKS_HELPDESK',   matIcon: 'help_center', iconColor: '#28CC43' },
+          { labelKey: 'LANDING.DD.TECH_TASKS_TRACKER',    matIcon: 'timer', iconColor: '#804DF0' },
         ],
       },
     ],
-    seeAllKey: 'LANDING.DD.TECH_SEE_ALL',
-    seeAllRoute: '/integrations',
   };
 
   private readonly partnersDropdown: NavDropdownConfig = {
@@ -299,6 +308,7 @@ export class LandingHeaderComponent implements OnInit {
         id: 'dd-partner-customer',
         titleKey: 'LANDING.DD.PART_CUSTOMER_TITLE',
         matIcon: 'groups',
+        iconColor: '#00629A',
         items: [
           { labelKey: 'LANDING.DD.PART_DIRECTORY' },
           { labelKey: 'LANDING.DD.PART_CONSULT' },
@@ -308,6 +318,7 @@ export class LandingHeaderComponent implements OnInit {
         id: 'dd-partner-biz',
         titleKey: 'LANDING.DD.PART_BIZ_TITLE',
         matIcon: 'handshake',
+        iconColor: '#28CC43',
         items: [
           { labelKey: 'LANDING.DD.PART_BECOME',  isExternal: true },
           { labelKey: 'LANDING.DD.PART_LOGIN',   isExternal: true },
@@ -344,13 +355,36 @@ export class LandingHeaderComponent implements OnInit {
   toggleDropdown(key: string, event: Event): void {
     event.stopPropagation();
     this.isLangPopupOpen.set(false);
-    this.activeDropdown.set(this.activeDropdown() === key ? null : key);
+    
+    if (this.activeDropdown() === key) {
+      this.activeDropdown.set(null);
+      this.activeMobileSubDropdown.set(null);
+    } else {
+      this.activeDropdown.set(key);
+      this.activeMobileSubDropdown.set(null);
+    }
+  }
+
+  toggleMobileSubDropdown(key: string, event: Event): void {
+    event.stopPropagation();
+    this.activeMobileSubDropdown.set(this.activeMobileSubDropdown() === key ? null : key);
   }
 
   toggleLangPopup(event: Event): void {
     event.stopPropagation();
     this.activeDropdown.set(null);
     this.isLangPopupOpen.set(!this.isLangPopupOpen());
+  }
+
+  toggleMobileMenu(event: Event): void {
+    event.stopPropagation();
+    this.isMobileMenuOpen.set(!this.isMobileMenuOpen());
+    // Close other dropdowns if opening mobile menu
+    if (this.isMobileMenuOpen()) {
+      this.activeDropdown.set(null);
+      this.activeMobileSubDropdown.set(null);
+      this.isLangPopupOpen.set(false);
+    }
   }
 
   changeLanguage(lang: string): void {
@@ -363,7 +397,9 @@ export class LandingHeaderComponent implements OnInit {
   @HostListener('document:click')
   onClickOutside(): void {
     this.activeDropdown.set(null);
+    this.activeMobileSubDropdown.set(null);
     this.isLangPopupOpen.set(false);
+    this.isMobileMenuOpen.set(false);
   }
 
   get currentLangLabel(): string {
