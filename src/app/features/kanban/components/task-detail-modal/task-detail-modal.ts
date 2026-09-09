@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, HostListener, ViewChild, ElementRef, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -23,10 +23,8 @@ export class TaskDetailModalComponent {
   @Input() task: TaskDetail | TaskItem | any = null;
   @Output() close = new EventEmitter<void>();
 
-  @ViewChild('modalContainer') containerRef!: ElementRef<HTMLDivElement>;
-
-  leftPaneWidth: number = 32;
-  isDragging: boolean = false;
+  /** Tỉ lệ cố định: left-panel (task list) = 30%, right-panel (comments) = 70% */
+  readonly LEFT_PANE_WIDTH = 30;
   isClosing: boolean = false;
   isFullscreen: boolean = false;
   hasUnsavedChanges: boolean = false;
@@ -85,28 +83,5 @@ export class TaskDetailModalComponent {
 
   toggleFullscreen() {
     this.isFullscreen = !this.isFullscreen;
-  }
-
-  startDrag(event: MouseEvent) {
-    event.preventDefault();
-    this.isDragging = true;
-  }
-
-  @HostListener('document:mousemove', ['$event'])
-  onDrag(event: MouseEvent) {
-    if (!this.isDragging || !this.containerRef) return;
-    
-    const containerRect = this.containerRef.nativeElement.getBoundingClientRect();
-    const offsetX = event.clientX - containerRect.left;
-    const newPercentage = (offsetX / containerRect.width) * 100;
-    
-    if (newPercentage > 15 && newPercentage < 55) {
-      this.leftPaneWidth = newPercentage;
-    }
-  }
-
-  @HostListener('document:mouseup')
-  stopDrag() {
-    this.isDragging = false;
   }
 }

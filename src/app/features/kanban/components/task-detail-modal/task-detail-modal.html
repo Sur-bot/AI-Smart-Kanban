@@ -34,9 +34,9 @@
     </button>
   </nav>
 
-  <article class="modal-container" #modalContainer [class.fullscreen-mode]="isFullscreen">
+  <article class="modal-container" [class.fullscreen-mode]="isFullscreen">
     
-    <section class="left-pane flex flex-col bg-white" [style.width.%]="leftPaneWidth" aria-label="Danh sách tác vụ trong dự án">
+    <section class="left-pane flex flex-col bg-white" [style.width.%]="LEFT_PANE_WIDTH" aria-label="Danh sách tác vụ trong dự án">
       <app-task-list-panel
         [activeTaskId]="task?.id ?? null"
         (taskSelected)="onTaskSelected($event)"
@@ -44,17 +44,8 @@
       ></app-task-list-panel>
     </section>
 
-    <!-- Splitter -->
-    <div class="splitter" 
-         (mousedown)="startDrag($event)" 
-         [class.dragging]="isDragging"
-         role="separator"
-         aria-orientation="vertical"
-         aria-label="Kéo để điều chỉnh kích thước 2 cột">
-    </div>
-
     <!-- Right Pane: Comments -->
-    <aside class="right-pane bg-slate-50 flex flex-col border-l border-slate-200" [style.width.%]="100 - leftPaneWidth" aria-label="Thảo luận và tiến trình tác vụ">
+    <aside class="right-pane bg-slate-50 flex flex-col border-l border-slate-200" [style.width.%]="100 - LEFT_PANE_WIDTH" aria-label="Thảo luận và tiến trình tác vụ">
       <app-task-comments 
         *ngIf="task" 
         [task]="task"
