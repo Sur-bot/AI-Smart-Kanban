@@ -6,14 +6,13 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { TaskDetail, TaskItem } from '../../../../core/models/task.model';
 import { TaskStore } from '../../../../core/state/task.store';
 import { PermissionService } from '../../../../core/services/permission.service';
-import { JobRoleBadgeComponent } from '../../../../shared/components/job-role-badge/job-role-badge';
-import { TaskSubtasksComponent } from './task-subtasks/task-subtasks';
 import { TaskCommentsComponent } from './task-comments/task-comments';
+import { TaskListPanelComponent } from './task-list-panel/task-list-panel';
 
 @Component({
   selector: 'app-task-detail-modal',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatTooltipModule, TranslatePipe, JobRoleBadgeComponent, TaskSubtasksComponent, TaskCommentsComponent],
+  imports: [CommonModule, MatIconModule, MatTooltipModule, TranslatePipe, TaskCommentsComponent, TaskListPanelComponent],
   templateUrl: './task-detail-modal.html',
   styleUrls: ['./task-detail-modal.scss']
 })
@@ -26,7 +25,7 @@ export class TaskDetailModalComponent {
 
   @ViewChild('modalContainer') containerRef!: ElementRef<HTMLDivElement>;
 
-  leftPaneWidth: number = 65;
+  leftPaneWidth: number = 32;
   isDragging: boolean = false;
   isClosing: boolean = false;
   isFullscreen: boolean = false;
@@ -66,10 +65,22 @@ export class TaskDetailModalComponent {
         return;
       }
     }
-    // Logic to open sub-task in the modal (replaces current view)
-    // We could emit an event to the parent Board, or just load the subtask directly here.
-    // For now, we will dispatch an action to load the subtask detail.
     console.log('Opening subtask:', subtaskId);
+  }
+
+  /**
+   * Xử lý khi người dùng click chọn task khác trong TaskListPanel.
+   * Dispatch loadTaskDetail để cập nhật right-panel.
+   */
+  onTaskSelected(selectedTask: TaskItem) {
+    if (this.task?.id === selectedTask.id) return;
+    // Cập nhật task hiện tại đang hiển thị trong modal
+    this.task = selectedTask;
+    this.hasUnsavedChanges = false;
+    // Load chi tiết đầy đủ nếu store có method
+    if (typeof (this.taskStore as any).loadTaskDetail === 'function') {
+      (this.taskStore as any).loadTaskDetail(selectedTask.id);
+    }
   }
 
   toggleFullscreen() {
@@ -89,7 +100,7 @@ export class TaskDetailModalComponent {
     const offsetX = event.clientX - containerRect.left;
     const newPercentage = (offsetX / containerRect.width) * 100;
     
-    if (newPercentage > 20 && newPercentage < 60) {
+    if (newPercentage > 15 && newPercentage < 55) {
       this.leftPaneWidth = newPercentage;
     }
   }

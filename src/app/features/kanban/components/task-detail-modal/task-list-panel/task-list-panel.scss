@@ -1,0 +1,407 @@
+// ─── Task List Panel ──────────────────────────────────────────────────────────
+.task-list-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: #f8fafc;
+}
+
+// ─── Header / Search ─────────────────────────────────────────────────────────
+.panel-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 12px 10px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0 10px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:focus-within {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+    background: #fff;
+  }
+}
+
+.search-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 8px 0;
+  font-size: 12.5px;
+  color: #334155;
+
+  &::placeholder {
+    color: #94a3b8;
+  }
+
+  &::-webkit-search-cancel-button {
+    display: none; // Dùng nút custom thay thế
+  }
+}
+
+.search-clear-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+  padding: 2px;
+  border-radius: 4px;
+  transition: color 0.15s;
+
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+  }
+
+  &:hover {
+    color: #64748b;
+  }
+}
+
+.panel-count {
+  font-size: 11px;
+  color: #94a3b8;
+  margin: 0;
+  font-weight: 500;
+}
+
+// ─── Task List ────────────────────────────────────────────────────────────────
+.task-list {
+  flex: 1;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 6px 6px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+// ─── Empty State ──────────────────────────────────────────────────────────────
+.task-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 40px 16px;
+  color: #94a3b8;
+  font-size: 13px;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  opacity: 0.5;
+}
+
+// ─── Task Item ────────────────────────────────────────────────────────────────
+.task-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 9px 10px;
+  border-radius: 9px;
+  border: 1px solid transparent;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: #6366f1;
+    opacity: 0;
+    transition: opacity 0.18s ease;
+    border-radius: 3px 0 0 3px;
+  }
+
+  &:hover {
+    border-color: #e0e7ff;
+    background: #f0f4ff;
+    box-shadow: 0 1px 4px rgba(99, 102, 241, 0.08);
+
+    &::before {
+      opacity: 0.5;
+    }
+  }
+
+  // ── Active State ──
+  &--active {
+    border-color: #c7d2fe;
+    background: linear-gradient(135deg, #eef2ff 0%, #f0f4ff 100%);
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.12);
+
+    &::before {
+      opacity: 1;
+    }
+
+    .task-id {
+      color: #4f46e5;
+    }
+
+    .task-title {
+      color: #1e1b4b;
+      font-weight: 600;
+    }
+  }
+}
+
+// ─── Row 1: Main ─────────────────────────────────────────────────────────────
+.task-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+
+  &--main {
+    gap: 5px;
+  }
+
+  &--sub {
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+}
+
+// Priority Icon
+.priority-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  mat-icon {
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
+  }
+}
+
+// Task ID
+.task-id {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #64748b;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.2px;
+  transition: color 0.15s;
+}
+
+// Job-Role Badge (icon only mode)
+.task-role-badge {
+  flex-shrink: 0;
+}
+
+// Task Title
+.task-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #334155;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.15s;
+
+  &--done {
+    text-decoration: line-through;
+    color: #94a3b8;
+  }
+}
+
+// Due Date
+.task-due-date {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding: 2px 5px;
+  border-radius: 5px;
+  background: #f1f5f9;
+  transition: background 0.15s, color 0.15s;
+
+  &--overdue {
+    color: #dc2626;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+  }
+}
+
+.due-date-icon {
+  font-size: 11px;
+  width: 11px;
+  height: 11px;
+  line-height: 11px;
+}
+
+// ─── Row 2: Sub ──────────────────────────────────────────────────────────────
+
+// Status Badge
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 99px;
+  border: 1px solid;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.status-icon {
+  font-size: 10px;
+  width: 10px;
+  height: 10px;
+  line-height: 10px;
+}
+
+// Assignee Avatars Stack
+.assignee-stack {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  .assignee-avatar + .assignee-avatar,
+  .assignee-extra {
+    margin-left: -6px;
+  }
+}
+
+.assignee-avatar {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-initial {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+}
+
+.assignee-extra {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: #e2e8f0;
+  font-size: 8px;
+  font-weight: 700;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+// Labels/Tags
+.label-list {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+
+.label-chip {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+.label-extra {
+  font-size: 10px;
+  font-weight: 600;
+  color: #64748b;
+  padding: 1px 5px;
+  background: #f1f5f9;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+// Checklist mini badge
+.checklist-mini {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #64748b;
+  margin-left: auto;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.checklist-mini-icon {
+  font-size: 12px;
+  width: 12px;
+  height: 12px;
+  line-height: 12px;
+}

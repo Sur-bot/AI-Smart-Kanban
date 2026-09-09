@@ -1,0 +1,173 @@
+<nav class="task-list-panel" aria-label="Danh sách tác vụ trong dự án">
+
+  <!-- Search Box -->
+  <header class="panel-header">
+    <div class="search-box">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input
+        type="search"
+        class="search-input"
+        placeholder="Tìm tác vụ..."
+        [value]="searchQuery()"
+        (input)="onSearchChange($any($event.target).value)"
+        aria-label="Tìm kiếm tác vụ"
+      />
+      <button
+        *ngIf="searchQuery()"
+        type="button"
+        class="search-clear-btn"
+        (click)="onSearchChange('')"
+        aria-label="Xóa tìm kiếm"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <p class="panel-count">
+      {{ filteredTasks().length }} tác vụ
+    </p>
+  </header>
+
+  <!-- Task List -->
+  <ul class="task-list custom-scrollbar" role="list">
+
+    <!-- Empty State -->
+    <li *ngIf="filteredTasks().length === 0" class="task-empty">
+      <mat-icon class="empty-icon">inbox</mat-icon>
+      <span>Không tìm thấy tác vụ nào</span>
+    </li>
+
+    <!-- Task Item -->
+    <li
+      *ngFor="let task of filteredTasks(); trackBy: trackById"
+      class="task-item"
+      [class.task-item--active]="task.id === activeTaskId"
+      role="listitem"
+      [attr.aria-current]="task.id === activeTaskId ? 'true' : null"
+      (click)="onTaskClick(task)"
+    >
+      <!-- ═══ ROW 1: Priority | ID | Job-Role | Title | Due Date ═══ -->
+      <div class="task-row task-row--main">
+
+        <!-- Priority Icon -->
+        <span
+          class="priority-icon"
+          [style.color]="getPriorityConfig(task.priority).color"
+          [matTooltip]="getPriorityConfig(task.priority).label"
+        >
+          <mat-icon>{{ getPriorityConfig(task.priority).icon }}</mat-icon>
+        </span>
+
+        <!-- Task ID -->
+        <span class="task-id" [matTooltip]="task.id">
+          {{ getShortId(task) }}
+        </span>
+
+        <!-- Job-Role Badge -->
+        <app-job-role-badge
+          *ngIf="task.jobRole"
+          [jobRole]="task.jobRole"
+          [iconOnly]="true"
+          class="task-role-badge"
+        ></app-job-role-badge>
+
+        <!-- Task Title -->
+        <span
+          class="task-title"
+          [class.task-title--done]="task.status?.category === 'done' || !!task.completedAt"
+        >
+          {{ task.title }}
+        </span>
+
+        <!-- Due Date -->
+        <time
+          *ngIf="formatDueDate(task.dueDate)"
+          class="task-due-date"
+          [class.task-due-date--overdue]="isOverdue(task.dueDate, task)"
+          [dateTime]="task.dueDate!"
+          [matTooltip]="isOverdue(task.dueDate, task) ? 'Quá hạn' : 'Hạn chót'"
+        >
+          <mat-icon class="due-date-icon">calendar_today</mat-icon>
+          {{ formatDueDate(task.dueDate) }}
+        </time>
+
+      </div>
+
+      <!-- ═══ ROW 2 (phụ): Status | Assignees | Labels ═══ -->
+      <div class="task-row task-row--sub">
+
+        <!-- Status Badge -->
+        <span
+          *ngIf="task.status"
+          class="status-badge"
+          [style.background-color]="task.status.color + '22'"
+          [style.color]="task.status.color"
+          [style.border-color]="task.status.color + '55'"
+        >
+          <mat-icon
+            *ngIf="task.status.icon"
+            class="status-icon"
+            fontSet="material-icons-outlined"
+          >{{ task.status.icon }}</mat-icon>
+          {{ task.status.name }}
+        </span>
+
+        <!-- Assignee Avatars -->
+        <div class="assignee-stack" *ngIf="getVisibleAssignees(task).length > 0">
+          <span
+            *ngFor="let user of getVisibleAssignees(task)"
+            class="assignee-avatar"
+            [matTooltip]="user.name"
+          >
+            <img
+              *ngIf="user.avatar_url; else initial"
+              [src]="user.avatar_url"
+              [alt]="user.name"
+              class="avatar-img"
+            />
+            <ng-template #initial>
+              <span class="avatar-initial">{{ getInitials(user.name) }}</span>
+            </ng-template>
+          </span>
+
+          <!-- Extra count badge -->
+          <span
+            *ngIf="getExtraAssigneeCount(task) > 0"
+            class="assignee-extra"
+            [matTooltip]="'+' + getExtraAssigneeCount(task) + ' người khác'"
+          >
+            +{{ getExtraAssigneeCount(task) }}
+          </span>
+        </div>
+
+        <!-- Labels / Tags -->
+        <div class="label-list" *ngIf="task.labels?.length > 0">
+          <span
+            *ngFor="let label of task.labels.slice(0, 3)"
+            class="label-chip"
+            [style.background-color]="label.color + '25'"
+            [style.color]="label.color"
+            [style.border-color]="label.color + '60'"
+          >
+            {{ label.name }}
+          </span>
+          <span *ngIf="task.labels.length > 3" class="label-extra">
+            +{{ task.labels.length - 3 }}
+          </span>
+        </div>
+
+        <!-- Checklist progress mini -->
+        <span
+          *ngIf="task.checklistCount > 0"
+          class="checklist-mini"
+          [matTooltip]="task.checklistDoneCount + '/' + task.checklistCount + ' việc con'"
+        >
+          <mat-icon class="checklist-mini-icon">checklist</mat-icon>
+          {{ task.checklistDoneCount }}/{{ task.checklistCount }}
+        </span>
+
+      </div>
+    </li>
+
+  </ul>
+</nav>
