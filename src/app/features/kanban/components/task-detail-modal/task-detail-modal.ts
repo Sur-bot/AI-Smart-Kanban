@@ -6,13 +6,14 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { TaskDetail, TaskItem } from '../../../../core/models/task.model';
 import { TaskStore } from '../../../../core/state/task.store';
 import { PermissionService } from '../../../../core/services/permission.service';
+import { JobRoleBadgeComponent } from '../../../../shared/components/job-role-badge/job-role-badge';
 import { TaskSubtasksComponent } from './task-subtasks/task-subtasks';
 import { TaskCommentsComponent } from './task-comments/task-comments';
 
 @Component({
   selector: 'app-task-detail-modal',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatTooltipModule, TranslatePipe, TaskSubtasksComponent, TaskCommentsComponent],
+  imports: [CommonModule, MatIconModule, MatTooltipModule, TranslatePipe, JobRoleBadgeComponent, TaskSubtasksComponent, TaskCommentsComponent],
   templateUrl: './task-detail-modal.html',
   styleUrls: ['./task-detail-modal.scss']
 })

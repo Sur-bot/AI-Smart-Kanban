@@ -61,7 +61,7 @@
 
         <!-- Title -->
         <h1 class="text-[20px] font-bold text-slate-800 mb-6 leading-snug flex items-start gap-2.5">
-          <span class="bg-slate-100 border border-slate-200 text-slate-500 text-xs font-bold px-2 py-0.5 rounded mt-1 shrink-0">FE</span>
+          <app-job-role-badge *ngIf="task?.jobRole" [jobRole]="task.jobRole" class="mt-0.5 shrink-0"></app-job-role-badge>
           <span>{{ task?.title || '[Leave/Setting] Bug 500 when Category Name is too long (Create & Edit)' }}</span>
         </h1>
 
