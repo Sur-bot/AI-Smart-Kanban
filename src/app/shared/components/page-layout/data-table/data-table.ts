@@ -9,6 +9,7 @@ import { TaskStore } from '../../../../core/state/task.store';
 import { DueDatePickerComponent } from '../../due-date-picker/due-date-picker';
 import { ProjectPopoverComponent } from '../../project-popover/project-popover';
 import { TagPopoverComponent } from '../../tag-popover/tag-popover';
+import { JobRoleBadgeComponent } from '../../job-role-badge/job-role-badge';
 import { OverlayModule, ConnectedPosition, CdkOverlayOrigin } from '@angular/cdk/overlay';
 
 export interface TableColumn {
@@ -22,7 +23,7 @@ export interface TableColumn {
 @Component({
   selector: 'app-data-table',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatIconModule, DragDropModule, DueDatePickerComponent, ProjectPopoverComponent, TagPopoverComponent, OverlayModule],
+  imports: [CommonModule, FormsModule, MatIconModule, DragDropModule, DueDatePickerComponent, ProjectPopoverComponent, TagPopoverComponent, JobRoleBadgeComponent, OverlayModule],
   templateUrl: './data-table.html',
   styleUrls: ['./data-table.scss'],
 })
@@ -87,6 +88,7 @@ export class DataTableComponent implements OnInit {
         { id: 'dueDate', label: 'Hạn chót', width: 170, sortable: true },
         { id: 'creator', label: 'Người tạo', width: 180, sortable: true },
         { id: 'assignee', label: 'Người được phân công', width: 220, sortable: true },
+        { id: 'jobRole', label: 'Vai trò', width: 130, sortable: true },
         { id: 'project', label: 'Dự án', width: 150, sortable: true },
         { id: 'tags', label: 'Thẻ', width: 140, sortable: true },
       ];
@@ -299,6 +301,12 @@ export class DataTableComponent implements OnInit {
           const assigneeA = (this.getAssignee(a)?.name || '').toLowerCase();
           const assigneeB = (this.getAssignee(b)?.name || '').toLowerCase();
           comparison = assigneeA.localeCompare(assigneeB, 'vi');
+          break;
+        }
+        case 'jobRole': {
+          const roleA = (a.jobRole || '').toLowerCase();
+          const roleB = (b.jobRole || '').toLowerCase();
+          comparison = roleA.localeCompare(roleB, 'vi');
           break;
         }
         case 'project': {

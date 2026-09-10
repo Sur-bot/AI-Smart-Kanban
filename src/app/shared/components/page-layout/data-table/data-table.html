@@ -202,6 +202,17 @@
               <span class="user-name-text font-normal text-slate-800">{{ getAssignee(item)?.name || (item.assignees && item.assignees[0]?.name) || 'Văn Anh Nguyễn' }}</span>
             </div>
 
+            <!-- Vai trò (Job Role) -->
+            <div *ngIf="col.id === 'jobRole'" 
+                 class="table-cell cell-job-role flex items-center" 
+                 [class.col-sorted-highlight]="isColumnSorted('jobRole')" 
+                 [style.width.px]="col.width" 
+                 [style.min-width.px]="col.width"
+                 [style.max-width.px]="col.width">
+              <app-job-role-badge *ngIf="item.jobRole" [jobRole]="item.jobRole"></app-job-role-badge>
+              <span *ngIf="!item.jobRole" class="text-xs text-slate-400 italic">—</span>
+            </div>
+
             <!-- Dự án (Nút hình oval nằm ngang) -->
             <div *ngIf="col.id === 'project'" 
                  class="table-cell cell-project" 

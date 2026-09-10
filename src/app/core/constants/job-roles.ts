@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Danh sach Job Role trong mot team ky thuat.
  * Dung de hien thi badge, chip, va loc thanh vien.
  */
@@ -12,6 +12,7 @@ export interface JobRole {
 
 export const JOB_ROLES: JobRole[] = [
   { id: 'PM',          label: 'PM',        color: '#7c3aed', bgColor: '#ede9fe', icon: 'manage_accounts' },
+  { id: 'BA',          label: 'BA',        color: '#0d9488', bgColor: '#ccfbf1', icon: 'analytics'       },
   { id: 'FE',          label: 'Frontend',  color: '#1d4ed8', bgColor: '#dbeafe', icon: 'web'             },
   { id: 'BE',          label: 'Backend',   color: '#047857', bgColor: '#d1fae5', icon: 'dns'             },
   { id: 'QA',          label: 'QA/QC',     color: '#b45309', bgColor: '#fef3c7', icon: 'bug_report'      },
