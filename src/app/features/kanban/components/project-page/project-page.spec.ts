@@ -96,16 +96,16 @@ describe('ProjectPageComponent', () => {
   });
 
   it('should handle batch actions', () => {
-    component.onBatchAction({ action: 'Xóa', projectIds: ['p1'], applyToAll: false });
+    component.onBatchAction({ action: 'Xóa', itemIds: ['p1'], applyToAll: false });
     expect(mockTaskStore.deleteProject).toHaveBeenCalledWith('p1');
 
-    component.onBatchAction({ action: 'Lưu trữ', projectIds: ['p1'], applyToAll: false });
+    component.onBatchAction({ action: 'Lưu trữ', itemIds: ['p1'], applyToAll: false });
     expect(mockTaskStore.archiveProject).toHaveBeenCalledWith('p1');
 
-    component.onBatchAction({ action: 'Kích hoạt lại', projectIds: ['p1'], applyToAll: false });
+    component.onBatchAction({ action: 'Kích hoạt lại', itemIds: ['p1'], applyToAll: false });
     expect(mockTaskStore.updateProject).toHaveBeenCalledWith('p1', { status: 'active' });
 
-    component.onBatchAction({ action: 'Thay đổi quyền riêng tư', projectIds: ['p1'], applyToAll: false });
+    component.onBatchAction({ action: 'Thay đổi quyền riêng tư', itemIds: ['p1'], applyToAll: false });
     expect(mockTaskStore.updateProject).toHaveBeenCalledWith('p1', { is_public: true });
   });
 });

@@ -1,0 +1,197 @@
+<nav class="task-list-panel" aria-label="Danh sách tác vụ trong dự án">
+
+  <header class="panel-header">
+    <div class="search-box">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input
+        type="search"
+        class="search-input"
+        placeholder="Search"
+        [value]="searchQuery()"
+        (input)="onSearchChange($any($event.target).value)"
+        aria-label="Tìm kiếm tác vụ"
+      />
+      <button
+        *ngIf="searchQuery()"
+        type="button"
+        class="search-clear-btn"
+        (click)="onSearchChange('')"
+        aria-label="Xóa tìm kiếm"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </header>
+
+  <ul class="task-list custom-scrollbar" role="list">
+
+    <!-- Empty State -->
+    <li *ngIf="filteredTasks().length === 0" class="task-empty">
+      <mat-icon class="empty-icon">inbox</mat-icon>
+      <span>Không tìm thấy tác vụ nào</span>
+    </li>
+
+    <!-- Task Item -->
+    <li
+      *ngFor="let task of filteredTasks(); trackBy: trackById"
+      class="task-item"
+      [class.task-item--active]="task.id === activeTaskId"
+      role="listitem"
+      [attr.aria-current]="task.id === activeTaskId ? 'true' : null"
+      (click)="onTaskClick(task)"
+    >
+
+      <!-- Row 1: Priority | ID | Job-Role | Title | Due Date -->
+      <div class="task-row task-row--main">
+
+        <span
+          class="priority-icon"
+          [style.color]="getPriorityConfig(task.priority).color"
+        >
+          <mat-icon>{{ getPriorityConfig(task.priority).icon }}</mat-icon>
+        </span>
+
+        <span class="task-id">{{ getShortId(task) }}</span>
+
+        <app-job-role-badge
+          *ngIf="task.jobRole"
+          [jobRole]="task.jobRole"
+          [iconOnly]="true"
+          class="task-role-badge"
+        ></app-job-role-badge>
+
+        <span
+          class="task-title"
+          [class.task-title--done]="task.status?.category === 'done' || !!task.completedAt"
+        >
+          {{ task.title }}
+        </span>
+
+        <time
+          *ngIf="formatDueDate(task.dueDate)"
+          class="task-due-date"
+          [class.task-due-date--overdue]="isOverdue(task.dueDate, task)"
+          [dateTime]="task.dueDate!"
+        >
+          {{ formatDueDate(task.dueDate) }}
+        </time>
+
+      </div>
+
+      <!-- Row 2: People | Status | Estimate | Comments | Checklist -->
+      <div class="task-row task-row--meta">
+
+        <div class="people-group">
+
+          <!-- Assignees -->
+          <span
+            *ngFor="let user of getVisibleAssignees(task)"
+            class="avatar avatar--assignee"
+            [matTooltip]="'Assignee: ' + user.name"
+            matTooltipPosition="above"
+          >
+            <img *ngIf="user.avatar_url; else assigneeInitial" [src]="user.avatar_url" [alt]="user.name" class="avatar__img" />
+            <ng-template #assigneeInitial>
+              <span class="avatar__initial">{{ getInitials(user.name) }}</span>
+            </ng-template>
+          </span>
+
+          <!-- Extra assignees -->
+          <span
+            *ngIf="getExtraAssigneeCount(task) > 0"
+            class="avatar avatar--extra"
+            [matTooltip]="'+' + getExtraAssigneeCount(task) + ' người khác'"
+            matTooltipPosition="above"
+          >
+            +{{ getExtraAssigneeCount(task) }}
+          </span>
+
+          <!-- Reporter (creator) -->
+          <span
+            *ngIf="task.creator"
+            class="avatar avatar--reporter"
+            [matTooltip]="'Reporter: ' + task.creator.name"
+            matTooltipPosition="above"
+          >
+            <img *ngIf="task.creator.avatar_url; else reporterInitial" [src]="task.creator.avatar_url" [alt]="task.creator.name" class="avatar__img" />
+            <ng-template #reporterInitial>
+              <span class="avatar__initial">{{ getInitials(task.creator.name) }}</span>
+            </ng-template>
+          </span>
+
+          <!-- CC (QC member — field TBD) -->
+          <span
+            class="avatar avatar--cc"
+            matTooltip="CC (QC)"
+            matTooltipPosition="above"
+          >
+            <mat-icon class="cc-icon">verified_user</mat-icon>
+          </span>
+
+          <mat-icon class="reporter-sep-icon">manage_accounts</mat-icon>
+
+        </div>
+
+        <span class="meta-divider" aria-hidden="true"></span>
+
+        <span
+          *ngIf="task.status"
+          class="status-dot"
+          [style.color]="getStatusCategoryConfig(task.status.category).color"
+          [matTooltip]="task.status.name"
+          matTooltipPosition="above"
+        >
+          <mat-icon fontSet="material-icons-outlined">
+            {{ getStatusCategoryConfig(task.status.category).icon }}
+          </mat-icon>
+        </span>
+
+        <span
+          *ngIf="getEstimateDisplay(task) as est"
+          class="estimate-badge"
+          [matTooltip]="getEstimateTooltip(task)"
+          matTooltipPosition="above"
+        >
+          {{ est }}
+        </span>
+
+        <span
+          *ngIf="task.commentCount > 0"
+          class="comment-mini"
+        >
+          <mat-icon class="comment-mini__icon">chat_bubble_outline</mat-icon>
+          {{ task.commentCount }}
+        </span>
+
+        <span
+          *ngIf="task.checklistCount > 0"
+          class="checklist-mini"
+          [matTooltip]="task.checklistDoneCount + '/' + task.checklistCount + ' việc con'"
+          matTooltipPosition="above"
+        >
+          <mat-icon class="checklist-mini__icon">checklist</mat-icon>
+          {{ task.checklistDoneCount }}/{{ task.checklistCount }}
+        </span>
+
+      </div>
+
+      <!-- Row 3: Labels / Tags -->
+      <div class="task-row task-row--tags" *ngIf="task.labels?.length > 0">
+        <span
+          *ngFor="let label of task.labels.slice(0, 4)"
+          class="label-chip"
+          [style.background-color]="label.color + '20'"
+          [style.color]="label.color"
+          [style.border-color]="label.color + '55'"
+        >
+          {{ label.name }}
+        </span>
+        <span *ngIf="task.labels.length > 4" class="label-extra">
+          +{{ task.labels.length - 4 }}
+        </span>
+      </div>
+
+    </li>
+
+  </ul>
+</nav>

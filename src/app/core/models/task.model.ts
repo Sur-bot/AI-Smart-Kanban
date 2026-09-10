@@ -1,6 +1,7 @@
 export type TaskPriority = 'urgent' | 'high' | 'medium' | 'low' | 'none';
 export type TaskType = 'task' | 'bug' | 'story' | 'epic' | 'feature' | 'milestone';
 export type StatusCategory = 'todo' | 'in_progress' | 'review' | 'done' | 'cancelled';
+export type JobRoleId = 'PM' | 'BA' | 'FE' | 'BE' | 'QA' | 'DevOps' | 'Designer' | 'Mobile' | 'DataAnalyst' | 'Other';
 
 export interface UserSummary {
   id: string;
@@ -131,6 +132,7 @@ export interface TaskItem {
   assigneeId?: string;
   assignee?: UserSummary;
   assignees: UserSummary[];
+  jobRole?: JobRoleId;
   labels: TaskLabel[];
   estimatedMinutes?: number;
   actualMinutes: number;
@@ -213,6 +215,7 @@ export interface CreateTaskPayload {
   dueDate?: string;
   assigneeId?: string;
   assigneeIds?: string[];
+  jobRole?: JobRoleId;
   labelIds?: string[];
   estimatedMinutes?: number;
   storyPoints?: number;
@@ -253,7 +256,6 @@ export interface Project {
 export type ProjectType    = 'project' | 'collaborative' | 'workgroup';
 export type ProjectPrivacy = 'public'  | 'private'       | 'secret';
 export type ProjectMemberRole = 'owner' | 'admin' | 'moderator' | 'member' | 'viewer';
-export type JobRoleId = 'PM' | 'FE' | 'BE' | 'QA' | 'DevOps' | 'Designer' | 'Mobile' | 'DataAnalyst' | 'Other';
 
 export interface ProjectMember {
   id: string;

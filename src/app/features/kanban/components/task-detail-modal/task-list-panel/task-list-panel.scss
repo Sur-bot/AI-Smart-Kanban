@@ -1,0 +1,429 @@
+// ─── Task List Panel ──────────────────────────────────────────────────────────
+.task-list-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: #f1f5f9;
+}
+
+// ─── Header / Search ─────────────────────────────────────────────────────────
+.panel-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 14px 10px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0 10px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:focus-within {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    background: #fff;
+  }
+}
+
+.search-icon {
+  font-size: 17px;
+  width: 17px;
+  height: 17px;
+  line-height: 17px;
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 10px 0;
+  font-size: 14px;
+  color: #334155;
+
+  &::placeholder { color: #94a3b8; }
+  &::-webkit-search-cancel-button { display: none; }
+}
+
+.search-clear-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+  padding: 2px;
+  border-radius: 4px;
+  transition: color 0.15s;
+
+  mat-icon { font-size: 15px; width: 15px; height: 15px; line-height: 15px; }
+  &:hover { color: #64748b; }
+}
+
+// ─── Task List ────────────────────────────────────────────────────────────────
+.task-list {
+  flex: 1;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 7px 7px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+// ─── Empty State ──────────────────────────────────────────────────────────────
+.task-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 48px 20px;
+  color: #94a3b8;
+  font-size: 13px;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 36px;
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+  opacity: 0.4;
+}
+
+// ─── Task Item ────────────────────────────────────────────────────────────────
+.task-item {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 12px 14px 11px;
+  border: 1px solid #e9edf3;
+  border-left: 3px solid transparent;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
+  border-radius: 2px;
+
+  // ── Active State ──
+  &--active {
+    border-color: #c7d2fe;
+    border-left-color: #6366f1;
+    background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%);
+    box-shadow: 0 2px 10px rgba(99, 102, 241, 0.12);
+
+    .task-id   { color: #4338ca; font-weight: 800; }
+    .task-title { color: #1e1b4b; font-weight: 600; }
+  }
+}
+
+// ─── ROW 1: Main ─────────────────────────────────────────────────────────────
+.task-row {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 5px;
+}
+
+.task-row--main {
+  gap: 5px;
+}
+
+// Priority Icon
+.priority-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 23px;
+  height: 23px;
+  border-radius: 6px;
+  background: currentColor;
+
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+    color: #fff;
+    opacity: 0.95;
+  }
+}
+
+// Task ID
+.task-id {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #4f46e5;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.2px;
+  transition: color 0.15s;
+}
+
+// Job-Role Badge
+.task-role-badge {
+  flex-shrink: 0;
+}
+
+// Task Title
+.task-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+
+  &--done {
+    text-decoration: line-through;
+    color: #94a3b8;
+  }
+}
+
+// Due Date
+.task-due-date {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #475569;
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: #f1f5f9;
+  letter-spacing: 0.1px;
+
+  &--overdue {
+    color: #dc2626;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+  }
+}
+
+// ─── ROW 2: Meta ─────────────────────────────────────────────────────────────
+.task-row--meta {
+  gap: 6px;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+// People Group
+.people-group {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  .avatar + .avatar { margin-left: -6px; }
+  .reporter-sep-icon { margin-left: 5px; }
+}
+
+// Avatar base
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__initial {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 800;
+    color: #fff;
+  }
+
+  // Assignee
+  &--assignee .avatar__initial {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  }
+
+  // Reporter — teal
+  &--reporter {
+    border-color: #14b8a6;
+    margin-left: 7px !important;
+
+    .avatar__initial {
+      background: linear-gradient(135deg, #0d9488, #14b8a6);
+    }
+  }
+
+  // CC — amber (QC placeholder)
+  &--cc {
+    border-color: #f59e0b;
+    background: #fffbeb;
+    width: 25px;
+    height: 25px;
+
+    .cc-icon {
+      font-size: 14px;
+      width: 14px;
+      height: 14px;
+      line-height: 14px;
+      color: #d97706;
+    }
+  }
+
+  // Extra count
+  &--extra {
+    background: #e2e8f0;
+    font-size: 8px;
+    font-weight: 800;
+    color: #64748b;
+  }
+}
+
+// Reporter separator icon
+.reporter-sep-icon {
+  font-size: 15px;
+  width: 15px;
+  height: 15px;
+  line-height: 15px;
+  color: #cbd5e1;
+  flex-shrink: 0;
+}
+
+// Vertical divider
+.meta-divider {
+  display: inline-block;
+  width: 1px;
+  height: 14px;
+  background: #e2e8f0;
+  flex-shrink: 0;
+  margin: 0 2px;
+}
+
+// Status compact dot
+.status-dot {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  mat-icon {
+    font-size: 19px;
+    width: 19px;
+    height: 19px;
+    line-height: 19px;
+  }
+}
+
+// Estimate badge
+.estimate-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 6px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  font-size: 12px;
+  font-weight: 800;
+  color: #334155;
+  flex-shrink: 0;
+  font-family: 'JetBrains Mono', 'Consolas', monospace;
+}
+
+// Comment mini
+.comment-mini {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #94a3b8;
+  flex-shrink: 0;
+
+  &__icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+  }
+}
+
+// Checklist mini
+.checklist-mini {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-left: auto;
+  flex-shrink: 0;
+  white-space: nowrap;
+
+  &__icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+  }
+}
+
+// ─── ROW 3: Tags / Labels ─────────────────────────────────────────────────────
+.task-row--tags {
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.label-chip {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 6px;
+  border: 1px solid;
+  white-space: nowrap;
+  letter-spacing: 0.1px;
+}
+
+.label-extra {
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+  padding: 3px 7px;
+  background: #f1f5f9;
+  border-radius: 6px;
+  white-space: nowrap;
+}
