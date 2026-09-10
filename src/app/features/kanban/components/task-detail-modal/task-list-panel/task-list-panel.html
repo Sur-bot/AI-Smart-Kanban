@@ -1,13 +1,12 @@
 <nav class="task-list-panel" aria-label="Danh sách tác vụ trong dự án">
 
-  <!-- ═══ Search Box ═══ -->
   <header class="panel-header">
     <div class="search-box">
       <mat-icon class="search-icon">search</mat-icon>
       <input
         type="search"
         class="search-input"
-        placeholder="Tìm tác vụ..."
+        placeholder="Search"
         [value]="searchQuery()"
         (input)="onSearchChange($any($event.target).value)"
         aria-label="Tìm kiếm tác vụ"
@@ -22,10 +21,8 @@
         <mat-icon>close</mat-icon>
       </button>
     </div>
-    <p class="panel-count">{{ filteredTasks().length }} tác vụ</p>
   </header>
 
-  <!-- ═══ Task List ═══ -->
   <ul class="task-list custom-scrollbar" role="list">
 
     <!-- Empty State -->
@@ -44,25 +41,18 @@
       (click)="onTaskClick(task)"
     >
 
-      <!-- ══ ROW 1: Priority | ID | Job-Role | Title | Due Date ══ -->
+      <!-- Row 1: Priority | ID | Job-Role | Title | Due Date -->
       <div class="task-row task-row--main">
 
-        <!-- Priority Icon -->
         <span
           class="priority-icon"
           [style.color]="getPriorityConfig(task.priority).color"
-          [matTooltip]="getPriorityConfig(task.priority).label"
-          matTooltipPosition="above"
         >
           <mat-icon>{{ getPriorityConfig(task.priority).icon }}</mat-icon>
         </span>
 
-        <!-- Task ID -->
-        <span class="task-id" [matTooltip]="task.id" matTooltipPosition="above">
-          {{ getShortId(task) }}
-        </span>
+        <span class="task-id">{{ getShortId(task) }}</span>
 
-        <!-- Job-Role Badge (icon only) -->
         <app-job-role-badge
           *ngIf="task.jobRole"
           [jobRole]="task.jobRole"
@@ -70,37 +60,30 @@
           class="task-role-badge"
         ></app-job-role-badge>
 
-        <!-- Task Title -->
         <span
           class="task-title"
           [class.task-title--done]="task.status?.category === 'done' || !!task.completedAt"
-          [matTooltip]="task.title"
-          matTooltipPosition="above"
         >
           {{ task.title }}
         </span>
 
-        <!-- Due Date -->
         <time
           *ngIf="formatDueDate(task.dueDate)"
           class="task-due-date"
           [class.task-due-date--overdue]="isOverdue(task.dueDate, task)"
           [dateTime]="task.dueDate!"
-          [matTooltip]="isOverdue(task.dueDate, task) ? 'Quá hạn!' : 'Hạn chót'"
-          matTooltipPosition="above"
         >
           {{ formatDueDate(task.dueDate) }}
         </time>
 
       </div>
 
-      <!-- ══ ROW 2: People | Status | Estimate | Checklist count ══ -->
+      <!-- Row 2: People | Status | Estimate | Comments | Checklist -->
       <div class="task-row task-row--meta">
 
-        <!-- People Group: Assignees + Reporter + CC placeholder -->
         <div class="people-group">
 
-          <!-- Assignee Avatars -->
+          <!-- Assignees -->
           <span
             *ngFor="let user of getVisibleAssignees(task)"
             class="avatar avatar--assignee"
@@ -113,7 +96,7 @@
             </ng-template>
           </span>
 
-          <!-- Extra assignee count -->
+          <!-- Extra assignees -->
           <span
             *ngIf="getExtraAssigneeCount(task) > 0"
             class="avatar avatar--extra"
@@ -123,7 +106,7 @@
             +{{ getExtraAssigneeCount(task) }}
           </span>
 
-          <!-- Reporter (Creator) — với icon phân biệt -->
+          <!-- Reporter (creator) -->
           <span
             *ngIf="task.creator"
             class="avatar avatar--reporter"
@@ -136,29 +119,21 @@
             </ng-template>
           </span>
 
-          <!-- CC Placeholder (QC member — sẽ bổ sung field sau) -->
-          <!-- Hiển thị icon CC tĩnh khi chưa có data -->
+          <!-- CC (QC member — field TBD) -->
           <span
             class="avatar avatar--cc"
-            matTooltip="CC (QC member — chưa có dữ liệu)"
+            matTooltip="CC (QC)"
             matTooltipPosition="above"
           >
             <mat-icon class="cc-icon">verified_user</mat-icon>
           </span>
 
-          <!-- Reporter separator icon -->
-          <mat-icon
-            class="reporter-sep-icon"
-            matTooltip="Reporter / CC"
-            matTooltipPosition="above"
-          >manage_accounts</mat-icon>
+          <mat-icon class="reporter-sep-icon">manage_accounts</mat-icon>
 
         </div>
 
-        <!-- Vertical divider -->
         <span class="meta-divider" aria-hidden="true"></span>
 
-        <!-- Status compact dot -->
         <span
           *ngIf="task.status"
           class="status-dot"
@@ -171,7 +146,6 @@
           </mat-icon>
         </span>
 
-        <!-- Estimate -->
         <span
           *ngIf="getEstimateDisplay(task) as est"
           class="estimate-badge"
@@ -181,18 +155,14 @@
           {{ est }}
         </span>
 
-        <!-- Comment count mini -->
         <span
           *ngIf="task.commentCount > 0"
           class="comment-mini"
-          [matTooltip]="task.commentCount + ' bình luận'"
-          matTooltipPosition="above"
         >
           <mat-icon class="comment-mini__icon">chat_bubble_outline</mat-icon>
           {{ task.commentCount }}
         </span>
 
-        <!-- Checklist mini -->
         <span
           *ngIf="task.checklistCount > 0"
           class="checklist-mini"
@@ -205,7 +175,7 @@
 
       </div>
 
-      <!-- ══ ROW 3: Labels / Tags ══ -->
+      <!-- Row 3: Labels / Tags -->
       <div class="task-row task-row--tags" *ngIf="task.labels?.length > 0">
         <span
           *ngFor="let label of task.labels.slice(0, 4)"

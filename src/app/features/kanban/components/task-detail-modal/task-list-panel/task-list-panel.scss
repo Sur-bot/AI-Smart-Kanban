@@ -4,15 +4,15 @@
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  background: #f8fafc;
+  background: #f1f5f9;
 }
 
 // ─── Header / Search ─────────────────────────────────────────────────────────
 .panel-header {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 10px 10px 8px;
+  gap: 8px;
+  padding: 14px 14px 10px;
   border-bottom: 1px solid #e2e8f0;
   background: #fff;
   flex-shrink: 0;
@@ -21,11 +21,11 @@
 .search-box {
   display: flex;
   align-items: center;
-  gap: 5px;
-  background: #f1f5f9;
+  gap: 6px;
+  background: #f8fafc;
   border: 1px solid #e2e8f0;
-  border-radius: 7px;
-  padding: 0 8px;
+  border-radius: 8px;
+  padding: 0 10px;
   transition: border-color 0.2s, box-shadow 0.2s;
 
   &:focus-within {
@@ -36,10 +36,10 @@
 }
 
 .search-icon {
-  font-size: 15px;
-  width: 15px;
-  height: 15px;
-  line-height: 15px;
+  font-size: 17px;
+  width: 17px;
+  height: 17px;
+  line-height: 17px;
   color: #94a3b8;
   flex-shrink: 0;
 }
@@ -50,8 +50,8 @@
   background: transparent;
   border: none;
   outline: none;
-  padding: 6px 0;
-  font-size: 12px;
+  padding: 10px 0;
+  font-size: 14px;
   color: #334155;
 
   &::placeholder { color: #94a3b8; }
@@ -70,15 +70,8 @@
   border-radius: 4px;
   transition: color 0.15s;
 
-  mat-icon { font-size: 13px; width: 13px; height: 13px; line-height: 13px; }
+  mat-icon { font-size: 15px; width: 15px; height: 15px; line-height: 15px; }
   &:hover { color: #64748b; }
-}
-
-.panel-count {
-  font-size: 10.5px;
-  color: #94a3b8;
-  margin: 0;
-  font-weight: 500;
 }
 
 // ─── Task List ────────────────────────────────────────────────────────────────
@@ -87,10 +80,10 @@
   overflow-y: auto;
   list-style: none;
   margin: 0;
-  padding: 5px 5px 12px;
+  padding: 7px 7px 18px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 5px;
 }
 
 // ─── Empty State ──────────────────────────────────────────────────────────────
@@ -99,18 +92,18 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 36px 16px;
+  gap: 10px;
+  padding: 48px 20px;
   color: #94a3b8;
-  font-size: 12.5px;
+  font-size: 13px;
   text-align: center;
 }
 
 .empty-icon {
-  font-size: 28px;
-  width: 28px;
-  height: 28px;
-  line-height: 28px;
+  font-size: 36px;
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
   opacity: 0.4;
 }
 
@@ -118,84 +111,70 @@
 .task-item {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 7px 8px 6px;
-  border: 1px solid transparent;
+  gap: 7px;
+  padding: 12px 14px 11px;
+  border: 1px solid #e9edf3;
+  border-left: 3px solid transparent;
   background: #fff;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
   position: relative;
-  overflow: hidden;
-
-  // Accent bar bên trái
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 2.5px;
-    background: #6366f1;
-    opacity: 0;
-    transition: opacity 0.15s ease;
-  }
-
-  &:hover {
-    border-color: #e0e7ff;
-    background: #f5f3ff;
-
-    &::before { opacity: 0.4; }
-  }
+  border-radius: 2px;
 
   // ── Active State ──
   &--active {
     border-color: #c7d2fe;
-    background: linear-gradient(135deg, #eef2ff 0%, #f0f4ff 100%);
-    box-shadow: 0 1px 6px rgba(99, 102, 241, 0.1);
-
-    &::before { opacity: 1; }
+    border-left-color: #6366f1;
+    background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%);
+    box-shadow: 0 2px 10px rgba(99, 102, 241, 0.12);
 
     .task-id   { color: #4338ca; font-weight: 800; }
     .task-title { color: #1e1b4b; font-weight: 600; }
   }
 }
 
-// ─── Generic Row ─────────────────────────────────────────────────────────────
+// ─── ROW 1: Main ─────────────────────────────────────────────────────────────
 .task-row {
   display: flex;
   align-items: center;
   min-width: 0;
-  gap: 4px;
+  gap: 5px;
 }
 
-// ─── ROW 1: Main ─────────────────────────────────────────────────────────────
 .task-row--main {
-  gap: 4px;
+  gap: 5px;
 }
 
 // Priority Icon
 .priority-icon {
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  width: 23px;
+  height: 23px;
+  border-radius: 6px;
+  background: currentColor;
 
   mat-icon {
     font-size: 14px;
     width: 14px;
     height: 14px;
     line-height: 14px;
+    color: #fff;
+    opacity: 0.95;
   }
 }
 
 // Task ID
 .task-id {
-  font-size: 10px;
+  font-size: 12.5px;
   font-weight: 700;
-  color: #6366f1;
+  color: #4f46e5;
   font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
   white-space: nowrap;
   flex-shrink: 0;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
   transition: color 0.15s;
 }
 
@@ -208,12 +187,13 @@
 .task-title {
   flex: 1;
   min-width: 0;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
-  color: #1e293b;
+  color: #0f172a;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.4;
 
   &--done {
     text-decoration: line-through;
@@ -225,13 +205,13 @@
 .task-due-date {
   display: inline-flex;
   align-items: center;
-  font-size: 10.5px;
+  font-size: 12.5px;
   font-weight: 700;
-  color: #64748b;
+  color: #475569;
   white-space: nowrap;
   flex-shrink: 0;
-  padding: 1px 5px;
-  border-radius: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
   background: #f1f5f9;
   letter-spacing: 0.1px;
 
@@ -244,7 +224,7 @@
 
 // ─── ROW 2: Meta ─────────────────────────────────────────────────────────────
 .task-row--meta {
-  gap: 5px;
+  gap: 6px;
   flex-wrap: nowrap;
   overflow: hidden;
 }
@@ -253,11 +233,10 @@
 .people-group {
   display: flex;
   align-items: center;
-  gap: 0;
   flex-shrink: 0;
 
-  .avatar + .avatar { margin-left: -5px; }
-  .reporter-sep-icon { margin-left: 4px; }
+  .avatar + .avatar { margin-left: -6px; }
+  .reporter-sep-icon { margin-left: 5px; }
 }
 
 // Avatar base
@@ -265,10 +244,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
-  border: 1.5px solid #fff;
+  border: 2px solid #fff;
   overflow: hidden;
   flex-shrink: 0;
   position: relative;
@@ -285,38 +264,38 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 7px;
+    font-size: 9px;
     font-weight: 800;
     color: #fff;
   }
 
-  // Assignee: gradient indigo
+  // Assignee
   &--assignee .avatar__initial {
     background: linear-gradient(135deg, #6366f1, #8b5cf6);
   }
 
-  // Reporter: gradient teal — với outline phân biệt
+  // Reporter — teal
   &--reporter {
     border-color: #14b8a6;
-    margin-left: 6px !important; // khoảng cách rõ ràng hơn với assignees
+    margin-left: 7px !important;
 
     .avatar__initial {
       background: linear-gradient(135deg, #0d9488, #14b8a6);
     }
   }
 
-  // CC: gradient amber
+  // CC — amber (QC placeholder)
   &--cc {
     border-color: #f59e0b;
     background: #fffbeb;
-    width: 18px;
-    height: 18px;
+    width: 25px;
+    height: 25px;
 
     .cc-icon {
-      font-size: 11px;
-      width: 11px;
-      height: 11px;
-      line-height: 11px;
+      font-size: 14px;
+      width: 14px;
+      height: 14px;
+      line-height: 14px;
       color: #d97706;
     }
   }
@@ -324,60 +303,60 @@
   // Extra count
   &--extra {
     background: #e2e8f0;
-    font-size: 7px;
+    font-size: 8px;
     font-weight: 800;
     color: #64748b;
   }
 }
 
-// Reporter separator icon (manage_accounts)
+// Reporter separator icon
 .reporter-sep-icon {
-  font-size: 13px;
-  width: 13px;
-  height: 13px;
-  line-height: 13px;
+  font-size: 15px;
+  width: 15px;
+  height: 15px;
+  line-height: 15px;
   color: #cbd5e1;
   flex-shrink: 0;
 }
 
-// Vertical divider between people and status
+// Vertical divider
 .meta-divider {
   display: inline-block;
   width: 1px;
-  height: 12px;
+  height: 14px;
   background: #e2e8f0;
   flex-shrink: 0;
   margin: 0 2px;
 }
 
-// Status compact dot (icon only)
+// Status compact dot
 .status-dot {
   display: flex;
   align-items: center;
   flex-shrink: 0;
 
   mat-icon {
-    font-size: 14px;
-    width: 14px;
-    height: 14px;
-    line-height: 14px;
+    font-size: 19px;
+    width: 19px;
+    height: 19px;
+    line-height: 19px;
   }
 }
 
-// Estimate badge (số)
+// Estimate badge
 .estimate-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 18px;
-  height: 16px;
-  padding: 0 4px;
-  border-radius: 4px;
+  min-width: 24px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 6px;
   background: #f1f5f9;
   border: 1px solid #e2e8f0;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
-  color: #475569;
+  color: #334155;
   flex-shrink: 0;
   font-family: 'JetBrains Mono', 'Consolas', monospace;
 }
@@ -387,16 +366,16 @@
   display: inline-flex;
   align-items: center;
   gap: 2px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   color: #94a3b8;
   flex-shrink: 0;
 
   &__icon {
-    font-size: 11px;
-    width: 11px;
-    height: 11px;
-    line-height: 11px;
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
   }
 }
 
@@ -405,46 +384,46 @@
   display: inline-flex;
   align-items: center;
   gap: 2px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   color: #94a3b8;
-  margin-left: auto; // đẩy sang phải
+  margin-left: auto;
   flex-shrink: 0;
   white-space: nowrap;
 
   &__icon {
-    font-size: 11px;
-    width: 11px;
-    height: 11px;
-    line-height: 11px;
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
   }
 }
 
 // ─── ROW 3: Tags / Labels ─────────────────────────────────────────────────────
 .task-row--tags {
-  gap: 3px;
+  gap: 5px;
   flex-wrap: wrap;
-  margin-top: 1px;
+  margin-top: 2px;
 }
 
 .label-chip {
   display: inline-flex;
   align-items: center;
-  font-size: 9.5px;
+  font-size: 12px;
   font-weight: 700;
-  padding: 1.5px 6px;
-  border-radius: 4px;
+  padding: 3px 9px;
+  border-radius: 6px;
   border: 1px solid;
   white-space: nowrap;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.1px;
 }
 
 .label-extra {
-  font-size: 9.5px;
+  font-size: 12px;
   font-weight: 700;
   color: #64748b;
-  padding: 1.5px 5px;
+  padding: 3px 7px;
   background: #f1f5f9;
-  border-radius: 4px;
+  border-radius: 6px;
   white-space: nowrap;
 }
