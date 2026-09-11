@@ -2,6 +2,14 @@ export type TaskPriority = 'urgent' | 'high' | 'medium' | 'low' | 'none';
 export type TaskType = 'task' | 'bug' | 'story' | 'epic' | 'feature' | 'milestone';
 export type StatusCategory = 'todo' | 'in_progress' | 'review' | 'done' | 'cancelled';
 export type JobRoleId = 'PM' | 'BA' | 'FE' | 'BE' | 'QA' | 'DevOps' | 'Designer' | 'Mobile' | 'DataAnalyst' | 'Other';
+export type TaskPipelineStatus =
+  | 'unset'
+  | 'ready_in_dev'
+  | 'ready_in_staging'
+  | 'ready_in_master'
+  | 'waiting_for_review'
+  | 'need_verify'
+  | 'need_support';
 
 export interface UserSummary {
   id: string;
@@ -146,6 +154,7 @@ export interface TaskItem {
   checklistCount: number;
   checklistDoneCount: number;
   commentCount: number;
+  pipelineStatus?: TaskPipelineStatus;
   createdAt: string;
   updatedAt: string;
 
@@ -227,6 +236,7 @@ export interface UpdateTaskPayload extends Partial<CreateTaskPayload> {
   sortOrder?: number;
   boardColumnOrder?: number;
   isArchived?: boolean;
+  pipelineStatus?: TaskPipelineStatus;
 }
 
 export interface Project {

@@ -12,7 +12,8 @@ import {
   TaskFilterParams,
   CreateTaskPayload,
   UpdateTaskPayload,
-  CreateProjectPayload
+  CreateProjectPayload,
+  TaskPipelineStatus
 } from '../models/task.model';
 
 /** Shape of error responses returned by the backend API. */
@@ -413,6 +414,25 @@ export class TaskStore {
       },
       error: (err: ApiError) => {
         this.error.set(err.error?.message || 'Không thể cập nhật tác vụ');
+      }
+    });
+  }
+
+  /**
+   * Cập nhật pipeline status của tác vụ (optimistic)
+   */
+  updatePipelineStatus(taskId: string, pipelineStatus: TaskPipelineStatus) {
+    // Optimistic update: cập nhật UI ngay lập tức
+    this.tasks.update(list =>
+      list.map(t => t.id === taskId ? { ...t, pipelineStatus } : t)
+    );
+    if (this.selectedTask()?.id === taskId) {
+      this.selectedTask.update(t => t ? { ...t, pipelineStatus } : t);
+    }
+    // Đồng bộ với backend
+    this.taskService.updateTask(taskId, { pipelineStatus }).subscribe({
+      error: (err: ApiError) => {
+        this.error.set(err.error?.message || 'Không thể cập nhật pipeline status');
       }
     });
   }

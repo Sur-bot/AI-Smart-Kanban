@@ -1,20 +1,22 @@
-﻿.job-role-badge {
-  @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold select-none;
-  white-space: nowrap;
-  transition: opacity 0.15s ease;
-
-  &:hover {
-    opacity: 0.85;
-  }
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.badge-icon {
-  font-size: 12px !important;
-  width: 12px !important;
-  height: 12px !important;
-  line-height: 1 !important;
-}
-
-.badge-label {
-  line-height: 1;
+.job-role-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  background-color: #dee3e9;
+  border-radius: 4px;
+  color: #0f172a;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  user-select: none;
+  transition: background-color 0.15s ease;
 }
