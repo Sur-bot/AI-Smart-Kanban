@@ -25,13 +25,11 @@
 
   <ul class="task-list custom-scrollbar" role="list">
 
-    <!-- Empty State -->
     <li *ngIf="filteredTasks().length === 0" class="task-empty">
       <mat-icon class="empty-icon">inbox</mat-icon>
       <span>Không tìm thấy tác vụ nào</span>
     </li>
 
-    <!-- Task Item -->
     <li
       *ngFor="let task of filteredTasks(); trackBy: trackById"
       class="task-item"
@@ -41,24 +39,18 @@
       (click)="onTaskClick(task)"
     >
 
-      <!-- Row 1: Priority | ID | Job-Role | Title | Due Date -->
       <div class="task-row task-row--main">
-
-        <span
-          class="priority-icon"
-          [style.color]="getPriorityConfig(task.priority).color"
-        >
-          <mat-icon>{{ getPriorityConfig(task.priority).icon }}</mat-icon>
-        </span>
+        
+        <app-job-role-badge
+          *ngIf="task.jobRole; else noJobRole"
+          [jobRole]="task.jobRole"
+          class="task-role-badge shrink-0"
+        ></app-job-role-badge>
+        <ng-template #noJobRole>
+          <span class="w-[28px] h-[28px] inline-flex shrink-0"></span>
+        </ng-template>
 
         <span class="task-id">{{ getShortId(task) }}</span>
-
-        <app-job-role-badge
-          *ngIf="task.jobRole"
-          [jobRole]="task.jobRole"
-          [iconOnly]="true"
-          class="task-role-badge"
-        ></app-job-role-badge>
 
         <span
           class="task-title"
@@ -68,22 +60,23 @@
         </span>
 
         <time
-          *ngIf="formatDueDate(task.dueDate)"
+          *ngIf="formatDueDate(task.dueDate); else noDueDate"
           class="task-due-date"
           [class.task-due-date--overdue]="isOverdue(task.dueDate, task)"
           [dateTime]="task.dueDate!"
         >
           {{ formatDueDate(task.dueDate) }}
         </time>
+        <ng-template #noDueDate>
+          <em class="task-due-date task-due-date--empty">Due</em>
+        </ng-template>
 
       </div>
 
-      <!-- Row 2: People | Status | Estimate | Comments | Checklist -->
       <div class="task-row task-row--meta">
 
         <div class="people-group">
 
-          <!-- Assignees -->
           <span
             *ngFor="let user of getVisibleAssignees(task)"
             class="avatar avatar--assignee"
@@ -96,7 +89,6 @@
             </ng-template>
           </span>
 
-          <!-- Extra assignees -->
           <span
             *ngIf="getExtraAssigneeCount(task) > 0"
             class="avatar avatar--extra"
@@ -106,7 +98,6 @@
             +{{ getExtraAssigneeCount(task) }}
           </span>
 
-          <!-- Reporter (creator) -->
           <span
             *ngIf="task.creator"
             class="avatar avatar--reporter"
@@ -119,7 +110,6 @@
             </ng-template>
           </span>
 
-          <!-- CC (QC member — field TBD) -->
           <span
             class="avatar avatar--cc"
             matTooltip="CC (QC)"
@@ -128,23 +118,12 @@
             <mat-icon class="cc-icon">verified_user</mat-icon>
           </span>
 
-          <mat-icon class="reporter-sep-icon">manage_accounts</mat-icon>
-
         </div>
 
-        <span class="meta-divider" aria-hidden="true"></span>
-
-        <span
-          *ngIf="task.status"
-          class="status-dot"
-          [style.color]="getStatusCategoryConfig(task.status.category).color"
-          [matTooltip]="task.status.name"
-          matTooltipPosition="above"
-        >
-          <mat-icon fontSet="material-icons-outlined">
-            {{ getStatusCategoryConfig(task.status.category).icon }}
-          </mat-icon>
-        </span>
+        <app-task-pipeline-status
+          [taskId]="task.id"
+          [pipelineStatus]="task.pipelineStatus"
+        ></app-task-pipeline-status>
 
         <span
           *ngIf="getEstimateDisplay(task) as est"
@@ -156,7 +135,7 @@
         </span>
 
         <span
-          *ngIf="task.commentCount > 0"
+          *ngIf="task.commentCount > 0" 
           class="comment-mini"
         >
           <mat-icon class="comment-mini__icon">chat_bubble_outline</mat-icon>
@@ -175,7 +154,6 @@
 
       </div>
 
-      <!-- Row 3: Labels / Tags -->
       <div class="task-row task-row--tags" *ngIf="task.labels?.length > 0">
         <span
           *ngFor="let label of task.labels.slice(0, 4)"

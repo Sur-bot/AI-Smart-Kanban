@@ -23,8 +23,8 @@ export class TaskDetailModalComponent {
   @Input() task: TaskDetail | TaskItem | any = null;
   @Output() close = new EventEmitter<void>();
 
-  /** Tỉ lệ cố định: left-panel (task list) = 60%, right-panel (comments) = 40% */
-  readonly LEFT_PANE_WIDTH = 60;
+  /** Tỉ lệ cố định: left-panel (task list) = 40%, right-panel (comments) = 60% */
+  readonly LEFT_PANE_WIDTH = 40;
   isClosing: boolean = false;
   isFullscreen: boolean = false;
   hasUnsavedChanges: boolean = false;

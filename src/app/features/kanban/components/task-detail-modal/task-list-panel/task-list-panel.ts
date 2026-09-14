@@ -14,6 +14,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TaskStore } from '../../../../../core/state/task.store';
 import { TaskItem, TaskPriority, StatusCategory } from '../../../../../core/models/task.model';
 import { JobRoleBadgeComponent } from '../../../../../shared/components/job-role-badge/job-role-badge';
+import { TaskPipelineStatusComponent } from './task-pipeline-status/task-pipeline-status';
 
 interface PriorityConfig {
   icon: string;
@@ -44,7 +45,7 @@ const STATUS_CATEGORY_CONFIG: Record<StatusCategory, { icon: string; color: stri
 @Component({
   selector: 'app-task-list-panel',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatIconModule, MatTooltipModule, JobRoleBadgeComponent],
+  imports: [CommonModule, FormsModule, MatIconModule, MatTooltipModule, JobRoleBadgeComponent, TaskPipelineStatusComponent],
   templateUrl: './task-list-panel.html',
   styleUrls: ['./task-list-panel.scss'],
 })
@@ -133,10 +134,6 @@ export class TaskListPanelComponent {
     return null;
   }
 
-  /**
-   * Tooltip cho estimate.
-   * VD: "2 estimates (8h)"
-   */
   getEstimateTooltip(task: TaskItem): string {
     if (task.storyPoints != null && task.storyPoints > 0) {
       const hours = task.storyPoints * 4;
@@ -150,9 +147,6 @@ export class TaskListPanelComponent {
     return 'Chưa có estimate';
   }
 
-  /**
-   * Lấy tối đa N assignee avatar để hiển thị
-   */
   getVisibleAssignees(task: TaskItem, max = 2) {
     return (task.assignees ?? []).slice(0, max);
   }
@@ -161,9 +155,6 @@ export class TaskListPanelComponent {
     return Math.max(0, (task.assignees?.length ?? 0) - max);
   }
 
-  /**
-   * Lấy initial (chữ cái đầu) của tên
-   */
   getInitials(name: string): string {
     return (name ?? '?')
       .split(' ')
