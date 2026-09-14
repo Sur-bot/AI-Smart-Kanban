@@ -1,6 +1,14 @@
-import { Component, OnInit, OnDestroy, Input, inject, computed } from '@angular/core';
+import {
+  Component,
+  Input,
+  inject,
+  computed,
+  signal,
+  DestroyRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { interval } from 'rxjs';
 import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
@@ -8,38 +16,33 @@ import { AuthService } from '../../../core/auth/auth.service';
   standalone: true,
   imports: [CommonModule, MatIconModule],
   templateUrl: './user-time-widget.html',
-  styleUrl: './user-time-widget.scss'
+  styleUrl: './user-time-widget.scss',
 })
-export class UserTimeWidgetComponent implements OnInit, OnDestroy {
+export class UserTimeWidgetComponent {
   @Input() isOpen = false;
 
-  private authService = inject(AuthService);
+  private readonly authService = inject(AuthService);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly user = this.authService.user;
   readonly avatarUrl = computed(() => this.user()?.user_metadata?.['avatar_url'] || null);
   readonly userName = computed(() => this.user()?.user_metadata?.['full_name'] || this.user()?.email || 'Tài khoản');
 
-  currentTime: string = '';
-  ampm: string = '';
-  private timer: any;
+  readonly currentTime = signal('');
+  readonly ampm = signal('');
 
-  ngOnInit() {
+  constructor() {
     this.updateTime();
-    this.timer = setInterval(() => this.updateTime(), 60000);
+    const sub = interval(1000).subscribe(() => this.updateTime());
+    this.destroyRef.onDestroy(() => sub.unsubscribe());
   }
 
-  updateTime() {
+  private updateTime(): void {
     const now = new Date();
     let hours = now.getHours();
     const minutes = now.getMinutes();
-    this.ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    const minStr = minutes < 10 ? '0' + minutes : minutes;
-    this.currentTime = `${hours}:${minStr}`;
-  }
-
-  ngOnDestroy() {
-    if (this.timer) clearInterval(this.timer);
+    this.ampm.set(hours >= 12 ? 'PM' : 'AM');
+    hours = hours % 12 || 12;
+    this.currentTime.set(`${hours}:${minutes < 10 ? '0' + minutes : minutes}`);
   }
 }
