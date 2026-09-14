@@ -1,0 +1,43 @@
+<div class="pipeline-status">
+
+  <button
+    #triggerBtn
+    type="button"
+    class="pipeline-trigger"
+    [style.color]="currentConfig.color"
+    [matTooltip]="isOpen() ? '' : currentConfig.label"
+    matTooltipPosition="above"
+    (click)="toggle($event)"
+    [attr.aria-expanded]="isOpen()"
+    aria-haspopup="listbox"
+    aria-label="Pipeline status"
+  >
+    <mat-icon fontSet="material-icons-outlined">{{ currentConfig.icon }}</mat-icon>
+  </button>
+
+  <ul
+    *ngIf="isOpen()"
+    role="listbox"
+    class="pipeline-dropdown"
+    aria-label="Chọn pipeline status"
+    [style.top.px]="dropdownTop"
+    [style.left.px]="dropdownLeft"
+    (click)="$event.stopPropagation()"
+  >
+    <li
+      *ngFor="let cfg of allStatuses"
+      role="option"
+      class="pipeline-option"
+      [class.pipeline-option--active]="cfg.key === currentConfig.key"
+      [attr.aria-selected]="cfg.key === currentConfig.key"
+      (click)="select(cfg, $event)"
+    >
+      <span class="pipeline-option__icon" [style.color]="cfg.color">
+        <mat-icon fontSet="material-icons-outlined">{{ cfg.icon }}</mat-icon>
+      </span>
+      <span class="pipeline-option__label">{{ cfg.label }}</span>
+      <mat-icon *ngIf="cfg.key === currentConfig.key" class="pipeline-option__check">check</mat-icon>
+    </li>
+  </ul>
+
+</div>

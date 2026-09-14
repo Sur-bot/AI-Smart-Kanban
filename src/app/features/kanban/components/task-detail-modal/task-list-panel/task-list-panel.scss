@@ -80,10 +80,9 @@
   overflow-y: auto;
   list-style: none;
   margin: 0;
-  padding: 7px 7px 18px;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 5px;
 }
 
 // ─── Empty State ──────────────────────────────────────────────────────────────
@@ -111,10 +110,9 @@
 .task-item {
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  padding: 12px 14px 11px;
+  gap: 10px;
+  padding: 12px 14px;
   border: 1px solid #e9edf3;
-  border-left: 3px solid transparent;
   background: #fff;
   cursor: pointer;
   transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
@@ -124,12 +122,11 @@
   // ── Active State ──
   &--active {
     border-color: #c7d2fe;
-    border-left-color: #6366f1;
     background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%);
     box-shadow: 0 2px 10px rgba(99, 102, 241, 0.12);
 
-    .task-id   { color: #4338ca; font-weight: 800; }
-    .task-title { color: #1e1b4b; font-weight: 600; }
+    .task-id   { color: #4338ca; font-weight: normal; }
+    .task-title { color: #1e1b4b; font-weight: normal; }
   }
 }
 
@@ -138,6 +135,7 @@
   display: flex;
   align-items: center;
   min-width: 0;
+  min-height: 28px; // Cân bằng độ lớn giữa các hàng
   gap: 5px;
 }
 
@@ -168,7 +166,7 @@
 
 // Task ID
 .task-id {
-  font-size: 12.5px;
+  font-size: 14px;
   font-weight: 700;
   color: #4f46e5;
   font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
@@ -188,7 +186,7 @@
   flex: 1;
   min-width: 0;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: normal;
   color: #0f172a;
   white-space: nowrap;
   overflow: hidden;
@@ -206,19 +204,20 @@
   display: inline-flex;
   align-items: center;
   font-size: 12.5px;
-  font-weight: 700;
-  color: #475569;
+  font-weight: normal;
+  color: #000;
   white-space: nowrap;
   flex-shrink: 0;
-  padding: 3px 8px;
-  border-radius: 6px;
-  background: #f1f5f9;
   letter-spacing: 0.1px;
 
   &--overdue {
     color: #dc2626;
-    background: #fef2f2;
-    border: 1px solid #fecaca;
+  }
+
+  &--empty {
+    font-style: italic;
+    color: #94a3b8;
+    cursor: default;
   }
 }
 
@@ -236,6 +235,13 @@
   flex-shrink: 0;
 
   .avatar + .avatar { margin-left: -6px; }
+  
+  // Tách reporter và CC ra khoảng trống đều (không đè lên nhau)
+  .avatar + .avatar--reporter,
+  .avatar + .avatar--cc {
+    margin-left: 6px;
+  }
+
   .reporter-sep-icon { margin-left: 5px; }
 }
 
@@ -244,11 +250,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 25px;
-  height: 25px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   border: 2px solid #fff;
-  overflow: hidden;
   flex-shrink: 0;
   position: relative;
 
@@ -256,6 +261,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 50%;
   }
 
   &__initial {
@@ -264,9 +270,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 800;
     color: #fff;
+    border-radius: 50%;
   }
 
   // Assignee
@@ -276,8 +283,7 @@
 
   // Reporter — teal
   &--reporter {
-    border-color: #14b8a6;
-    margin-left: 7px !important;
+    border: 2px solid transparent;
 
     .avatar__initial {
       background: linear-gradient(135deg, #0d9488, #14b8a6);
@@ -286,10 +292,8 @@
 
   // CC — amber (QC placeholder)
   &--cc {
-    border-color: #f59e0b;
+    border: 2px solid transparent;
     background: #fffbeb;
-    width: 25px;
-    height: 25px;
 
     .cc-icon {
       font-size: 14px;
@@ -303,8 +307,42 @@
   // Extra count
   &--extra {
     background: #e2e8f0;
-    font-size: 8px;
+    font-size: 10px;
     font-weight: 800;
+    color: #64748b;
+  }
+
+  // Badges (A, R, C)
+  &--assignee::after,
+  &--reporter::after,
+  &--cc::after {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 14px;
+    height: 14px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: normal;
+    line-height: 1;
+    z-index: 2;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  }
+
+  &--assignee::after {
+    content: 'A';
+    color: #64748b;
+  }
+  &--reporter::after {
+    content: 'R';
+    color: #64748b;
+  }
+  &--cc::after {
+    content: 'C';
     color: #64748b;
   }
 }
@@ -336,10 +374,10 @@
   flex-shrink: 0;
 
   mat-icon {
-    font-size: 19px;
-    width: 19px;
-    height: 19px;
-    line-height: 19px;
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
   }
 }
 
@@ -426,4 +464,4 @@
   background: #f1f5f9;
   border-radius: 6px;
   white-space: nowrap;
-}
+} 
