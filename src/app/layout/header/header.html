@@ -87,9 +87,16 @@
         <app-user-profile-dropdown
           [isOpen]="isProfileOpen"
           (close)="activePopup = null"
+          (profileClick)="openProfileDrawer()"
         ></app-user-profile-dropdown>
       </div>
 
     </div>
   </div>
 </div>
+
+<!-- User Profile Drawer Modal -->
+<app-user-profile-drawer-modal
+  [isOpen]="isProfileDrawerOpen"
+  (close)="isProfileDrawerOpen = false"
+></app-user-profile-drawer-modal>
