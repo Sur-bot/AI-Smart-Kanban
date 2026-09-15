@@ -1,9 +1,7 @@
 <main class="tasks-page" role="main">
 
-  <!-- Trạng thái 1: Đang tải khởi tạo hoặc đang tải tác vụ khi đổi dự án -->
   <app-loading-spinner *ngIf="!taskStore.isProjectsInitialized() || taskStore.projectsLoading() || taskStore.loading()" />
 
-  <!-- Trạng thái 2 & 3: Đã tải xong (Dù có dự án hay chưa đều hiển thị Workspace UI) -->
   <ng-container *ngIf="taskStore.isProjectsInitialized() && !taskStore.projectsLoading() && !taskStore.loading()">
     <app-page-toolbar 
       [pageTitle]="pageTitle" 
@@ -21,7 +19,6 @@
       [data]="tasks"
       (itemSelected)="openTaskDetail($event)">
       
-      <!-- Custom Empty State Truyền vào Data Table -->
       <div emptyState *ngIf="taskStore.projects().length === 0 || tasks.length === 0" class="flex-1 bg-transparent flex flex-col items-center justify-center pointer-events-none pb-[15vh] pt-[15vh]">
           <div class="text-center text-slate-600 drop-shadow-sm flex flex-col gap-2">
               <h2 class="text-[26px] font-light tracking-wide">Tạo một tác vụ</h2>
