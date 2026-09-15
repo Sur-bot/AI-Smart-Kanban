@@ -1,0 +1,250 @@
+@if (isOpen) {
+  <div class="modal-backdrop" [class.opacity-100]="!isClosing" [class.opacity-0]="isClosing" (click)="onClose()"></div>
+
+  <aside class="modal-frame absolute inset-0 pointer-events-auto flex justify-end" [class.slide-up]="!isClosing" [class.slide-down]="isClosing" role="dialog" aria-modal="true" aria-label="Hồ sơ người dùng">
+    <nav class="modal-actions-sidebar absolute z-[60] flex flex-col items-end gap-1.5 w-[48px]" aria-label="Thao tác nhanh modal">
+      <button
+        type="button"
+        class="modal-close-btn"
+        (click)="onClose()"
+        [matTooltip]="'Đóng'"
+        matTooltipPosition="left"
+        aria-label="Đóng"
+      >
+        <mat-icon fontSet="material-icons-outlined" class="text-[20px] w-[20px] h-[20px] flex items-center justify-center m-0 p-0 leading-none">close</mat-icon>
+      </button>
+
+      <button
+        type="button"
+        class="modal-action-btn"
+        (click)="onCopyLink()"
+        [matTooltip]="'Sao chép liên kết'"
+        matTooltipPosition="left"
+        aria-label="Sao chép liên kết"
+      >
+        <mat-icon fontSet="material-icons-outlined">link</mat-icon>
+      </button>
+    </nav>
+    <section class="drawer-container bg-slate-800">
+      <div class="drawer-bg"></div>
+      
+      <div class="absolute inset-0 bg-slate-900/10 pointer-events-none z-0"></div>
+
+      <main #scrollContainer class="drawer-main-content custom-scrollbar">
+        
+        <div class="relative w-full">
+          
+          <div class="w-full lg:w-[70%] flex flex-col gap-5 z-10 relative">
+            
+            <header class="drawer-header-card w-full mb-0">
+              <figure class="drawer-header-avatar" aria-hidden="true" style="overflow: hidden; padding: 0;">
+                <img *ngIf="avatarUrl" [src]="avatarUrl" [alt]="userName" class="w-full h-full object-cover" />
+                <mat-icon *ngIf="!avatarUrl" class="text-[32px] w-8 h-8 flex items-center justify-center m-0 p-0 text-[#0ea5e9]">person</mat-icon>
+              </figure>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-3 mb-1">
+                  <h1 class="drawer-header-title">{{ userName }}</h1>
+                  <span class="px-2 py-0.5 rounded-full bg-slate-100 text-[10px] font-bold text-slate-500 uppercase tracking-wider border border-slate-200">{{ userRole === 'Admin' ? 'ADMIN' : 'EMPLOYEE' }}</span>
+                </div>
+                <div class="drawer-header-desc flex items-center flex-wrap gap-4 mt-2">
+                  <div class="flex items-center gap-1.5"><mat-icon fontSet="material-icons-outlined" class="text-[16px] w-4 h-4 text-slate-400 leading-none">work_outline</mat-icon><span>{{ userRole }}</span></div>
+                  <div class="flex items-center gap-1.5"><mat-icon fontSet="material-icons-outlined" class="text-[16px] w-4 h-4 text-slate-400 leading-none">mail_outline</mat-icon><span>{{ userEmail }}</span></div>
+                  <div class="flex items-center gap-1.5"><mat-icon fontSet="material-icons-outlined" class="text-[16px] w-4 h-4 text-slate-400 leading-none">phone</mat-icon><span>{{ userPhone }}</span></div>
+                </div>
+              </div>
+            </header>
+            <div class="drawer-body-card w-full">
+              <nav class="drawer-stepper" aria-label="Tab điều hướng">
+                <ol class="drawer-stepper-list">
+                  <li class="drawer-stepper-item cursor-pointer" (click)="currentTab = 'personal'">
+                    <span class="drawer-stepper-label" [ngClass]="currentTab === 'personal' ? 'text-black' : 'text-black/40 hover:text-black/60'">Thông tin cá nhân</span>
+                  </li>
+                </ol>
+              </nav>
+              <div class="step-content-container">
+                @if (currentTab === 'personal') {
+                  <section class="flex flex-col w-full h-full animate-fade-in" aria-label="Thông tin cá nhân">
+                    
+                    <div class="step-body mt-2">
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+                        <div class="flex flex-col gap-10">
+                          <fieldset class="flex flex-col gap-4">
+                            <label class="step-section-title !mb-1 !px-0">Công việc</label>
+                            
+                            <ng-container *ngTemplateOutlet="textField; context: { fieldKey: 'organization', label: 'Tổ chức' }"></ng-container>
+                            <ng-container *ngTemplateOutlet="textField; context: { fieldKey: 'department', label: 'Phòng ban' }"></ng-container>
+                            <ng-container *ngTemplateOutlet="textField; context: { fieldKey: 'startedWorkOn', label: 'Ngày bắt đầu làm việc' }"></ng-container>
+                            
+                            <ng-container *ngTemplateOutlet="userRefField; context: { label: 'Người quản lý trực tiếp', name: formData.supervisorName, avatar: formData.supervisorAvatar }"></ng-container>
+                            
+                            <ng-container *ngTemplateOutlet="textField; context: { fieldKey: 'workPhone', label: 'Điện thoại công ty' }"></ng-container>
+                          </fieldset>
+                          <fieldset class="flex flex-col gap-4">
+                            <label class="step-section-title !mb-1 !px-0">Địa điểm</label>
+                            
+                            <ng-container *ngTemplateOutlet="selectField; context: { fieldKey: 'country', label: 'Quốc gia', options: ['United States of America', 'United Kingdom', 'Canada', 'Vietnam'] }"></ng-container>
+                            <ng-container *ngTemplateOutlet="textField; context: { fieldKey: 'city', label: 'Thành phố' }"></ng-container>
+                            <ng-container *ngTemplateOutlet="textField; context: { fieldKey: 'address', label: 'Địa chỉ' }"></ng-container>
+                          </fieldset>
+                        </div>
+                        <div class="flex flex-col gap-10">
+                          <fieldset class="flex flex-col gap-4">
+                            <label class="step-section-title !mb-1 !px-0">Chuyên môn</label>
+                            
+                            <ng-container *ngTemplateOutlet="textField; context: { fieldKey: 'applications', label: 'Ứng dụng' }"></ng-container>
+                            <ng-container *ngTemplateOutlet="selectField; context: { fieldKey: 'languages', label: 'Ngoại ngữ', options: ['Enter languages', 'English', 'Spanish', 'French', 'Vietnamese'] }"></ng-container>
+                            <ng-container *ngTemplateOutlet="selectField; context: { fieldKey: 'programmingLanguages', label: 'Ngôn ngữ lập trình', options: ['Enter programming languages', 'JavaScript', 'Python', 'Java', 'C#'] }"></ng-container>
+                            <ng-container *ngTemplateOutlet="textField; context: { fieldKey: 'skills', label: 'Kỹ năng' }"></ng-container>
+                            <ng-container *ngTemplateOutlet="textField; context: { fieldKey: 'certifications', label: 'Chứng chỉ' }"></ng-container>
+                          </fieldset>
+                          <fieldset class="flex flex-col gap-4">
+                            <label class="step-section-title !mb-1 !px-0">Khác</label>
+                            
+                            <ng-container *ngTemplateOutlet="selectField; context: { fieldKey: 'driverLicense', label: 'Bằng lái xe', options: ['Có', 'Không'] }"></ng-container>
+                            <ng-container *ngTemplateOutlet="textAreaField; context: { fieldKey: 'otherDetails', label: 'Thông tin bổ sung' }"></ng-container>
+                          </fieldset>
+                        </div>
+                        
+                      </div>
+                    </div>
+                  </section>
+                }
+              </div>
+            </div>
+
+          </div>
+          <aside class="illustration-aside" aria-label="Minh họa hồ sơ">
+            <div class="illustration-window border-[#0ea5e9]">
+              
+              <div class="illustration-titlebar bg-[#0ea5e9]">
+                <span class="w-3 h-3 rounded-full bg-white/70"></span>
+                <span class="w-3 h-3 rounded-full bg-white/70"></span>
+                <span class="w-3 h-3 rounded-full bg-white/70"></span>
+              </div>
+
+              <div class="illustration-body flex flex-col items-center justify-center p-6 gap-8 bg-slate-50/50">
+                <div class="w-full aspect-[3/4] max-w-[180px] bg-white rounded-2xl shadow-sm border border-slate-200 flex flex-col overflow-hidden relative group">
+                  <div class="h-20 bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] w-full shrink-0 relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSI+PC9yZWN0Pgo8cGF0aCBkPSJNMCAwTDggOFpNOCAwTDAgOFoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2Utb3BhY2l0eT0iMC4yIj48L3BhdGg+Cjwvc3ZnPg==')]"></div>
+                  </div>
+                  
+                  <div class="w-20 h-20 rounded-full border-4 border-white bg-slate-100 absolute top-10 left-1/2 -translate-x-1/2 flex items-center justify-center overflow-hidden shadow-sm group-hover:scale-105 transition-transform duration-300">
+                    <mat-icon class="text-slate-400 text-[40px] w-10 h-10 flex items-center justify-center m-0 p-0 leading-none">account_circle</mat-icon>
+                  </div>
+                  
+                  <div class="mt-14 flex flex-col items-center px-4 pb-6 gap-3 w-full">
+                    <div class="flex flex-col items-center gap-1.5 w-full">
+                      <div class="h-3.5 bg-slate-200 rounded-full w-4/5"></div>
+                      <div class="h-2 bg-slate-100 rounded-full w-1/2"></div>
+                    </div>
+                    
+                    <div class="w-full flex flex-col gap-2.5 mt-2">
+                      <div class="flex items-center gap-2"><div class="w-4 h-4 rounded-md bg-sky-100 shrink-0 flex items-center justify-center"><mat-icon class="text-[10px] w-2.5 h-2.5 text-sky-500">work</mat-icon></div><div class="h-1.5 bg-slate-100 rounded-full flex-1"></div></div>
+                      <div class="flex items-center gap-2"><div class="w-4 h-4 rounded-md bg-purple-100 shrink-0 flex items-center justify-center"><mat-icon class="text-[10px] w-2.5 h-2.5 text-purple-500">mail</mat-icon></div><div class="h-1.5 bg-slate-100 rounded-full flex-1"></div></div>
+                      <div class="flex items-center gap-2"><div class="w-4 h-4 rounded-md bg-green-100 shrink-0 flex items-center justify-center"><mat-icon class="text-[10px] w-2.5 h-2.5 text-green-500">phone</mat-icon></div><div class="h-1.5 bg-slate-100 rounded-full flex-1"></div></div>
+                    </div>
+                  </div>
+                  
+                  <div class="mt-auto h-8 bg-slate-50 border-t border-slate-100 flex items-center justify-center gap-1.5">
+                    <div class="h-1 w-12 bg-slate-200 rounded-full"></div>
+                    <div class="h-1 w-8 bg-slate-200 rounded-full"></div>
+                  </div>
+                </div>
+                
+                <p class="text-center text-[13px] text-slate-500 leading-relaxed px-4">
+                  Hồ sơ nhân viên là nơi lưu trữ thông tin cá nhân và chuyên môn để nhóm có thể cộng tác hiệu quả hơn.
+                </p>
+                
+              </div>
+            </div>
+          </aside>
+
+        </div>
+        <div class="flex-1 min-h-[60px] pointer-events-none"></div>
+      </main>
+
+    </section>
+  </aside>
+}
+<ng-template #textField let-fieldKey="fieldKey" let-label="label">
+  <div class="inline-field">
+    <label class="inline-field-label">{{ label }}</label>
+    
+    @if (editingField === fieldKey) {
+      <div class="inline-field-edit-wrapper">
+        <input 
+          type="text" 
+          class="inline-input" 
+          [(ngModel)]="tempEditValue" 
+          (keydown.enter)="saveEdit(fieldKey)"
+          (keydown.escape)="cancelEdit()"
+          autofocus
+        />
+        <div class="inline-actions">
+          <button type="button" class="inline-action-btn confirm" (click)="saveEdit(fieldKey)">
+            <mat-icon fontSet="material-icons-outlined">check</mat-icon>
+          </button>
+          <button type="button" class="inline-action-btn cancel" (click)="cancelEdit()">
+            <mat-icon fontSet="material-icons-outlined">close</mat-icon>
+          </button>
+        </div>
+      </div>
+    } @else {
+      <div class="inline-field-view" (click)="startEdit(fieldKey, $any(formData)[fieldKey])">
+        <span class="inline-field-value">{{ $any(formData)[fieldKey] }}</span>
+        <span class="inline-edit-hint"><mat-icon fontSet="material-icons-outlined">edit</mat-icon></span>
+      </div>
+    }
+  </div>
+</ng-template>
+<ng-template #selectField let-fieldKey="fieldKey" let-label="label" let-options="options">
+  <div class="inline-field">
+    <label class="inline-field-label">{{ label }}</label>
+    <select class="inline-select" [(ngModel)]="$any(formData)[fieldKey]">
+      @for (opt of options; track opt) {
+        <option [value]="opt">{{ opt }}</option>
+      }
+    </select>
+  </div>
+</ng-template>
+<ng-template #textAreaField let-fieldKey="fieldKey" let-label="label">
+  <div class="inline-field">
+    <label class="inline-field-label">{{ label }}</label>
+    
+    @if (editingField === fieldKey) {
+      <div class="inline-field-edit-wrapper" style="align-items: flex-start">
+        <textarea 
+          class="inline-textarea" 
+          [(ngModel)]="tempEditValue"
+          (keydown.escape)="cancelEdit()"
+          autofocus
+        ></textarea>
+        <div class="inline-actions" style="top: 0">
+          <button type="button" class="inline-action-btn confirm" (click)="saveEdit(fieldKey)">
+            <mat-icon fontSet="material-icons-outlined">check</mat-icon>
+          </button>
+          <button type="button" class="inline-action-btn cancel" (click)="cancelEdit()">
+            <mat-icon fontSet="material-icons-outlined">close</mat-icon>
+          </button>
+        </div>
+      </div>
+    } @else {
+      <div class="inline-field-view" style="min-height: 80px; align-items: flex-start" (click)="startEdit(fieldKey, $any(formData)[fieldKey])">
+        <span class="inline-field-value">{{ $any(formData)[fieldKey] || 'Enter details...' }}</span>
+        <span class="inline-edit-hint"><mat-icon fontSet="material-icons-outlined">edit</mat-icon></span>
+      </div>
+    }
+  </div>
+</ng-template>
+<ng-template #userRefField let-label="label" let-avatar="avatar" let-name="name">
+  <div class="inline-field">
+    <label class="inline-field-label">{{ label }}</label>
+    <div class="user-ref mt-1.5">
+      <figure class="user-ref-avatar">
+        <img *ngIf="avatar" [src]="avatar" />
+        <mat-icon *ngIf="!avatar" fontSet="material-icons-outlined">person</mat-icon>
+      </figure>
+      <span class="user-ref-name">{{ name }}</span>
+    </div>
+  </div>
+</ng-template>

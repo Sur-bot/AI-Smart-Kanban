@@ -1,0 +1,31 @@
+.user-time-widget-btn {
+  @apply inline-flex items-center bg-white/15 rounded-full h-8 xl:pl-3 pl-0.5 pr-0.5 gap-2.5 transition-colors cursor-pointer shadow-sm;
+}
+
+.time-container {
+  @apply hidden xl:flex items-center gap-1.5 text-white leading-none;
+}
+
+.time-icon {
+  @apply text-[13px] w-[13px] h-[13px] opacity-70 !important;
+}
+
+.time-text {
+  @apply text-[13px] font-bold tracking-wide;
+}
+
+.time-ampm {
+  @apply text-[9px] font-bold opacity-75 mt-0.5 uppercase;
+}
+
+.avatar-figure {
+  @apply w-[26px] h-[26px] bg-slate-500/40 rounded-full flex items-center justify-center border border-white/15 shadow-sm transition-colors overflow-hidden m-0;
+}
+
+.avatar-img {
+  @apply w-full h-full object-cover;
+}
+
+.avatar-icon {
+  @apply text-[15px] w-[15px] h-[15px] text-white !important;
+}
