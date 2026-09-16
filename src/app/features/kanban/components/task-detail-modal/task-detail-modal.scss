@@ -8,11 +8,11 @@
 
 .modal-frame {
   @apply absolute inset-0 pointer-events-auto flex;
-  
+
   &.slide-up {
     animation: slideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
-  
+
   &.slide-down {
     animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
@@ -29,7 +29,7 @@
 }
 
 .modal-container {
-  @apply flex bg-white overflow-hidden shadow-2xl relative rounded-tl-2xl rounded-tr-2xl;
+  @apply flex flex-col bg-white overflow-hidden shadow-2xl relative rounded-tl-2xl rounded-tr-2xl;
   margin-left: 68px;
   margin-right: 64px;
   margin-top: 8px;
@@ -72,32 +72,242 @@
   left: 0 !important;
 }
 
-/* .modal-close-btn, .modal-action-btn — được định nghĩa global tại styles.scss, không cần khai báo lại */
-
-.left-pane {
-  @apply flex flex-col bg-white h-full relative z-0;
-  /* Tỉ lệ cố định 30% — min-width để đảm bảo readable */
-  min-width: 260px;
+// ──────────────────────────────────────────
+// TOP BAR
+// ──────────────────────────────────────────
+.modal-topbar {
+  @apply flex items-center justify-between px-4 py-2.5 border-b border-slate-200 shrink-0 bg-white;
 }
 
-.pane-content {
-  @apply flex-1 overflow-y-auto;
+.breadcrumb {
+  @apply flex items-center gap-1.5;
 }
 
-.chip-btn {
-  @apply flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200 text-[12px] font-medium text-slate-600 hover:bg-slate-50 transition-colors whitespace-nowrap;
-  
+.breadcrumb-item {
+  @apply flex items-center gap-1.5 no-underline transition-opacity hover:opacity-80;
+}
+
+.breadcrumb-id {
+  @apply text-[13px] font-semibold text-blue-600;
+}
+
+.breadcrumb-sep {
+  @apply text-slate-400 font-light text-[14px] mx-0.5;
+}
+
+.topbar-actions {
+  @apply flex items-center gap-0.5;
+}
+
+.topbar-icon-btn {
+  @apply w-8 h-8 flex items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 hover:text-slate-700 transition-colors cursor-pointer border-none bg-transparent;
+
   mat-icon {
-    @apply text-[14px] w-3.5 h-3.5 leading-[14px] text-slate-400;
+    @apply text-[18px] w-[18px] h-[18px] leading-[18px];
   }
 }
 
-/* Đường kẻ phân cách tĩnh giữa 2 panel (không kéo được) */
-.right-pane {
-  @apply flex flex-col min-w-[300px] h-full z-0;
+// ──────────────────────────────────────────
+// TASK BADGE
+// ──────────────────────────────────────────
+.task-badge {
+  @apply inline-flex items-center justify-center text-[10px] font-bold rounded-sm px-1 py-0.5 leading-none shrink-0;
+  min-width: 20px;
+  height: 18px;
 }
 
-.chat-bg-pattern {
-  background-color: #e5f0fa;
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.83-1.66 1.66-.83-.83.83-.83zM32.553 0l1.66 1.66-1.66 1.66-1.66-1.66 1.66-1.66zM10.479 0l1.66 1.66-1.66 1.66-1.66-1.66 1.66-1.66zM27.272 5.093l.83.83-1.66 1.66-.83-.83.83-.83zm22.074 0l.83.83-1.66 1.66-.83-.83.83-.83zm-44.148 0l.83.83-1.66 1.66-.83-.83.83-.83z' fill='%23bcd2e8' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
+.badge-blue  { @apply bg-blue-600 text-white; }
+.badge-red   { @apply bg-red-500 text-white; }
+.badge-gray  { @apply bg-slate-200 text-slate-700; }
+.badge-blue-soft { @apply bg-blue-100 text-blue-700; }
+
+// ──────────────────────────────────────────
+// MODAL BODY
+// ──────────────────────────────────────────
+.modal-body {
+  @apply flex flex-1 overflow-hidden;
+}
+
+// ──────────────────────────────────────────
+// CONTENT PANE (Left)
+// ──────────────────────────────────────────
+.content-pane {
+  @apply flex flex-col bg-white border-r border-slate-200 h-full overflow-hidden;
+  flex: 0 0 60%;
+  min-width: 320px;
+}
+
+.content-pane-inner {
+  @apply flex-1 overflow-y-auto px-7 py-6;
+}
+
+.task-type-badge {
+  @apply mb-3;
+}
+
+.task-title {
+  @apply text-[18px] font-bold text-slate-900 leading-snug mb-5 mt-0;
+}
+
+.section-heading {
+  @apply text-[12px] font-medium text-slate-500 uppercase tracking-wide mb-3 mt-0;
+}
+
+.description-block {
+  @apply flex flex-col gap-0;
+}
+
+.sub-heading {
+  @apply text-[13.5px] font-bold text-slate-800 mt-4 mb-1.5;
+}
+
+.desc-paragraph {
+  @apply text-[13.5px] text-slate-700 leading-relaxed m-0;
+}
+
+.desc-list {
+  @apply text-[13.5px] text-slate-700 leading-relaxed pl-5 mt-0 mb-0;
+
+  li {
+    @apply mb-0.5;
+  }
+
+  &--ordered {
+    list-style-type: decimal;
+  }
+}
+
+// ──────────────────────────────────────────
+// PROPERTIES PANE (Right)
+// ──────────────────────────────────────────
+.properties-pane {
+  @apply flex flex-col bg-white h-full overflow-hidden;
+  flex: 1 1 40%;
+  min-width: 280px;
+}
+
+.props-header {
+  @apply flex items-center justify-between px-4 py-3 border-b border-slate-200 shrink-0;
+}
+
+.props-status-badge {
+  @apply flex items-center gap-1.5 cursor-pointer select-none;
+}
+
+.status-check-icon {
+  @apply text-blue-500 text-[18px] w-[18px] h-[18px] leading-[18px];
+}
+
+.status-label {
+  @apply text-[12px] font-bold text-slate-700 tracking-wide;
+}
+
+.status-chevron {
+  @apply text-[16px] w-[16px] h-[16px] text-slate-500;
+}
+
+.props-header-actions {
+  @apply flex items-center gap-0.5;
+}
+
+.props-body {
+  @apply flex-1 overflow-y-auto px-4 py-3;
+}
+
+.prop-row {
+  @apply flex items-center gap-3 py-2.5 border-b border-slate-100 last:border-none;
+
+  &--hoverable {
+    @apply hover:bg-slate-50 rounded-md -mx-2 px-2 cursor-pointer;
+  }
+
+  &--wrap {
+    @apply flex-wrap;
+  }
+}
+
+dt.prop-label {
+  @apply text-[12.5px] text-slate-500 font-medium shrink-0;
+  width: 100px;
+  min-width: 100px;
+
+  &.prop-label--info {
+    @apply flex items-center gap-0.5;
+  }
+}
+
+dd.prop-value {
+  @apply flex items-center gap-2 flex-1 m-0 text-[13px] text-slate-800 font-medium;
+
+  &--placeholder {
+    @apply text-slate-400 font-normal italic;
+  }
+}
+
+.info-icon {
+  @apply text-[14px] w-[14px] h-[14px] leading-[14px] text-slate-400 cursor-help;
+}
+
+// Progress Bar
+.progress-bar-wrap {
+  @apply flex-1;
+}
+
+.progress-bar-track {
+  @apply relative w-full h-2 bg-slate-200 rounded-full overflow-visible;
+}
+
+.progress-bar-fill {
+  @apply absolute left-0 top-0 h-full bg-green-500 rounded-full;
+  transition: width 0.4s ease;
+}
+
+.progress-dot {
+  @apply absolute right-0 top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-white shadow-sm;
+  right: -4px;
+}
+
+.progress-text {
+  @apply text-[12px] font-semibold text-slate-700 shrink-0 ml-2;
+}
+
+// User Avatar small
+.user-avatar-sm {
+  @apply w-6 h-6 rounded-full bg-indigo-500 flex items-center justify-center text-white text-[10px] font-bold overflow-hidden shrink-0;
+}
+
+.user-name {
+  @apply text-[13px] text-slate-800 font-medium;
+}
+
+// Epic Tag
+.epic-tag {
+  @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-green-400 text-green-700 text-[12px] font-medium;
+
+  .epic-icon {
+    @apply text-[14px] w-[14px] h-[14px] leading-[14px] text-green-500;
+  }
+}
+
+// Label Tag
+.label-tag {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-[11.5px] font-semibold;
+
+  &--bug {
+    @apply bg-red-100 text-red-600;
+  }
+}
+
+// Priority Icon
+.priority-icon {
+  @apply text-[18px] w-[18px] h-[18px] leading-[18px] text-slate-500;
+}
+
+// Remove tag button
+.remove-tag-btn {
+  @apply w-5 h-5 flex items-center justify-center rounded-full hover:bg-slate-200 transition-colors border-none bg-transparent text-slate-500 cursor-pointer;
+}
+
+.prop-text {
+  @apply text-[13px] text-slate-800;
 }

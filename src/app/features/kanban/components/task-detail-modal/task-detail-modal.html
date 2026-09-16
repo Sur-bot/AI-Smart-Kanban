@@ -10,22 +10,22 @@
      role="dialog"
      [attr.aria-label]="task?.title || ('TASK_DETAIL.TITLE' | translate)"
      aria-modal="true">
-  
+
   <nav class="modal-actions-sidebar" aria-label="Thao tác điều khiển hộp thoại">
     <button type="button" class="modal-close-btn" (click)="triggerClose()"
             matTooltip="Đóng" matTooltipPosition="left"
             [attr.aria-label]="'TASK_DETAIL.CLOSE' | translate">
       <mat-icon>close</mat-icon>
     </button>
-    <button type="button" class="modal-action-btn"
-            matTooltip="Sao chép liên kết" matTooltipPosition="left"
-            [attr.aria-label]="'TASK_DETAIL.COPY_LINK' | translate">
-      <mat-icon>link</mat-icon>
-    </button>
     <button type="button" class="modal-action-btn" (click)="toggleFullscreen()"
             [matTooltip]="isFullscreen ? 'Thu nhỏ' : 'Toàn màn hình'" matTooltipPosition="left"
             [attr.aria-label]="(isFullscreen ? 'TASK_DETAIL.MINIMIZE' : 'TASK_DETAIL.EXPAND') | translate">
       <mat-icon>{{ isFullscreen ? 'fullscreen_exit' : 'fullscreen' }}</mat-icon>
+    </button>
+    <button type="button" class="modal-action-btn"
+            matTooltip="Sao chép liên kết" matTooltipPosition="left"
+            [attr.aria-label]="'TASK_DETAIL.COPY_LINK' | translate">
+      <mat-icon>link</mat-icon>
     </button>
     <button type="button" class="modal-action-btn"
             matTooltip="In tác vụ" matTooltipPosition="left"
@@ -35,24 +35,268 @@
   </nav>
 
   <article class="modal-container" [class.fullscreen-mode]="isFullscreen">
-    
-    <section class="left-pane flex flex-col bg-white" [style.width.%]="LEFT_PANE_WIDTH" aria-label="Danh sách tác vụ trong dự án">
-      <app-task-list-panel
-        [activeTaskId]="task?.id ?? null"
-        (taskSelected)="onTaskSelected($event)"
-        class="flex flex-col h-full w-full overflow-hidden"
-      ></app-task-list-panel>
-    </section>
 
-    <!-- Right Pane: Comments -->
-    <aside class="right-pane bg-slate-50 flex flex-col border-l border-slate-200" [style.width.%]="100 - LEFT_PANE_WIDTH" aria-label="Thảo luận và tiến trình tác vụ">
-      <app-task-comments 
-        *ngIf="task" 
-        [task]="task"
-        (changesMade)="markAsDirty()"
-        class="flex flex-col h-full w-full">
-      </app-task-comments>
-    </aside>
+    <!-- Top Bar: Breadcrumb + Toolbar Icons -->
+    <header class="modal-topbar">
+      <nav class="breadcrumb" aria-label="Breadcrumb tác vụ">
+        <a href="javascript:void(0)" class="breadcrumb-item breadcrumb-parent">
+          <span class="task-badge badge-blue">ER</span>
+          <span class="breadcrumb-id">{{ task?.projectCode || 'XCOR-1411' }}</span>
+        </a>
+        <span class="breadcrumb-sep" aria-hidden="true">/</span>
+        <a href="javascript:void(0)" class="breadcrumb-item breadcrumb-current">
+          <span class="task-badge badge-red">B</span>
+          <span class="breadcrumb-id">{{ task?.code || 'XCOR-23067' }}</span>
+        </a>
+      </nav>
+
+      <div class="topbar-actions" role="toolbar" aria-label="Thao tác tác vụ">
+        <button type="button" class="topbar-icon-btn" matTooltip="Lưu / Đánh dấu" aria-label="Lưu tác vụ">
+          <mat-icon fontSet="material-icons-outlined">bookmark_border</mat-icon>
+        </button>
+        <button type="button" class="topbar-icon-btn" matTooltip="Thông báo" aria-label="Thông báo">
+          <mat-icon fontSet="material-icons-outlined">notifications_none</mat-icon>
+        </button>
+        <button type="button" class="topbar-icon-btn" matTooltip="Đính kèm tệp" aria-label="Đính kèm">
+          <mat-icon fontSet="material-icons-outlined">attach_file</mat-icon>
+        </button>
+        <button type="button" class="topbar-icon-btn" matTooltip="Checklist" aria-label="Checklist">
+          <mat-icon fontSet="material-icons-outlined">checklist</mat-icon>
+        </button>
+        <button type="button" class="topbar-icon-btn" matTooltip="Sao chép" aria-label="Sao chép">
+          <mat-icon fontSet="material-icons-outlined">content_copy</mat-icon>
+        </button>
+        <button type="button" class="topbar-icon-btn" matTooltip="Chia sẻ" aria-label="Chia sẻ">
+          <mat-icon fontSet="material-icons-outlined">share</mat-icon>
+        </button>
+        <button type="button" class="topbar-icon-btn" matTooltip="Sao chép liên kết" aria-label="Liên kết">
+          <mat-icon fontSet="material-icons-outlined">link</mat-icon>
+        </button>
+        <button type="button" class="topbar-icon-btn" matTooltip="Lịch sử hoạt động" aria-label="Lịch sử">
+          <mat-icon fontSet="material-icons-outlined">manage_history</mat-icon>
+        </button>
+        <button type="button" class="topbar-icon-btn" matTooltip="Bộ đếm thời gian" aria-label="Timer">
+          <mat-icon fontSet="material-icons-outlined">timer</mat-icon>
+        </button>
+      </div>
+    </header>
+
+    <!-- Modal Body: Left Content + Right Properties -->
+    <div class="modal-body">
+
+      <!-- Left Pane: Task Content -->
+      <section class="content-pane" aria-label="Nội dung tác vụ">
+        <div class="content-pane-inner custom-scrollbar">
+
+          <!-- Task Type Badge -->
+          <div class="task-type-badge">
+            <span class="task-badge badge-gray">FE</span>
+          </div>
+
+          <!-- Task Title -->
+          <h2 class="task-title">{{ task?.title || '[Leave/Setting] Bug 500 when Category Name is too long (Create & Edit)' }}</h2>
+
+          <!-- Description Section -->
+          <section aria-labelledby="desc-heading">
+            <h3 id="desc-heading" class="section-heading">Description</h3>
+
+            <div class="description-block">
+              <h4 class="sub-heading">Environment:</h4>
+              <ul class="desc-list">
+                <li>Environment:</li>
+                <li>Navigate:</li>
+                <li>Account:</li>
+              </ul>
+
+              <h4 class="sub-heading">Description:</h4>
+              <p class="desc-paragraph">
+                A 500 error occurs in the Leave|Settings module when attempting to create or edit a Category with a name that exceeds the maximum length.
+              </p>
+
+              <h4 class="sub-heading">Pre-condition:</h4>
+              <ul class="desc-list">
+                <li>The user is logged in.</li>
+                <li>The user has view/edit permissions for Leave|Setting.</li>
+              </ul>
+
+              <h4 class="sub-heading">Step:</h4>
+              <ol class="desc-list desc-list--ordered">
+                <li>Navigate to Leave | Setting.</li>
+                <li>Attempt to create a new category (or edit an existing one).</li>
+                <li>Enter a very long name for the category.</li>
+                <li>Click on Save button.</li>
+                <li>Observe the result</li>
+              </ol>
+
+              <h4 class="sub-heading">Expected result:</h4>
+              <p class="desc-paragraph">
+                The category should be created/edited successfully, or an appropriate client-side validation message should be displayed before submitting the form to prevent the server error.
+              </p>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- Right Pane: Properties Panel -->
+      <aside class="properties-pane" aria-label="Thuộc tính tác vụ">
+
+        <!-- Properties Header -->
+        <header class="props-header">
+          <div class="props-status-badge">
+            <mat-icon fontSet="material-icons-outlined" class="status-check-icon">check_circle</mat-icon>
+            <span class="status-label">READY IN DEV</span>
+            <mat-icon class="status-chevron">expand_more</mat-icon>
+          </div>
+          <div class="props-header-actions">
+            <button type="button" class="topbar-icon-btn" matTooltip="Tùy chọn khác" aria-label="Tùy chọn">
+              <mat-icon>more_horiz</mat-icon>
+            </button>
+            <button type="button" class="topbar-icon-btn" (click)="triggerClose()" matTooltip="Đóng" aria-label="Đóng panel">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </header>
+
+        <!-- Properties List -->
+        <div class="props-body custom-scrollbar">
+
+          <!-- Progress -->
+          <div class="prop-row">
+            <dt class="prop-label">Progress</dt>
+            <dd class="prop-value">
+              <div class="progress-bar-wrap" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar-track">
+                  <div class="progress-bar-fill" style="width: 100%"></div>
+                  <span class="progress-dot"></span>
+                </div>
+              </div>
+              <span class="progress-text">100%</span>
+            </dd>
+          </div>
+
+          <!-- Reminder -->
+          <div class="prop-row">
+            <dt class="prop-label">Reminder</dt>
+            <dd class="prop-value prop-value--placeholder">Click to set reminder</dd>
+          </div>
+
+          <!-- Assignee -->
+          <div class="prop-row">
+            <dt class="prop-label">Assignee</dt>
+            <dd class="prop-value">
+              <figure class="user-avatar-sm m-0">
+                <span>A</span>
+              </figure>
+              <span class="user-name">{{ task?.assignee?.name || 'Anh Nguyen' }}</span>
+            </dd>
+          </div>
+
+          <!-- Reporter -->
+          <div class="prop-row prop-row--hoverable">
+            <dt class="prop-label">Reporter</dt>
+            <dd class="prop-value">
+              <figure class="user-avatar-sm m-0">
+                <span>H</span>
+              </figure>
+              <span class="user-name">Han Tran</span>
+            </dd>
+          </div>
+
+          <!-- CC -->
+          <div class="prop-row">
+            <dt class="prop-label">CC</dt>
+            <dd class="prop-value">
+              <figure class="user-avatar-sm m-0">
+                <span>T</span>
+              </figure>
+              <span class="user-name">Tien Tran</span>
+              <button type="button" class="remove-tag-btn" aria-label="Xóa CC">
+                <mat-icon class="text-[12px]">chevron_right</mat-icon>
+              </button>
+            </dd>
+          </div>
+
+          <!-- Type -->
+          <div class="prop-row">
+            <dt class="prop-label">Type</dt>
+            <dd class="prop-value">
+              <span class="task-badge badge-red">B</span>
+              <span class="prop-text">Bug</span>
+            </dd>
+          </div>
+
+          <!-- Priority -->
+          <div class="prop-row">
+            <dt class="prop-label">Priority</dt>
+            <dd class="prop-value">
+              <mat-icon fontSet="material-icons-outlined" class="priority-icon">density_medium</mat-icon>
+              <span class="prop-text">Medium</span>
+            </dd>
+          </div>
+
+          <!-- Epic -->
+          <div class="prop-row">
+            <dt class="prop-label">Epic</dt>
+            <dd class="prop-value">
+              <span class="epic-tag">
+                <mat-icon class="epic-icon">bolt</mat-icon>
+                Leave
+              </span>
+            </dd>
+          </div>
+
+          <!-- Platform -->
+          <div class="prop-row">
+            <dt class="prop-label">Platform</dt>
+            <dd class="prop-value">
+              <span class="task-badge badge-blue-soft">FE</span>
+              <span class="prop-text">FE</span>
+            </dd>
+          </div>
+
+          <!-- Storyline -->
+          <div class="prop-row">
+            <dt class="prop-label">Storyline</dt>
+            <dd class="prop-value prop-value--placeholder">None</dd>
+          </div>
+
+          <!-- Parent Task -->
+          <div class="prop-row">
+            <dt class="prop-label prop-label--info">
+              Parent Task
+              <mat-icon class="info-icon">info</mat-icon>
+            </dt>
+            <dd class="prop-value prop-value--placeholder">None</dd>
+          </div>
+
+          <!-- Estimate -->
+          <div class="prop-row">
+            <dt class="prop-label">Estimate</dt>
+            <dd class="prop-value prop-value--placeholder">None</dd>
+          </div>
+
+          <!-- Story Point -->
+          <div class="prop-row">
+            <dt class="prop-label prop-label--info">
+              Story Point
+              <mat-icon class="info-icon">info</mat-icon>
+            </dt>
+            <dd class="prop-value">
+              <span class="prop-text">0.5</span>
+            </dd>
+          </div>
+
+          <!-- Labels -->
+          <div class="prop-row prop-row--wrap">
+            <dt class="prop-label">Labels</dt>
+            <dd class="prop-value">
+              <span class="label-tag label-tag--bug">Bug Production</span>
+            </dd>
+          </div>
+
+        </div>
+      </aside>
+
+    </div>
   </article>
 </section>
-
