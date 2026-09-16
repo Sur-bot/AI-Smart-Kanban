@@ -49,7 +49,7 @@
               formControlName="description"
               class="description-input custom-scrollbar"
               placeholder="Mô tả"
-              rows="1"
+              rows="2"
               aria-label="Mô tả tác vụ"
             ></textarea>
           </div>
@@ -92,7 +92,6 @@
                 [value]="form.get('dueDate')?.value"
                 emptyVariant="badge"
                 emptyTextKey="DUE_DATE_PICKER.NO_DUE_DATE"
-                [showTuneBtn]="true"
                 (valueChange)="onDueDateChange($event)">
               </app-due-date-picker>
             </div>
@@ -103,10 +102,50 @@
         <hr class="dialog-divider" />
 
         <section class="dialog-chips" aria-label="Tùy chọn bổ sung">
-          <button type="button" class="chip-btn" aria-label="Đính kèm tập tin">
-            <mat-icon fontSet="material-icons-outlined" class="chip-icon">attach_file</mat-icon>
-            <span>Tập tin</span>
-          </button>
+          <div class="file-dropdown-wrapper">
+            <button
+              type="button"
+              class="chip-btn"
+              [class.chip-btn--active]="isFileDropdownOpen"
+              aria-label="Đính kèm tập tin"
+              aria-haspopup="true"
+              [attr.aria-expanded]="isFileDropdownOpen"
+              (click)="toggleFileDropdown($event)"
+            >
+              <mat-icon fontSet="material-icons-outlined" class="chip-icon">attach_file</mat-icon>
+              <span>Tập tin</span>
+            </button>
+
+            <menu
+              *ngIf="isFileDropdownOpen"
+              class="file-dropdown-menu"
+              role="menu"
+              aria-label="Chọn nguồn tập tin"
+            >
+              <li role="none">
+                <button
+                  type="button"
+                  class="file-dropdown-item"
+                  role="menuitem"
+                  (click)="onUploadFile()"
+                >
+                  <span>Tải lên</span>
+                  <mat-icon fontSet="material-icons-outlined" class="dropdown-item-icon">file_download</mat-icon>
+                </button>
+              </li>
+              <li role="none">
+                <button
+                  type="button"
+                  class="file-dropdown-item"
+                  role="menuitem"
+                  (click)="onPickFromDrive()"
+                >
+                  <span>Drive của tôi</span>
+                  <mat-icon fontSet="material-icons-outlined" class="dropdown-item-icon">cloud_upload</mat-icon>
+                </button>
+              </li>
+            </menu>
+          </div>
           <button type="button" class="chip-btn" aria-label="Thêm danh sách kiểm tra">
             <mat-icon fontSet="material-icons-outlined" class="chip-icon">checklist</mat-icon>
             <span>Danh sách kiểm tra</span>
