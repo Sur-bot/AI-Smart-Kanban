@@ -46,6 +46,7 @@ export class CreateTaskModalComponent implements OnInit {
   assigneeAvatar: string | null = null;
   assigneeId: string | null = null;
   isAssigneeDropdownOpen = false;
+  isFileDropdownOpen = false;
 
   ngOnInit(): void {
     this.initAssignee();
@@ -118,16 +119,33 @@ export class CreateTaskModalComponent implements OnInit {
     this.onClose();
   }
 
+  toggleFileDropdown(event: Event): void {
+    event.stopPropagation();
+    this.isFileDropdownOpen = !this.isFileDropdownOpen;
+  }
+
+  onUploadFile(): void {
+    this.isFileDropdownOpen = false;
+  }
+
+  onPickFromDrive(): void {
+    this.isFileDropdownOpen = false;
+  }
+
   onDialogContentClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
     if (!target.closest('.assignee-popover') && !target.closest('.assignee-wrapper')) {
       this.isAssigneeDropdownOpen = false;
+    }
+    if (!target.closest('.file-dropdown-wrapper')) {
+      this.isFileDropdownOpen = false;
     }
   }
 
   @HostListener('document:click')
   onDocumentClick(): void {
     this.isAssigneeDropdownOpen = false;
+    this.isFileDropdownOpen = false;
   }
 
   @HostListener('keydown.escape')
@@ -143,6 +161,7 @@ export class CreateTaskModalComponent implements OnInit {
     this.form.reset();
     this.isSubmitting = false;
     this.isAssigneeDropdownOpen = false;
+    this.isFileDropdownOpen = false;
     this.isHighPriority = false;
     this.close.emit();
   }
