@@ -209,6 +209,7 @@
         [images]="filteredImages"
         (imageClick)="onImageClick($event)"
         (deleteClick)="onImageDelete($event.id)"
+        (bulkDeleteClick)="onBulkDelete($event)"
       ></app-image-grid>
     </section>
 

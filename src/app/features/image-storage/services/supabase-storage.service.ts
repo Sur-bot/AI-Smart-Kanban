@@ -1,4 +1,4 @@
-﻿import { Injectable, inject, effect } from '@angular/core';
+import { Injectable, inject, effect } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, map, switchMap, catchError, throwError, of, tap } from 'rxjs';
 import { ImageFile, StorageQuota } from '../models/image.model';
@@ -150,12 +150,33 @@ export class SupabaseStorageService {
   }
 
   deleteImage(id: string): Observable<void> {
-    this.imagesSubject.next(this.imagesSubject.value.filter(img => img.id !== id));
+    const updatedLocalList = this.imagesSubject.value.filter(img => img.id !== id);
+    this.imagesSubject.next(updatedLocalList);
     this.loadQuota();
     return this.http.delete<void>(`${this.apiUrl}/jobs/image/${id}`).pipe(
       tap(() => this.loadQuota()),
       map(() => void 0),
       catchError(err => { console.error('[Delete] error:', err.status); return throwError(() => err); })
+    );
+  }
+
+  /**
+   * Xóa hàng loạt ảnh
+   */
+  bulkDeleteImages(ids: string[]): Observable<void> {
+    const updatedLocalList = this.imagesSubject.value.filter(img => !ids.includes(img.id));
+    this.imagesSubject.next(updatedLocalList);
+    this.loadQuota();
+
+    const requestOptions = {
+      headers: this.getHeaders(),
+      body: { ids }
+    };
+
+    return this.http.delete<void>(`${this.apiUrl}/jobs/images/bulk`, requestOptions).pipe(
+      tap(() => this.loadQuota()),
+      map(() => void 0),
+      catchError(err => { console.error('[Bulk Delete] error:', err.status); return throwError(() => err); })
     );
   }
 
