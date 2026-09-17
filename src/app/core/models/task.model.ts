@@ -11,6 +11,21 @@ export type TaskPipelineStatus =
   | 'need_verify'
   | 'need_support';
 
+export type DocSectionKey =
+  | 'description' | 'preCondition' | 'steps' | 'expectedResult' | 'actualResult';
+
+export interface DocSection {
+  key: DocSectionKey;
+  title: string;
+  format: 'paragraph' | 'bulletList' | 'orderedList';
+  content: string[];
+}
+
+export interface TaskDescriptionDoc {
+  version: 1;
+  sections: DocSection[];
+}
+
 export interface UserSummary {
   id: string;
   name: string;
@@ -171,7 +186,7 @@ export interface TaskItem {
  * Task Detail đầy đủ các quan hệ
  */
 export interface TaskDetail extends TaskItem {
-  descriptionJson?: any;
+  descriptionJson?: TaskDescriptionDoc;
   checklists?: TaskChecklist[];
   comments?: TaskComment[];
   attachments?: TaskAttachment[];
@@ -217,7 +232,7 @@ export interface CreateTaskPayload {
   parentTaskId?: string;
   title: string;
   description?: string;
-  descriptionJson?: any;
+  descriptionJson?: TaskDescriptionDoc;
   priority?: TaskPriority;
   taskType?: TaskType;
   startDate?: string;

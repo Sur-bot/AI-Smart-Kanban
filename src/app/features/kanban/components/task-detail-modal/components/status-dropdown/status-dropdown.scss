@@ -1,0 +1,48 @@
+.status-badge-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px 5px 6px;
+  border: 1px solid #E5E7EB;
+  border-radius: 20px;
+  background: #fff;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover {
+    background: #F9FAFB;
+  }
+}
+
+.status-check-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-check-icon {
+  color: #fff;
+  font-size: 12px;
+  width: 12px;
+  height: 12px;
+  line-height: 12px;
+}
+
+.status-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #374151;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.status-chevron {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: #9CA3AF;
+}
