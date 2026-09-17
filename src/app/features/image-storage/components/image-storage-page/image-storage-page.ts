@@ -239,7 +239,7 @@ export class ImageStoragePageComponent implements OnInit, OnDestroy {
   }
 
   onImageDelete(id: string): void {
-    // 1) Lạc quan cập nhật local UI ngay lập tức
+    // Optimistic UI update
     this.images = this.images.filter(i => i.id !== id);
     this.applyFilter();
 
@@ -247,11 +247,10 @@ export class ImageStoragePageComponent implements OnInit, OnDestroy {
       this.onModalClose();
     }
 
-    // 2) Gọi API ngầm
+    // Call API to delete
     this.imageService.deleteImage(id).subscribe({
       error: (err) => {
         console.error('Lỗi khi xóa ảnh trên server:', err);
-        // Tùy chọn: reload danh sách ảnh hoặc hiện thông báo
         this.errorMessage = 'Có lỗi xảy ra khi xóa ảnh trên hệ thống, nhưng đã ẩn trên giao diện.';
         this.cdr.markForCheck();
       }

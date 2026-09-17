@@ -160,9 +160,6 @@ export class SupabaseStorageService {
     );
   }
 
-  /**
-   * Xóa hàng loạt ảnh
-   */
   bulkDeleteImages(ids: string[]): Observable<void> {
     const updatedLocalList = this.imagesSubject.value.filter(img => !ids.includes(img.id));
     this.imagesSubject.next(updatedLocalList);

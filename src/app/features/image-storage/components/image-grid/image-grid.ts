@@ -89,10 +89,9 @@ export class ImageGridComponent {
   onTouchStart(event: TouchEvent, image: ImageFile): void {
     if (this.isSelectMode()) return;
     this.pressTimer = setTimeout(() => {
-      // Long press activated
       this.isSelectMode.set(true);
       this.selectModeChange.emit(true);
-      if (navigator.vibrate) navigator.vibrate(50); // Haptic feedback
+      if (navigator.vibrate) navigator.vibrate(50);
       this.toggleSelection(image.id);
     }, 500);
   }
@@ -104,7 +103,7 @@ export class ImageGridComponent {
 
   onTouchMove(event: TouchEvent): void {
     if (!this.isSelectMode()) {
-      if (this.pressTimer) clearTimeout(this.pressTimer); // Cancel if scrolling
+      if (this.pressTimer) clearTimeout(this.pressTimer);
       return;
     }
     this.isSwiping = true;
