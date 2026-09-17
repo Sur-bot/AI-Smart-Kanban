@@ -222,6 +222,22 @@ export class ImageStoragePageComponent implements OnInit, OnDestroy {
     return this.selectedIndex > 0;
   }
 
+  get nextImageUrl(): string | null {
+    const idx = this.selectedIndex;
+    if (idx >= 0 && idx < this.filteredImages.length - 1) {
+      return this.filteredImages[idx + 1].url;
+    }
+    return null;
+  }
+
+  get prevImageUrl(): string | null {
+    const idx = this.selectedIndex;
+    if (idx > 0) {
+      return this.filteredImages[idx - 1].url;
+    }
+    return null;
+  }
+
   onNextImage(): void {
     if (this.hasNext) {
       this.selectedImage = this.filteredImages[this.selectedIndex + 1];

@@ -14,6 +14,8 @@ export class ImageDetailModalComponent implements OnChanges {
   @Input() image: ImageFile | null = null;
   @Input() hasNext = false;
   @Input() hasPrev = false;
+  @Input() nextImageUrl: string | null = null;
+  @Input() prevImageUrl: string | null = null;
 
   @Output() close = new EventEmitter<void>();
   @Output() delete = new EventEmitter<string>();

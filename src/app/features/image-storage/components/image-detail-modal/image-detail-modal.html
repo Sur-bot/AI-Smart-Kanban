@@ -93,5 +93,11 @@
              [style.transform]="'rotate(' + rotation + 'deg)'" />
       </div>
     }
+
+    <!-- Prefetch next/prev images to eliminate loading delay -->
+    <div style="display: none;" aria-hidden="true">
+      @if (nextImageUrl) { <img [src]="nextImageUrl" alt="" /> }
+      @if (prevImageUrl) { <img [src]="prevImageUrl" alt="" /> }
+    </div>
   </div>
 }
