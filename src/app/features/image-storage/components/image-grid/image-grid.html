@@ -56,10 +56,10 @@
   @if (isSelectMode()) {
     <div class="floating-action-bar" role="toolbar" aria-label="Thao tác hàng loạt">
       <div class="flex items-center gap-4">
-        <button type="button" class="icon-btn text-gray-500 hover:text-gray-800" (click)="clearSelection()" title="Bỏ chọn">
+        <button type="button" class="icon-btn" (click)="clearSelection()" title="Bỏ chọn">
           <mat-icon>close</mat-icon>
         </button>
-        <span class="font-medium text-gray-800">{{ selectedCount }} ảnh đã chọn</span>
+        <span class="font-medium">{{ selectedCount }} ảnh đã chọn</span>
       </div>
       <button type="button" 
               class="bulk-delete-btn" 
