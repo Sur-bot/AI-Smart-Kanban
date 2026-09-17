@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { Subscription, from, mergeMap, finalize } from 'rxjs';
 
 import { ImageFile, StorageQuota } from '../../models/image.model';
 import { SupabaseStorageService } from '../../services/supabase-storage.service';
@@ -13,6 +13,8 @@ import { ImageGridComponent } from '../image-grid/image-grid';
 import { ImageDetailModalComponent } from '../image-detail-modal/image-detail-modal';
 
 const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB per file
+const MAX_FILE_COUNT = 2000;        // Hard limit per batch
+const UPLOAD_CONCURRENCY = 10;      // Parallel uploads at a time
 
 @Component({
   selector: 'app-image-storage-page',
@@ -43,8 +45,15 @@ export class ImageStoragePageComponent implements OnInit, OnDestroy {
   quota: StorageQuota | null = null;
   errorMessage: string | null = null;
 
+  // Upload progress state
+  isUploading = false;
+  uploadTotal = 0;
+  uploadDone = 0;
+  uploadFailed = 0;
+
   private imagesSub?: Subscription;
   private quotaSub?: Subscription;
+  private uploadSub?: Subscription;
 
   goBack(): void {
     if (window.history.length > 1) {
@@ -73,6 +82,7 @@ export class ImageStoragePageComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.imagesSub?.unsubscribe();
     this.quotaSub?.unsubscribe();
+    this.uploadSub?.unsubscribe();
   }
 
   get totalCount(): number {
@@ -138,26 +148,59 @@ export class ImageStoragePageComponent implements OnInit, OnDestroy {
     this.errorMessage = null;
 
     if (this.isQuotaFull) {
-      this.errorMessage = 'Dung lượng lưu trữ của bạn đã đầy (500 MB). Vui lòng xóa bớt ảnh cũ để tải ảnh mới.';
+      this.errorMessage = 'Dung luong luu tru da day (500 MB). Vui long xoa bot anh cu.';
+      return;
+    }
+
+    if (files.length > MAX_FILE_COUNT) {
+      this.errorMessage = `Chi duoc chon toi da ${MAX_FILE_COUNT} anh moi lan. Ban da chon ${files.length} anh.`;
       return;
     }
 
     const oversizedFiles = files.filter(f => f.size > MAX_FILE_SIZE_BYTES);
     if (oversizedFiles.length > 0) {
-      this.errorMessage = `Có ${oversizedFiles.length} file vượt quá kích thước cho phép (tối đa 10 MB / file).`;
+      this.errorMessage = `Co ${oversizedFiles.length} file vuot qua kich thuoc cho phep (toi da 10 MB / file).`;
       return;
     }
 
-    for (const file of files) {
-      this.imageService.uploadImage(file).subscribe({
-        error: (err) => {
-          console.error('Lỗi khi tải ảnh lên Supabase:', err);
-          this.errorMessage = 'Không thể tải ảnh lên. Vui lòng kiểm tra lại kết nối mạng hoặc thử lại sau.';
-          this.cdr.markForCheck();
-        }
-      });
-    }
+    // Close upload zone immediately so user sees the progress UI
     this.showUploadZone = false;
+    this.isUploading = true;
+    this.uploadTotal = files.length;
+    this.uploadDone = 0;
+    this.uploadFailed = 0;
+
+    const userId = (this.imageService as any).authService?.user?.()?.id ?? null;
+    const accumulatedImages: ImageFile[] = [];
+    const processJobs: { fileId: string; storageKey: string; userId: string | null }[] = [];
+
+    this.uploadSub = from(files).pipe(
+      // Process UPLOAD_CONCURRENCY files simultaneously
+      mergeMap(file => {
+        return this.imageService.uploadImage(file);
+      }, UPLOAD_CONCURRENCY),
+      finalize(() => {
+        // Runs once the entire stream completes or errors
+        this.isUploading = false;
+        // Flush all collected images to state in ONE call
+        this.imageService.flushUploadedImages(accumulatedImages);
+        // Queue all processing jobs in ONE API call
+        this.imageService.batchProcessImages(processJobs);
+        this.cdr.markForCheck();
+      })
+    ).subscribe({
+      next: (img: ImageFile) => {
+        this.uploadDone++;
+        accumulatedImages.push(img);
+        processJobs.push({ fileId: img.id, storageKey: img.storageKey!, userId });
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.uploadFailed++;
+        this.uploadDone++;
+        this.cdr.markForCheck();
+      }
+    });
   }
 
   onImageClick(image: ImageFile): void {

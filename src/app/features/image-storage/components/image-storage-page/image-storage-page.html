@@ -152,6 +152,27 @@
       </section>
     }
 
+    <!-- ===== UPLOAD PROGRESS ===== -->
+    @if (isUploading) {
+      <section class="upload-progress-banner" role="status" aria-live="polite">
+        <div class="progress-header">
+          <mat-icon class="progress-icon spin-icon">sync</mat-icon>
+          <span class="progress-label">
+            Đang tải lên {{ uploadDone }}/{{ uploadTotal }} ảnh
+            @if (uploadFailed > 0) {
+              <span class="progress-fail-count">({{ uploadFailed }} lỗi)</span>
+            }
+          </span>
+        </div>
+        <div class="progress-track" role="progressbar"
+             [attr.aria-valuenow]="uploadDone"
+             [attr.aria-valuemax]="uploadTotal">
+          <div class="progress-fill" [style.width.%]="uploadTotal > 0 ? (uploadDone / uploadTotal * 100) : 0"></div>
+        </div>
+        <p class="progress-hint">UI vẫn hoạt động bình thường — bạn có thể tiếp tục thao tác trong lúc chờ.</p>
+      </section>
+    }
+
     <!-- ===== SEARCH & FILTER BAR ===== -->
     <section class="filter-bar" aria-label="Tìm kiếm và lọc">
       <div class="search-input-wrapper">
