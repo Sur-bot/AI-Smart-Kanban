@@ -23,6 +23,7 @@ export class ImageDetailModalComponent implements OnChanges {
   rotation = 0;
   scaleX = 1;
   scaleY = 1;
+  highResLoaded = false;
 
   get isRotated(): boolean {
     return this.rotation % 180 !== 0;
@@ -33,7 +34,12 @@ export class ImageDetailModalComponent implements OnChanges {
       this.rotation = 0;
       this.scaleX = 1;
       this.scaleY = 1;
+      this.highResLoaded = false;
     }
+  }
+
+  onHighResLoad(): void {
+    this.highResLoaded = true;
   }
 
   onRotateAndFlip(): void {
