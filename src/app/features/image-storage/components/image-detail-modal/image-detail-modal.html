@@ -85,10 +85,23 @@
 
     <!-- The Image -->
     @for (img of [image]; track img.id) {
-      <div class="image-wrapper w-full h-full flex items-center justify-center z-[500]">
+      <div class="image-wrapper w-full h-full flex items-center justify-center z-[500] relative">
+        
+        <!-- Thumbnail Placeholder (LQIP - Loads instantly from cache) -->
+        <img [src]="img.thumbnailUrl"
+             alt=""
+             class="full-screen-img absolute m-auto transition-opacity duration-300"
+             [style.filter]="'blur(10px)'"
+             [style.opacity]="highResLoaded ? '0' : '1'"
+             [ngClass]="[animationClass, isRotated ? 'rotated-bounds' : 'normal-bounds']" 
+             [style.transform]="'rotate(' + rotation + 'deg)'" />
+
+        <!-- High-res Image -->
         <img [src]="img.url" 
              [alt]="img.name" 
-             class="full-screen-img" 
+             (load)="onHighResLoad()"
+             class="full-screen-img relative z-10 transition-opacity duration-300"
+             [style.opacity]="highResLoaded ? '1' : '0'"
              [ngClass]="[animationClass, isRotated ? 'rotated-bounds' : 'normal-bounds']" 
              [style.transform]="'rotate(' + rotation + 'deg)'" />
       </div>
