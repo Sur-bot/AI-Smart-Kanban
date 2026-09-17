@@ -210,6 +210,7 @@
         (imageClick)="onImageClick($event)"
         (deleteClick)="onImageDelete($event.id)"
         (bulkDeleteClick)="onBulkDelete($event)"
+        (selectModeChange)="isGridSelectMode = $event"
       ></app-image-grid>
     </section>
 
@@ -225,18 +226,20 @@
     ></app-image-detail-modal>
 
     <!-- ===== FLOATING UPLOAD BUTTON ===== -->
-    <button
-      type="button"
-      class="upload-fab-btn"
-      [class.active]="showUploadZone"
-      [disabled]="isQuotaFull"
-      (click)="toggleUploadZone()"
-      [title]="isQuotaFull ? ('STORAGE.QUOTA_FULL_WARNING' | translate) : ('STORAGE.UPLOAD_IMAGE' | translate)"
-      aria-label="Tải ảnh lên"
-    >
-      <mat-icon class="!text-[28px] !w-7 !h-7 !leading-[28px]">
-        {{ showUploadZone ? 'close' : 'add' }}
-      </mat-icon>
-    </button>
+    @if (!isGridSelectMode) {
+      <button
+        type="button"
+        class="upload-fab-btn"
+        [class.active]="showUploadZone"
+        [disabled]="isQuotaFull"
+        (click)="toggleUploadZone()"
+        [title]="isQuotaFull ? ('STORAGE.QUOTA_FULL_WARNING' | translate) : ('STORAGE.UPLOAD_IMAGE' | translate)"
+        aria-label="Tải ảnh lên"
+      >
+        <mat-icon class="!text-[28px] !w-7 !h-7 !leading-[28px]">
+          {{ showUploadZone ? 'close' : 'add' }}
+        </mat-icon>
+      </button>
+    }
   </main>
 </div>

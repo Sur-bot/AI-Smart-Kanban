@@ -77,6 +77,7 @@ export class ImageGridComponent {
   @Output() imageClick = new EventEmitter<ImageFile>();
   @Output() deleteClick = new EventEmitter<ImageFile>();
   @Output() bulkDeleteClick = new EventEmitter<string[]>();
+  @Output() selectModeChange = new EventEmitter<boolean>();
 
   onDeleteClick(event: Event, image: ImageFile): void {
     event.stopPropagation();
@@ -90,6 +91,7 @@ export class ImageGridComponent {
     this.pressTimer = setTimeout(() => {
       // Long press activated
       this.isSelectMode.set(true);
+      this.selectModeChange.emit(true);
       if (navigator.vibrate) navigator.vibrate(50); // Haptic feedback
       this.toggleSelection(image.id);
     }, 500);
@@ -127,6 +129,7 @@ export class ImageGridComponent {
       current.delete(id);
       if (current.size === 0) {
         this.isSelectMode.set(false);
+        this.selectModeChange.emit(false);
       }
     } else {
       current.add(id);
@@ -138,12 +141,16 @@ export class ImageGridComponent {
     const current = new Set(this.selectedIds());
     group.images.forEach(img => current.add(img.id));
     this.selectedIds.set(current);
-    this.isSelectMode.set(true);
+    if (!this.isSelectMode()) {
+      this.isSelectMode.set(true);
+      this.selectModeChange.emit(true);
+    }
   }
 
   clearSelection(): void {
     this.selectedIds.set(new Set());
     this.isSelectMode.set(false);
+    this.selectModeChange.emit(false);
   }
 
   onBulkDelete(): void {

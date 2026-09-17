@@ -44,6 +44,7 @@ export class ImageStoragePageComponent implements OnInit, OnDestroy {
   searchQuery = '';
   quota: StorageQuota | null = null;
   errorMessage: string | null = null;
+  isGridSelectMode = false;
 
   // Upload progress state
   isUploading = false;
@@ -261,6 +262,7 @@ export class ImageStoragePageComponent implements OnInit, OnDestroy {
     // Optimistic UI update
     this.images = this.images.filter(i => !ids.includes(i.id));
     this.applyFilter();
+    this.isGridSelectMode = false;
 
     if (this.selectedImage && ids.includes(this.selectedImage.id)) {
       this.onModalClose();
