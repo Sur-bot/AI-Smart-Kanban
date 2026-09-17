@@ -9,22 +9,65 @@
     @for (group of groupedImages; track group.label) {
       <div class="col-span-full group-header flex items-center justify-between py-2 border-b border-gray-100">
         <h3 class="text-sm font-semibold text-gray-700">{{ group.label }}</h3>
-        <span class="text-xs text-gray-400 bg-gray-50 px-2 py-0.5 rounded-full">{{ group.images.length }} ảnh</span>
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-gray-400 bg-gray-50 px-2 py-0.5 rounded-full">{{ group.images.length }} ảnh</span>
+          @if (isSelectMode()) {
+            <button type="button" class="text-xs text-blue-600 hover:text-blue-800 font-medium" (click)="selectAllInGroup(group)">Chọn tất cả</button>
+          }
+        </div>
       </div>
       @for (image of group.images; track image.id) {
-        <article class="image-card group" role="listitem" (click)="onImageClick(image)">
+        <article class="image-card group" 
+                 [class.selected]="selectedIds().has(image.id)"
+                 [attr.data-image-id]="image.id"
+                 role="listitem" 
+                 (click)="onImageClick(image)"
+                 (touchstart)="onTouchStart($event, image)"
+                 (touchend)="onTouchEnd($event)"
+                 (touchmove)="onTouchMove($event)">
           <!-- Thumbnail -->
           <figure class="card-thumbnail">
             <img [src]="image.thumbnailUrl" [alt]="image.name" loading="lazy" />
-            <!-- Hover Overlay -->
-            <figcaption class="card-overlay">
-              <button type="button" class="overlay-btn !bg-white hover:!bg-gray-100" title="Xóa ảnh" (click)="onDeleteClick($event, image)">
-                <mat-icon class="!text-[22px] !w-[22px] !h-[22px] !leading-[22px] text-black">delete_outline</mat-icon>
-              </button>
-            </figcaption>
+            
+            <!-- Selection Checkbox (Visible in select mode or when hovered if desktop) -->
+            @if (isSelectMode()) {
+              <div class="select-checkbox" [class.checked]="selectedIds().has(image.id)">
+                @if (selectedIds().has(image.id)) {
+                  <mat-icon class="!text-[16px] !w-4 !h-4 !leading-4">check</mat-icon>
+                }
+              </div>
+            }
+
+            <!-- Hover Overlay (Only if not in select mode) -->
+            @if (!isSelectMode()) {
+              <figcaption class="card-overlay">
+                <button type="button" class="overlay-btn !bg-white hover:!bg-gray-100" title="Xóa ảnh" (click)="onDeleteClick($event, image)">
+                  <mat-icon class="!text-[22px] !w-[22px] !h-[22px] !leading-[22px] text-black">delete_outline</mat-icon>
+                </button>
+              </figcaption>
+            }
           </figure>
         </article>
       }
     }
   </section>
+
+  <!-- Floating Bottom Bar for Multi-select -->
+  @if (isSelectMode()) {
+    <div class="floating-action-bar" role="toolbar" aria-label="Thao tác hàng loạt">
+      <div class="flex items-center gap-4">
+        <button type="button" class="icon-btn" (click)="clearSelection()" title="Bỏ chọn">
+          <mat-icon>close</mat-icon>
+        </button>
+        <span class="font-medium">{{ selectedCount }} ảnh đã chọn</span>
+      </div>
+      <button type="button" 
+              class="bulk-delete-btn" 
+              [disabled]="selectedCount === 0"
+              (click)="onBulkDelete()">
+        <mat-icon class="!text-[18px] !w-[18px] !h-[18px] !leading-[18px]">delete</mat-icon>
+        Xóa
+      </button>
+    </div>
+  }
 }
