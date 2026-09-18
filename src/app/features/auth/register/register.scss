@@ -14,23 +14,23 @@
 }
 
 .auth-card-container {
-  @apply relative z-10 w-full px-4 sm:px-0 sm:max-w-[400px] lg:ml-auto lg:mr-[20%] xl:mr-[25%] mx-auto;
+  @apply relative z-10 w-full px-3 sm:px-0 sm:max-w-[400px] lg:ml-auto lg:mr-[20%] xl:mr-[25%] mx-auto;
   animation: slideInFromRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .auth-card {
-  @apply bg-white rounded-[18px] sm:rounded-[30px] p-6 sm:p-8 shadow-2xl;
+  @apply bg-white rounded-[14px] sm:rounded-[30px] p-4 sm:p-8 shadow-2xl;
 
   .auth-title {
-    @apply text-2xl sm:text-[20px] font-medium text-slate-900 text-center mb-6;
+    @apply text-[18px] sm:text-[20px] font-medium text-slate-900 text-center mb-3 sm:mb-6;
   }
 
   .auth-subtitle {
-    @apply text-sm text-slate-600 text-center mb-4 font-medium;
+    @apply text-xs sm:text-sm text-slate-600 text-center mb-2 sm:mb-4 font-medium;
   }
 
   .divider {
-    @apply flex items-center gap-4 my-6;
+    @apply flex items-center gap-4 my-3 sm:my-6;
 
     hr {
       @apply flex-1 border-slate-200;
@@ -60,7 +60,7 @@
   }
 
   .checkbox-group {
-    @apply space-y-3 mb-6;
+    @apply space-y-2 sm:space-y-3 mb-3 sm:mb-6;
 
     .checkbox-item {
       @apply flex items-start gap-3;
@@ -76,7 +76,7 @@
   }
 
   .recaptcha-mock {
-    @apply flex items-center justify-between border border-slate-200 bg-slate-50 rounded-lg p-3 sm:p-4 mb-6;
+    @apply flex items-center justify-between border border-slate-200 bg-slate-50 rounded-lg p-2.5 sm:p-4 mb-3 sm:mb-6;
 
     .recaptcha-left {
       @apply flex items-center gap-3;
@@ -114,7 +114,7 @@
   }
 
   .terms-note {
-    @apply text-center text-sm sm:text-sm text-slate-400 mt-6 leading-relaxed;
+    @apply text-center text-xs sm:text-sm text-slate-400 mt-3 sm:mt-6 leading-relaxed;
 
     a {
       @apply text-blue-600 hover:underline;

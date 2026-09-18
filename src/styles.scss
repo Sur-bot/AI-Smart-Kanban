@@ -25,10 +25,9 @@ body {
   margin: 0;
   padding: 0;
 
-  /* Safari iOS fix: dùng dvh thay 100vh để tránh bị cắt bởi thanh địa chỉ/công cụ */
-  min-height: 100vh;    /* fallback: browser cũ không hỗ trợ dvh */
-  min-height: 100dvh;   /* browser hỗ trợ sẽ override */
-  min-height: calc(var(--vh, 1svh) * 100); /* JS fallback (cung cấp bởi AuthLayoutComponent) */
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: calc(var(--vh, 1svh) * 100);
 
   image-rendering: auto;
 }
