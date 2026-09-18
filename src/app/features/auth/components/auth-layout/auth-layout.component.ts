@@ -29,7 +29,6 @@ export class AuthLayoutComponent implements OnInit {
   ];
 
   ngOnInit() {
-    // 1. Khởi tạo ngôn ngữ
     const savedLang = localStorage.getItem('appLang');
     if (savedLang) {
       this.currentLang.set(savedLang);
@@ -38,7 +37,7 @@ export class AuthLayoutComponent implements OnInit {
       this.currentLang.set(this.translate.currentLang() || 'vi');
     }
 
-    // 2. JS fallback cho Safari iOS: set --vh cọn dùng khi dvh chưa được hỗ trợ
+    // Set initial --vh value for Safari iOS fallback
     this.updateViewportHeight();
 
     if (AuthLayoutComponent.hasLoadedBg) {
@@ -62,11 +61,7 @@ export class AuthLayoutComponent implements OnInit {
     }, 600);
   }
 
-  /**
-   * Cập nhật --vh mỗi khi viewport thay đổi.
-   * Safari iOS thay đổi `window.innerHeight` khi thanh địa chỉ/công cụ co giãn.
-   * CSS dvh và svh là giải pháp ưu tiên; đây là fallback bổ sung cho browser cũ hơn.
-   */
+  /** Updates --vh on resize/orientation change for Safari iOS compatibility. */
   @HostListener('window:resize')
   @HostListener('window:orientationchange')
   protected updateViewportHeight(): void {
