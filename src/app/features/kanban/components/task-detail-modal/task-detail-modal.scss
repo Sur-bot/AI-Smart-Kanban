@@ -75,7 +75,9 @@
 /* .modal-close-btn, .modal-action-btn — được định nghĩa global tại styles.scss, không cần khai báo lại */
 
 .left-pane {
-  @apply flex flex-col min-w-[300px] bg-white h-full relative z-0;
+  @apply flex flex-col bg-white h-full relative z-0;
+  /* Tỉ lệ cố định 30% — min-width để đảm bảo readable */
+  min-width: 260px;
 }
 
 .pane-content {
@@ -90,24 +92,7 @@
   }
 }
 
-.splitter {
-  @apply w-[6px] shrink-0 bg-slate-100 hover:bg-blue-400 cursor-col-resize transition-colors z-10 relative;
-  
-  &::after {
-    content: '';
-    @apply absolute inset-y-0 left-1/2 -translate-x-1/2 w-[2px] bg-slate-300 opacity-0 transition-opacity;
-  }
-  
-  &:hover::after,
-  &.dragging::after {
-    @apply opacity-100;
-  }
-  
-  &.dragging {
-    @apply bg-blue-400;
-  }
-}
-
+/* Đường kẻ phân cách tĩnh giữa 2 panel (không kéo được) */
 .right-pane {
   @apply flex flex-col min-w-[300px] h-full z-0;
 }

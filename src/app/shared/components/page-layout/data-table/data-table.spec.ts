@@ -41,11 +41,11 @@ describe('DataTableComponent', () => {
     const event = { stopPropagation: vi.fn() } as unknown as MouseEvent;
     const task: TaskItem = { id: 't1', title: 'Task 1' } as TaskItem;
     
-    component.togglePinTask(task, event);
-    expect(component.pinnedTaskIds.has('t1')).toBe(true);
+    component.togglePinItem(task, event);
+    expect(component.pinnedItemIds.has('t1')).toBe(true);
     
-    component.togglePinTask(task, event);
-    expect(component.pinnedTaskIds.has('t1')).toBe(false);
+    component.togglePinItem(task, event);
+    expect(component.pinnedItemIds.has('t1')).toBe(false);
   });
 
   it('should toggle sort column', () => {
@@ -62,9 +62,9 @@ describe('DataTableComponent', () => {
     expect(component.sortColumnId).toBe('');
   });
 
-  it('should emit taskSelected on title click', () => {
+  it('should emit itemSelected on title click', () => {
     const event = { stopPropagation: vi.fn() } as unknown as MouseEvent;
-    const emitSpy = vi.spyOn(component.taskSelected, 'emit');
+    const emitSpy = vi.spyOn(component.itemSelected, 'emit');
     const task: TaskItem = { id: 't1', title: 'Task 1' } as TaskItem;
     
     component.onTitleClick(task, event);

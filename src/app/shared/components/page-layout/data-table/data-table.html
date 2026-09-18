@@ -81,18 +81,18 @@
 
     <!-- Table Body -->
     <div class="table-body">
-      <div *ngIf="tasks.length > 0" class="table-rows">
-        <article *ngFor="let task of tasks; trackBy: trackByTaskId" 
+      <div *ngIf="data.length > 0" class="table-rows">
+        <article *ngFor="let item of data; trackBy: trackById" 
                  class="table-row data-row group" 
-                 [class.row-selected]="isRowSelected(task)"
-                 [class.row-overdue]="isTaskOverdue(task)"
-                 (click)="toggleRowSelection(task, $event)">
+                 [class.row-selected]="isRowSelected(item)"
+                 [class.row-overdue]="isTaskOverdue(item)"
+                 (click)="toggleRowSelection(item, $event)">
           
-          <!-- Cột Checkbox & Menu Icon của dòng (Đã bỏ tooltip) -->
+          <!-- Cột Checkbox & Menu Icon của dòng -->
           <div class="table-cell cell-settings" (click)="$event.stopPropagation()">
             <input type="checkbox" 
-                   [checked]="isRowSelected(task)" 
-                   (change)="toggleRowSelection(task)" 
+                   [checked]="isRowSelected(item)" 
+                   (change)="toggleRowSelection(item)" 
                    class="task-checkbox" 
                    aria-label="Chọn tác vụ">
             <button type="button" class="btn-icon cursor-grab" aria-label="Menu tác vụ">
@@ -102,142 +102,168 @@
             </button>
           </div>
 
-          <!-- Nội dung từng cột (Đồng bộ thứ tự theo allColumns) -->
-          <ng-container *ngFor="let col of allColumns">
-            
-            <!-- Tên task -->
-            <div *ngIf="col.id === 'name'" 
-                 class="table-cell cell-name" 
-                 [class.col-sorted-highlight]="isColumnSorted('name')"
-                 [style.width.px]="col.width" 
-                 [style.min-width.px]="col.width"
-                 [style.max-width.px]="col.width">
-              <span class="task-title-link" (click)="onTitleClick(task, $event)">
-                {{ task.title }}
-              </span>
-              <mat-icon *ngIf="task.priority === 'high' || task.priority === 'urgent'" class="icon-center text-[16px] text-amber-500 ml-1.5 shrink-0" title="Ưu tiên cao / Khẩn cấp">local_fire_department</mat-icon>
-              
-              <!-- Biểu tượng Ghim (Pin): Nghiêng khi hover, khi click đổi sang đứng dọc và ghim lên đầu -->
-              <button type="button" 
-                      class="btn-pin-task ml-1.5 shrink-0 transition-all" 
-                      [class.pinned]="isTaskPinned(task)"
-                      [class.opacity-0]="!isTaskPinned(task)"
-                      [class.group-hover:opacity-100]="!isTaskPinned(task)"
-                      (click)="togglePinTask(task, $event)" 
-                      [title]="isTaskPinned(task) ? 'Bỏ ghim tác vụ' : 'Ghim tác vụ lên đầu'"
-                      [attr.aria-label]="isTaskPinned(task) ? 'Bỏ ghim tác vụ' : 'Ghim tác vụ lên đầu'">
-                <mat-icon class="icon-center text-[15px]" 
-                          [class.-rotate-45]="!isTaskPinned(task)" 
-                          [class.text-slate-400]="!isTaskPinned(task)"
-                          [class.text-blue-600]="isTaskPinned(task)"
-                          [class.rotate-0]="isTaskPinned(task)">
-                  push_pin
-                </mat-icon>
-              </button>
-            </div>
+          <!-- Cột Tên (Cố định) -->
+          <div class="table-cell cell-name"
+               [class.col-sorted-highlight]="isColumnSorted('name')"
+               [style.width.px]="nameColumn.width"
+               [style.min-width.px]="nameColumn.width"
+               [style.max-width.px]="nameColumn.width">
+            <span class="task-title-link" (click)="onTitleClick(item, $event)">
+              {{ item.title || item.name }}
+            </span>
+            <mat-icon *ngIf="item.priority === 'high' || item.priority === 'urgent'"
+                      class="icon-center text-[16px] text-amber-500 ml-1.5 shrink-0"
+                      title="Ưu tiên cao / Khẩn cấp">local_fire_department</mat-icon>
+            <button type="button"
+                    class="btn-pin-task ml-1.5 shrink-0 transition-all"
+                    [class.pinned]="isItemPinned(item)"
+                    [class.opacity-0]="!isItemPinned(item)"
+                    [class.group-hover:opacity-100]="!isItemPinned(item)"
+                    (click)="togglePinItem(item, $event)"
+                    [title]="isItemPinned(item) ? 'Bỏ ghim tác vụ' : 'Ghim tác vụ lên đầu'"
+                    [attr.aria-label]="isItemPinned(item) ? 'Bỏ ghim tác vụ' : 'Ghim tác vụ lên đầu'">
+              <mat-icon class="icon-center text-[15px]"
+                        [class.-rotate-45]="!isItemPinned(item)"
+                        [class.text-slate-400]="!isItemPinned(item)"
+                        [class.text-blue-600]="isItemPinned(item)"
+                        [class.rotate-0]="isItemPinned(item)">push_pin</mat-icon>
+            </button>
+          </div>
 
-            <!-- Hoạt động -->
-            <div *ngIf="col.id === 'activity'" 
-                 class="table-cell cell-activity" 
-                 [class.col-sorted-highlight]="isColumnSorted('activity')"
-                 [style.width.px]="col.width" 
-                 [style.min-width.px]="col.width"
-                 [style.max-width.px]="col.width">
-              <time class="text-slate-600 text-[13px] whitespace-nowrap">
-                {{ formatDate(task.updatedAt || task.createdAt) || '5 Thg 8, 03:45 pm' }}
-              </time>
-            </div>
+          <!-- Wrapper flex khớp cấu trúc header draggable-header-list -->
+          <div class="flex items-stretch self-stretch">
+            <ng-container *ngFor="let col of draggableColumns; trackBy: trackByColId">
 
-            <!-- Hạn chót (Due Date Picker Component) -->
-            <div *ngIf="col.id === 'dueDate'" 
-                 class="table-cell cell-due" 
-                 [class.col-sorted-highlight]="isColumnSorted('dueDate')"
-                 [style.width.px]="col.width" 
-                 [style.min-width.px]="col.width"
-                 [style.max-width.px]="col.width"
-                 (click)="$event.stopPropagation()">
-              <app-due-date-picker
-                [value]="task.dueDate"
-                emptyVariant="oval"
-                emptyTextKey="DUE_DATE_PICKER.NO_DUE_DATE"
-                [isOverdue]="isTaskOverdue(task)"
-                [disabled]="!permissionService.can('task.update')"
-                (valueChange)="onDueDateChange(task, $event)">
-              </app-due-date-picker>
-            </div>
+              <!-- Hoạt động -->
+              <div *ngIf="col.id === 'activity'"
+                   class="table-cell"
+                   [class.col-sorted-highlight]="isColumnSorted('activity')"
+                   [style.width.px]="col.width"
+                   [style.min-width.px]="col.width"
+                   [style.max-width.px]="col.width">
+                <time class="text-slate-600 text-[13px] whitespace-nowrap">
+                  {{ formatDate(item.updatedAt || item.createdAt || item.created_at) }}
+                </time>
+              </div>
 
-            <!-- Người tạo -->
-            <div *ngIf="col.id === 'creator'" 
-                 class="table-cell cell-user" 
-                 [class.col-sorted-highlight]="isColumnSorted('creator')" 
-                 [style.width.px]="col.width" 
-                 [style.min-width.px]="col.width"
-                 [style.max-width.px]="col.width">
-              <img *ngIf="getCreatorAvatar(task)" 
-                   [src]="getCreatorAvatar(task)" 
-                   [alt]="task.creator?.name || 'User'" 
-                   class="w-6 h-6 rounded-full object-cover shrink-0 shadow-sm" />
-              <figure *ngIf="!getCreatorAvatar(task)" class="user-avatar-circle bg-slate-700">
-                <span *ngIf="task.creator?.name" class="text-[11px] font-semibold uppercase leading-none">{{ getInitials(task.creator.name) }}</span>
-                <mat-icon *ngIf="!task.creator?.name" class="icon-center text-[15px]">person</mat-icon>
-              </figure>
-              <span class="user-name-text">{{ task.creator?.name || 'Văn Anh Nguyễn' }}</span>
-            </div>
+              <!-- Hạn chót -->
+              <div *ngIf="col.id === 'dueDate'"
+                   class="table-cell cell-due"
+                   [class.col-sorted-highlight]="isColumnSorted('dueDate')"
+                   [style.width.px]="col.width"
+                   [style.min-width.px]="col.width"
+                   [style.max-width.px]="col.width"
+                   (click)="$event.stopPropagation()">
+                <app-due-date-picker
+                  [value]="item.dueDate"
+                  emptyVariant="oval"
+                  emptyTextKey="DUE_DATE_PICKER.NO_DUE_DATE"
+                  [isOverdue]="isTaskOverdue(item)"
+                  [disabled]="!permissionService.can('task.update')"
+                  (valueChange)="onDueDateChange(item, $event)">
+                </app-due-date-picker>
+              </div>
 
-            <!-- Người được phân công -->
-            <div *ngIf="col.id === 'assignee'" 
-                 class="table-cell cell-user" 
-                 [class.col-sorted-highlight]="isColumnSorted('assignee')" 
-                 [style.width.px]="col.width" 
-                 [style.min-width.px]="col.width"
-                 [style.max-width.px]="col.width">
-              <img *ngIf="getAssigneeAvatar(task)" 
-                   [src]="getAssigneeAvatar(task)" 
-                   [alt]="getAssignee(task)?.name || 'Assignee'" 
-                   class="w-6 h-6 rounded-full object-cover shrink-0 shadow-sm" />
-              <figure *ngIf="!getAssigneeAvatar(task)" class="user-avatar-circle bg-slate-500">
-                <span *ngIf="getAssignee(task)?.name" class="text-[11px] font-semibold uppercase leading-none">{{ getInitials(getAssignee(task).name) }}</span>
-                <mat-icon *ngIf="!getAssignee(task)?.name" class="icon-center text-[15px]">person</mat-icon>
-              </figure>
-              <span class="user-name-text font-normal text-slate-800">{{ getAssignee(task)?.name || (task.assignees && task.assignees[0]?.name) || 'Văn Anh Nguyễn' }}</span>
-            </div>
+              <!-- Người tạo -->
+              <div *ngIf="col.id === 'creator'"
+                   class="table-cell cell-user"
+                   [class.col-sorted-highlight]="isColumnSorted('creator')"
+                   [style.width.px]="col.width"
+                   [style.min-width.px]="col.width"
+                   [style.max-width.px]="col.width">
+                <ng-container *ngIf="item.creator; else noCreator">
+                  <img *ngIf="getCreatorAvatar(item)"
+                       [src]="getCreatorAvatar(item)"
+                       [alt]="item.creator.name"
+                       class="w-6 h-6 rounded-full object-cover shrink-0 shadow-sm" />
+                  <figure *ngIf="!getCreatorAvatar(item)" class="user-avatar-circle bg-slate-700">
+                    <span class="text-[11px] font-semibold uppercase leading-none">{{ getInitials(item.creator.name) }}</span>
+                  </figure>
+                  <span class="user-name-text">{{ item.creator.name }}</span>
+                </ng-container>
+                <ng-template #noCreator>
+                  <span class="text-xs text-slate-400 italic">—</span>
+                </ng-template>
+              </div>
 
-            <!-- Dự án (Nút hình oval nằm ngang) -->
-            <div *ngIf="col.id === 'project'" 
-                 class="table-cell cell-project" 
-                 [class.col-sorted-highlight]="isColumnSorted('project')"
-                 [style.width.px]="col.width" 
-                 [style.min-width.px]="col.width"
-                 [style.max-width.px]="col.width"
-                 (click)="$event.stopPropagation()">
-              <button *ngIf="permissionService.can('task.update')"
-                      type="button" 
-                      class="project-add-oval-btn opacity-0 group-hover:opacity-100 transition-opacity" 
-                      title="Thêm dự án"
-                      aria-label="Thêm dự án">
-                <mat-icon class="icon-center text-[13px] leading-none">add</mat-icon>
-              </button>
-            </div>
+              <!-- Người được phân công -->
+              <div *ngIf="col.id === 'assignee'"
+                   class="table-cell cell-user"
+                   [class.col-sorted-highlight]="isColumnSorted('assignee')"
+                   [style.width.px]="col.width"
+                   [style.min-width.px]="col.width"
+                   [style.max-width.px]="col.width">
+                <ng-container *ngIf="getAssignee(item) as assignee; else noAssignee">
+                  <img *ngIf="getAssigneeAvatar(item)"
+                       [src]="getAssigneeAvatar(item)"
+                       [alt]="assignee.name"
+                       class="w-6 h-6 rounded-full object-cover shrink-0 shadow-sm" />
+                  <figure *ngIf="!getAssigneeAvatar(item)" class="user-avatar-circle bg-slate-500">
+                    <span *ngIf="assignee.name" class="text-[11px] font-semibold uppercase leading-none">{{ getInitials(assignee.name) }}</span>
+                    <mat-icon *ngIf="!assignee.name" class="icon-center text-[15px]">person</mat-icon>
+                  </figure>
+                  <span class="user-name-text font-normal text-slate-800">{{ assignee.name }}</span>
+                </ng-container>
+                <ng-template #noAssignee>
+                  <span class="text-xs text-slate-400 italic">—</span>
+                </ng-template>
+              </div>
 
-            <!-- Thẻ (Nút hình oval nằm ngang đồng bộ với nút Dự án) -->
-            <div *ngIf="col.id === 'tags'" 
-                 class="table-cell cell-tags flex items-center gap-1.5" 
-                 [class.col-sorted-highlight]="isColumnSorted('tags')"
-                 [style.width.px]="col.width" 
-                 [style.min-width.px]="col.width" 
-                 [style.max-width.px]="col.width" 
-                 (click)="$event.stopPropagation()">
-              <span *ngFor="let label of task.labels" class="tag-badge">{{ label.name }}</span>
-              <button *ngIf="permissionService.can('task.update')"
-                      type="button" 
-                      class="project-add-oval-btn opacity-0 group-hover:opacity-100 transition-opacity" 
-                      title="Thêm thẻ"
-                      aria-label="Thêm thẻ">
-                <mat-icon class="icon-center text-[13px] leading-none">add</mat-icon>
-              </button>
-            </div>
+              <!-- Vai trò (Job Role) -->
+              <div *ngIf="col.id === 'jobRole'"
+                   class="table-cell flex items-center"
+                   [class.col-sorted-highlight]="isColumnSorted('jobRole')"
+                   [style.width.px]="col.width"
+                   [style.min-width.px]="col.width"
+                   [style.max-width.px]="col.width">
+                <app-job-role-badge *ngIf="item.jobRole" [jobRole]="item.jobRole"></app-job-role-badge>
+                <span *ngIf="!item.jobRole" class="text-xs text-slate-400 italic">—</span>
+              </div>
 
-          </ng-container>
+              <!-- Dự án -->
+              <div *ngIf="col.id === 'project'"
+                   class="table-cell cell-project"
+                   [class.col-sorted-highlight]="isColumnSorted('project')"
+                   [style.width.px]="col.width"
+                   [style.min-width.px]="col.width"
+                   [style.max-width.px]="col.width"
+                   (click)="$event.stopPropagation()">
+                <span *ngIf="item.projectName" class="text-xs text-slate-600 truncate mr-1">{{ item.projectName }}</span>
+                <div class="relative inline-flex items-center shrink-0" cdkOverlayOrigin #projectOrigin="cdkOverlayOrigin">
+                  <button *ngIf="permissionService.can('task.update')"
+                          type="button"
+                          class="project-add-oval-btn"
+                          title="Thêm dự án"
+                          aria-label="Thêm dự án"
+                          (click)="togglePopover('project', item, $event, projectOrigin)">
+                    <mat-icon class="icon-center text-[13px] leading-none">add</mat-icon>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Thẻ -->
+              <div *ngIf="col.id === 'tags'"
+                   class="table-cell cell-tags"
+                   [class.col-sorted-highlight]="isColumnSorted('tags')"
+                   [style.width.px]="col.width"
+                   [style.min-width.px]="col.width"
+                   [style.max-width.px]="col.width"
+                   (click)="$event.stopPropagation()">
+                <span *ngFor="let label of item.labels" class="tag-badge">{{ label.name }}</span>
+                <div class="relative inline-flex items-center shrink-0" cdkOverlayOrigin #tagOrigin="cdkOverlayOrigin">
+                  <button *ngIf="permissionService.can('task.update')"
+                          type="button"
+                          class="project-add-oval-btn"
+                          title="Thêm thẻ"
+                          aria-label="Thêm thẻ"
+                          (click)="togglePopover('tag', item, $event, tagOrigin)">
+                    <mat-icon class="icon-center text-[13px] leading-none">add</mat-icon>
+                  </button>
+                </div>
+              </div>
+
+            </ng-container>
+          </div>
 
         </article>
       </div>
@@ -249,7 +275,7 @@
     <footer class="table-summary-bar">
       <div class="summary-left">
         <span class="summary-stat">
-          ĐÃ CHỌN: <span class="stat-value">{{ selectedIds.size }} / {{ tasks.length }}</span>
+          ĐÃ CHỌN: <span class="stat-value">{{ selectedIds.size }} / {{ data.length }}</span>
         </span>
         <span class="summary-stat">
           TỔNG: <button type="button" class="btn-show-total">HIỂN THỊ</button>
@@ -326,5 +352,18 @@
 
 </section>
 
-
-
+<!-- Global Popover Overlay cho Data Table -->
+<ng-template
+  cdkConnectedOverlay
+  *ngIf="activePopoverOrigin"
+  [cdkConnectedOverlayOrigin]="activePopoverOrigin"
+  [cdkConnectedOverlayOpen]="!!activePopoverId"
+  [cdkConnectedOverlayHasBackdrop]="true"
+  cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+  [cdkConnectedOverlayPositions]="popoverPositions"
+  (backdropClick)="closePopover()"
+  (detach)="closePopover()"
+>
+  <app-project-popover *ngIf="activePopoverId?.startsWith('project-')" (close)="closePopover()"></app-project-popover>
+  <app-tag-popover *ngIf="activePopoverId?.startsWith('tag-')" (close)="closePopover()"></app-tag-popover>
+</ng-template>

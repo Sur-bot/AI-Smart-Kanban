@@ -1,0 +1,48 @@
+<section class="app-popover" (click)="$event.stopPropagation()" role="dialog" aria-label="Chọn dự án">
+  <aside class="app-popover-sidebar">
+    <button type="button" class="sidebar-icon-btn active" aria-label="Tìm kiếm">
+      <mat-icon fontSet="material-icons-outlined">search</mat-icon>
+    </button>
+    <button type="button" class="sidebar-icon-btn" aria-label="Danh sách dự án">
+      <mat-icon fontSet="material-icons-outlined">folder</mat-icon>
+    </button>
+  </aside>
+
+  <main class="app-popover-main">
+    <div class="app-popover-search-container">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        class="popover-search-input"
+        placeholder="tìm kiếm"
+        aria-label="Tìm kiếm dự án"
+        autofocus
+      />
+    </div>
+
+    <section class="app-popover-list custom-scrollbar" aria-label="Danh sách dự án">
+      <button
+        *ngFor="let p of projects"
+        type="button"
+        class="project-item"
+        [class.selected]="selectedProjectId === p.id"
+        (click)="selectProject(p, $event)"
+      >
+        <figure class="project-icon-box">
+          <mat-icon fontSet="material-icons-outlined">groups</mat-icon>
+        </figure>
+        <div class="project-info">
+          <span class="project-label">Dự án</span>
+          <span class="project-name">{{ p.name }}</span>
+        </div>
+      </button>
+    </section>
+
+    <footer class="app-popover-footer">
+      <button type="button" class="btn-add-circle" aria-label="Tạo dự án">
+        <mat-icon fontSet="material-icons-outlined">add</mat-icon>
+      </button>
+      <span class="footer-action-text cursor-pointer hover:underline">Tạo dự án</span>
+    </footer>
+  </main>
+</section>

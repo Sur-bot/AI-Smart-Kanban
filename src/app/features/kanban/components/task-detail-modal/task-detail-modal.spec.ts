@@ -84,14 +84,15 @@ describe('TaskDetailModalComponent', () => {
 
   it('should limit leftPaneWidth between 20 and 60 on drag', () => {
     component.isDragging = true;
+    const initialWidth = component.leftPaneWidth;
     
     // Test < 20%
     component.onDrag({ clientX: 200 } as unknown as MouseEvent); // 10%
-    expect(component.leftPaneWidth).toBe(38); // unchanged from default
+    expect(component.leftPaneWidth).toBe(initialWidth); // unchanged from default
     
     // Test > 60%
     component.onDrag({ clientX: 800 } as unknown as MouseEvent); // 70%
-    expect(component.leftPaneWidth).toBe(38); // unchanged
+    expect(component.leftPaneWidth).toBe(initialWidth); // unchanged
   });
 
   it('should stop drag', () => {

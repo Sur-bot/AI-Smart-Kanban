@@ -24,7 +24,10 @@ body {
 
   margin: 0;
   padding: 0;
+
   min-height: 100vh;
+  min-height: 100dvh;
+  min-height: calc(var(--vh, 1svh) * 100);
 
   image-rendering: auto;
 }
@@ -211,4 +214,55 @@ input, button, select, textarea {
       justify-content: center;
     }
   }
+}
+
+/* ==========================================================================
+   Global Popover Styles
+   ========================================================================== */
+.app-popover {
+  @apply relative flex bg-transparent w-[340px] overflow-visible drop-shadow-sm;
+}
+
+.app-popover-sidebar {
+  @apply absolute right-full top-4 flex flex-col items-end gap-1.5 z-10 border-none bg-transparent p-0 w-auto;
+
+  .sidebar-icon-btn {
+    @apply border-none cursor-pointer flex items-center justify-center transition-all duration-150;
+
+    &.active {
+      @apply w-11 h-[38px] bg-[#007aff] rounded-l-[20px] rounded-r-none text-white shadow-[-2px_2px_8px_rgba(0,122,255,0.28)] pl-1;
+
+      mat-icon {
+        @apply text-[20px] w-5 h-5 leading-5;
+      }
+    }
+
+    &:not(.active) {
+      @apply w-10 h-[34px] bg-blue-600/85 rounded-l-[18px] rounded-r-none text-white pl-[3px] hover:opacity-100 hover:bg-[#007aff];
+
+      mat-icon {
+        @apply text-[18px] w-[18px] h-[18px] leading-[18px];
+      }
+    }
+  }
+}
+
+.app-popover-main {
+  @apply flex-1 flex flex-col min-w-0 bg-white rounded-[16px] border border-slate-100 overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.12)];
+}
+
+.app-popover-search-container {
+  @apply m-[12px_14px_8px_14px] py-1.5 px-2.5 rounded-xl border border-slate-200 flex items-center gap-1.5 bg-white transition-colors focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100;
+
+  .popover-search-input {
+    @apply border-none outline-none bg-transparent text-[13.5px] text-slate-800 flex-1 min-w-[60px] py-0.5 placeholder-slate-400;
+  }
+}
+
+.app-popover-list {
+  @apply min-h-[100px] max-h-[250px] overflow-y-auto py-1 px-3 pb-3 flex flex-col gap-1;
+}
+
+.app-popover-footer {
+  @apply bg-[#e6f4fe] py-3 px-4 flex items-center gap-2 text-[13px] text-slate-700 font-medium;
 }

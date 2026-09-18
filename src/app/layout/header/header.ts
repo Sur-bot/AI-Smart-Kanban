@@ -7,6 +7,7 @@ import { SettingSliderComponent } from './setting/setting-slider';
 import { InviteComponent } from './actions-button/invite/invite';
 import { UserTimeWidgetComponent } from './user-time-widget/user-time-widget';
 import { UserProfileDropdownComponent } from './user-profile-dropdown/user-profile-dropdown.component';
+import { UserProfileDrawerModalComponent } from './user-profile-drawer-modal/user-profile-drawer-modal';
 
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -27,6 +28,7 @@ import { MatIconModule } from '@angular/material/icon';
     InviteComponent,
     UserTimeWidgetComponent,
     UserProfileDropdownComponent,
+    UserProfileDrawerModalComponent,
   ],
 })
 export class HeaderComponent {
@@ -44,6 +46,8 @@ export class HeaderComponent {
   get isProfileOpen() {
     return this.activePopup === 'profile';
   }
+
+  isProfileDrawerOpen = false;
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event) {
@@ -82,6 +86,11 @@ export class HeaderComponent {
 
   toggleProfile() {
     this.activePopup = this.activePopup === 'profile' ? null : 'profile';
+  }
+
+  openProfileDrawer() {
+    this.isProfileDrawerOpen = true;
+    this.activePopup = null;
   }
 
   switchView(view: 'list' | 'board') {

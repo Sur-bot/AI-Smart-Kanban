@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
-import { MatIcon } from '@angular/material/icon';
 import { PageToolbarComponent } from '../../../../shared/components/page-layout/page-toolbar/page-toolbar';
 import { ViewFilterBarComponent, QuickFilter } from '../../../../shared/components/page-layout/view-filter-bar/view-filter-bar';
 import { DataTableComponent } from '../../../../shared/components/page-layout/data-table/data-table';
@@ -21,7 +20,6 @@ import { PermissionService } from '../../../../core/services/permission.service'
   standalone: true,
   imports: [
     CommonModule,
-    MatIcon,
     LoadingSpinnerComponent,
     PageToolbarComponent,
     ViewFilterBarComponent,

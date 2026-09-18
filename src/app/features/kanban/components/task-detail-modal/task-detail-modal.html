@@ -34,213 +34,24 @@
     </button>
   </nav>
 
-  <article class="modal-container" #modalContainer [class.fullscreen-mode]="isFullscreen">
+  <article class="modal-container" [class.fullscreen-mode]="isFullscreen">
     
-    <section class="left-pane" [style.width.%]="leftPaneWidth" aria-label="Thông tin chi tiết tác vụ">
-      <div class="pane-content custom-scrollbar p-6">
-        
-        <header class="task-modal-header flex items-center justify-between mb-4">
-          <h2 class="text-xl font-bold text-slate-800 m-0">{{ task?.title }}</h2>
-          <div class="flex items-center gap-2 text-slate-400">
-            <button type="button" class="p-1 hover:text-orange-500 rounded" title="Mức độ ưu tiên" aria-label="Mức độ ưu tiên">
-              <mat-icon>local_fire_department</mat-icon>
-            </button>
-            <button type="button" class="p-1 hover:text-slate-600 rounded" title="Tùy chọn khác" aria-label="Tùy chọn khác">
-              <mat-icon>menu</mat-icon>
-            </button>
-          </div>
-        </header>
-
-        <section class="description-box mb-6" aria-label="Mô tả tác vụ">
-          <div class="text-sm text-slate-500 flex items-center justify-between border border-slate-200 rounded p-2.5 bg-slate-50/50">
-            <span>{{ task?.description || ('TASK_DETAIL.DESCRIPTION_PLACEHOLDER' | translate) }}</span>
-            <button *ngIf="permissionService.can('task.update')" type="button" class="text-slate-400 hover:text-blue-500" title="Chỉnh sửa mô tả" aria-label="Chỉnh sửa mô tả">
-              <mat-icon class="text-[16px] w-4 h-4 leading-4">edit_note</mat-icon>
-            </button>
-          </div>
-        </section>
-
-        <dl class="grid grid-cols-[140px_1fr] gap-y-4 text-[13px] mb-8">
-          
-          <dt class="text-slate-500">{{ 'TASK_DETAIL.TASK_OWNER' | translate }}:</dt>
-          <dd class="flex items-center gap-2 font-medium text-slate-800 m-0">
-            <mat-icon class="text-slate-400">account_circle</mat-icon>
-            {{ task?.creator?.name || 'Văn Anh Nguyễn' }}
-          </dd>
-
-          <dt class="text-slate-500">{{ 'TASK_DETAIL.ASSIGNEE' | translate }}:</dt>
-          <dd class="flex items-center gap-2 font-medium text-slate-800 m-0">
-            <mat-icon class="text-slate-400">account_circle</mat-icon>
-            {{ task?.assignee?.name || 'Văn Anh Nguyễn' }}
-          </dd>
-
-          <dt class="text-slate-500">{{ 'TASK_DETAIL.DEADLINE' | translate }}:</dt>
-          <dd class="flex flex-col gap-1 font-medium m-0">
-            <div class="flex items-center gap-2 text-red-500">
-              <mat-icon class="text-red-500 text-[16px] w-4 h-4 leading-4">calendar_today</mat-icon>
-              <time [attr.datetime]="task?.dueDate">{{ task?.dueDate ? (task.dueDate | date:'dd/MM/yyyy HH:mm') : '14 tháng 7 7:00 pm' }}</time>
-            </div>
-            <span class="text-red-500 text-xs bg-red-50 w-fit px-2 py-0.5 rounded-full border border-red-200">
-              {{ 'TASK_DETAIL.OVERDUE' | translate: { time: '1 giờ' } }}
-            </span>
-          </dd>
-
-          <dt class="text-slate-500">{{ 'TASK_DETAIL.STATUS' | translate }}:</dt>
-          <dd class="flex items-center gap-2 font-medium text-blue-500 m-0">
-            <mat-icon class="text-blue-500 text-[16px] w-4 h-4 leading-4">hourglass_empty</mat-icon>
-            {{ task?.status?.name || ('TASK_DETAIL.STATUS_PENDING' | translate) }}
-          </dd>
-
-          <dt class="text-slate-500">{{ 'TASK_DETAIL.CREATED' | translate }}:</dt>
-          <dd class="flex items-center gap-2 font-medium text-slate-600 m-0">
-            <mat-icon class="text-slate-400 text-[16px] w-4 h-4 leading-4">calendar_today</mat-icon>
-            <time [attr.datetime]="task?.createdAt">{{ task?.createdAt ? (task.createdAt | date:'dd/MM/yyyy HH:mm') : '14 tháng 7 7:47 pm' }}</time>
-            <span class="text-slate-400 text-xs">/ ID: #{{ task?.id?.substring(0, 8) || '7' }}</span>
-            <button type="button" class="text-slate-400 hover:text-slate-600" title="Sao chép ID" aria-label="Sao chép ID tác vụ">
-              <mat-icon class="text-[14px] w-3.5 h-3.5 leading-[14px]">content_copy</mat-icon>
-            </button>
-          </dd>
-
-        </dl>
-
-        <nav class="flex flex-wrap gap-2" aria-label="Thuộc tính bổ sung của tác vụ">
-          <button type="button" class="chip-btn"><mat-icon>article</mat-icon> {{ 'TASK_DETAIL.CHIPS.STATUS_SUMMARIES' | translate }}</button>
-          <button type="button" class="chip-btn"><mat-icon>attach_file</mat-icon> {{ 'TASK_DETAIL.CHIPS.FILES' | translate }}</button>
-          <button type="button" class="chip-btn"><mat-icon>format_list_bulleted</mat-icon> {{ 'TASK_DETAIL.CHIPS.CHECKLISTS' | translate }}</button>
-          <button type="button" class="chip-btn text-blue-500"><mat-icon>folder</mat-icon> {{ 'TASK_DETAIL.CHIPS.PROJECT' | translate }}</button>
-          
-          <button type="button" class="chip-btn"><mat-icon>group</mat-icon> {{ 'TASK_DETAIL.CHIPS.PARTICIPANTS' | translate }}</button>
-          <button type="button" class="chip-btn"><mat-icon>visibility</mat-icon> {{ 'TASK_DETAIL.CHIPS.OBSERVERS' | translate }}</button>
-          <button type="button" class="chip-btn"><mat-icon>chat</mat-icon> {{ 'TASK_DETAIL.CHIPS.FLOW' | translate }}</button>
-          <button type="button" class="chip-btn"><mat-icon>tag</mat-icon> {{ 'TASK_DETAIL.CHIPS.TAGS' | translate }}</button>
-          <button type="button" class="chip-btn"><mat-icon>notifications</mat-icon> {{ 'TASK_DETAIL.CHIPS.REMINDERS' | translate }}</button>
-          
-          <button type="button" class="chip-btn text-blue-500"><mat-icon>api</mat-icon> {{ 'TASK_DETAIL.CHIPS.CRM_ITEMS' | translate }}</button>
-          <button type="button" class="chip-btn"><mat-icon>account_tree</mat-icon> {{ 'TASK_DETAIL.CHIPS.PARENT_TASK' | translate }}</button>
-          <button type="button" class="chip-btn"><mat-icon>subdirectory_arrow_right</mat-icon> {{ 'TASK_DETAIL.CHIPS.SUBTASKS' | translate }}</button>
-          <button type="button" class="chip-btn"><mat-icon>link</mat-icon> {{ 'TASK_DETAIL.CHIPS.RELATED_TASKS' | translate }}</button>
-          
-          <button type="button" class="chip-btn"><mat-icon>timeline</mat-icon> {{ 'TASK_DETAIL.CHIPS.GANTT' | translate }}</button>
-          <button type="button" class="chip-btn"><mat-icon>event</mat-icon> {{ 'TASK_DETAIL.CHIPS.TIME_PLANNING' | translate }}</button>
-          <button type="button" class="chip-btn text-blue-500"><mat-icon>schedule</mat-icon> {{ 'TASK_DETAIL.CHIPS.TIME_TRACKING' | translate }}</button>
-          <button type="button" class="chip-btn"><mat-icon>dashboard_customize</mat-icon> {{ 'TASK_DETAIL.CHIPS.CUSTOM_FIELDS' | translate }}</button>
-        </nav>
-
-      </div>
-
-      <footer class="task-modal-footer flex items-center gap-2 p-4 border-t border-slate-100">
-        <ng-container *ngIf="permissionService.can('task.update')">
-          <button type="button" class="bg-blue-600 text-white px-4 py-1.5 rounded text-[13px] font-medium hover:bg-blue-700 transition-colors">
-            {{ 'TASK_DETAIL.BTN_START' | translate }}
-          </button>
-          <button type="button" class="bg-white border border-slate-300 text-slate-700 px-4 py-1.5 rounded text-[13px] font-medium hover:bg-slate-50 transition-colors">
-            {{ 'TASK_DETAIL.BTN_COMPLETE' | translate }}
-          </button>
-          <button type="button" class="p-1.5 text-slate-400 hover:text-slate-600 rounded" title="Thao tác khác" aria-label="Thao tác khác">
-            <mat-icon>more_horiz</mat-icon>
-          </button>
-        </ng-container>
-        
-        <div class="flex-1"></div>
-        <div class="text-slate-400 text-[12px] flex items-center gap-1">
-          {{ 'TASK_DETAIL.RATE_TASK' | translate }}
-          <mat-icon class="text-[14px] w-3.5 h-3.5 leading-[14px]" aria-hidden="true">visibility</mat-icon> 1
-        </div>
-      </footer>
+    <section class="left-pane flex flex-col bg-white" [style.width.%]="LEFT_PANE_WIDTH" aria-label="Danh sách tác vụ trong dự án">
+      <app-task-list-panel
+        [activeTaskId]="task?.id ?? null"
+        (taskSelected)="onTaskSelected($event)"
+        class="flex flex-col h-full w-full overflow-hidden"
+      ></app-task-list-panel>
     </section>
 
-    <div class="splitter" 
-         (mousedown)="startDrag($event)" 
-         [class.dragging]="isDragging"
-         role="separator"
-         aria-orientation="vertical"
-         aria-label="Kéo để điều chỉnh kích thước 2 cột">
-    </div>
-
-    <aside class="right-pane bg-blue-50" [style.width.%]="100 - leftPaneWidth" aria-label="Thảo luận và tiến trình tác vụ">
-      
-      <header class="flex items-center justify-between p-3 border-b border-blue-100 bg-white">
-        <div class="flex items-center gap-2">
-          <figure class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-500 m-0">
-            <mat-icon>chat_bubble_outline</mat-icon>
-          </figure>
-          <div>
-            <h3 class="text-[13px] font-bold text-slate-700 leading-tight m-0">{{ 'TASK_DETAIL.CHAT.TITLE' | translate }}</h3>
-            <p class="text-[11px] text-slate-400 m-0">{{ 'TASK_DETAIL.CHAT.MEMBERS' | translate: { count: 1 } }}</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2">
-          <button type="button" class="bg-teal-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 hover:bg-teal-600 transition-colors">
-            <mat-icon class="text-[14px] w-3.5 h-3.5 leading-[14px]">videocam</mat-icon>
-            {{ 'TASK_DETAIL.CHAT.VIDEO_CALL' | translate }}
-          </button>
-          <button *ngIf="permissionService.can('task.assign')" type="button" class="p-1.5 text-slate-400 hover:text-slate-600 rounded" title="Thêm người" aria-label="Thêm người"><mat-icon>person_add</mat-icon></button>
-          <button type="button" class="p-1.5 text-slate-400 hover:text-slate-600 rounded" title="Tìm kiếm" aria-label="Tìm kiếm tin nhắn"><mat-icon>search</mat-icon></button>
-          <button type="button" class="p-1.5 text-slate-400 hover:text-slate-600 rounded" title="Thông tin" aria-label="Thông tin kênh"><mat-icon>info</mat-icon></button>
-        </div>
-      </header>
-
-      <section class="flex-1 overflow-y-auto p-4 custom-scrollbar chat-bg-pattern" aria-label="Lịch sử tin nhắn">
-        
-        <div class="flex justify-center mb-4">
-          <span class="bg-slate-400/40 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-            {{ 'TASK_DETAIL.CHAT.TODAY' | translate }}
-          </span>
-        </div>
-
-        <article class="bg-blue-100/60 rounded-lg p-3 max-w-[80%]">
-          <p class="text-[13px] text-slate-700 mb-2 m-0">
-            <strong>{{ task?.creator?.name || 'Văn Anh Nguyễn' }}</strong> {{ 'TASK_DETAIL.CHAT.CREATED_TASK' | translate }}
-            <a href="javascript:void(0)" class="text-blue-500 hover:underline">{{ 'TASK_DETAIL.CHAT.TASK_LINK' | translate }}</a>.
-          </p>
-          <div class="bg-white rounded p-3 border border-blue-200 mt-2">
-            <div class="flex items-center gap-2 text-blue-500 font-bold text-[13px] mb-2">
-              <mat-icon>account_circle</mat-icon> {{ task?.title }}
-            </div>
-            
-            <dl class="grid grid-cols-[120px_1fr] gap-y-1 text-[12px] m-0">
-              <dt class="font-medium text-slate-700">{{ 'TASK_DETAIL.CHAT.CARD_STATUS' | translate }}:</dt>
-              <dd class="text-slate-600 m-0">{{ task?.status?.name || ('TASK_DETAIL.STATUS_IN_PROGRESS' | translate) }}</dd>
-              
-              <dt class="font-medium text-slate-700">{{ 'TASK_DETAIL.CHAT.CARD_CREATED_BY' | translate }}:</dt>
-              <dd class="text-slate-600 m-0">{{ task?.creator?.name || 'Văn Anh Nguyễn' }}</dd>
-              
-              <dt class="font-medium text-slate-700">{{ 'TASK_DETAIL.CHAT.CARD_ASSIGNEE' | translate }}:</dt>
-              <dd class="text-slate-600 m-0">{{ task?.assignee?.name || 'Văn Anh Nguyễn' }}</dd>
-              
-              <dt class="font-medium text-slate-700">{{ 'TASK_DETAIL.CHAT.CARD_DEADLINE' | translate }}:</dt>
-              <dd class="text-slate-600 m-0">{{ task?.dueDate ? (task.dueDate | date:'dd/MM/yyyy HH:mm') : '14/07/2026 7:00 pm' }}</dd>
-            </dl>
-          </div>
-          <time class="text-[10px] text-slate-400 text-right mt-1 block">7:47 pm</time>
-        </article>
-
-      </section>
-
-      <footer class="p-3 bg-white/50 backdrop-blur-sm border-t border-blue-100">
-        <form *ngIf="permissionService.can('comment.create')" class="bg-white rounded-md border border-slate-200 shadow-sm flex items-center p-1" (submit)="$event.preventDefault()">
-          <button type="button" class="p-2 text-slate-400 hover:text-slate-600 rounded" title="Đính kèm tệp" aria-label="Đính kèm tệp">
-            <mat-icon>attach_file</mat-icon>
-          </button>
-          <input type="text" 
-                 class="flex-1 outline-none text-[13px] p-2 bg-transparent" 
-                 [placeholder]="'TASK_DETAIL.CHAT.INPUT_PLACEHOLDER' | translate"
-                 aria-label="Nhập nội dung bình luận">
-          
-          <div class="flex items-center gap-1 px-2">
-            <button type="button" class="p-1.5 text-slate-400 hover:text-slate-600 rounded" title="Mẫu" aria-label="Mẫu tin nhắn"><mat-icon>grid_view</mat-icon></button>
-            <button type="button" class="p-1.5 text-slate-400 hover:text-slate-600 rounded" title="Biểu cảm" aria-label="Biểu cảm cảm xúc"><mat-icon>sentiment_satisfied</mat-icon></button>
-            <button type="button" class="p-1.5 text-slate-400 hover:text-slate-600 rounded" title="Ghi âm" aria-label="Ghi âm"><mat-icon>mic</mat-icon></button>
-            <button type="submit" class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center hover:bg-blue-600 transition-colors ml-1" title="Gửi tin nhắn" aria-label="Gửi tin nhắn">
-              <mat-icon class="text-[18px] w-[18px] h-[18px] leading-[18px] ml-0.5">send</mat-icon>
-            </button>
-          </div>
-        </form>
-        <div *ngIf="!permissionService.can('comment.create')" class="text-center text-slate-400 text-[13px] p-2">
-          Bạn không có quyền bình luận trong tác vụ này.
-        </div>
-      </footer>
-
+    <!-- Right Pane: Comments -->
+    <aside class="right-pane bg-slate-50 flex flex-col border-l border-slate-200" [style.width.%]="100 - LEFT_PANE_WIDTH" aria-label="Thảo luận và tiến trình tác vụ">
+      <app-task-comments 
+        *ngIf="task" 
+        [task]="task"
+        (changesMade)="markAsDirty()"
+        class="flex flex-col h-full w-full">
+      </app-task-comments>
     </aside>
   </article>
 </section>

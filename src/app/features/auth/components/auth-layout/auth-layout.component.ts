@@ -29,7 +29,6 @@ export class AuthLayoutComponent implements OnInit {
   ];
 
   ngOnInit() {
-    // 1. Khởi tạo ngôn ngữ
     const savedLang = localStorage.getItem('appLang');
     if (savedLang) {
       this.currentLang.set(savedLang);
@@ -37,6 +36,9 @@ export class AuthLayoutComponent implements OnInit {
     } else {
       this.currentLang.set(this.translate.currentLang() || 'vi');
     }
+
+    // Set initial --vh value for Safari iOS fallback
+    this.updateViewportHeight();
 
     if (AuthLayoutComponent.hasLoadedBg) {
       return;
@@ -57,6 +59,14 @@ export class AuthLayoutComponent implements OnInit {
       AuthLayoutComponent.hasLoadedBg = true;
       this.isLoaded.set(true);
     }, 600);
+  }
+
+  /** Updates --vh on resize/orientation change for Safari iOS compatibility. */
+  @HostListener('window:resize')
+  @HostListener('window:orientationchange')
+  protected updateViewportHeight(): void {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
   }
 
   toggleLangPopup(event: Event) {

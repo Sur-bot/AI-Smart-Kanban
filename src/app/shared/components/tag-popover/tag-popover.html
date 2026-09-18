@@ -1,0 +1,46 @@
+<section class="app-popover" (click)="$event.stopPropagation()" role="dialog" aria-label="Chọn thẻ">
+  <aside class="app-popover-sidebar">
+    <button type="button" class="sidebar-icon-btn active" aria-label="Tìm kiếm">
+      <mat-icon fontSet="material-icons-outlined">search</mat-icon>
+    </button>
+    <button type="button" class="sidebar-icon-btn" aria-label="Danh sách thẻ">
+      <mat-icon fontSet="material-icons-outlined">sell</mat-icon>
+    </button>
+  </aside>
+
+  <main class="app-popover-main">
+    <div class="app-popover-search-container">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        class="popover-search-input"
+        placeholder="tìm kiếm"
+        aria-label="Tìm kiếm thẻ"
+        autofocus
+      />
+    </div>
+
+    <section *ngIf="tags.length === 0" class="empty-state" aria-label="Trạng thái trống">
+      <figure class="empty-icon-box">
+        <div class="custom-graphic">
+          <div class="bg-blue-100 rounded-[18px] w-[110px] h-[100px] flex items-center justify-center relative shadow-inner">
+            <div class="absolute -right-3 -top-2 bg-blue-300 rounded-[14px] w-12 h-14 flex items-center justify-center text-white shadow-lg z-0">
+              <mat-icon fontSet="material-icons-outlined" class="!text-[28px] !w-[28px] !h-[28px]">person</mat-icon>
+            </div>
+            <div class="absolute -left-4 bottom-2 bg-green-400 rounded-2xl w-14 h-14 flex items-center justify-center text-white shadow-lg z-20">
+              <mat-icon fontSet="material-icons-outlined" class="!text-[32px] !w-[32px] !h-[32px] font-bold">reply</mat-icon>
+            </div>
+            <mat-icon fontSet="material-icons-outlined" class="!text-[56px] !w-[56px] !h-[56px] text-blue-400 z-10 opacity-80">link</mat-icon>
+          </div>
+        </div>
+      </figure>
+      <p class="empty-text">
+        Không tìm thấy gì trong danh mục "Thẻ"
+      </p>
+    </section>
+
+    <footer class="app-popover-footer">
+      <span class="footer-action-text cursor-pointer hover:underline text-slate-600 font-normal">Xem các thẻ</span>
+    </footer>
+  </main>
+</section>

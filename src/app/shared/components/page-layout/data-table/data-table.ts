@@ -1,12 +1,16 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectorRef, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectorRef, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { TaskItem } from '../../../../core/models/task.model';
+import { TaskItem, Project } from '../../../../core/models/task.model';
 import { PermissionService } from '../../../../core/services/permission.service';
 import { TaskStore } from '../../../../core/state/task.store';
 import { DueDatePickerComponent } from '../../due-date-picker/due-date-picker';
+import { ProjectPopoverComponent } from '../../project-popover/project-popover';
+import { TagPopoverComponent } from '../../tag-popover/tag-popover';
+import { JobRoleBadgeComponent } from '../../job-role-badge/job-role-badge';
+import { OverlayModule, ConnectedPosition, CdkOverlayOrigin } from '@angular/cdk/overlay';
 
 export interface TableColumn {
   id: string;
@@ -19,29 +23,38 @@ export interface TableColumn {
 @Component({
   selector: 'app-data-table',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatIconModule, DragDropModule, DueDatePickerComponent],
+  imports: [CommonModule, FormsModule, MatIconModule, DragDropModule, DueDatePickerComponent, ProjectPopoverComponent, TagPopoverComponent, JobRoleBadgeComponent, OverlayModule],
   templateUrl: './data-table.html',
   styleUrls: ['./data-table.scss'],
 })
-export class DataTableComponent {
+export class DataTableComponent implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   readonly permissionService = inject(PermissionService);
   readonly taskStore = inject(TaskStore);
 
-  private _tasks: TaskItem[] = [];
-  pinnedTaskIds = new Set<string>();
+  @Input() mode: 'task' | 'project' = 'task';
+  @Input() currentUserId: string | null = null;
+
+  private _data: any[] = [];
+  pinnedItemIds = new Set<string>();
 
   @Input()
-  set tasks(val: TaskItem[]) {
-    this._tasks = val ? [...val] : [];
-    this.sortTasks();
+  set data(val: any[]) {
+    this._data = val ? [...val] : [];
+    this.sortData();
   }
-  get tasks(): TaskItem[] {
-    return this._tasks;
+  get data(): any[] {
+    return this._data;
   }
 
-  @Output() taskSelected = new EventEmitter<TaskItem>();
+  // Outputs cho Task
+  @Output() itemSelected = new EventEmitter<any>();
   @Output() taskUpdated = new EventEmitter<TaskItem>();
+  
+  // Outputs cho Project
+  @Output() memberManage = new EventEmitter<Project>();
+  @Output() projectEdit = new EventEmitter<Project>();
+  @Output() batchAction = new EventEmitter<{ action: string; itemIds: string[]; applyToAll: boolean }>();
 
   selectedIds = new Set<string>();
   applyToAll: boolean = false;
@@ -53,79 +66,107 @@ export class DataTableComponent {
   sortColumnId: string = '';
   sortDirection: 'asc' | 'desc' | 'none' = 'none';
 
-  nameColumn: TableColumn = { id: 'name', label: 'Tên', width: 280, sortable: true, hasDropdown: true };
+  activePopoverId: string | null = null;
+  activePopoverItem: any = null;
+  activePopoverOrigin: CdkOverlayOrigin | null = null;
 
-  draggableColumns: TableColumn[] = [
-    { id: 'activity', label: 'Hoạt động', width: 150, sortable: true },
-    { id: 'dueDate', label: 'Hạn chót', width: 170, sortable: true },
-    { id: 'creator', label: 'Người tạo', width: 180, sortable: true },
-    { id: 'assignee', label: 'Người được phân công', width: 220, sortable: true },
-    { id: 'project', label: 'Dự án', width: 150, sortable: true },
-    { id: 'tags', label: 'Thẻ', width: 140, sortable: true },
+  readonly popoverPositions: ConnectedPosition[] = [
+    { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 8 },
+    { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom', offsetY: -8 },
+    { originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top', offsetY: 8 },
+    { originX: 'end', originY: 'top', overlayX: 'end', overlayY: 'bottom', offsetY: -8 }
   ];
+
+  nameColumn: TableColumn = { id: 'name', label: 'Tên', width: 280, sortable: true, hasDropdown: true };
+  draggableColumns: TableColumn[] = [];
+  actionOptions: string[] = [];
+
+  ngOnInit() {
+    if (this.mode === 'task') {
+      this.draggableColumns = [
+        { id: 'activity', label: 'Hoạt động', width: 150, sortable: true },
+        { id: 'dueDate', label: 'Hạn chót', width: 170, sortable: true },
+        { id: 'creator', label: 'Người tạo', width: 180, sortable: true },
+        { id: 'assignee', label: 'Người được phân công', width: 220, sortable: true },
+        { id: 'jobRole', label: 'Vai trò', width: 130, sortable: true },
+        { id: 'project', label: 'Dự án', width: 150, sortable: true },
+        { id: 'tags', label: 'Thẻ', width: 140, sortable: true },
+      ];
+      this.actionOptions = [
+        'Ping', 'Hoàn thành', 'Đặt hạn chót', 'Gia hạn chót', 'Đẩy nhanh hạn chót',
+        'Xem lại sau khi hoàn thành', 'Thay đổi người được phân công', 'Thay đổi người tạo ra',
+        'Thêm người quan sát', 'Thêm người tham gia', 'Tắt tiếng', 'Bỏ tắt tiếng',
+        'Thêm vào ưa thích', 'Xóa khỏi ưa thích', 'Đặt nhóm (Dự án)', 'Thêm vào luồng', 'Xóa'
+      ];
+    } else {
+      this.draggableColumns = [
+        { id: 'id', label: 'ID', width: 100, sortable: true },
+        { id: 'activity', label: 'Hoạt động', width: 150, sortable: true },
+        { id: 'performance', label: 'Performance', width: 140, sortable: true },
+        { id: 'members', label: 'Xem các thành viên', width: 190, sortable: false },
+        { id: 'role', label: 'Vai trò', width: 130, sortable: true },
+        { id: 'privacy', label: 'Quyền riêng tư', width: 150, sortable: true },
+      ];
+      this.actionOptions = [
+        'Thêm vào ưa thích', 'Xóa khỏi ưa thích', 'Lưu trữ', 'Kích hoạt lại',
+        'Thay đổi quyền riêng tư', 'Xóa'
+      ];
+    }
+  }
 
   get allColumns(): TableColumn[] {
     return [this.nameColumn, ...this.draggableColumns];
   }
 
-  readonly actionOptions: string[] = [
-    'Ping',
-    'Hoàn thành',
-    'Đặt hạn chót',
-    'Gia hạn chót',
-    'Đẩy nhanh hạn chót',
-    'Xem lại sau khi hoàn thành',
-    'Thay đổi người được phân công',
-    'Thay đổi người tạo ra',
-    'Thêm người quan sát',
-    'Thêm người tham gia',
-    'Tắt tiếng',
-    'Bỏ tắt tiếng',
-    'Thêm vào ưa thích',
-    'Xóa khỏi ưa thích',
-    'Đặt nhóm (Dự án)',
-    'Thêm vào luồng',
-    'Xóa'
-  ];
+
 
   private resizingCol: TableColumn | null = null;
   private startX: number = 0;
   private startWidth: number = 0;
 
   get isAllSelected(): boolean {
-    return this.tasks.length > 0 && this.selectedIds.size === this.tasks.length;
+    return this.data.length > 0 && this.selectedIds.size === this.data.length;
   }
 
   get isIndeterminate(): boolean {
-    return this.selectedIds.size > 0 && this.selectedIds.size < this.tasks.length;
+    return this.selectedIds.size > 0 && this.selectedIds.size < this.data.length;
   }
 
   toggleSelectAll(checked: boolean) {
     if (checked) {
-      this.tasks.forEach(t => this.selectedIds.add(t.id));
+      this.data.forEach(t => this.selectedIds.add(t.id));
     } else {
       this.selectedIds.clear();
     }
   }
 
-  toggleRowSelection(task: TaskItem, event?: MouseEvent) {
+  toggleRowSelection(item: any, event?: MouseEvent) {
     if (event) {
       event.stopPropagation();
     }
-    if (this.selectedIds.has(task.id)) {
-      this.selectedIds.delete(task.id);
+    if (this.selectedIds.has(item.id)) {
+      this.selectedIds.delete(item.id);
     } else {
-      this.selectedIds.add(task.id);
+      this.selectedIds.add(item.id);
     }
   }
 
-  isRowSelected(task: TaskItem): boolean {
-    return this.selectedIds.has(task.id);
+  isRowSelected(item: any): boolean {
+    return this.selectedIds.has(item.id);
   }
 
-  onTitleClick(task: TaskItem, event: MouseEvent) {
+  onTitleClick(item: any, event: MouseEvent) {
     event.stopPropagation();
-    this.taskSelected.emit(task);
+    this.itemSelected.emit(item);
+  }
+
+  onApplyBatchAction() {
+    if (this.selectedIds.size === 0 || !this.selectedAction) return;
+    this.batchAction.emit({
+      action: this.selectedAction,
+      itemIds: Array.from(this.selectedIds),
+      applyToAll: this.applyToAll
+    });
   }
 
   onApplyAllCheckboxClick(event: Event) {
@@ -162,21 +203,21 @@ export class DataTableComponent {
     return `${day} Thg ${month}, ${formattedHours}:${minutes} ${ampm}`;
   }
 
-  togglePinTask(task: TaskItem, event: MouseEvent) {
+  togglePinItem(item: any, event: MouseEvent) {
     event.stopPropagation();
-    if (this.pinnedTaskIds.has(task.id)) {
-      this.pinnedTaskIds.delete(task.id);
-      task.isPinned = false;
+    if (this.pinnedItemIds.has(item.id)) {
+      this.pinnedItemIds.delete(item.id);
+      item.isPinned = false;
     } else {
-      this.pinnedTaskIds.add(task.id);
-      task.isPinned = true;
+      this.pinnedItemIds.add(item.id);
+      item.isPinned = true;
     }
-    this.sortTasks();
+    this.sortData();
     this.cdr.detectChanges();
   }
 
-  isTaskPinned(task: TaskItem): boolean {
-    return this.pinnedTaskIds.has(task.id) || !!task.isPinned;
+  isItemPinned(item: any): boolean {
+    return this.pinnedItemIds.has(item.id) || !!item.isPinned;
   }
 
   toggleSortColumn(colId: string, event?: MouseEvent) {
@@ -194,7 +235,7 @@ export class DataTableComponent {
       this.sortColumnId = colId;
       this.sortDirection = 'asc';
     }
-    this.sortTasks();
+    this.sortData();
     this.cdr.detectChanges();
   }
 
@@ -209,12 +250,12 @@ export class DataTableComponent {
     return this.sortColumnId === colId && this.sortDirection !== 'none';
   }
 
-  private sortTasks() {
-    if (!this._tasks || this._tasks.length === 0) return;
-    this._tasks.sort((a, b) => {
-      // 1. Pinned tasks always stay at the top
-      const aPinned = this.isTaskPinned(a) ? 1 : 0;
-      const bPinned = this.isTaskPinned(b) ? 1 : 0;
+  private sortData() {
+    if (!this._data || this._data.length === 0) return;
+    this._data.sort((a, b) => {
+      // 1. Pinned items always stay at the top
+      const aPinned = this.isItemPinned(a) ? 1 : 0;
+      const bPinned = this.isItemPinned(b) ? 1 : 0;
       if (aPinned !== bPinned) {
         return bPinned - aPinned;
       }
@@ -227,14 +268,20 @@ export class DataTableComponent {
       let comparison = 0;
       switch (this.sortColumnId) {
         case 'name': {
-          const nameA = (a.title || '').toLowerCase();
-          const nameB = (b.title || '').toLowerCase();
+          const nameA = (a.title || a.name || '').toLowerCase();
+          const nameB = (b.title || b.name || '').toLowerCase();
           comparison = nameA.localeCompare(nameB, 'vi');
           break;
         }
+        case 'id': {
+          const idA = (a.id || '').toLowerCase();
+          const idB = (b.id || '').toLowerCase();
+          comparison = idA.localeCompare(idB, 'vi');
+          break;
+        }
         case 'activity': {
-          const timeA = new Date(a.updatedAt || a.createdAt || 0).getTime();
-          const timeB = new Date(b.updatedAt || b.createdAt || 0).getTime();
+          const timeA = new Date(a.updatedAt || a.createdAt || a.created_at || 0).getTime();
+          const timeB = new Date(b.updatedAt || b.createdAt || b.created_at || 0).getTime();
           comparison = timeA - timeB;
           break;
         }
@@ -256,6 +303,12 @@ export class DataTableComponent {
           comparison = assigneeA.localeCompare(assigneeB, 'vi');
           break;
         }
+        case 'jobRole': {
+          const roleA = (a.jobRole || '').toLowerCase();
+          const roleB = (b.jobRole || '').toLowerCase();
+          comparison = roleA.localeCompare(roleB, 'vi');
+          break;
+        }
         case 'project': {
           const projA = (a.projectName || (a as any).project?.name || '').toLowerCase();
           const projB = (b.projectName || (b as any).project?.name || '').toLowerCase();
@@ -266,6 +319,22 @@ export class DataTableComponent {
           const countA = a.labels?.length || 0;
           const countB = b.labels?.length || 0;
           comparison = countA - countB;
+          break;
+        }
+        case 'performance': {
+          comparison = 0;
+          break;
+        }
+        case 'role': {
+          const roleA = this.getRole(a).label;
+          const roleB = this.getRole(b).label;
+          comparison = roleA.localeCompare(roleB, 'vi');
+          break;
+        }
+        case 'privacy': {
+          const privA = this.getPrivacy(a).label;
+          const privB = this.getPrivacy(b).label;
+          comparison = privA.localeCompare(privB, 'vi');
           break;
         }
         default:
@@ -297,12 +366,12 @@ export class DataTableComponent {
     return null;
   }
 
-  getCreatorAvatar(task: TaskItem): string | null {
-    return task.creator?.avatar_url || (task.creator as any)?.avatar || null;
+  getCreatorAvatar(item: any): string | null {
+    return item.creator?.avatar_url || (item.creator as any)?.avatar || null;
   }
 
-  trackByTaskId(index: number, task: TaskItem): string {
-    return task.id;
+  trackById(index: number, item: any): string {
+    return item.id;
   }
 
   trackByColId(index: number, col: TableColumn): string {
@@ -338,17 +407,78 @@ export class DataTableComponent {
     window.addEventListener('mouseup', onMouseUp);
   }
 
-  onDueDateChange(task: TaskItem, newDueDate: string | null): void {
-    task.dueDate = newDueDate || undefined;
-    this.taskStore.updateTask(task.id, { dueDate: newDueDate === null ? (null as any) : newDueDate });
-    this.taskUpdated.emit(task);
+  onDueDateChange(item: any, newDueDate: string | null): void {
+    item.dueDate = newDueDate || undefined;
+    this.taskStore.updateTask(item.id, { dueDate: newDueDate === null ? (null as any) : newDueDate });
+    this.taskUpdated.emit(item);
     this.cdr.detectChanges();
   }
 
-  isTaskOverdue(task: TaskItem): boolean {
-    if (!task.dueDate || task.completedAt) return false;
-    if (task.status?.category === 'done') return false;
-    const dueTime = new Date(task.dueDate).getTime();
+  isTaskOverdue(item: any): boolean {
+    if (this.mode !== 'task') return false;
+    if (!item.dueDate || item.completedAt) return false;
+    if (item.status?.category === 'done') return false;
+    const dueTime = new Date(item.dueDate).getTime();
     return !isNaN(dueTime) && dueTime < Date.now();
+  }
+
+  // --- Project Specific Methods ---
+  getRole(project: any): { label: string; className: string } {
+    if (project.owner_id === this.currentUserId) {
+      return { label: 'Chủ sở hữu', className: 'bg-amber-50 text-amber-700 border-amber-200' };
+    }
+    const member = project.project_members?.find((m: any) => m.user_id === this.currentUserId);
+    if (member) {
+      switch (member.role) {
+        case 'admin': return { label: 'Quản trị viên', className: 'bg-purple-50 text-purple-700 border-purple-200' };
+        case 'member': return { label: 'Thành viên', className: 'bg-blue-50 text-blue-700 border-blue-200' };
+        case 'viewer': return { label: 'Người xem', className: 'bg-slate-50 text-slate-600 border-slate-200' };
+      }
+    }
+    return { label: 'Thành viên', className: 'bg-blue-50 text-blue-700 border-blue-200' };
+  }
+
+  getPrivacy(project: any): { label: string; className: string; icon: string } {
+    if (project.privacy === 'public' || project.is_public) {
+      return { label: 'Công khai', className: 'bg-emerald-50 text-emerald-700 border-emerald-200', icon: 'public' };
+    }
+    return { label: 'Riêng tư', className: 'bg-slate-100 text-slate-700 border-slate-200', icon: 'lock' };
+  }
+
+  getVisibleMembers(project: any, max: number = 4): any[] {
+    return project.project_members?.slice(0, max) || [];
+  }
+
+  getRemainingMembersCount(project: any, max: number = 4): number {
+    return Math.max(0, (project.project_members?.length || 0) - max);
+  }
+
+  onMemberClick(project: any, event: MouseEvent) {
+    event.stopPropagation();
+    this.memberManage.emit(project);
+  }
+
+  onEditClick(project: any, event: MouseEvent) {
+    event.stopPropagation();
+    this.projectEdit.emit(project);
+  }
+
+  // --- Popover Toggle Methods ---
+  togglePopover(popoverType: 'project' | 'tag', item: any, event: MouseEvent, origin: CdkOverlayOrigin) {
+    event.stopPropagation();
+    const popoverId = `${popoverType}-${item.id}`;
+    if (this.activePopoverId === popoverId) {
+      this.closePopover();
+    } else {
+      this.activePopoverId = popoverId;
+      this.activePopoverItem = item;
+      this.activePopoverOrigin = origin;
+    }
+  }
+
+  closePopover() {
+    this.activePopoverId = null;
+    this.activePopoverItem = null;
+    this.activePopoverOrigin = null;
   }
 }
