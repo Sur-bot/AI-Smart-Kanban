@@ -38,6 +38,9 @@ export class AuthLayoutComponent implements OnInit {
       this.currentLang.set(this.translate.currentLang() || 'vi');
     }
 
+    // 2. JS fallback cho Safari iOS: set --vh cọn dùng khi dvh chưa được hỗ trợ
+    this.updateViewportHeight();
+
     if (AuthLayoutComponent.hasLoadedBg) {
       return;
     }
@@ -57,6 +60,18 @@ export class AuthLayoutComponent implements OnInit {
       AuthLayoutComponent.hasLoadedBg = true;
       this.isLoaded.set(true);
     }, 600);
+  }
+
+  /**
+   * Cập nhật --vh mỗi khi viewport thay đổi.
+   * Safari iOS thay đổi `window.innerHeight` khi thanh địa chỉ/công cụ co giãn.
+   * CSS dvh và svh là giải pháp ưu tiên; đây là fallback bổ sung cho browser cũ hơn.
+   */
+  @HostListener('window:resize')
+  @HostListener('window:orientationchange')
+  protected updateViewportHeight(): void {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
   }
 
   toggleLangPopup(event: Event) {
