@@ -299,8 +299,9 @@
       </div>
     </footer>
 
-    <!-- Thanh Thao tác hàng loạt (Batch Action Bottom Bar) gắn liền bên dưới -->
-    <section class="batch-action-bar" aria-label="Thao tác hàng loạt">
+    <div class="batch-action-wrapper" [class.visible]="selectedIds.size > 0">
+      <div class="batch-action-inner">
+        <section class="batch-action-bar" aria-label="Thao tác hàng loạt">
       <div class="action-dropdown-box">
         <select [(ngModel)]="selectedAction" 
                 class="action-select" 
@@ -324,8 +325,10 @@
                (change)="onApplyAllCheckboxClick($event)" 
                class="task-checkbox">
         <span>DÀNH CHO TẤT CẢ</span>
-      </label>
-    </section>
+        </label>
+        </section>
+      </div>
+    </div>
 
   </div>
 

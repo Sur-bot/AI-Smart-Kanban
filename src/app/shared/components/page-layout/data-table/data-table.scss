@@ -310,6 +310,22 @@ mat-icon {
 }
 
 /* ===== Batch Action Bottom Bar ===== */
+.batch-action-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+
+  &.visible {
+    grid-template-rows: 1fr;
+  }
+}
+
+.batch-action-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
 .batch-action-bar {
   @apply flex items-center gap-3.5 px-4 py-2.5 bg-white border-t border-slate-200;
 }
