@@ -37,6 +37,11 @@
       max-width: 180px;
       margin-left: 10px;
       pointer-events: auto;
+
+      @media (max-width: 1023px) {
+        max-width: none !important;
+        width: 100% !important;
+      }
     }
 
     .switcher-arrow {
@@ -44,6 +49,10 @@
       width: 18px;
       margin-left: 4px;
       pointer-events: auto;
+
+      @media (max-width: 1023px) {
+        margin-left: auto !important;
+      }
     }
   }
 }
@@ -54,7 +63,7 @@
   justify-content: flex-start;
   width: 100%;
   height: 44px;
-  padding: 6px 9px;
+  padding: 6px 12px;
   border-radius: 10px;
   background: transparent;
   border: none;
@@ -138,6 +147,27 @@
   }
 }
 
+.switcher-dropdown-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0 0 10px 10px;
+
+  &.is-open {
+    grid-template-rows: 1fr;
+
+    .switcher-dropdown {
+      opacity: 1;
+      transition: opacity 0.5s ease-in-out 0.2s;
+    }
+  }
+}
+
+.switcher-dropdown-inner {
+  overflow: hidden;
+  border-radius: 0 0 10px 10px;
+}
+
 .switcher-dropdown {
   position: relative;
   width: 100%;
@@ -145,7 +175,8 @@
   padding: 4px 0 0;
   display: flex;
   flex-direction: column;
-  animation: switcherFadeIn 0.18s ease-out;
+  opacity: 0;
+  transition: opacity 0.15s ease-out;
 
   .dropdown-header {
     padding: 6px 12px 4px;
@@ -313,13 +344,6 @@
   }
 }
 
-@keyframes switcherFadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
+
 
 

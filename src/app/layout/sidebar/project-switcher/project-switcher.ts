@@ -19,7 +19,7 @@ export class ProjectSwitcherComponent implements OnInit {
   private dialog = inject(MatDialog);
 
   ngOnInit() {
-    if (this.taskStore.projects().length === 0) {
+    if (!this.taskStore.isProjectsInitialized()) {
       this.taskStore.loadProjects();
     }
   }
