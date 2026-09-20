@@ -10,10 +10,9 @@
      role="dialog"
      [attr.aria-label]="task?.title || ('TASK_DETAIL.TITLE' | translate)"
      aria-modal="true">
-  
+
   <nav class="modal-actions-sidebar" aria-label="Thao tác điều khiển hộp thoại">
     <button type="button" class="modal-close-btn" (click)="triggerClose()"
-            matTooltip="Đóng" matTooltipPosition="left"
             [attr.aria-label]="'TASK_DETAIL.CLOSE' | translate">
       <mat-icon>close</mat-icon>
     </button>
@@ -22,37 +21,272 @@
             [attr.aria-label]="'TASK_DETAIL.COPY_LINK' | translate">
       <mat-icon>link</mat-icon>
     </button>
-    <button type="button" class="modal-action-btn" (click)="toggleFullscreen()"
-            [matTooltip]="isFullscreen ? 'Thu nhỏ' : 'Toàn màn hình'" matTooltipPosition="left"
-            [attr.aria-label]="(isFullscreen ? 'TASK_DETAIL.MINIMIZE' : 'TASK_DETAIL.EXPAND') | translate">
-      <mat-icon>{{ isFullscreen ? 'fullscreen_exit' : 'fullscreen' }}</mat-icon>
-    </button>
     <button type="button" class="modal-action-btn"
-            matTooltip="In tác vụ" matTooltipPosition="left"
+            matTooltip="In" matTooltipPosition="left"
             [attr.aria-label]="'TASK_DETAIL.PRINT' | translate">
       <mat-icon>print</mat-icon>
     </button>
   </nav>
 
-  <article class="modal-container" [class.fullscreen-mode]="isFullscreen">
-    
-    <section class="left-pane flex flex-col bg-white" [style.width.%]="LEFT_PANE_WIDTH" aria-label="Danh sách tác vụ trong dự án">
-      <app-task-list-panel
-        [activeTaskId]="task?.id ?? null"
-        (taskSelected)="onTaskSelected($event)"
-        class="flex flex-col h-full w-full overflow-hidden"
-      ></app-task-list-panel>
-    </section>
+  <article class="modal-container">
 
-    <!-- Right Pane: Comments -->
-    <aside class="right-pane bg-slate-50 flex flex-col border-l border-slate-200" [style.width.%]="100 - LEFT_PANE_WIDTH" aria-label="Thảo luận và tiến trình tác vụ">
-      <app-task-comments 
-        *ngIf="task" 
-        [task]="task"
-        (changesMade)="markAsDirty()"
-        class="flex flex-col h-full w-full">
-      </app-task-comments>
-    </aside>
+    <div class="modal-body">
+
+      <section class="content-pane" aria-label="Nội dung tác vụ">
+
+        <header class="modal-topbar">
+
+          <nav class="breadcrumb" aria-label="Breadcrumb tác vụ">
+            <a href="javascript:void(0)" class="breadcrumb-item">
+              <span class="task-badge badge-blue">ER</span>
+              <span class="breadcrumb-id">{{ task?.projectName || taskStore.currentProject()?.name || 'Tên dự án' }}</span>
+            </a>
+            <span class="breadcrumb-sep" aria-hidden="true">/</span>
+            <a href="javascript:void(0)" class="breadcrumb-item">
+              <span class="task-badge badge-red">B</span>
+              <span class="breadcrumb-id">{{ task?.code || task?.id || 'Task ID' }}</span>
+            </a>
+          </nav>
+
+          <div class="topbar-actions" role="toolbar" aria-label="Thao tác tác vụ">
+            <button type="button" class="topbar-icon-btn" matTooltip="Lưu">
+              <mat-icon fontSet="material-icons-outlined">bookmark_border</mat-icon>
+            </button>
+            <button type="button" class="topbar-icon-btn" matTooltip="Thông báo">
+              <mat-icon fontSet="material-icons-outlined">notifications_none</mat-icon>
+            </button>
+            <button type="button" class="topbar-icon-btn" matTooltip="Đính kèm">
+              <mat-icon fontSet="material-icons-outlined">attach_file</mat-icon>
+            </button>
+            <button type="button" class="topbar-icon-btn" matTooltip="Checklist">
+              <mat-icon fontSet="material-icons-outlined">checklist</mat-icon>
+            </button>
+            <button type="button" class="topbar-icon-btn" matTooltip="Sao chép">
+              <mat-icon fontSet="material-icons-outlined">content_copy</mat-icon>
+            </button>
+            <button type="button" class="topbar-icon-btn" matTooltip="Chia sẻ">
+              <mat-icon fontSet="material-icons-outlined">share</mat-icon>
+            </button>
+            <button type="button" class="topbar-icon-btn" matTooltip="Liên kết">
+              <mat-icon fontSet="material-icons-outlined">link</mat-icon>
+            </button>
+            <button type="button" class="topbar-icon-btn" matTooltip="Lịch sử">
+              <mat-icon fontSet="material-icons-outlined">manage_history</mat-icon>
+            </button>
+            <button type="button" class="topbar-icon-btn" matTooltip="Bộ đếm thời gian">
+              <mat-icon fontSet="material-icons-outlined">timer</mat-icon>
+            </button>
+          </div>
+        </header>
+        <div class="content-inner custom-scrollbar">
+
+          <h2 class="task-title">
+            <span class="type-badge" *ngIf="task?.jobRole || task?.job_role">{{ task?.jobRole || task?.job_role }}</span>
+            {{ task?.title }}
+          </h2>
+
+          <section class="desc-section" aria-label="Description">
+
+            <div class="rich-content" *ngIf="task?.descriptionJson?.sections">
+              <ng-container *ngFor="let section of task.descriptionJson.sections">
+                <div class="doc-section-wrapper" 
+                     [class.is-editing]="editingSection() === section.key"
+                     [class.is-empty]="!section.content || section.content.length === 0">
+                  
+                  <div class="section-header">
+                    <h4 class="rich-h4">{{ section.title }}:</h4>
+                    <button type="button" class="section-edit-btn" 
+                            *ngIf="canEdit() && editingSection() !== section.key"
+                            (click)="startEdit(section.key)" matTooltip="Chỉnh sửa">
+                      <mat-icon fontSet="material-icons-outlined">edit</mat-icon>
+                    </button>
+                  </div>
+
+                  <!-- VIEW MODE -->
+                  <div class="section-view" *ngIf="editingSection() !== section.key">
+                    <ng-container *ngIf="!section.content || section.content.length === 0">
+                      <div class="placeholder-text" (click)="startEdit(section.key)">
+                        <mat-icon fontSet="material-icons-outlined">add</mat-icon>
+                        Chưa cập nhật nội dung — bấm để thêm
+                      </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="section.content && section.content.length > 0">
+                      <p class="rich-p" *ngIf="section.format === 'paragraph'">
+                        <ng-container *ngFor="let line of section.content">{{ line }}<br></ng-container>
+                      </p>
+                      <ul class="rich-list" *ngIf="section.format === 'bulletList'">
+                        <li *ngFor="let item of section.content">{{ item }}</li>
+                      </ul>
+                      <ol class="rich-list rich-list--ordered" *ngIf="section.format === 'orderedList'">
+                        <li *ngFor="let item of section.content">{{ item }}</li>
+                      </ol>
+                    </ng-container>
+                  </div>
+
+                  <!-- EDIT MODE -->
+                  <div class="section-edit" *ngIf="editingSection() === section.key">
+                    
+                    <textarea *ngIf="section.format === 'paragraph'"
+                              #editFocusElement
+                              cdkTextareaAutosize
+                              class="edit-textarea"
+                              [ngModel]="editData()[0] || ''"
+                              (ngModelChange)="updateParagraph($event)"
+                              placeholder="Nhập nội dung..."
+                              rows="4"
+                              (keydown.escape)="cancelEdit()"
+                              (keydown.control.enter)="saveEdit(section.key)"
+                              (keydown.meta.enter)="saveEdit(section.key)"></textarea>
+                    
+                    <div *ngIf="section.format !== 'paragraph'" class="edit-list-container"
+                         cdkDropList (cdkDropListDropped)="drop($event)">
+                      <div class="edit-list-item" *ngFor="let item of editData(); let i = index" cdkDrag>
+                        <mat-icon class="drag-handle" cdkDragHandle>drag_indicator</mat-icon>
+                        <input type="text" class="edit-input"
+                               #editFocusElement
+                               [ngModel]="editData()[i]" 
+                               (ngModelChange)="updateListItem(i, $event)"
+                               placeholder="Nhập nội dung...">
+                        <button type="button" class="remove-btn" (click)="removeListItem(i)">
+                          <mat-icon>close</mat-icon>
+                        </button>
+                      </div>
+                      <button type="button" class="add-row-btn" (click)="addListItem()">
+                        <mat-icon>add</mat-icon> Thêm dòng
+                      </button>
+                    </div>
+
+                    <div class="edit-error" *ngIf="saveError()">{{ saveError() }}</div>
+                    <div class="edit-actions">
+                      <button type="button" class="btn-cancel" (click)="cancelEdit()">Hủy</button>
+                      <button type="button" class="btn-save" (click)="saveEdit(section.key)" [disabled]="isSaving() || isSaveDisabled(section.key)">
+                        <mat-icon class="spinner" *ngIf="isSaving()">sync</mat-icon>
+                        Lưu
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <aside class="properties-pane" aria-label="Thuộc tính tác vụ">
+
+        <header class="props-header">
+          <app-status-dropdown
+            status="READY IN DEV"
+            color="#22C55E">
+          </app-status-dropdown>
+
+          <div class="props-header-actions">
+            <button type="button" class="topbar-icon-btn" matTooltip="Tùy chọn khác" aria-label="More options">
+              <mat-icon>more_horiz</mat-icon>
+            </button>
+            <button type="button" class="topbar-icon-btn" (click)="triggerClose()" matTooltip="Đóng" aria-label="Đóng panel">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </header>
+
+        <dl class="props-body custom-scrollbar">
+
+          <app-property-row label="Progress">
+            <app-progress-field [value]="100" />
+          </app-property-row>
+
+          <app-property-row label="Reminder">
+            <app-placeholder-field text="Click to set reminder" />
+          </app-property-row>
+
+          <app-property-row label="Assignee">
+            <app-user-field
+              [name]="task?.assignee?.name || 'Anh Nguyen'"
+              avatarBg="#6366F1"
+              [hoverable]="true">
+            </app-user-field>
+          </app-property-row>
+
+          <app-property-row label="Reporter">
+            <app-user-field
+              name="Javis"
+              avatarBg="#0EA5E9"
+              [hoverable]="true">
+            </app-user-field>
+          </app-property-row>
+
+          <app-property-row label="CC">
+            <app-user-field
+              name="Track"
+              avatarBg="#F59E0B"
+              [showRemove]="true"
+              [hoverable]="true">
+            </app-user-field>
+          </app-property-row>
+
+          <app-property-row label="Type">
+            <span class="task-badge badge-red icon-badge">B</span>
+            <span class="field-text">Bug</span>
+          </app-property-row>
+
+          <app-property-row label="Priority">
+            <mat-icon fontSet="material-icons-outlined" class="priority-icon">density_medium</mat-icon>
+            <span class="field-text">Medium</span>
+          </app-property-row>
+
+          <app-property-row label="Epic">
+            <app-tag-pill
+              text="Leave"
+              icon="bolt"
+              variant="outline"
+              color="#16A34A"
+              bgColor="#F0FDF4">
+            </app-tag-pill>
+          </app-property-row>
+
+          <app-property-row label="Platform">
+            <span class="task-badge badge-blue icon-badge">FE</span>
+            <span class="field-text">FE</span>
+          </app-property-row>
+
+          <app-property-row label="Storyline">
+            <app-placeholder-field text="None" />
+          </app-property-row>
+
+          <app-property-row label="Parent Task">
+            <mat-icon class="info-icon" matTooltip="ID của tác vụ cha" fontSet="material-icons-outlined" labelSuffix>info</mat-icon>
+            <app-placeholder-field text="None" />
+          </app-property-row>
+
+          <app-property-row label="Estimate">
+            <app-placeholder-field text="None" />
+          </app-property-row>
+
+          <app-property-row label="Story Point">
+            <mat-icon class="info-icon" matTooltip="Điểm ước tính" fontSet="material-icons-outlined" labelSuffix>info</mat-icon>
+            <span class="field-text">0.5</span>
+          </app-property-row>
+
+          <app-property-row label="Labels">
+            <div class="labels-wrap">
+              <app-tag-pill
+                text="Bug Production"
+                variant="filled"
+                color="#DC2626"
+                bgColor="#FEE2E2">
+              </app-tag-pill>
+              <button type="button" class="add-label-btn" aria-label="Thêm label">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+          </app-property-row>
+
+        </dl>
+      </aside>
+    </div>
+
   </article>
 </section>
-

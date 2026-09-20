@@ -149,6 +149,39 @@ input, button, select, textarea {
 }
 
 /* ==========================================================================
+   Global Animations for Modal Actions Sidebar (Thòi ra thụt vào từ left-panel)
+   ========================================================================== */
+@keyframes slideOutSidebarGlobal {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInSidebarGlobal {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(100%); opacity: 0; }
+}
+
+.modal-frame {
+  /* Đảm bảo container chính luôn đè lên sidebar để tạo hiệu ứng thòi ra từ dưới */
+  > *:not(.modal-actions-sidebar):not(.modal-overlay) {
+    position: relative;
+    z-index: 20;
+  }
+}
+
+.modal-actions-sidebar {
+  z-index: 10 !important;
+}
+
+.modal-frame.slide-up .modal-actions-sidebar {
+  animation: slideOutSidebarGlobal 0.35s cubic-bezier(0.4, 0, 0.2, 1) 0.35s both !important;
+}
+
+.modal-frame.slide-down .modal-actions-sidebar {
+  animation: slideInSidebarGlobal 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+}
+
+/* ==========================================================================
    Global Badge & Action Trigger System (Hệ thống Badge & Nút hành động chuẩn)
    ========================================================================== */
 // 1. Nút hành động dạng badge text link (+ Thêm thẻ, + Thêm nhân viên, + Sửa...)
