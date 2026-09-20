@@ -1,0 +1,66 @@
+<div class="menu-sheet-container flex flex-col max-h-[85vh] pb-[calc(18px+env(safe-area-inset-bottom,14px))]"
+     (touchstart)="onTouchStart($event)" (touchmove)="onTouchMove($event)" (touchend)="onTouchEnd()">
+  <!-- Drag Handle (Visual only) -->
+  <div class="drag-handle-wrapper shrink-0 flex justify-center py-2.5" (click)="close()">
+    <div class="w-9 h-1 rounded-full bg-white/20"></div>
+  </div>
+  
+  <!-- Header -->
+  <header class="sheet-header shrink-0 flex items-center justify-between px-4 pb-4">
+    <span class="text-[17px] font-semibold text-white/90">Mở rộng menu</span>
+    <button class="flex items-center justify-center w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 active:scale-95 text-white/70 transition-all border-none cursor-pointer" (click)="close()">
+      <mat-icon fontSet="material-icons-outlined" class="!w-[20px] !h-[20px] !text-[20px] !leading-[20px]">close</mat-icon>
+    </button>
+  </header>
+
+  <!-- Content -->
+  <div class="sheet-content overflow-y-auto flex-1 min-h-0 px-3 flex flex-col gap-2 custom-scrollbar">
+    <!-- Project Switcher -->
+    <div class="project-switcher-wrapper">
+      <app-project-switcher [isCollapsed]="false" class="block w-full"></app-project-switcher>
+    </div>
+    
+    <!-- Nav List -->
+    <ul class="nav-list flex flex-col">
+      <li *ngFor="let item of menuItems" class="flex flex-col">
+        <a [routerLink]="item.route || null" 
+           class="nav-item group flex items-center justify-between h-[46px] px-3 rounded-xl hover:bg-white/5 active:bg-white/10 transition-colors cursor-pointer no-underline text-white/80 hover:text-white" 
+           (click)="onMenuClick(item, $event)">
+          <div class="flex items-center gap-3">
+            <mat-icon fontSet="material-icons-outlined" class="!w-[20px] !h-[20px] !text-[20px] !leading-[20px] text-white/50 group-hover:text-white/80 transition-colors">{{item.icon}}</mat-icon>
+            <span class="text-[15px] font-medium">{{item.label}}</span>
+          </div>
+          <mat-icon *ngIf="item.children" fontSet="material-icons-outlined" 
+                    class="!w-[18px] !h-[18px] !text-[18px] !leading-[18px] text-white/30 transition-transform duration-200"
+                    [class.rotate-90]="isMenuExpanded(item.id)">
+            chevron_right
+          </mat-icon>
+        </a>
+        
+        <!-- Sub Menu -->
+        <div class="overflow-hidden transition-all duration-300" [ngStyle]="{'height': isMenuExpanded(item.id) ? 'auto' : '0px'}">
+          <app-collaboration *ngIf="item.children" [children]="item.children" [isOpen]="isMenuExpanded(item.id)" [isExpanded]="true"></app-collaboration>
+        </div>
+      </li>
+    </ul>
+
+    <!-- CTA Group -->
+    <div class="cta-group flex flex-col gap-2 mt-2 pt-3 border-t border-white/10">
+      <button type="button" class="cta-btn storage-cta flex items-center justify-between w-full h-12 px-4 rounded-[14px] bg-gradient-to-r from-[#fc6076]/80 to-[#ff9a44]/80 text-white font-medium border-none cursor-pointer hover:brightness-110 active:brightness-95 transition-all" (click)="navigateToStorage()">
+        <div class="flex items-center gap-3">
+          <mat-icon fontSet="material-icons-outlined" class="!w-[20px] !h-[20px] !text-[20px] !leading-[20px]">cloud_upload</mat-icon>
+          <span class="text-[14px]">Trung tâm lưu trữ</span>
+        </div>
+        <mat-icon fontSet="material-icons-outlined" class="!w-[18px] !h-[18px] !text-[18px] !leading-[18px] text-white/70">chevron_right</mat-icon>
+      </button>
+      
+      <button type="button" class="cta-btn upgrade-cta flex items-center justify-between w-full h-12 px-4 rounded-[14px] bg-gradient-to-r from-[#ff8c72]/80 via-[#e56ab3]/80 to-[#b36af5]/80 text-white font-medium border-none cursor-pointer hover:brightness-110 active:brightness-95 transition-all" (click)="close()">
+        <div class="flex items-center gap-3">
+          <mat-icon fontSet="material-icons-outlined" class="!w-[20px] !h-[20px] !text-[20px] !leading-[20px]">rocket_launch</mat-icon>
+          <span class="text-[14px]">Nâng cấp kế hoạch của bạn</span>
+        </div>
+        <mat-icon fontSet="material-icons-outlined" class="!w-[18px] !h-[18px] !text-[18px] !leading-[18px] text-white/70">chevron_right</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

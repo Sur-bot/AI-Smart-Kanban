@@ -7,7 +7,7 @@
           [showDropdown]="showCreateDropdown"
           (create)="openCreateModal()"
         ></app-create-button>
-        <div class="relative" *ngIf="showRoleDropdown">
+        <div class="btn-role-wrapper relative" *ngIf="showRoleDropdown">
             <button class="btn-role" (click)="toggleRoleDropdown($event)" [class.active]="isRoleDropdownOpen">
                 <span>{{ getSelectedRoleLabel() }}</span>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"

@@ -16,9 +16,9 @@
     grid-template-rows: 1fr;
   }
 
-  /* Khi mở, submenu-list hiện ra */
+  /* Khi mở, submenu-list hiện ra (chờ 200ms rồi từ từ hiện) */
   &.submenu-open .submenu-list {
-    @apply opacity-100;
+    @apply opacity-100 transition-opacity duration-500 ease-in-out delay-200;
   }
 }
 
@@ -28,7 +28,8 @@
 
 /* ===== SubMenu List ===== */
 .submenu-list {
-  @apply list-none pl-0 opacity-0 transition-opacity duration-500 ease-in-out delay-200 rounded-b-[10px];
+  /* Khi đóng (không có class submenu-open), mờ đi rất nhanh để không bị clip text khi height thu nhỏ */
+  @apply list-none pl-0 opacity-0 transition-opacity duration-[150ms] ease-out rounded-b-[10px];
 
   li:last-child,
   li:last-of-type {

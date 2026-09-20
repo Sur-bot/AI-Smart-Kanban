@@ -11,32 +11,36 @@
       expand_more
     </mat-icon>
   </button>
-  <section class="switcher-dropdown" *ngIf="isOpen" (click)="$event.stopPropagation()" role="menu">
-    <header class="dropdown-header">
-      <h3 class="dropdown-title">{{ 'PROJECT_SWITCHER.PROJECTS_TITLE' | translate }}</h3>
-    </header>
-    <ul class="project-list custom-scrollbar" role="none">
-      <li *ngFor="let p of projects" role="none">
-        <button type="button" class="project-item" (click)="selectProject(p, $event)" [class.active]="p.id === currentProject?.id" role="menuitem">
-          <figure class="project-icon-sm" [style.background-color]="p.color || '#3b82f6'" aria-hidden="true">
-            {{ p.name.charAt(0).toUpperCase() }}
-          </figure>
-          <span class="project-name-sm">{{ p.name }}</span>
-          <mat-icon *ngIf="p.id === currentProject?.id" fontSet="material-icons-outlined" class="check-icon" aria-hidden="true">
-            check
-          </mat-icon>
-        </button>
-      </li>
-      <li *ngIf="projects.length === 0" class="empty-state" role="none">
-        <span>{{ 'PROJECT_SWITCHER.NO_PROJECTS' | translate }}</span>
-      </li>
-    </ul>
-    <footer class="dropdown-footer">
-      <button type="button" class="create-btn" (click)="openCreateProject($event)">
-        <mat-icon fontSet="material-icons-outlined" class="create-icon" aria-hidden="true">add</mat-icon>
-        <span>{{ 'PROJECT_SWITCHER.CREATE_PROJECT' | translate }}</span>
-      </button>
-    </footer>
-  </section>
+  <div class="switcher-dropdown-wrapper" [class.is-open]="isOpen">
+    <div class="switcher-dropdown-inner">
+      <section class="switcher-dropdown" (click)="$event.stopPropagation()" role="menu">
+        <header class="dropdown-header">
+          <h3 class="dropdown-title">{{ 'PROJECT_SWITCHER.PROJECTS_TITLE' | translate }}</h3>
+        </header>
+        <ul class="project-list custom-scrollbar" role="none">
+          <li *ngFor="let p of projects" role="none">
+            <button type="button" class="project-item" (click)="selectProject(p, $event)" [class.active]="p.id === currentProject?.id" role="menuitem">
+              <figure class="project-icon-sm" [style.background-color]="p.color || '#3b82f6'" aria-hidden="true">
+                {{ p.name.charAt(0).toUpperCase() }}
+              </figure>
+              <span class="project-name-sm">{{ p.name }}</span>
+              <mat-icon *ngIf="p.id === currentProject?.id" fontSet="material-icons-outlined" class="check-icon" aria-hidden="true">
+                check
+              </mat-icon>
+            </button>
+          </li>
+          <li *ngIf="projects.length === 0" class="empty-state" role="none">
+            <span>{{ 'PROJECT_SWITCHER.NO_PROJECTS' | translate }}</span>
+          </li>
+        </ul>
+        <footer class="dropdown-footer">
+          <button type="button" class="create-btn" (click)="openCreateProject($event)">
+            <mat-icon fontSet="material-icons-outlined" class="create-icon" aria-hidden="true">add</mat-icon>
+            <span>{{ 'PROJECT_SWITCHER.CREATE_PROJECT' | translate }}</span>
+          </button>
+        </footer>
+      </section>
+    </div>
+  </div>
 </nav>
 
