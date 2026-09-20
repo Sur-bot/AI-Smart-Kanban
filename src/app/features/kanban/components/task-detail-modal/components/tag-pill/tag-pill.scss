@@ -1,0 +1,30 @@
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &--outline {
+    border: 1px solid var(--pill-color);
+    color: var(--pill-color);
+    background: var(--pill-bg);
+  }
+
+  &--filled {
+    border: none;
+    color: var(--pill-color);
+    background: var(--pill-bg);
+  }
+}
+
+.tag-pill-icon {
+  font-size: 13px;
+  width: 13px;
+  height: 13px;
+  line-height: 13px;
+}
