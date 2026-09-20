@@ -4,19 +4,32 @@
 
 .tasks-toolbar {
     @apply flex items-center justify-between select-none relative z-[99];
-    padding: 22px 0px 22px 22px;
+    padding: 16px 0px 16px 16px;
     background: transparent;
+
+    @media (min-width: 1024px) {
+        padding: 22px 0px 22px 22px;
+    }
 }
 
 /* ===== Left Section ===== */
 .toolbar-left {
     @apply flex items-center gap-3 flex-1 min-w-0;
+
+    @media (max-width: 639px) {
+        justify-content: space-between;
+        padding-right: 22px;
+    }
 }
 
 /* ===== Title ===== */
 .toolbar-title {
     @apply font-bold text-white tracking-wide whitespace-nowrap shrink-0;
-    font-size: 25px;
+    font-size: 20px;
+
+    @media (min-width: 1024px) {
+        font-size: 25px;
+    }
 }
 
 /* ===== Role Dropdown ===== */
@@ -26,6 +39,12 @@
 
     &:hover, &.active {
         @apply text-white bg-white/20;
+    }
+}
+
+.btn-role-wrapper {
+    @media (max-width: 1279px) {
+        display: none !important;
     }
 }
 
@@ -57,24 +76,41 @@
 /* ===== Search & Filter Combo ===== */
 .search-filter-container {
     @apply relative flex items-center h-8;
+
+    @media (max-width: 1279px) {
+        display: none !important;
+    }
 }
 
 .search-input-box {
     @apply flex items-center gap-3 h-8 pl-3 pr-3 rounded-lg border border-white/20 bg-white/10 text-white cursor-text overflow-hidden;
     transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out, border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    width: 22vw;
+    
+    width: 220px;
 
     &.has-filter {
         @apply pl-0.5;
     }
 
-    &.has-role-filter {
-        width: 32vw;
+    &.has-filter, &.has-role-filter {
+        width: 280px;
     }
 
     .search-filter-container.expanded & {
-        width: 42vw;
+        width: 320px;
         @apply border-white/40 bg-white/20 shadow-[0_4px_12px_rgba(0,0,0,0.1)];
+    }
+
+    @media (min-width: 1280px) {
+        width: 280px;
+
+        &.has-filter, &.has-role-filter {
+            width: 360px;
+        }
+
+        .search-filter-container.expanded & {
+            width: 460px;
+        }
     }
 }
 
@@ -97,7 +133,8 @@
 /* ===== Search Popup Panel ===== */
 .search-popup-panel {
     @apply fixed min-h-[340px] h-auto max-h-[80vh] bg-white rounded-xl shadow-[0_12px_40px_rgba(0,0,0,0.15)] z-[9999] flex border border-gray-100;
-    width: 42vw;
+    width: 560px;
+    max-width: 90vw;
     animation: searchSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     transform-origin: top left;
     
@@ -272,6 +309,10 @@
 /* ===== Right Section ===== */
 .toolbar-right {
     @apply flex items-center gap-1 shrink-0;
+
+    @media (max-width: 1023px) {
+        display: none !important;
+    }
 }
 
 .toolbar-icon-btn {

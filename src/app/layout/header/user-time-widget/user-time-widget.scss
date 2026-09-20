@@ -1,3 +1,7 @@
+:host {
+  @apply flex items-center;
+}
+
 .user-time-widget-btn {
   @apply inline-flex items-center bg-white/15 rounded-full h-8 xl:pl-3 pl-0.5 pr-0.5 gap-2.5 transition-colors cursor-pointer shadow-sm;
 }

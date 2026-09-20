@@ -1,3 +1,7 @@
+:host {
+  @apply flex items-center;
+}
+
 .search-container {
   @apply flex items-center relative bg-transparent border border-transparent rounded-[10px] w-max transition-colors duration-300;
 

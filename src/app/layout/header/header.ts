@@ -1,14 +1,16 @@
-import { Component, HostListener, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, HostListener, Output, EventEmitter, inject, signal } from '@angular/core';
+import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { Overlay } from '@angular/cdk/overlay';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SubNavComponent } from './sub-nav/sub-nav';
 import { SearchComponent } from './search/expandable-search';
+import { ExpandMenuSheetComponent } from '../sidebar/expand-menu-sheet/expand-menu-sheet';
 import { SettingSliderComponent } from './setting/setting-slider';
 import { InviteComponent } from './actions-button/invite/invite';
 import { UserTimeWidgetComponent } from './user-time-widget/user-time-widget';
 import { UserProfileDropdownComponent } from './user-profile-dropdown/user-profile-dropdown.component';
 import { UserProfileDrawerModalComponent } from './user-profile-drawer-modal/user-profile-drawer-modal';
-
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -16,12 +18,11 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-header',
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
-  standalone: true,
   imports: [
     CommonModule,
-    RouterModule,
-    TranslatePipe,
     MatIconModule,
+    MatBottomSheetModule,
+    TranslatePipe,
     SubNavComponent,
     SearchComponent,
     SettingSliderComponent,
@@ -32,7 +33,10 @@ import { MatIconModule } from '@angular/material/icon';
   ],
 })
 export class HeaderComponent {
-  currentView = signal<'list' | 'board'>('board');
+  private bottomSheet = inject(MatBottomSheet);
+  private overlay = inject(Overlay);
+
+  readonly currentView = signal<'list' | 'board'>('board');
   notificationCount = signal(3);
 
   activePopup: 'setting' | 'invite' | 'profile' | null = null;
@@ -48,6 +52,8 @@ export class HeaderComponent {
   }
 
   isProfileDrawerOpen = false;
+
+  @Output() toggleSidebar = new EventEmitter<void>();
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event) {
@@ -93,7 +99,28 @@ export class HeaderComponent {
     this.activePopup = null;
   }
 
+  onToggleSidebar() {
+    this.toggleSidebar.emit();
+  }
+
+  onMobileMenuClick() {
+    this.bottomSheet.open(ExpandMenuSheetComponent, {
+      panelClass: 'expand-menu-sheet-panel',
+      backdropClass: 'expand-sheet-backdrop',
+      autoFocus: false,
+      restoreFocus: false,
+      scrollStrategy: this.overlay.scrollStrategies.noop()
+    });
+  }
+
   switchView(view: 'list' | 'board') {
     this.currentView.set(view);
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    if (window.innerWidth >= 1024) {
+      this.bottomSheet.dismiss();
+    }
   }
 }

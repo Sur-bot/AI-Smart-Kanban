@@ -76,6 +76,7 @@ export class TasksPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Nếu chưa load projects thì fetch
     if (!this.taskStore.isProjectsInitialized()) {
       this.taskStore.loadProjects();
     }

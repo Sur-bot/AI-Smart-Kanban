@@ -35,8 +35,22 @@
   }
 }
 
+/* Mobile Toggle Sidebar Button */
+.mobile-menu-btn {
+  @media (min-width: 1024px) {
+    display: none !important;
+  }
+}
+
 /* ===== POPUP WRAPPER ===== */
-.setting-wrapper,
+.setting-wrapper {
+  @apply relative flex items-center overflow-visible isolate;
+  
+  @media (max-width: 639px) {
+    display: none !important;
+  }
+}
+
 .invite-wrapper {
   @apply relative flex items-center overflow-visible isolate;
 }
