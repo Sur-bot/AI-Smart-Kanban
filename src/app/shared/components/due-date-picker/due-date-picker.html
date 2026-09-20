@@ -68,11 +68,8 @@
   </ng-container>
 
   <button
-    *ngIf="showTuneBtn && !disabled"
     type="button"
     class="tune-btn"
-    (click)="togglePopover($event)"
-    [attr.aria-label]="'DUE_DATE_PICKER.CUSTOMIZE_DEADLINE' | translate"
   >
     <mat-icon fontSet="material-icons-outlined">tune</mat-icon>
   </button>
