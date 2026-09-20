@@ -3,6 +3,12 @@
 
     <!-- ===== LEFT: Sub Navigation ===== -->
     <div class="header-left">
+      <!-- Mobile Toggle Sidebar -->
+      <button type="button" class="header-icon-btn mobile-menu-btn shrink-0" 
+              (click)="onMobileMenuClick()" title="Menu">
+        <mat-icon fontSet="material-icons-outlined" class="!text-[20px] !w-5 !h-5">menu</mat-icon>
+      </button>
+
       <app-sub-nav class="block flex-1 min-w-0"></app-sub-nav>
     </div>
 
@@ -10,7 +16,7 @@
     <div class="header-right">
 
       <!-- Search -->
-      <div class="search-wrapper hidden sm:flex items-center">
+      <div class="search-wrapper flex items-center">
         <app-expandable-search></app-expandable-search>
       </div>
 
@@ -41,7 +47,7 @@
       </a>
 
       <!-- Settings Popup -->
-      <div class="setting-wrapper">
+      <div class="setting-wrapper hidden sm:flex">
         <button id="header-settings-btn" class="header-icon-btn" (click)="togglePopup()" [title]="'HEADER.SETTINGS' | translate"
           [class.bg-white/10]="isPopupOpen" [class.text-white]="isPopupOpen">
           <mat-icon fontSet="material-icons-outlined" class="!text-[20px] !w-5 !h-5">tune</mat-icon>
@@ -77,7 +83,7 @@
       </div>
 
       <!-- User Profile & Time Widget -->
-      <div class="user-profile-wrapper relative">
+      <div class="user-profile-wrapper relative flex items-center">
         <app-user-time-widget
           id="header-user-widget-btn"
           [isOpen]="isProfileOpen"

@@ -5,7 +5,7 @@
       (toggleSidebar)="toggleSidebar($event)">
     </app-sidebar>
     <div class="content-wrapper">
-      <app-header></app-header>
+      <app-header (toggleSidebar)="toggleSidebar()"></app-header>
       <div class="flex flex-1 min-h-0 overflow-hidden">
         <div class="flex flex-col flex-1 min-w-0 overflow-hidden">
           <div class="content-area">
