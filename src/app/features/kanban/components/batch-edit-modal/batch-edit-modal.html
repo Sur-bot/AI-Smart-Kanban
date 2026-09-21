@@ -1,0 +1,66 @@
+<article class="modal-container" style="width: 450px; max-width: 90vw; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+  <div class="modal-body" style="display: flex; flex-direction: column;">
+    
+    <header class="modal-topbar" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid #e2e8f0; background: #fff;">
+      <h2 class="task-title" style="margin: 0; font-size: 1.125rem; font-weight: 500;">
+        Chỉnh sửa nhanh {{data.count}} tác vụ
+      </h2>
+      <button type="button" class="text-slate-400 hover:text-slate-600" (click)="triggerClose()" aria-label="Đóng hộp thoại">
+        <mat-icon>close</mat-icon>
+      </button>
+    </header>
+      
+      <div class="content-inner custom-scrollbar" style="padding: 1.5rem; border-right: none; background-color: #f8fafc;">
+        <p class="text-sm text-slate-500 mb-6" style="margin-top: 0; margin-bottom: 1.5rem;">
+          Chỉ các trường bạn thay đổi mới được áp dụng. Nếu để trống, giá trị hiện tại sẽ được giữ nguyên.
+        </p>
+
+        <dl class="props-body" style="padding: 0;">
+          
+          <app-property-row label="Trạng thái">
+            <!-- Reuse status dropdown logic, but we can't easily use StatusDropdownComponent without a task. 
+                 Since this is a simple bulk edit, let's just use standard select -->
+            <select class="w-full bg-white border border-slate-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500" 
+                    [(ngModel)]="selectedStatusId">
+              <option [value]="null">-- Bỏ qua --</option>
+              <option *ngFor="let st of taskStore.statuses()" [value]="st.id">{{ st.name }}</option>
+            </select>
+          </app-property-row>
+
+          <app-property-row label="Độ ưu tiên">
+            <select class="w-full bg-white border border-slate-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500" 
+                    [(ngModel)]="selectedPriority">
+              <option [value]="null">-- Bỏ qua --</option>
+              <option value="urgent">Khẩn cấp (Urgent)</option>
+              <option value="high">Cao (High)</option>
+              <option value="medium">Trung bình (Medium)</option>
+              <option value="low">Thấp (Low)</option>
+              <option value="none">Không có (None)</option>
+            </select>
+          </app-property-row>
+
+        </dl>
+
+        <div *ngIf="saveError()" class="mt-4 p-3 bg-red-50 text-red-600 text-sm rounded-md border border-red-100 flex items-start gap-2">
+          <mat-icon class="text-[18px] w-[18px] h-[18px]">error_outline</mat-icon>
+          <span>{{ saveError() }}</span>
+        </div>
+      </div>
+
+      <footer class="p-4 border-t border-slate-200 bg-white flex justify-end gap-3 rounded-br-xl">
+        <button type="button" 
+                class="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-md transition-colors"
+                (click)="triggerClose()">
+          Hủy bỏ
+        </button>
+        <button type="button" 
+                class="px-4 py-2 text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 rounded-md shadow-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                [disabled]="isSaving()"
+                (click)="onApply()">
+          <mat-icon *ngIf="isSaving()" class="animate-spin text-[18px] w-[18px] h-[18px]">autorenew</mat-icon>
+          Cập nhật
+        </button>
+      </footer>
+
+  </div>
+</article>

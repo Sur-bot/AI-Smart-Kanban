@@ -299,33 +299,36 @@
       </div>
     </footer>
 
-    <!-- Thanh Thao tác hàng loạt (Batch Action Bottom Bar) gắn liền bên dưới -->
-    <section class="batch-action-bar" aria-label="Thao tác hàng loạt">
-      <div class="action-dropdown-box">
-        <select [(ngModel)]="selectedAction" 
-                class="action-select" 
-                aria-label="Chọn hành động hàng loạt">
-          <option value="" disabled selected>CHỌN HÀNH ĐỘNG</option>
-          <option *ngFor="let action of actionOptions" [value]="action">{{ action }}</option>
-        </select>
-        <mat-icon class="dropdown-icon">expand_more</mat-icon>
+    <div class="batch-action-wrapper" [class.visible]="selectedIds.size > 0 || undoService.hasPendingAction()">
+      <div class="batch-action-inner">
+        <section class="batch-action-bar" aria-label="Thao tác hàng loạt">
+          <ng-container *ngIf="!undoService.hasPendingAction()">
+            <div class="batch-action-buttons">
+              <button type="button" class="btn-batch-action" (click)="onApplyBatchAction('MỞ')">MỞ</button>
+              <button type="button" class="btn-batch-action" (click)="onApplyBatchAction('XÓA KHỎI MỤC ƯA THÍCH')">XÓA KHỎI MỤC ƯA THÍCH</button>
+              <button type="button" class="btn-batch-action" (click)="onApplyBatchAction('SỬA')">SỬA</button>
+              <button type="button" class="btn-batch-action" (click)="onApplyBatchAction('BỎ LƯU KHO')">BỎ LƯU KHO</button>
+              <button type="button" class="btn-batch-action" (click)="onApplyBatchAction('XOÁ')">XOÁ</button>
+            </div>
+            <div class="batch-action-right">
+              <!-- Có thể để trống hoặc để lại nút đóng nếu muốn -->
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="undoService.hasPendingAction()">
+            <div class="batch-action-buttons">
+              <span class="text-slate-600 text-[13px] font-medium ml-4">{{ undoService.pendingLabel() }}</span>
+            </div>
+            <div class="batch-action-right">
+              <button type="button" class="btn-undo-action" (click)="undoService.undo()">
+                <mat-icon class="undo-icon">undo</mat-icon>
+                Hoàn tác ({{ undoService.countdown() }}s)
+              </button>
+            </div>
+          </ng-container>
+        </section>
       </div>
-
-      <button type="button" 
-              class="btn-apply" 
-              [class.opacity-80]="selectedIds.size === 0"
-              [class.cursor-not-allowed]="selectedIds.size === 0">
-        ÁP DỤNG
-      </button>
-
-      <label class="apply-all-label">
-        <input type="checkbox" 
-               [checked]="applyToAll" 
-               (change)="onApplyAllCheckboxClick($event)" 
-               class="task-checkbox">
-        <span>DÀNH CHO TẤT CẢ</span>
-      </label>
-    </section>
+    </div>
 
   </div>
 

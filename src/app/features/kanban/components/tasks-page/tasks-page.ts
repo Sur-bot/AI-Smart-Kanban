@@ -9,6 +9,7 @@ import { DataTableComponent } from '../../../../shared/components/page-layout/da
 import { DeadlineComponent } from './deadline/deadline';
 import { TaskDetailModalComponent } from '../task-detail-modal/task-detail-modal';
 import { CreateProjectModalComponent } from '../create-project-modal/create-project-modal';
+import { BatchEditModalComponent } from '../batch-edit-modal/batch-edit-modal';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner';
 import { TaskViewMode, ViewTab } from '../../../../shared/models/task-list.model';
 import { TaskItem } from '../../../../core/models/task.model';
@@ -102,6 +103,27 @@ export class TasksPageComponent implements OnInit {
   openTaskDetail(task: TaskItem) {
     this.selectedTask = task;
     this.taskStore.selectTask(task.id);
+  }
+
+  handleBatchAction(event: { action: string; itemIds: string[]; applyToAll: boolean }) {
+    if (event.action === 'XOÁ') {
+      this.taskStore.bulkDeleteTasks(event.itemIds);
+    } else if (event.action === 'MỞ') {
+      const firstId = event.itemIds[0];
+      const task = this.tasks.find((t: any) => t.id === firstId);
+      if (task) {
+        this.openTaskDetail(task);
+      }
+    } else if (event.action === 'SỬA') {
+      const dialogRef = this.dialog.open(BatchEditModalComponent, {
+        panelClass: 'custom-dialog-container',
+        backdropClass: 'custom-backdrop',
+        autoFocus: false,
+        data: { taskIds: event.itemIds, count: event.itemIds.length }
+      });
+    } else {
+      console.log('Chưa hỗ trợ batch action:', event.action, event.itemIds);
+    }
   }
 
   openCreateProject() {
