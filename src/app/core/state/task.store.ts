@@ -455,6 +455,61 @@ export class TaskStore {
   }
 
   /**
+   * Xóa hàng loạt tác vụ
+   */
+  bulkDeleteTasks(ids: string[]) {
+    const projectId = this.currentProjectId();
+    if (!projectId) return;
+
+    this.taskService.bulkDeleteTasks(ids, projectId).subscribe({
+      next: () => {
+        this.tasks.update(list => list.filter(t => !ids.includes(t.id)));
+        const curId = this.selectedTask()?.id;
+        if (curId && ids.includes(curId)) {
+          this.selectedTask.set(null);
+        }
+      },
+      error: (err: ApiError) => {
+        this.error.set(err.error?.message || 'Không thể xóa hàng loạt tác vụ');
+      }
+    });
+  }
+
+  optimisticDeleteTasks(ids: string[]): TaskItem[] {
+    const hiddenTasks = this.tasks().filter(t => ids.includes(t.id));
+    this.tasks.update(list => list.filter(t => !ids.includes(t.id)));
+    return hiddenTasks;
+  }
+
+  restoreTasks(restoredTasks: TaskItem[]) {
+    this.tasks.update(list => [...list, ...restoredTasks]);
+  }
+
+  /**
+   * Cập nhật hàng loạt tác vụ
+   */
+  bulkUpdateTasks(ids: string[], payload: Partial<UpdateTaskPayload>) {
+    const projectId = this.currentProjectId();
+    if (!projectId) return;
+
+    this.taskService.bulkUpdateTasks(ids, payload, projectId).subscribe({
+      next: () => {
+        this.tasks.update(list =>
+          list.map(t => ids.includes(t.id) ? { ...t, ...payload } : t)
+        );
+        // Cập nhật selectedTask nếu nó nằm trong danh sách cập nhật
+        const cur = this.selectedTask();
+        if (cur && ids.includes(cur.id)) {
+          this.selectedTask.set({ ...cur, ...payload });
+        }
+      },
+      error: (err: ApiError) => {
+        this.error.set(err.error?.message || 'Không thể cập nhật hàng loạt tác vụ');
+      }
+    });
+  }
+
+  /**
    * Mở chi tiết tác vụ
    */
   selectTask(id: string) {

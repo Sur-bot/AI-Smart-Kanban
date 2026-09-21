@@ -70,10 +70,31 @@ export class TaskService {
   }
 
   /**
+   * Cập nhật hàng loạt nhiều trường
+   */
+  bulkUpdateTasks(ids: string[], payload: Partial<UpdateTaskPayload>, projectId: string): Observable<{ success: boolean }> {
+    return this.http.patch<{ success: boolean }>(
+      `${this.apiUrl}/bulk`,
+      { taskIds: ids, projectId, ...payload },
+      { withCredentials: true }
+    );
+  }
+
+  /**
    * Xóa tác vụ (Soft Delete)
    */
   deleteTask(id: string): Observable<{ success: boolean; message: string }> {
     return this.http.delete<{ success: boolean; message: string }>(`${this.apiUrl}/${id}`, { withCredentials: true });
+  }
+
+  /**
+   * Xóa hàng loạt tác vụ
+   */
+  bulkDeleteTasks(ids: string[], projectId: string): Observable<{ success: boolean; count: number }> {
+    return this.http.delete<{ success: boolean; count: number }>(
+      `${this.apiUrl}/bulk`,
+      { body: { taskIds: ids, projectId }, withCredentials: true }
+    );
   }
 
   /**

@@ -17,7 +17,8 @@
     <app-data-table
       *ngIf="activeView === 'list'"
       [data]="tasks"
-      (itemSelected)="openTaskDetail($event)">
+      (itemSelected)="openTaskDetail($event)"
+      (batchAction)="handleBatchAction($event)">
       
       <div emptyState *ngIf="taskStore.projects().length === 0 || tasks.length === 0" class="flex-1 bg-transparent flex flex-col items-center justify-center pointer-events-none pb-[15vh] pt-[15vh]">
           <div class="text-center text-slate-600 drop-shadow-sm flex flex-col gap-2">

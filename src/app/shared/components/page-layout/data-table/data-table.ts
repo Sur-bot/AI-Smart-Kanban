@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectorRef, inject, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ChangeDetectorRef, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,6 +11,7 @@ import { ProjectPopoverComponent } from '../../project-popover/project-popover';
 import { TagPopoverComponent } from '../../tag-popover/tag-popover';
 import { JobRoleBadgeComponent } from '../../job-role-badge/job-role-badge';
 import { OverlayModule, ConnectedPosition, CdkOverlayOrigin } from '@angular/cdk/overlay';
+import { UndoService } from '../../../../core/services/undo.service';
 
 export interface TableColumn {
   id: string;
@@ -27,10 +28,11 @@ export interface TableColumn {
   templateUrl: './data-table.html',
   styleUrls: ['./data-table.scss'],
 })
-export class DataTableComponent implements OnInit {
+export class DataTableComponent implements OnInit, OnDestroy {
   private cdr = inject(ChangeDetectorRef);
   readonly permissionService = inject(PermissionService);
   readonly taskStore = inject(TaskStore);
+  readonly undoService = inject(UndoService);
 
   @Input() mode: 'task' | 'project' = 'task';
   @Input() currentUserId: string | null = null;
@@ -60,6 +62,7 @@ export class DataTableComponent implements OnInit {
   applyToAll: boolean = false;
   showApplyAllModal: boolean = false;
   selectedAction: string = '';
+
   pageSize: number = 50;
   readonly pageSizeOptions: number[] = [5, 10, 20, 50];
 
@@ -114,6 +117,10 @@ export class DataTableComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    // Không cần tự dọn dẹp timer xóa nữa, UndoService đã lo việc này toàn cục.
+  }
+
   get allColumns(): TableColumn[] {
     return [this.nameColumn, ...this.draggableColumns];
   }
@@ -160,13 +167,42 @@ export class DataTableComponent implements OnInit {
     this.itemSelected.emit(item);
   }
 
-  onApplyBatchAction() {
-    if (this.selectedIds.size === 0 || !this.selectedAction) return;
+  onApplyBatchAction(action: string) {
+    if (this.selectedIds.size === 0) return;
+
+    if (action === 'XOÁ') {
+      const ids = Array.from(this.selectedIds);
+      
+      const hiddenTasks = this.taskStore.optimisticDeleteTasks(ids);
+
+      this.undoService.schedule({
+        label: `Đã xóa ${ids.length} mục !`,
+        execute: () => {
+          this.batchAction.emit({
+            action: 'XOÁ',
+            itemIds: ids,
+            applyToAll: this.applyToAll
+          });
+        },
+        onUndo: () => {
+          this.taskStore.restoreTasks(hiddenTasks);
+        }
+      });
+      this.selectedIds.clear();
+      this.applyToAll = false;
+      return;
+    }
+
     this.batchAction.emit({
-      action: this.selectedAction,
+      action: action,
       itemIds: Array.from(this.selectedIds),
-      applyToAll: this.applyToAll
+      applyToAll: false
     });
+    this.selectedIds.clear();
+  }
+
+  cancelBatchAction() {
+    this.selectedIds.clear();
   }
 
   onApplyAllCheckboxClick(event: Event) {
