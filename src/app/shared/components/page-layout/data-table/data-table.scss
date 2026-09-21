@@ -310,24 +310,50 @@ mat-icon {
 }
 
 /* ===== Batch Action Bottom Bar ===== */
+.batch-action-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+
+  &.visible {
+    grid-template-rows: 1fr;
+  }
+}
+
+.batch-action-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
 .batch-action-bar {
-  @apply flex items-center gap-3.5 px-4 py-2.5 bg-white border-t border-slate-200;
+  @apply flex items-center justify-between px-4 py-[10px] bg-white border-t border-slate-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.02)];
 }
 
-.action-dropdown-box {
-  @apply relative flex items-center border border-slate-200 rounded-md bg-white px-3 py-1.5 hover:border-slate-300 transition-colors;
+.batch-action-buttons {
+  @apply flex items-center gap-3;
 }
 
-.action-select {
-  @apply appearance-none bg-transparent pr-6 text-[12px] font-normal text-slate-600 outline-none cursor-pointer min-w-[150px] border-none;
+.btn-batch-action {
+  @apply px-4 py-2 rounded text-[13px] font-normal text-slate-500 hover:bg-sky-100/60 hover:text-sky-700 border-none transition-all cursor-pointer bg-transparent uppercase tracking-wider whitespace-nowrap;
+  
+  &.danger {
+    @apply font-semibold text-sky-700 bg-sky-100/60 hover:bg-sky-100 hover:text-sky-800;
+  }
 }
 
-.btn-apply {
-  @apply px-4 py-1.5 rounded-md text-[12px] font-semibold uppercase tracking-wider text-white bg-sky-400 hover:bg-sky-500 border-none transition-all cursor-pointer shadow-sm flex items-center justify-center;
+.batch-action-right {
+  @apply flex items-center justify-end;
 }
 
-.apply-all-label {
-  @apply flex items-center gap-2 text-[12px] font-medium text-slate-600 select-none cursor-pointer hover:text-slate-900;
+.btn-undo-action {
+  @apply flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[13px] font-normal text-sky-600 transition-colors bg-transparent border-none cursor-pointer underline decoration-dashed underline-offset-[3px] hover:no-underline;
+  
+  .undo-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
 }
 
 /* ===== Popup Modal Xác nhận ===== */
@@ -366,4 +392,4 @@ mat-icon {
     transform: scale(1);
   }
 }
-
+
