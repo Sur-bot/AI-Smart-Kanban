@@ -280,7 +280,7 @@ export interface Project {
 
 export type ProjectType    = 'project' | 'collaborative' | 'workgroup';
 export type ProjectPrivacy = 'public'  | 'private'       | 'secret';
-export type ProjectMemberRole = 'owner' | 'admin' | 'moderator' | 'member' | 'viewer';
+export type ProjectMemberRole = 'owner' | 'admin' | 'member' | 'viewer';
 
 export interface ProjectMember {
   id: string;

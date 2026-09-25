@@ -335,86 +335,6 @@
                           </div>
                         </fieldset>
 
-                        <!-- Điều hành viên (Accordion + inline search) -->
-                        <div class="flex flex-col gap-2">
-                          <button
-                            type="button"
-                            class="flex items-center gap-1 text-[13px] text-slate-500 hover:text-black/80 transition-colors w-fit border-b border-dashed border-slate-400 hover:border-transparent pb-0.5"
-                            (click)="toggleModerators()"
-                          >
-                            <mat-icon fontSet="material-icons-outlined" class="text-[15px] w-[15px] h-[15px] leading-none">{{ showModerators ? 'expand_less' : 'expand_more' }}</mat-icon>
-                            Điều hành viên của dự án
-                          </button>
-
-                          <!-- Accordion body -->
-                          <div
-                            class="overflow-hidden transition-all duration-300 ease-in-out flex flex-col gap-2"
-                            [ngStyle]="{'max-height': showModerators ? '320px' : '0px', 'opacity': showModerators ? '1' : '0'}"
-                          >
-                            <!-- Danh sách moderator đã chọn -->
-                            @if (moderators.length > 0) {
-                              <ul class="flex flex-wrap gap-1.5 w-full max-w-[340px]" aria-label="Danh sách điều hành viên">
-                                @for (mod of moderators; track mod.id) {
-                                  <li class="badge-entity">
-                                    <mat-icon fontSet="material-icons-outlined" class="badge-entity-icon">manage_accounts</mat-icon>
-                                    <span class="truncate max-w-[100px]">{{ mod.name }}</span>
-                                    <button
-                                      type="button"
-                                      class="badge-entity-remove"
-                                      [attr.aria-label]="'Xóa ' + mod.name"
-                                      (click)="removeModerator(mod.id)"
-                                    >
-                                      <mat-icon fontSet="material-icons-outlined">close</mat-icon>
-                                    </button>
-                                  </li>
-                                }
-                              </ul>
-                            }
-
-                            <!-- Ô tìm kiếm moderator -->
-                            <div class="member-search-box w-full max-w-[340px]">
-                              <mat-icon fontSet="material-icons-outlined" class="text-slate-400 text-[18px] shrink-0">search</mat-icon>
-                              <input
-                                type="text"
-                                class="flex-1 bg-transparent outline-none text-[13px] text-slate-700 placeholder:text-slate-400"
-                                placeholder="Tìm theo tên hoặc email..."
-                                [value]="searchModeratorQuery"
-                                (input)="onModeratorSearchInput($any($event.target).value)"
-                                autocomplete="off"
-                              />
-                              @if (isSearchingModerator) {
-                                <mat-icon fontSet="material-icons-outlined" class="text-slate-300 text-[16px] shrink-0 animate-spin">autorenew</mat-icon>
-                              }
-                            </div>
-
-                            <!-- Inline results: moderator -->
-                            @if (moderatorResults.length > 0) {
-                              <ul class="w-full max-w-[340px] bg-white border border-slate-200 rounded-lg overflow-hidden shadow-sm" role="listbox" aria-label="Kết quả tìm kiếm điều hành viên">
-                                @for (user of moderatorResults; track user.id) {
-                                  <li>
-                                    <button
-                                      type="button"
-                                      class="w-full flex items-center gap-2.5 px-3 py-2 hover:bg-slate-50 transition-colors text-left"
-                                      (click)="addModerator(user)"
-                                    >
-                                      <figure class="w-7 h-7 rounded-full bg-sky-100 shrink-0 flex items-center justify-center m-0" aria-hidden="true">
-                                        <mat-icon fontSet="material-icons-outlined" class="text-sky-500 text-[16px]">account_circle</mat-icon>
-                                      </figure>
-                                      <div class="flex flex-col min-w-0">
-                                        <span class="text-[13px] font-medium text-slate-800 truncate">{{ user.name }}</span>
-                                        <span class="text-[11px] text-slate-400 truncate">{{ user.email }}</span>
-                                      </div>
-                                      <mat-icon fontSet="material-icons-outlined" class="text-slate-300 text-[16px] ml-auto shrink-0">add</mat-icon>
-                                    </button>
-                                  </li>
-                                }
-                              </ul>
-                            } @else if (searchModeratorQuery && !isSearchingModerator) {
-                              <p class="text-[12px] text-slate-400 px-1">Không tìm thấy người dùng nào.</p>
-                            }
-                          </div>
-                        </div>
-
                         <!-- Nhóm thành viên -->
                         <fieldset class="flex flex-col gap-2 border-none p-0 m-0">
                           <label class="text-[13px] text-slate-400">Thành viên nhóm</label>
@@ -434,7 +354,6 @@
                                     [value]="memberRoles[m.id]"
                                     (change)="changeMemberRole(m.id, $any($event.target).value)"
                                   >
-                                    <option value="moderator">Điều hành</option>
                                     <option value="member">Thành viên</option>
                                     <option value="viewer">Xem</option>
                                   </select>

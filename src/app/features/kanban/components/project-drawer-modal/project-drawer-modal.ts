@@ -102,14 +102,6 @@ export class ProjectDrawerModalComponent implements OnInit {
   ownerName = '';
   ownerId = '';
 
-  // Moderators
-  showModerators = false;
-  searchModeratorQuery = '';
-  moderatorIds: string[] = [];
-  moderators: UserSearchResult[] = [];
-  moderatorResults: UserSearchResult[] = [];
-  isSearchingModerator = false;
-  private _modSearchTimer: any;
 
   // Members
   searchMemberQuery = '';
@@ -216,50 +208,6 @@ export class ProjectDrawerModalComponent implements OnInit {
     }
   }
 
-  toggleModerators(): void {
-    this.showModerators = !this.showModerators;
-    if (!this.showModerators) {
-      this.searchModeratorQuery = '';
-      this.moderatorResults = [];
-    }
-  }
-
-  // ─── Moderator search ──────────────────────────────
-
-  onModeratorSearchInput(query: string): void {
-    this.searchModeratorQuery = query;
-    clearTimeout(this._modSearchTimer);
-    if (!query.trim()) { this.moderatorResults = []; return; }
-    this.isSearchingModerator = true;
-    this._modSearchTimer = setTimeout(() => this._searchModerators(query.trim()), 300);
-  }
-
-  private _searchModerators(q: string): void {
-    const wsId = this.taskStore.currentProject()?.workspace_id || '';
-    this.userService.searchUsers(q, wsId).subscribe({
-      next: results => {
-        this.moderatorResults = results.filter(
-          u => u.id !== this.ownerId && !this.moderatorIds.includes(u.id)
-        );
-        this.isSearchingModerator = false;
-        this.cdr.detectChanges();
-      },
-      error: () => { this.isSearchingModerator = false; }
-    });
-  }
-
-  addModerator(user: UserSearchResult): void {
-    if (this.moderatorIds.includes(user.id)) return;
-    this.moderatorIds.push(user.id);
-    this.moderators.push(user);
-    this.searchModeratorQuery = '';
-    this.moderatorResults = [];
-  }
-
-  removeModerator(userId: string): void {
-    this.moderatorIds = this.moderatorIds.filter(id => id !== userId);
-    this.moderators = this.moderators.filter(u => u.id !== userId);
-  }
 
   // ─── Member search ─────────────────────────────────
 
@@ -277,7 +225,6 @@ export class ProjectDrawerModalComponent implements OnInit {
       next: results => {
         this.searchResults = results.filter(
           u => u.id !== this.ownerId
-            && !this.moderatorIds.includes(u.id)
             && !this.selectedMemberIds.has(u.id)
         );
         this.isSearchingMember = false;
@@ -340,7 +287,6 @@ export class ProjectDrawerModalComponent implements OnInit {
     this.projectDescription = '';
     this.showDescription = false;
     this.showExtendedParams = false;
-    this.showModerators = false;
     this.startDate = null;
     this.endDate = null;
     this.tags = '';
@@ -363,7 +309,6 @@ export class ProjectDrawerModalComponent implements OnInit {
 
     const initialMembers: CreateProjectPayload['initial_members'] = [
       { user_id: ownerId, role: 'owner' },
-      ...this.moderatorIds.map(id => ({ user_id: id, role: 'moderator' as ProjectMemberRole })),
       ...[...this.selectedMemberIds].map(id => ({ user_id: id, role: this.memberRoles[id] ?? 'member' as ProjectMemberRole })),
     ];
 
