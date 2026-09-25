@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import {
@@ -35,7 +35,7 @@ import { RIGHT_BAR_FEATURES, RightBarFeature } from '../../../../core/config/rig
   templateUrl: './right-bar-popup.html',
   styleUrls: ['./right-bar-popup.scss']
 })
-export class RightBarPopupComponent {
+export class RightBarPopupComponent implements OnInit {
   @Input() activeFeature!: string;
   @Output() close = new EventEmitter<void>();
   @Output() selectFeature = new EventEmitter<string>();

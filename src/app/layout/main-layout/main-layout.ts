@@ -22,14 +22,13 @@ export class MainLayoutComponent implements OnInit {
   private rightBarService = inject(RightBarService);
   themeService = inject(ThemeService);
 
+  // Expose signal trực tiếp để Angular template tự track reactively
+  activeRightBarFeature = this.rightBarService.activeFeature;
+
   sidebarCollapsed = true;
 
   ngOnInit() {
     this.taskStore.loadProjects();
-  }
-
-  get activeRightBarFeature(): string | null {
-    return this.rightBarService.activeFeature();
   }
 
   toggleSidebar(isCollapsed?: boolean) {
