@@ -18,9 +18,9 @@
     </div>
   </div>
 
-  @if (activeRightBarFeature) {
+  @if (activeRightBarFeature()) {
     <app-right-bar-popup
-      [activeFeature]="activeRightBarFeature"
+      [activeFeature]="activeRightBarFeature()!"
       (close)="onRightBarPopupClose()"
       (selectFeature)="onRightBarFeatureClick($event)">
     </app-right-bar-popup>

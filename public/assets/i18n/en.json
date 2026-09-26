@@ -437,5 +437,22 @@
   "LANDING_TECH": {
     "SUBTITLE": "Technology Platform",
     "TITLE": "Built on leading technologies"
+  },
+  "AI": {
+    "QUOTA": {
+      "TITLE": "AI QUOTA",
+      "REMAINING": "{{remaining}}/{{limit}} requests left",
+      "EXCEEDED": "Out of AI Quota"
+    },
+    "QUICK_ACTIONS": {
+      "TITLE": "Quick Actions",
+      "ANALYZE_PROJECT": "Analyze Project",
+      "SUGGEST_PRIORITY": "Suggest Priority",
+      "OPTIMIZE_ASSIGNMENT": "Optimize Assignment",
+      "DAILY_SUMMARY": "Daily Summary",
+      "RISK_WARNING": "Risk Warning"
+    },
+    "CHAT_PLACEHOLDER": "Type to chat with AI...",
+    "SEND": "Send"
   }
 }

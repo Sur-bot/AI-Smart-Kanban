@@ -8,6 +8,7 @@ import { CreateTaskModalComponent } from '../../create-task-modal/create-task-mo
 import { CreateButtonComponent } from '../../create-button/create-button';
 import { ProjectDrawerModalComponent } from '../../../../features/kanban/components/project-drawer-modal/project-drawer-modal';
 import { TaskStore } from '../../../../core/state/task.store';
+import { RightBarService } from '../../../../core/services/right-bar.service';
 
 const TASK_FILTERS = [
   { id: 'in_progress', label: 'Đang tiến hành' },
@@ -97,6 +98,7 @@ export class PageToolbarComponent implements OnInit, OnDestroy {
 
   private router     = inject(Router);
   private route      = inject(ActivatedRoute);
+  private rightBarService = inject(RightBarService);
   private _routeSub?: Subscription;
 
   ngOnInit(): void {
@@ -175,6 +177,10 @@ export class PageToolbarComponent implements OnInit, OnDestroy {
       queryParams: { action: null },
       queryParamsHandling: 'merge'
     });
+  }
+
+  openCopilot() {
+    this.rightBarService.openFeature('copilot');
   }
 
   onOpenDetailForm(payload: any): void {
