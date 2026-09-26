@@ -35,7 +35,7 @@ import { RIGHT_BAR_FEATURES, RightBarFeature } from '../../../../core/config/rig
   templateUrl: './right-bar-popup.html',
   styleUrls: ['./right-bar-popup.scss']
 })
-export class RightBarPopupComponent implements OnInit {
+export class RightBarPopupComponent {
   @Input() activeFeature!: string;
   @Output() close = new EventEmitter<void>();
   @Output() selectFeature = new EventEmitter<string>();

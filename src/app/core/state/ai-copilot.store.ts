@@ -1,4 +1,5 @@
 import { Injectable, inject, computed, signal } from '@angular/core';
+import { finalize } from 'rxjs/operators';
 import { AiChatService } from '../services/ai-chat.service';
 import { AuthService } from '../auth/auth.service';
 import { TaskStore } from './task.store';
@@ -56,13 +57,17 @@ export class AiCopilotStore {
     return msgs.length > 0 ? msgs[msgs.length - 1] : null;
   });
 
+  // Khóa cứng (hardware lock) chống spam do Signal có thể bị trễ trong Event Loop
+  private isSendingRequest = false;
+
   // ─── Actions ──────────────────────────────────────────
 
   /**
    * Gửi tin nhắn tới AI CoPilot.
    */
   sendMessage(content: string) {
-    if (!content.trim() || this.isLoading() || this.isQuotaExceeded()) return;
+    if (!content.trim() || this.isSendingRequest || this.isLoading() || this.isQuotaExceeded()) return;
+    this.isSendingRequest = true;
 
     // 1. Thêm tin nhắn user vào danh sách (optimistic)
     const userMessage: AiChatMessage = {
@@ -99,7 +104,11 @@ export class AiCopilotStore {
       context
     };
 
-    this.aiChatService.sendMessage(payload).subscribe({
+    this.aiChatService.sendMessage(payload).pipe(
+      finalize(() => {
+        this.isSendingRequest = false;
+      })
+    ).subscribe({
       next: response => {
         // Cập nhật session ID
         if (response.sessionId) {
@@ -138,6 +147,7 @@ export class AiCopilotStore {
           )
         );
 
+        console.error(`[Store] API Error:`, err);
         this.error.set(err.error?.message || 'Không thể kết nối AI CoPilot');
         this.isLoading.set(false);
       }
