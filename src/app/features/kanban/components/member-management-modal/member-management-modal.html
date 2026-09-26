@@ -1,53 +1,53 @@
-<div class="modal-overlay" (click)="close()" aria-hidden="true"></div>
+﻿<div class="modal-overlay" (click)="close()" aria-hidden="true"></div>
 <section class="modal-container" role="dialog" aria-modal="true" aria-labelledby="member-modal-title">
   <header class="modal-header">
     <div class="header-info flex flex-col">
-      <h2 id="member-modal-title" class="text-lg font-bold text-slate-800 m-0">Quản lý thành viên</h2>
+      <h2 id="member-modal-title" class="text-lg font-bold text-slate-800 m-0">Quáº£n lÃ½ thÃ nh viÃªn</h2>
       <div class="flex items-center gap-2 mt-1">
-        <span class="text-xs font-medium text-slate-500">Dự án: <strong class="text-blue-600 font-semibold">{{ currentProject?.name || 'Chưa chọn' }}</strong></span>
-        <span class="text-slate-300">•</span>
+        <span class="text-xs font-medium text-slate-500">Dá»± Ã¡n: <strong class="text-blue-600 font-semibold">{{ currentProject?.name || 'ChÆ°a chá»n' }}</strong></span>
+        <span class="text-slate-300">â€¢</span>
         <span class="text-xs px-2 py-0.5 rounded-full font-medium" 
               [ngClass]="permissionService.isOwner() ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700'">
-          Vai trò của bạn: <strong>{{ roleLabel }}</strong>
+          Vai trÃ² cá»§a báº¡n: <strong>{{ roleLabel }}</strong>
         </span>
       </div>
     </div>
-    <button type="button" class="close-btn" (click)="close()" aria-label="Đóng hộp thoại">
+    <button type="button" class="close-btn" (click)="close()" aria-label="ÄÃ³ng há»™p thoáº¡i">
       <mat-icon fontSet="material-icons-outlined">close</mat-icon>
     </button>
   </header>
 
   <main class="modal-body p-6 custom-scrollbar">
-    <!-- Khu vực mời thành viên -->
+    <!-- Khu vá»±c má»i thÃ nh viÃªn -->
     <section class="invite-section mb-6 bg-blue-50/60 p-4 rounded-xl border border-blue-100" *ngIf="permissionService.can('member.invite')">
       <h3 class="text-xs font-semibold text-slate-700 mb-3 flex items-center gap-2 uppercase tracking-wide">
         <mat-icon fontSet="material-icons-outlined" class="text-blue-500 text-[18px] w-[18px] h-[18px] leading-[18px]">person_add</mat-icon>
-        Mời thành viên mới vào dự án
+        Má»i thÃ nh viÃªn má»›i vÃ o dá»± Ã¡n
       </h3>
       <form class="flex gap-2" (submit)="inviteMember(); $event.preventDefault()">
         <div class="flex-1">
-          <input type="text" [(ngModel)]="inviteUserId" name="userId" placeholder="Nhập User ID (VD: user-2)"
+          <input type="text" [(ngModel)]="inviteUserId" name="userId" placeholder="Nháº­p User ID (VD: user-2)"
             class="w-full h-10 px-3 rounded-lg border border-slate-300 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all bg-white"
-            aria-label="User ID cần mời">
+            aria-label="User ID cáº§n má»i">
         </div>
-        <select [(ngModel)]="inviteRole" name="role" aria-label="Vai trò chỉ định"
+        <select [(ngModel)]="inviteRole" name="role" aria-label="Vai trÃ² chá»‰ Ä‘á»‹nh"
           class="h-10 px-3 rounded-lg border border-slate-300 text-sm bg-white text-slate-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
-          <option value="admin">Quản trị viên (Admin)</option>
-          <option value="member">Thành viên (Member)</option>
-          <option value="viewer">Người xem (Viewer)</option>
+          <option value="admin" [disabled]="!permissionService.isOwner()">Quáº£n trá»‹ viÃªn (Admin)</option>
+          <option value="member">ThÃ nh viÃªn (Member)</option>
+          <option value="viewer">NgÆ°á»i xem (Viewer)</option>
         </select>
         <button type="submit" [disabled]="!inviteUserId.trim()"
           class="h-10 px-5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm">
-          Thêm
+          ThÃªm
         </button>
       </form>
     </section>
 
-    <!-- Danh sách thành viên -->
+    <!-- Danh sÃ¡ch thÃ nh viÃªn -->
     <section class="members-section">
       <h3 class="text-xs font-semibold text-slate-700 mb-3 flex items-center gap-2 uppercase tracking-wide">
         <mat-icon fontSet="material-icons-outlined" class="text-slate-500 text-[18px] w-[18px] h-[18px] leading-[18px]">groups</mat-icon>
-        Thành viên hiện tại ({{ members.length }})
+        ThÃ nh viÃªn hiá»‡n táº¡i ({{ members.length }})
       </h3>
       
       <div *ngIf="isLoading" class="flex justify-center p-8 text-slate-400">
@@ -69,13 +69,13 @@
           </div>
 
           <div class="flex items-center gap-2 shrink-0">
-            <!-- Dropdown chọn Role (nếu có quyền) -->
+            <!-- Dropdown chá»n Role (náº¿u cÃ³ quyá»n) -->
             <select *ngIf="member.role !== 'owner' && permissionService.can('member.changeRole')" 
                     [ngModel]="member.role" 
                     (ngModelChange)="changeRole(member, $event)"
-                    aria-label="Thay đổi vai trò"
+                    aria-label="Thay Ä‘á»•i vai trÃ²"
                     class="h-8 px-2 rounded-md border border-slate-200 text-xs bg-white text-slate-700 focus:outline-none focus:border-blue-500 font-medium">
-              <option value="admin">Admin</option>
+              <option value="admin" [disabled]="!permissionService.isOwner()">Admin</option>
               <option value="member">Member</option>
               <option value="viewer">Viewer</option>
             </select>
@@ -89,15 +89,15 @@
               Owner
             </span>
 
-            <button *ngIf="member.role !== 'owner' && permissionService.can('member.remove')" 
+            <button *ngIf="member.role !== 'owner' && permissionService.can('member.remove') && !(permissionService.isAdmin() && member.role === 'admin')" 
                     type="button"
                     (click)="removeMember(member)"
                     class="w-8 h-8 rounded-md flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors border-none cursor-pointer bg-transparent"
-                    title="Xóa thành viên"
-                    aria-label="Xóa thành viên">
+                    title="XÃ³a thÃ nh viÃªn"
+                    aria-label="XÃ³a thÃ nh viÃªn">
               <mat-icon fontSet="material-icons-outlined" class="text-[18px] w-[18px] h-[18px] leading-[18px]">person_remove</mat-icon>
             </button>
-            <div *ngIf="member.role === 'owner' || !permissionService.can('member.remove')" class="w-8"></div>
+            <div *ngIf="member.role === 'owner' || (!permissionService.can('member.remove') || (permissionService.isAdmin() && member.role === 'admin'))" class="w-8"></div>
           </div>
           
         </li>
@@ -105,3 +105,4 @@
     </section>
   </main>
 </section>
+

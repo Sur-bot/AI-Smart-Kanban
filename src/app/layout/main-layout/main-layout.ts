@@ -9,27 +9,27 @@ import { RightBarPopupComponent } from '../right-bar/components/right-bar-popup/
 import { RightBarService } from '../../core/services/right-bar.service';
 import { ThemeService } from '../../core/services/theme.service';
 import { TaskStore } from '../../core/state/task.store';
+import { AiChatBubbleComponent } from '../../features/right-bar-features/copilot-feature/components/ai-chat-bubble.component';
 
 @Component({
   selector: 'app-main-layout',
   templateUrl: './main-layout.html',
   styleUrls: ['./main-layout.scss'],
   standalone: true,
-  imports: [CommonModule, HeaderComponent, SidebarComponent, FooterComponent, RouterOutlet, RightBarComponent, RightBarPopupComponent]
+  imports: [CommonModule, HeaderComponent, SidebarComponent, FooterComponent, RouterOutlet, RightBarComponent, RightBarPopupComponent, AiChatBubbleComponent]
 })
 export class MainLayoutComponent implements OnInit {
   private taskStore = inject(TaskStore);
   private rightBarService = inject(RightBarService);
   themeService = inject(ThemeService);
 
+  // Expose signal trực tiếp để Angular template tự track reactively
+  activeRightBarFeature = this.rightBarService.activeFeature;
+
   sidebarCollapsed = true;
 
   ngOnInit() {
     this.taskStore.loadProjects();
-  }
-
-  get activeRightBarFeature(): string | null {
-    return this.rightBarService.activeFeature();
   }
 
   toggleSidebar(isCollapsed?: boolean) {

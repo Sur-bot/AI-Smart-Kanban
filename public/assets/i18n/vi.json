@@ -597,5 +597,22 @@
   "LANDING_TECH": {
     "SUBTITLE": "Nền tảng công nghệ",
     "TITLE": "Được xây dựng trên những công nghệ hàng đầu"
+  },
+  "AI": {
+    "QUOTA": {
+      "TITLE": "AI QUOTA",
+      "REMAINING": "Còn {{remaining}}/{{limit}} request",
+      "EXCEEDED": "Hết AI Quota"
+    },
+    "QUICK_ACTIONS": {
+      "TITLE": "Gợi ý hành động",
+      "ANALYZE_PROJECT": "Phân tích dự án",
+      "SUGGEST_PRIORITY": "Đề xuất ưu tiên",
+      "OPTIMIZE_ASSIGNMENT": "Tối ưu phân công",
+      "DAILY_SUMMARY": "Tóm tắt hàng ngày",
+      "RISK_WARNING": "Cảnh báo rủi ro"
+    },
+    "CHAT_PLACEHOLDER": "Nhập nội dung để chat với AI...",
+    "SEND": "Gửi"
   }
 }

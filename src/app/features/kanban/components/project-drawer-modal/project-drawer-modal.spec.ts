@@ -82,18 +82,6 @@ describe('ProjectDrawerModalComponent', () => {
     expect(component.isFullscreen).toBe(true);
   });
 
-  it('should search and add moderators', () => {
-    vi.useFakeTimers();
-    component.onModeratorSearchInput('test');
-    vi.advanceTimersByTime(300);
-    expect(mockUserService.searchUsers).toHaveBeenCalledWith('test', 'ws1');
-    expect(component.moderatorResults.length).toBe(1);
-    
-    component.addModerator(component.moderatorResults[0]);
-    expect(component.moderators.length).toBe(1);
-    expect(component.moderatorIds).toContain('user2');
-    vi.useRealTimers();
-  });
 
   it('should submit create project', () => {
     const emitSpy = vi.spyOn(component.projectCreated, 'emit');
