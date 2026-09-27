@@ -26,8 +26,8 @@ export class VerifyPendingComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // Lấy email từ state navigation (được truyền từ RegisterComponent)
-    const nav = this.router.getCurrentNavigation();
-    const stateEmail = nav?.extras?.state?.['email'] as string;
+    // Dùng history.state thay vì getCurrentNavigation() để tránh lỗi khi component lazy-load
+    const stateEmail = history.state?.email as string;
 
     if (stateEmail) {
       this.email.set(stateEmail);

@@ -1,4 +1,4 @@
-﻿import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -35,8 +35,7 @@ export class AuthCallbackComponent implements OnInit {
     }
 
     // â”€â”€â”€ BÆ°á»›c 2: Kiá»ƒm tra náº¿u Ä‘Æ°á»£c Ä‘iá»u hÆ°á»›ng tá»« VerifyPendingComponent (SIGNED_IN event) â”€â”€â”€
-    const nav = this.router.getCurrentNavigation();
-    const fromVerification = nav?.extras?.state?.['fromVerification'] as boolean;
+    const fromVerification = history.state?.fromVerification as boolean;
 
     if (fromVerification && this.authService.isAuthenticated()) {
       this.showSuccess();

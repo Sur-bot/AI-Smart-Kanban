@@ -30,14 +30,17 @@ test.describe('Auth — Register', () => {
   });
 
   // ────────────────────────────────────────────────────────────────────────────
-  test('TC-AUTH-007: Hiện lỗi khi đăng ký với email đã tồn tại', async () => {
-    const existingEmail = process.env['E2E_TEST_EMAIL']!; // email đã có trong hệ thống
-    const password = process.env['E2E_TEST_PASSWORD']!;
+  test('TC-AUTH-007: Supabase ẩn lỗi trùng email (bảo mật), điều hướng sang trang xác nhận', async ({ page }) => {
+    const existingEmail = process.env['E2E_TEST_EMAIL'] || 'test@gmail.com'; // email đã có trong hệ thống
+    const password = 'ValidPass@123';
 
     await registerPage.register(existingEmail, password);
 
-    // Chờ toast lỗi hiển thị
-    await expect(registerPage.errorToast).toBeVisible({ timeout: 10_000 });
+    // Hành vi thật: Supabase trả về 200 (ẩn lỗi). Frontend sẽ điều hướng sang trang verify-pending.
+    await expect(page).toHaveURL(/\/auth\/verify-pending/, { timeout: 15_000 });
+    
+    // Kiểm tra UI có hiện thông báo "Kiểm tra hộp thư" (text trong verify-pending)
+    await expect(page.getByText(/Kiểm tra hộp thư của bạn/i)).toBeVisible();
   });
 
   // ────────────────────────────────────────────────────────────────────────────
@@ -61,8 +64,8 @@ test.describe('Auth — Register', () => {
     // blur để trigger validation
     await registerPage.passwordInput.focus();
 
-    // Text báo lỗi "Email không hợp lệ"
-    await expect(page.getByText(/không hợp lệ|invalid|sai định dạng/i)).toBeVisible();
+    // Text báo lỗi "Email không đúng định dạng"
+    await expect(page.getByText(/không hợp lệ|invalid|sai định dạng|không đúng định dạng/i)).toBeVisible();
   });
 
   // ────────────────────────────────────────────────────────────────────────────
