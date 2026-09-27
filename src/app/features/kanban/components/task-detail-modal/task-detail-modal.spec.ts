@@ -14,7 +14,8 @@ describe('TaskDetailModalComponent', () => {
 
   beforeEach(async () => {
     mockTaskStore = {
-      currentProjectId: vi.fn().mockReturnValue('project1')
+      currentProjectId: vi.fn().mockReturnValue('project1'),
+      currentProject: vi.fn().mockReturnValue(null)
     };
     mockPermissionService = {
       can: vi.fn().mockReturnValue(true)

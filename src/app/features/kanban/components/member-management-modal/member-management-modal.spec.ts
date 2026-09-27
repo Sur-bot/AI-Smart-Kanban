@@ -37,6 +37,9 @@ describe('MemberManagementModalComponent', () => {
       currentRole: vi.fn().mockReturnValue('admin'),
       canManageMembers: true,
       isOwner: vi.fn().mockReturnValue(true),
+      isAdmin: vi.fn().mockReturnValue(true),
+      isMember: vi.fn().mockReturnValue(false),
+      isViewer: vi.fn().mockReturnValue(false),
       can: vi.fn().mockReturnValue(true)
     };
 

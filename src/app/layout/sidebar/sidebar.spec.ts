@@ -15,7 +15,9 @@ describe('SidebarComponent', () => {
     mockTaskStore = {
       loadProjects: vi.fn(),
       projects: vi.fn().mockReturnValue([]),
-      currentProjectId: vi.fn().mockReturnValue(null)
+      currentProjectId: vi.fn().mockReturnValue(null),
+      isProjectsInitialized: vi.fn().mockReturnValue(true),
+      currentProject: vi.fn().mockReturnValue(null)
     };
 
     await TestBed.configureTestingModule({
