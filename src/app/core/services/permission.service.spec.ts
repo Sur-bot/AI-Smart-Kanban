@@ -41,7 +41,7 @@ describe('PermissionService', () => {
   // ── setRole() ────────────────────────────────────────────────────────────────
 
   describe('setRole()', () => {
-    const roles: ProjectMemberRole[] = ['owner', 'admin', 'moderator', 'member', 'viewer'];
+    const roles: ProjectMemberRole[] = ['owner', 'admin', 'member', 'viewer'];
 
     roles.forEach((role) => {
       it(`setRole('${role}') → currentRole() trả về '${role}'`, () => {
@@ -127,13 +127,6 @@ describe('PermissionService', () => {
       expect(service.currentRole()).toBeNull();
     });
 
-    it('lấy role của member đầu tiên tìm thấy', () => {
-      const members = [
-        { user_id: 'user-1', role: 'moderator' as ProjectMemberRole },
-      ];
-      service.loadRole('proj-1', members, 'user-1');
-      expect(service.currentRole()).toBe('moderator');
-    });
   });
 
   // ── can() ─────────────────────────────────────────────────────────────────────
@@ -182,18 +175,6 @@ describe('PermissionService', () => {
       it('can member.leave → true', () => expect(service.can('member.leave')).toBe(true));
     });
 
-    // ── moderator ─────────────────────────────────────────────────────────────
-    describe('role: moderator', () => {
-      beforeEach(() => service.setRole('moderator'));
-
-      it('can task.create → true', () => expect(service.can('task.create')).toBe(true));
-      it('can task.delete → true', () => expect(service.can('task.delete')).toBe(true));
-      it('can project.update → false', () => expect(service.can('project.update')).toBe(false));
-      it('can member.remove → false', () => expect(service.can('member.remove')).toBe(false));
-      it('can member.invite → true', () => expect(service.can('member.invite')).toBe(true));
-      it('can status.manage → false', () => expect(service.can('status.manage')).toBe(false));
-      it('can member.leave → true', () => expect(service.can('member.leave')).toBe(true));
-    });
 
     // ── member ────────────────────────────────────────────────────────────────
     describe('role: member', () => {
