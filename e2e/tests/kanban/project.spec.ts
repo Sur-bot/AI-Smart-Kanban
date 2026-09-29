@@ -5,7 +5,7 @@ import { createClient } from '@supabase/supabase-js';
 
 const UID = Date.now().toString().slice(-6);
 const TEST_PROJECT_TITLE = `[E2E] Project ${UID}`;
-const INVITE_UUID = '123e4567-e89b-12d3-a456-426614174000';
+const INVITE_UUID = process.env.E2E_TEST_INVITE_UUID || '123e4567-e89b-12d3-a456-426614174000';
 
 test.describe('Kanban — Project Management', () => {
   let kanbanPage: KanbanPage;
@@ -32,24 +32,9 @@ test.describe('Kanban — Project Management', () => {
     // Wait for the new project to be selected in the toolbar
     await expect(page.locator('app-page-toolbar').getByText(TEST_PROJECT_TITLE + ' Invite')).toBeVisible({ timeout: 10_000 });
 
-    // Mock the POST request to members API
-    await page.route('**/api/projects/*/members', async route => {
-      if (route.request().method() === 'POST') {
-        await route.fulfill({
-          status: 201,
-          contentType: 'application/json',
-          body: JSON.stringify({
-            id: 'mock-member-id',
-            project_id: 'mock-project-id',
-            user_id: INVITE_UUID,
-            role: 'member',
-            job_role: null
-          })
-        });
-      } else {
-        await route.continue();
-      }
-    });
+    if (INVITE_UUID === '123e4567-e89b-12d3-a456-426614174000') {
+      console.warn('WARNING: Using fake INVITE_UUID. TC-PROJ-002 will fail at backend validation unless a real UUID is provided in .env.test');
+    }
 
     await kanbanPage.inviteMemberToProject(INVITE_UUID);
   });
