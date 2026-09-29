@@ -123,8 +123,10 @@ test.describe('Storage — Image Storage', () => {
 
   // ────────────────────────────────────────────────────────────────────────────
   test('TC-STOR-006: Progress bar hiển thị đúng % đã dùng', async () => {
+    const track = storagePage.quotaProgressTrack;
+    await expect(track).toBeVisible();
+
     const progressBar = storagePage.quotaProgressBar;
-    await expect(progressBar).toBeAttached();
 
     // style width phải là % hợp lệ
     const style = await progressBar.getAttribute('style');

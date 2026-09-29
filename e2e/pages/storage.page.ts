@@ -8,6 +8,7 @@ export class StoragePage {
   readonly page: Page;
 
   readonly quotaCard: Locator;
+  readonly quotaProgressTrack: Locator;
   readonly quotaProgressBar: Locator;
   readonly quotaBadge: Locator;
   readonly uploadBtn: Locator;
@@ -21,6 +22,7 @@ export class StoragePage {
   constructor(page: Page) {
     this.page = page;
     this.quotaCard = page.locator('.quota-card, app-image-quota');
+    this.quotaProgressTrack = page.locator('.quota-progress-track');
     this.quotaProgressBar = page.locator('.quota-progress-fill, .quota-progress-bar').first();
     this.quotaBadge = page.locator('.quota-badge, .quota-text');
     this.uploadBtn = page.locator('.upload-cta-btn, .upload-fab-btn').first();
