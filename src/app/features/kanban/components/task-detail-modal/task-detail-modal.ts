@@ -276,6 +276,13 @@ export class TaskDetailModalComponent implements OnInit, OnChanges {
     }, 300);
   }
 
+  // --- Delete Task ---
+  deleteTask() {
+    if (!this.canEdit() || !this.task) return;
+    this.taskStore.deleteTask(this.task.id);
+    this.triggerClose();
+  }
+
   // --- Other existing methods ---
   markAsDirty() {
     this.hasUnsavedChanges = true;

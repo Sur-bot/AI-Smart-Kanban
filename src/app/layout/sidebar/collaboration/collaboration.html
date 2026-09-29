@@ -4,11 +4,21 @@
     <ul class="submenu-list">
       <ng-container *ngFor="let child of children">
         <li *ngIf="canShowChild(child)" class="shrink-0">
-          <a [routerLink]="child.route || null" routerLinkActive="active"
+          <a *ngIf="child.route" [routerLink]="child.route" routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: false }"
             class="submenu-item"
             [title]="child.label"
             (click)="onChildClick(child, $event)">
+            <ng-container *ngTemplateOutlet="itemContent"></ng-container>
+          </a>
+          <a *ngIf="!child.route" 
+            class="submenu-item cursor-pointer"
+            [title]="child.label"
+            (click)="onChildClick(child, $event)">
+            <ng-container *ngTemplateOutlet="itemContent"></ng-container>
+          </a>
+
+          <ng-template #itemContent>
 
           <div class="submenu-item-left">
             <!-- Child Icon -->
@@ -27,7 +37,7 @@
             </span>
           </div>
 
-        </a>
+          </ng-template>
       </li>
       </ng-container>
     </ul>

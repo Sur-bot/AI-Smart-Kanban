@@ -76,6 +76,9 @@
             <button type="button" class="topbar-icon-btn" matTooltip="Bộ đếm thời gian">
               <mat-icon fontSet="material-icons-outlined">timer</mat-icon>
             </button>
+            <button type="button" class="topbar-icon-btn text-red-500 hover:text-red-600 hover:bg-red-50" matTooltip="Xóa tác vụ" (click)="deleteTask()" *ngIf="canEdit()">
+              <mat-icon fontSet="material-icons-outlined">delete</mat-icon>
+            </button>
           </div>
         </header>
         <div class="content-inner custom-scrollbar">
