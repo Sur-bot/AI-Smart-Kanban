@@ -317,8 +317,15 @@
     "TITLE": "Tác vụ của tôi",
     "CREATE": "Tạo",
     "ROLE_ALL": "Tất cả các vai trò",
+    "TABS": {
+      "LIST": "Danh sách",
+      "BOARD": "Bảng Kanban",
+      "PLANNER": "Trình lập kế hoạch",
+      "CALENDAR": "Lịch",
+      "GANTT": "Gantt"
+    },
     "DEADLINE": {
-      "ARIA_LABEL": "Chế độ xem hạn chót",
+      "ARIA_LABEL": "Chế độ xem bảng Kanban",
       "ADD_TASK": "Thêm nhiệm vụ",
       "ADD_TO_COL": "Thêm vào",
       "EMPTY_TEXT": "Hiện không có dữ liệu nào về trang này.",

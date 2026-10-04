@@ -157,8 +157,15 @@
     "TITLE": "My Tasks",
     "CREATE": "Create",
     "ROLE_ALL": "All Roles",
+    "TABS": {
+      "LIST": "List",
+      "BOARD": "Board",
+      "PLANNER": "Planner",
+      "CALENDAR": "Calendar",
+      "GANTT": "Gantt"
+    },
     "DEADLINE": {
-      "ARIA_LABEL": "Deadline view",
+      "ARIA_LABEL": "Board view",
       "ADD_TASK": "Add task",
       "ADD_TO_COL": "Add to",
       "EMPTY_TEXT": "There is currently no data on this page.",

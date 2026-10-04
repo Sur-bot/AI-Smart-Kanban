@@ -4,6 +4,7 @@
     <div class="view-tabs">
       <button *ngFor="let tab of viewTabs"
         class="view-tab"
+        [attr.data-testid]="'tab-' + tab.id"
         [class.active]="tab.id === activeView"
         (click)="selectView(tab.id)">
         {{ tab.label }}

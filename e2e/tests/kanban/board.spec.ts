@@ -22,7 +22,7 @@ test.describe('Kanban — Board', () => {
   // ────────────────────────────────────────────────────────────────────────────
   test('TC-KANBAN-001: Đổi View (List -> Planner -> Deadline)', async ({ page }) => {
     const listTab = page.getByRole('button', { name: /danh sách/i });
-    const deadlineTab = page.getByRole('button', { name: 'Hạn chót', exact: true });
+    const deadlineTab = page.getByRole('button', { name: 'Bảng Kanban', exact: true });
     
     await deadlineTab.click();
     await expect(page).toHaveURL(/view=deadline/);
@@ -40,7 +40,7 @@ test.describe('Kanban — Board', () => {
     });
 
     // Chuyển sang Board View để không bị dính filter "Đang tiến hành" của List View
-    await page.getByRole('button', { name: 'Hạn chót', exact: true }).click();
+    await page.getByRole('button', { name: 'Bảng Kanban', exact: true }).click();
     
     // Task vừa tạo phải xuất hiện trên bảng
     await expect(kanbanPage.getTaskCard(TEST_TASK_TITLE)).toBeVisible();
@@ -63,7 +63,7 @@ test.describe('Kanban — Board', () => {
     const taskToDelete = `[E2E] Xóa Task ${UID}`;
     await kanbanPage.createTask({ title: taskToDelete });
     
-    await page.getByRole('button', { name: 'Hạn chót', exact: true }).click();
+    await page.getByRole('button', { name: 'Bảng Kanban', exact: true }).click();
     await expect(kanbanPage.getTaskCard(taskToDelete)).toBeVisible();
 
     await kanbanPage.deleteTask(taskToDelete);
@@ -72,7 +72,7 @@ test.describe('Kanban — Board', () => {
 
   // ────────────────────────────────────────────────────────────────────────────
   test('TC-KANBAN-005: Kéo thả task sang cột khác', async ({ page }) => {
-    const deadlineTab = page.getByRole('button', { name: 'Hạn chót', exact: true });
+    const deadlineTab = page.getByRole('button', { name: 'Bảng Kanban', exact: true });
     await deadlineTab.click();
 
     const taskToDrag = `[E2E] Drag Task ${UID}`;
@@ -94,7 +94,7 @@ test.describe('Kanban — Board', () => {
     const searchableTitle = `[E2E] SearchTarget ${UID}`;
     await kanbanPage.createTask({ title: searchableTitle });
 
-    await page.getByRole('button', { name: 'Hạn chót', exact: true }).click();
+    await page.getByRole('button', { name: 'Bảng Kanban', exact: true }).click();
 
     // Tìm kiếm
     await kanbanPage.searchTask(searchableTitle);
@@ -121,7 +121,7 @@ test.describe('Kanban — Board', () => {
   test('TC-KANBAN-008: Task vừa tạo hiển thị đúng tiêu đề', async ({ page }) => {
     await kanbanPage.createTask({ title: TEST_TASK_TITLE });
 
-    await page.getByRole('button', { name: 'Hạn chót', exact: true }).click();
+    await page.getByRole('button', { name: 'Bảng Kanban', exact: true }).click();
     
     const taskCard = kanbanPage.getTaskCard(TEST_TASK_TITLE);
     await expect(taskCard).toBeVisible();

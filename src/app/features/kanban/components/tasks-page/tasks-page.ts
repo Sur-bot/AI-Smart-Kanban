@@ -1,8 +1,10 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, effect, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 import { PageToolbarComponent } from '../../../../shared/components/page-layout/page-toolbar/page-toolbar';
 import { ViewFilterBarComponent, QuickFilter } from '../../../../shared/components/page-layout/view-filter-bar/view-filter-bar';
 import { DataTableComponent } from '../../../../shared/components/page-layout/data-table/data-table';
@@ -36,6 +38,8 @@ export class TasksPageComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly titleService = inject(Title);
+  private readonly translate = inject(TranslateService);
+  private readonly destroyRef = inject(DestroyRef);
   readonly taskStore = inject(TaskStore);
   readonly permissionService = inject(PermissionService);
 
@@ -55,7 +59,7 @@ export class TasksPageComponent implements OnInit {
 
   viewTabs: ViewTab[] = [
     { id: 'list', label: 'Danh sách' },
-    { id: 'deadline', label: 'Hạn chót' },
+    { id: 'deadline', label: 'Bảng Kanban' },
     { id: 'planner', label: 'Trình lập kế hoạch' },
     { id: 'calendar', label: 'Lịch' },
     { id: 'gantt', label: 'Gantt' },
@@ -76,19 +80,44 @@ export class TasksPageComponent implements OnInit {
     return project?.name || 'Tác vụ của tôi';
   }
 
+  private updateTabLabels() {
+    const listLabel = this.translate.instant('TASKS_PAGE.TABS.LIST');
+    const boardLabel = this.translate.instant('TASKS_PAGE.TABS.BOARD');
+    const plannerLabel = this.translate.instant('TASKS_PAGE.TABS.PLANNER');
+    const calendarLabel = this.translate.instant('TASKS_PAGE.TABS.CALENDAR');
+    const ganttLabel = this.translate.instant('TASKS_PAGE.TABS.GANTT');
+
+    this.viewTabs = [
+      { id: 'list', label: listLabel && listLabel !== 'TASKS_PAGE.TABS.LIST' ? listLabel : 'Danh sách' },
+      { id: 'deadline', label: boardLabel && boardLabel !== 'TASKS_PAGE.TABS.BOARD' ? boardLabel : 'Bảng Kanban' },
+      { id: 'planner', label: plannerLabel && plannerLabel !== 'TASKS_PAGE.TABS.PLANNER' ? plannerLabel : 'Trình lập kế hoạch' },
+      { id: 'calendar', label: calendarLabel && calendarLabel !== 'TASKS_PAGE.TABS.CALENDAR' ? calendarLabel : 'Lịch' },
+      { id: 'gantt', label: ganttLabel && ganttLabel !== 'TASKS_PAGE.TABS.GANTT' ? ganttLabel : 'Gantt' },
+    ];
+  }
+
   ngOnInit() {
+    this.updateTabLabels();
+    this.translate.onLangChange
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.updateTabLabels();
+      });
+
     // Nếu chưa load projects thì fetch
     if (!this.taskStore.isProjectsInitialized()) {
       this.taskStore.loadProjects();
     }
 
-    this.route.queryParams.subscribe(params => {
-      if (params['view'] && ['list', 'deadline', 'planner', 'calendar', 'gantt'].includes(params['view'])) {
-        this.activeView = params['view'] as TaskViewMode;
-      } else if (!params['view']) {
-        this.activeView = 'list';
-      }
-    });
+    this.route.queryParams
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(params => {
+        if (params['view'] && ['list', 'deadline', 'planner', 'calendar', 'gantt'].includes(params['view'])) {
+          this.activeView = params['view'] as TaskViewMode;
+        } else if (!params['view']) {
+          this.activeView = 'list';
+        }
+      });
   }
 
   onViewChange(view: TaskViewMode) {
