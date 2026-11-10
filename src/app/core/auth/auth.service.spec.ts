@@ -7,6 +7,7 @@ import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 const mockSupabaseAuth = {
   getSession: vi.fn().mockResolvedValue({ data: { session: null } }),
   onAuthStateChange: vi.fn().mockReturnValue({ data: { subscription: { unsubscribe: vi.fn() } } }),
+  signInAnonymously: vi.fn(),
   signUp: vi.fn(),
   signInWithPassword: vi.fn(),
   signInWithOAuth: vi.fn(),
@@ -39,6 +40,7 @@ describe('AuthService', () => {
     // Spy on the real supabase auth methods
     vi.spyOn(service['supabase'].auth, 'getSession').mockResolvedValue({ data: { session: null } } as any);
     vi.spyOn(service['supabase'].auth, 'onAuthStateChange').mockReturnValue({ data: { subscription: { unsubscribe: vi.fn() } } } as any);
+    vi.spyOn(service['supabase'].auth, 'signInAnonymously').mockResolvedValue({ data: { user: {}, session: {} }, error: null } as any);
     vi.spyOn(service['supabase'].auth, 'signUp').mockResolvedValue({ data: { user: {} }, error: null } as any);
     vi.spyOn(service['supabase'].auth, 'signInWithPassword').mockResolvedValue({ data: { user: {} }, error: null } as any);
     vi.spyOn(service['supabase'].auth, 'signInWithOAuth').mockResolvedValue({ data: { user: {} }, error: null } as any);
@@ -56,9 +58,23 @@ describe('AuthService', () => {
 
   it('should login as guest and set local storage', async () => {
     await service.loginAsGuest();
+    expect(service['supabase'].auth.signInAnonymously).toHaveBeenCalled();
     expect(service.isGuestMode()).toBe(true);
     expect(localStorage.getItem('ai_smart_kanban_guest')).toBe('true');
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/kanban']);
+  });
+
+  it('should throw error and not enter guest mode when signInAnonymously fails', async () => {
+    const authError = new Error('Anonymous sign-ins are disabled');
+    (service['supabase'].auth.signInAnonymously as any).mockResolvedValue({
+      data: { user: null, session: null },
+      error: authError
+    });
+
+    await expect(service.loginAsGuest()).rejects.toThrow('Anonymous sign-ins are disabled');
+    expect(service.isGuestMode()).toBe(false);
+    expect(localStorage.getItem('ai_smart_kanban_guest')).toBeNull();
+    expect(mockRouter.navigate).not.toHaveBeenCalled();
   });
 
   it('should sign up with email and password', async () => {
