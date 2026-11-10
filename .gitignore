@@ -43,16 +43,15 @@ __screenshots__/
 .DS_Store
 Thumbs.db
 
-# Documentation / Scratch files
+# Documentation / Local Infrastructure
 docs/
+/docker-compose*.yml
 
 # Environments (API keys & secrets)
-src/environments/environment.ts
-src/environments/environment.development.ts
-src/environments/*.local.ts
+src/environments/*.ts
+.env*
 
 # Playwright E2E Testing
 /playwright-report/
 /test-results/
 /e2e/.auth/
-.env.test
