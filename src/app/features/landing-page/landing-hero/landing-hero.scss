@@ -143,6 +143,14 @@
   @apply aspect-video relative overflow-hidden bg-slate-100;
 }
 
+.hero-image-skeleton {
+  @apply absolute inset-0 flex items-center justify-center bg-gradient-to-r from-slate-100 via-slate-200/80 to-slate-100 animate-pulse z-0 pointer-events-none transition-opacity duration-300 ease-out opacity-100;
+
+  &.is-hidden {
+    @apply opacity-0 animate-none;
+  }
+}
+
 .hero-mockup-card {
   @apply bg-white rounded-xl border border-slate-200 p-3 flex flex-col gap-2.5 shadow-sm;
 }
