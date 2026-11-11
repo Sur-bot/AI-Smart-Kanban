@@ -6,15 +6,24 @@
       <p class="tech-title">{{ 'LANDING_TECH.TITLE' | translate }}</p>
     </header>
 
-    <div class="tech-grid">
+    <ul class="tech-grid">
       @for (tech of technologies; track tech.name) {
-        <div class="tech-card" [class]="tech.colSpanClass || ''">
-          <div class="tech-icon-wrapper" [class]="tech.bgClass">
-            <img [src]="tech.iconPath" [alt]="tech.altText" class="tech-icon" (error)="handleImageError($event)" loading="lazy" />
-          </div>
+        <li class="tech-card" [class]="tech.colSpanClass || ''">
+          <figure class="tech-icon-wrapper m-0" [class]="tech.bgClass">
+            <img
+              [src]="tech.iconPath"
+              [alt]="tech.altText"
+              width="32"
+              height="32"
+              loading="lazy"
+              decoding="async"
+              class="tech-icon"
+              (error)="handleImageError($event)"
+            />
+          </figure>
           <span class="tech-name">{{ tech.name }}</span>
-        </div>
+        </li>
       }
-    </div>
+    </ul>
   </div>
 </section>

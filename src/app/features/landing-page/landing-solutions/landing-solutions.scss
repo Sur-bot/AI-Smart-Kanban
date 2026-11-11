@@ -57,10 +57,18 @@
 }
 
 .solution-card-mockup {
-  @apply w-full overflow-hidden m-0 flex-1 relative aspect-video;
+  @apply w-full overflow-hidden m-0 flex-1 relative aspect-video bg-slate-50/60;
 
   img {
-    @apply w-full h-full object-cover;
+    @apply w-full h-full object-contain;
+  }
+}
+
+.solution-image-skeleton {
+  @apply absolute inset-3 rounded-xl flex items-center justify-center bg-gradient-to-r from-slate-100 via-slate-200/70 to-slate-100 animate-pulse z-0 pointer-events-none transition-opacity duration-300 ease-out opacity-100;
+
+  &.is-hidden {
+    @apply opacity-0 animate-none;
   }
 }
 
