@@ -1,0 +1,18 @@
+{
+  "workspace-security-guard": {
+    "enabled": true,
+    "PreToolUse": [
+      {
+        "matcher": "run_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ../scripts/hooks/agent-guard.mjs",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
+

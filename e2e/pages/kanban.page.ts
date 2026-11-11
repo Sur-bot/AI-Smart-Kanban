@@ -41,14 +41,13 @@ export class KanbanPage {
     this.taskCancelBtn = page.locator('button.btn-cancel');
     this.searchInput = page.locator('input.search-real-input');
     this.sidebar = page.locator('app-sidebar');
-    this.createProjectBtn = page.getByRole('button', { name: /tạo dự án mới/i }).first();
-    this.projectDrawerBtn = page.getByRole('button', { name: /thành viên dự án|thông tin dự án|project members/i }).first();
+    this.createProjectBtn = page.getByRole('button', { name: /tạo dự án/i }).first();
+    this.projectDrawerBtn = page.locator('a.submenu-item').filter({ hasText: /quản lý thành viên/i }).first();
     this.newProjectModal = page.locator('.modal-container');
     this.projectNameInput = page.locator('input#projectName');
     this.projectSubmitBtn = this.newProjectModal.getByRole('button', { name: /tạo dự án/i });
-    this.inviteMemberBtn = page.getByRole('button', { name: /mời thành viên|add member/i }).first();
-    this.memberEmailInput = page.locator('input[type="email"], input[placeholder*="email"], input#inviteEmail');
-    this.inviteSubmitBtn = page.getByRole('button', { name: /gửi lời mời/i }).first();
+    this.memberEmailInput = page.getByRole('textbox', { name: /user id/i }).first();
+    this.inviteSubmitBtn = page.locator('button[type="submit"]').first();
   }
 
   async goto() {
@@ -81,13 +80,14 @@ export class KanbanPage {
 
   async deleteTask(title: string) {
     const card = this.getTaskCard(title);
-    await card.hover();
-    const deleteBtn = card.locator('[aria-label*="xóa"], [aria-label*="delete"], [title*="xóa"]');
+    await card.click();
+    
+    const modal = this.page.locator('.modal-frame').first();
+    await expect(modal).toBeVisible();
+
+    const deleteBtn = modal.locator('button[matTooltip="Xóa tác vụ"]');
     await deleteBtn.click();
-    const confirmBtn = this.page.getByRole('button', { name: /xác nhận|confirm|yes|ok|xóa/i }).first();
-    if (await confirmBtn.isVisible()) {
-      await confirmBtn.click();
-    }
+    
     await expect(this.getTaskCard(title)).toBeHidden({ timeout: 8_000 });
   }
 
@@ -98,7 +98,19 @@ export class KanbanPage {
   }
 
   async createProject(name: string) {
-    await this.createProjectBtn.click();
+    // Open project switcher dropdown first
+    const switcherBtn = this.page.locator('.switcher-btn');
+    if (await switcherBtn.isVisible()) {
+      await switcherBtn.click();
+      await expect(this.page.locator('.switcher-dropdown')).toBeVisible();
+    }
+    
+    const createBtn = this.page.locator('.switcher-dropdown .create-btn');
+    if (await createBtn.isVisible()) {
+      await createBtn.click();
+    } else {
+      await this.createProjectBtn.click();
+    }
     await expect(this.newProjectModal).toBeVisible();
     await this.projectNameInput.fill(name);
     await this.projectSubmitBtn.click();
@@ -106,19 +118,41 @@ export class KanbanPage {
   }
 
   async inviteMemberToProject(email: string) {
-    if (await this.projectDrawerBtn.isVisible()) {
-      await this.projectDrawerBtn.click();
+    const switcherBtn = this.page.locator('.switcher-btn');
+    if (await switcherBtn.isVisible()) {
+      await switcherBtn.click();
+      await expect(this.page.locator('.switcher-dropdown')).toBeVisible();
     }
+
+    if (!(await this.projectDrawerBtn.isVisible())) {
+      const hopTacMenu = this.page.locator('app-sidebar').getByText('Hợp tác');
+      if (await hopTacMenu.isVisible()) {
+        await hopTacMenu.click();
+      }
+      await this.projectDrawerBtn.waitFor({ state: 'visible', timeout: 5000 }).catch(() => {});
+    }
+
+    this.page.once('dialog', async dialog => {
+      console.log('DIALOG DETECTED: ' + dialog.message());
+      await dialog.dismiss();
+    });
+
+    console.log('projectDrawerBtn visible?', await this.projectDrawerBtn.isVisible());
+    await this.projectDrawerBtn.evaluate(node => (node as HTMLElement).click());
     
-    if (await this.inviteMemberBtn.isVisible()) {
-      await this.inviteMemberBtn.click();
-    }
+    // Check that the modal is visible
+    await expect(this.page.locator('#member-modal-title')).toBeVisible({ timeout: 10_000 });
 
-    const emailInput = this.page.getByRole('textbox', { name: /email/i }).first();
-    await expect(emailInput).toBeVisible();
-    await emailInput.fill(email);
+    await expect(this.memberEmailInput).toBeVisible();
+    await this.memberEmailInput.fill(email);
 
-    const confirmBtn = this.page.getByRole('button', { name: /gửi lời mời/i }).first();
-    await confirmBtn.click();
+    // Wait for the request to complete
+    await Promise.all([
+      this.page.waitForResponse(res => res.url().includes('/members') && res.status() === 201),
+      this.inviteSubmitBtn.click()
+    ]);
+
+    // Close the modal
+    await this.page.locator('button.close-btn').first().click();
   }
 }

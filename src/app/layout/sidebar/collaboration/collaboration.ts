@@ -47,17 +47,23 @@ export class CollaborationComponent {
   }
 
   onChildClick(child: MenuItem, event: Event) {
+    console.log('[Collaboration] onChildClick', child.id, child.action);
     if (child.action === 'manage-members') {
       event.preventDefault();
       const currentProjectId = this.taskStore.currentProjectId();
+      console.log('[Collaboration] currentProjectId:', currentProjectId);
       if (!currentProjectId) {
         alert('Vui lòng chọn một dự án trước khi quản lý thành viên.');
         return;
       }
-      if (!this.permissionService.can('member.invite')) {
+      
+      const canInvite = this.permissionService.can('member.invite');
+      console.log('[Collaboration] can(member.invite)?', canInvite);
+      if (!canInvite) {
         alert('Bạn không có quyền quản lý thành viên trên dự án này.');
         return;
       }
+      console.log('[Collaboration] Opening dialog...');
       this.dialog.open(MemberManagementModalComponent, {
         width: '600px',
         panelClass: 'custom-dialog-container',

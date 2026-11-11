@@ -26,7 +26,8 @@ describe('MainLayoutComponent', () => {
       projectsLoading: vi.fn().mockReturnValue(false),
       currentProject: vi.fn().mockReturnValue(null),
       projects: vi.fn().mockReturnValue([]),
-      currentProjectId: vi.fn().mockReturnValue(null)
+      currentProjectId: vi.fn().mockReturnValue(null),
+      isProjectsInitialized: vi.fn().mockReturnValue(true)
     };
     
     mockRightBarService = {
@@ -66,7 +67,7 @@ describe('MainLayoutComponent', () => {
 
   it('should return active right bar feature', () => {
     mockRightBarService.activeFeature.mockReturnValue('chat');
-    expect(component.activeRightBarFeature).toBe('chat');
+    expect(component.activeRightBarFeature()).toBe('chat');
   });
 
   it('should handle right bar open and close', () => {

@@ -8,6 +8,7 @@ export class StoragePage {
   readonly page: Page;
 
   readonly quotaCard: Locator;
+  readonly quotaProgressTrack: Locator;
   readonly quotaProgressBar: Locator;
   readonly quotaBadge: Locator;
   readonly uploadBtn: Locator;
@@ -16,11 +17,15 @@ export class StoragePage {
   readonly errorBanner: Locator;
   readonly warningBanner: Locator;
   readonly imageGrid: Locator;
+  readonly uploadZone: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.quotaCard = page.locator('.quota-card');
-    this.uploadBtn = page.locator('.upload-cta-btn');
+    this.quotaCard = page.locator('.quota-card, app-image-quota');
+    this.quotaProgressTrack = page.locator('.quota-progress-track');
+    this.quotaProgressBar = page.locator('.quota-progress-fill, .quota-progress-bar').first();
+    this.quotaBadge = page.locator('.quota-badge, .quota-text');
+    this.uploadBtn = page.locator('.upload-cta-btn, .upload-fab-btn').first();
     
     // Components
     this.uploadZone = page.locator('app-image-upload-zone');
@@ -38,6 +43,10 @@ export class StoragePage {
 
   /** Upload file ảnh theo đường dẫn tuyệt đối */
   async uploadFile(absolutePath: string) {
+    if (await this.fileInput.count() === 0) {
+      // Mở upload zone nếu nó đang bị ẩn bởi @if (showUploadZone)
+      await this.uploadBtn.first().click();
+    }
     await this.fileInput.setInputFiles(absolutePath);
   }
 

@@ -161,3 +161,16 @@ Luôn dùng `<mat-icon>` của Angular Material cho các tác vụ thêm-xóa-s�
 <!-- ❌ Sai: tự vẽ SVG khi icon đã có trong Material -->
 <svg>...</svg>
 ```
+
+---
+
+## Quy tắc Quản lý Lỗi Tự động & Bảo mật Môi trường
+
+1. **Chốt chặn Bảo mật (`scripts/verify-health.mjs` & `.agents/hooks.json`):**
+   - Tuyệt đối không commit hoặc `git add -f` các file trong `src/environments/*.ts`, `.env*`, `docs/audit-report.md`, và `docker-compose*.yml` lên GitHub Public.
+   - Luôn chạy `npm run verify:health` trước khi tạo commit.
+2. **Chuẩn Phân tích & Kiểm thử Lỗi (`.agents/skills/error-management/SKILL.md`):**
+   - Mọi lỗi phát sinh phải được giải thích theo 3 mục: **Lỗi là gì? → Vì sao lỗi? → Cách khắc phục (Đề xuất)**.
+   - Khi mock các dịch vụ bên ngoài trong Unit Test (`*.spec.ts`), phải viết test cho cả **Happy Path** và **Error Path** để không bỏ lọt nhánh xử lý lỗi.
+   - Ghi nhận các lỗi mới và kết quả khắc phục vào sổ theo dõi nội bộ `docs/audit-report.md`.
+

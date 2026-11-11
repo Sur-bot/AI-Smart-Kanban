@@ -115,13 +115,13 @@
 
     <div class="solutions-grid">
       @if (groups$ | async; as groups) {
-        @for (group of groups; track group.groupLabel) {
+        @for (group of groups; track group.groupLabel; let colIndex = $index) {
         <div [class]="'solutions-column ' + group.bgClass">
           <!-- Group Header -->
           <p [class]="'solutions-group-label ' + group.labelColor">{{ group.groupLabel | translate }}</p>
 
           <!-- Cards -->
-          @for (solution of group.items; track solution.title) {
+          @for (solution of group.items; track solution.title; let itemIndex = $index) {
             <article class="solution-card group">
               <!-- Card Top: Icon + Title -->
               <header [class]="'solution-card-header ' + (solution.headerBg || '')">
@@ -133,11 +133,29 @@
 
               <!-- Mockup Image Preview -->
               <figure class="solution-card-mockup">
+                <!-- Permanent Skeleton Layer (không dùng @if hủy DOM) -->
+                <div
+                  class="solution-image-skeleton"
+                  [class.is-hidden]="isCardRevealed(solution.mockupUrl)"
+                  aria-hidden="true"
+                >
+                  <mat-icon fontSet="material-icons-outlined" class="text-slate-300 !w-8 !h-8 !text-[32px]">image</mat-icon>
+                </div>
+
                 <img
                   [ngSrc]="solution.mockupUrl"
                   [alt]="solution.title | translate"
                   fill
-                  class="object-contain p-4"
+                  loading="eager"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  decoding="async"
+                  (load)="onImageLoad(solution.mockupUrl)"
+                  [style.transition-delay]="(colIndex * 2 + itemIndex) * 45 + 'ms'"
+                  class="relative z-10 object-contain p-4 transition-all duration-500 ease-out"
+                  [class.opacity-100]="isCardRevealed(solution.mockupUrl)"
+                  [class.scale-100]="isCardRevealed(solution.mockupUrl)"
+                  [class.opacity-0]="!isCardRevealed(solution.mockupUrl)"
+                  [class.scale-[0.98]]="!isCardRevealed(solution.mockupUrl)"
                 />
               </figure>
             </article>
