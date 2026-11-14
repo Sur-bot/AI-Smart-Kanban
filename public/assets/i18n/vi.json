@@ -777,6 +777,63 @@
       }
     }
   },
+  "LANDING_FEEDBACK": {
+    "FAB_OPEN_ARIA": "Mở khung gửi đánh giá",
+    "FAB_CLOSE_ARIA": "Đóng khung gửi đánh giá",
+    "DIALOG_ARIA": "Khung gửi đánh giá AI Smart Kanban",
+    "TITLE": "Đánh giá trải nghiệm của bạn",
+    "CLOSE_ARIA": "Đóng khung phản hồi",
+    "RATING_LABEL": "Đánh giá",
+    "RATING_GROUP_ARIA": "Chọn từ 1 đến 5 sao",
+    "RATING_SCORE": "{{score}}/5",
+    "RATINGS": {
+      "VERY_BAD": "1 sao - Rất tệ",
+      "BAD": "2 sao - Chưa hài lòng",
+      "NEUTRAL": "3 sao - Bình thường",
+      "GOOD": "4 sao - Hài lòng",
+      "EXCELLENT": "5 sao - Tuyệt vời"
+    },
+    "NAME_LABEL": "Họ tên",
+    "NAME_OPTIONAL": "Tuỳ chọn",
+    "NAME_PLACEHOLDER": "Nguyễn Văn A",
+    "EMAIL_LABEL": "Email của bạn",
+    "EMAIL_PLACEHOLDER": "ban@congty.com",
+    "MESSAGE_LABEL": "Nội dung",
+    "MESSAGE_PLACEHOLDER": "Chia sẻ trải nghiệm hoặc góp ý của bạn...",
+    "ATTACHMENT_ADD": "Đính kèm ảnh",
+    "ATTACHMENT_REMOVE_ARIA": "Xoá ảnh đính kèm",
+    "SUBMIT_BTN": "Gửi phản hồi",
+    "SUBMITTING_BTN": "Đang gửi...",
+    "ERRORS": {
+      "RATING_REQUIRED": "Vui lòng chọn số sao đánh giá.",
+      "EMAIL_REQUIRED": "Vui lòng nhập email của bạn.",
+      "EMAIL_INVALID": "Địa chỉ email chưa đúng định dạng.",
+      "MESSAGE_REQUIRED": "Vui lòng nhập nội dung đánh giá.",
+      "MESSAGE_MIN": "Nội dung cần tối thiểu {{min}} ký tự.",
+      "MESSAGE_MAX": "Nội dung không vượt quá {{max}} ký tự.",
+      "INVALID_FILE_TYPE": "Chỉ hỗ trợ ảnh định dạng PNG, JPG hoặc WEBP.",
+      "FILE_TOO_LARGE": "Dung lượng ảnh vượt quá giới hạn 5MB.",
+      "STORAGE_ERROR": "Không thể tải ảnh đính kèm. Vui lòng thử lại hoặc bỏ chọn ảnh.",
+      "EMAIL_NOT_CONFIGURED": "Hệ thống tạm thời chưa thể xử lý phản hồi. Vui lòng thử lại sau.",
+      "EMAIL_DELIVERY_FAILED": "Phản hồi đã được ghi nhận nhưng chưa gửi được email xác nhận. Vui lòng thử lại sau nếu cần.",
+      "FUNCTION_UNAVAILABLE": "Không thể kết nối máy chủ lúc này. Vui lòng kiểm tra mạng và thử lại.",
+      "UNKNOWN_ERROR": "Gửi phản hồi chưa thành công. Vui lòng thử lại."
+    },
+    "SUCCESS": {
+      "TITLE": "Cảm ơn bạn đã đánh giá!",
+      "SUBTITLE": "Phản hồi của bạn đã được ghi nhận vào hệ thống.",
+      "TICKET_LABEL": "Mã tham chiếu",
+      "RATING_SUMMARY": "Đánh giá",
+      "ADMIN_MAIL_LABEL": "Email quản trị",
+      "ADMIN_MAIL_SENT": "Đã gửi báo cáo",
+      "ADMIN_MAIL_PENDING": "Đang chờ xử lý",
+      "USER_MAIL_LABEL": "Email xác nhận",
+      "USER_MAIL_SENT": "Đã gửi tới {{email}}",
+      "USER_MAIL_WARNING": "Đã ghi nhận phản hồi nhưng chưa gửi được thư xác nhận tới {{email}} lúc này.",
+      "SEND_ANOTHER": "Gửi phản hồi khác",
+      "DONE": "Đóng"
+    }
+  },
   "AI": {
     "QUOTA": {
       "TITLE": "AI QUOTA",

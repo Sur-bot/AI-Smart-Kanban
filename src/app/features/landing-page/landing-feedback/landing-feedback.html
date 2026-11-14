@@ -1,96 +1,410 @@
-<!-- ──── Fixed Feedback Button + Panel ──── -->
-<aside class="fixed bottom-10 right-8 z-[100]" aria-label="Khung phản hồi">
-
-  <!-- Feedback Panel (slide-up) -->
+<!-- ──── Fixed Feedback Button + Panel (Minimalist Semantic HTML5) ──── -->
+<aside
+  class="fixed bottom-6 right-4 sm:bottom-8 sm:right-8 z-[100]"
+  [attr.aria-label]="'LANDING_FEEDBACK.DIALOG_ARIA' | translate"
+>
   @if (feedbackOpen()) {
     <!-- Backdrop mờ trên mobile -->
-    <div class="fixed inset-0 bg-black/30 backdrop-blur-sm sm:hidden z-[99]" (click)="closeFeedback()"></div>
+    <section
+      class="fixed inset-0 bg-slate-900/35 backdrop-blur-sm sm:hidden z-[99]"
+      (click)="closeFeedback()"
+      aria-hidden="true"
+    ></section>
 
-    <div class="feedback-panel absolute bottom-16 right-0 w-[340px] sm:w-[380px] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-[101]">
-      <!-- Header -->
-      <header class="bg-gradient-to-r from-blue-600 to-cyan-500 px-6 py-5 text-white relative">
-        <button type="button" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors" (click)="closeFeedback()" aria-label="Đóng khung phản hồi">
-          <mat-icon class="text-[20px] w-5 h-5 flex items-center justify-center leading-none">close</mat-icon>
+    <section
+      class="feedback-panel fixed inset-x-4 bottom-24 max-h-[calc(100dvh-7rem)] sm:inset-x-auto sm:absolute sm:bottom-16 sm:right-0 sm:w-[380px] sm:max-h-[min(84dvh,560px)] bg-white rounded-2xl border border-slate-200/90 shadow-2xl shadow-slate-900/15 flex flex-col overflow-hidden z-[101]"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="feedback-panel-title"
+      [attr.aria-label]="'LANDING_FEEDBACK.DIALOG_ARIA' | translate"
+    >
+      <!-- Header phủ gradient xanh đồng bộ thương hiệu -->
+      <header class="flex items-center justify-between gap-3 px-5 py-3.5 bg-gradient-to-r from-blue-600 to-sky-500 text-white shrink-0">
+        <h3 id="feedback-panel-title" class="text-[15px] font-bold text-white tracking-tight truncate">
+          {{ 'LANDING_FEEDBACK.TITLE' | translate }}
+        </h3>
+
+        <button
+          type="button"
+          class="feedback-icon-btn w-7 h-7 rounded-full bg-white/15 border border-white/25 text-white hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white flex items-center justify-center shrink-0 transition-colors"
+          (click)="closeFeedback()"
+          [attr.aria-label]="'LANDING_FEEDBACK.CLOSE_ARIA' | translate"
+          [title]="'LANDING_FEEDBACK.CLOSE_ARIA' | translate"
+        >
+          <mat-icon aria-hidden="true">close</mat-icon>
         </button>
-        <h3 class="text-lg font-bold leading-snug">Hãy cho chúng tôi biết<br/>ý kiến của bạn</h3>
-        <p class="text-blue-100 text-sm mt-1">Mọi phản hồi đều rất quý giá!</p>
       </header>
 
-      <!-- Form -->
-      <form class="px-6 py-5 space-y-4" (submit)="$event.preventDefault()">
-        <!-- Email -->
-        <fieldset class="space-y-1.5">
-          <label for="fb-email" class="text-sm font-semibold text-slate-700">
-            Email của bạn <span class="text-red-500">*</span>
-          </label>
-          <input id="fb-email" type="email" required placeholder="email@example.com" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-slate-50 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all"/>
-        </fieldset>
+      @if (submittedResult(); as result) {
+        <!-- Màn hình xác nhận thành công -->
+        <section class="feedback-success px-5 py-5 overflow-y-auto flex flex-col items-center text-center gap-3" aria-live="polite">
+          <span class="feedback-success-icon w-11 h-11 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center" aria-hidden="true">
+            <mat-icon fontSet="material-icons-outlined">check_circle</mat-icon>
+          </span>
 
-        <!-- Loại phản hồi (Custom Dropdown) -->
-        <fieldset class="space-y-1.5 relative">
-          <label id="fb-type-label" class="text-sm font-semibold text-slate-700">Loại phản hồi</label>
-          
-          <!-- Nút chọn hiển thị giá trị hiện tại -->
-          <button type="button" 
-                  (click)="toggleTypeDropdown()" 
-                  class="w-full px-4 py-2.5 flex items-center justify-between rounded-lg border border-slate-300 bg-slate-50 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all"
-                  aria-labelledby="fb-type-label">
-            <span class="flex items-center gap-2">
-              <mat-icon class="text-[18px] w-[18px] h-[18px] text-blue-600">{{ selectedFeedbackType().icon }}</mat-icon>
-              {{ selectedFeedbackType().label }}
-            </span>
-            <mat-icon class="text-[20px] w-5 h-5 text-slate-400 transition-transform duration-200" [class.rotate-180]="isTypeDropdownOpen()">keyboard_arrow_down</mat-icon>
-          </button>
+          <h4 class="text-base font-bold text-slate-900 tracking-tight">
+            {{ 'LANDING_FEEDBACK.SUCCESS.TITLE' | translate }}
+          </h4>
+          <p class="text-xs text-slate-500 max-w-xs leading-relaxed">
+            {{ 'LANDING_FEEDBACK.SUCCESS.SUBTITLE' | translate }}
+          </p>
 
-          <!-- Danh sách menu thả xuống -->
-          @if (isTypeDropdownOpen()) {
-            <!-- Màn chắn trong suốt để đóng menu khi click ra ngoài -->
-            <div class="fixed inset-0 z-40" (click)="isTypeDropdownOpen.set(false)"></div>
-            
-            <ul class="absolute top-full left-0 right-0 mt-2 z-50 bg-white border border-slate-200 rounded-lg shadow-xl overflow-hidden py-1">
-              @for (type of feedbackTypes; track type.value) {
-                <li>
-                  <button type="button" 
-                          (click)="selectFeedbackType(type)"
-                          class="w-full px-4 py-2 flex items-center gap-3 text-sm text-slate-700 hover:bg-slate-100 transition-colors text-left">
-                    <mat-icon class="text-[18px] w-[18px] h-[18px] text-slate-400" [class.text-blue-600]="selectedFeedbackType().value === type.value">{{ type.icon }}</mat-icon>
-                    <span [class.font-semibold]="selectedFeedbackType().value === type.value">{{ type.label }}</span>
-                  </button>
-                </li>
+          <dl class="w-full rounded-xl border border-slate-200/80 bg-slate-50/80 p-3.5 grid grid-cols-2 gap-x-3 gap-y-2.5 text-left m-0">
+            <section class="space-y-0.5">
+              <dt class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">
+                {{ 'LANDING_FEEDBACK.SUCCESS.TICKET_LABEL' | translate }}
+              </dt>
+              <dd class="feedback-ticket-code font-mono text-xs text-blue-700 font-bold break-words m-0">
+                {{ result.ticketCode }}
+              </dd>
+            </section>
+
+            @if (submittedSummary(); as summary) {
+              <section class="space-y-0.5">
+                <dt class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">
+                  {{ 'LANDING_FEEDBACK.SUCCESS.RATING_SUMMARY' | translate }}
+                </dt>
+                <dd class="text-xs font-semibold text-amber-600 break-words m-0">
+                  ★ {{ 'LANDING_FEEDBACK.RATING_SCORE' | translate: { score: summary.rating } }}
+                </dd>
+              </section>
+
+              <section class="space-y-0.5">
+                <dt class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">
+                  {{ 'LANDING_FEEDBACK.SUCCESS.ADMIN_MAIL_LABEL' | translate }}
+                </dt>
+                <dd class="text-xs font-semibold break-words m-0" [class.text-emerald-700]="result.adminEmailSent" [class.text-slate-800]="!result.adminEmailSent">
+                  {{
+                    (result.adminEmailSent
+                      ? 'LANDING_FEEDBACK.SUCCESS.ADMIN_MAIL_SENT'
+                      : 'LANDING_FEEDBACK.SUCCESS.ADMIN_MAIL_PENDING') | translate
+                  }}
+                </dd>
+              </section>
+
+              <section class="col-span-2 pt-2 border-t border-slate-200/70 space-y-0.5">
+                <dt class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">
+                  {{ 'LANDING_FEEDBACK.SUCCESS.USER_MAIL_LABEL' | translate }}
+                </dt>
+                <dd class="text-xs font-semibold break-words m-0" [class.text-emerald-700]="result.userConfirmationSent" [class.text-amber-700]="!result.userConfirmationSent">
+                  {{
+                    (result.userConfirmationSent
+                      ? 'LANDING_FEEDBACK.SUCCESS.USER_MAIL_SENT'
+                      : 'LANDING_FEEDBACK.SUCCESS.USER_MAIL_WARNING') | translate: { email: summary.email }
+                  }}
+                </dd>
+              </section>
+            }
+          </dl>
+
+          <footer class="w-full flex items-center gap-2.5 pt-1">
+            <button
+              type="button"
+              class="feedback-btn-sm flex-1 py-2.5 px-3 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 inline-flex items-center justify-center gap-1.5 transition-colors"
+              (click)="startNewFeedback()"
+            >
+              <mat-icon fontSet="material-icons-outlined" aria-hidden="true">rate_review</mat-icon>
+              <span>{{ 'LANDING_FEEDBACK.SUCCESS.SEND_ANOTHER' | translate }}</span>
+            </button>
+
+            <button
+              type="button"
+              class="py-2.5 px-5 rounded-xl bg-blue-600 hover:bg-blue-700 text-xs font-bold text-white shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 transition-colors"
+              (click)="closeFeedback()"
+            >
+              {{ 'LANDING_FEEDBACK.SUCCESS.DONE' | translate }}
+            </button>
+          </footer>
+        </section>
+      } @else {
+        <!-- Form Reactive gọn gàng -->
+        <form
+          class="flex flex-col flex-1 min-h-0 min-w-0 w-full"
+          [formGroup]="feedbackForm"
+          (ngSubmit)="onSubmit()"
+          novalidate
+        >
+          <section class="flex-1 min-h-0 min-w-0 overflow-y-auto overflow-x-hidden px-5 py-4 space-y-3.5">
+            <!-- Đánh giá 5 sao -->
+            <fieldset class="space-y-1.5 border-0 p-0 m-0 min-w-0 w-full">
+              <legend class="flex items-center justify-between gap-2 w-full text-xs font-bold text-slate-700 mb-1.5">
+                <span>
+                  {{ 'LANDING_FEEDBACK.RATING_LABEL' | translate }}
+                  <abbr class="text-rose-500 no-underline ml-0.5" title="Required">*</abbr>
+                </span>
+                @if (activeRatingDisplay(); as score) {
+                  <output class="feedback-rating-score text-xs font-bold text-amber-600 tabular-nums">
+                    {{ 'LANDING_FEEDBACK.RATING_SCORE' | translate: { score } }}
+                  </output>
+                }
+              </legend>
+
+              <ul
+                class="flex items-center justify-between px-3 py-1.5 rounded-xl border border-slate-200/80 bg-slate-50/50 list-none m-0"
+                role="radiogroup"
+                [attr.aria-label]="'LANDING_FEEDBACK.RATING_GROUP_ARIA' | translate"
+                (mouseleave)="hoveredRating.set(null)"
+              >
+                @for (item of ratingOptions; track item.score) {
+                  <li>
+                    <button
+                      type="button"
+                      role="radio"
+                      class="feedback-star-btn p-1 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 transition-colors duration-150"
+                      [class.text-amber-400]="isStarActive(item.score)"
+                      [class.text-slate-200]="!isStarActive(item.score)"
+                      [attr.aria-checked]="selectedRating() === item.score"
+                      [attr.aria-label]="item.labelKey | translate"
+                      (mouseenter)="hoveredRating.set(item.score)"
+                      (click)="selectRating(item.score)"
+                    >
+                      <mat-icon aria-hidden="true">star</mat-icon>
+                    </button>
+                  </li>
+                }
+              </ul>
+
+              @if (hasFieldError('rating')) {
+                <p class="feedback-error-text text-[11px] font-medium text-rose-600 leading-snug" role="alert">
+                  {{ 'LANDING_FEEDBACK.ERRORS.RATING_REQUIRED' | translate }}
+                </p>
               }
-            </ul>
-          }
-        </fieldset>
+            </fieldset>
 
-        <!-- Nội dung nhận xét -->
-        <fieldset class="space-y-1.5">
-          <label for="fb-message" class="text-sm font-semibold text-slate-700">
-            Nội dung nhận xét <span class="text-red-500">*</span>
-          </label>
-          <textarea id="fb-message" rows="4" required placeholder="Chia sẻ trải nghiệm hoặc đề xuất của bạn..." class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-slate-50 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all resize-none"></textarea>
-        </fieldset>
+            <!-- Họ tên (tuỳ chọn) + Email (bắt buộc) -->
+            <fieldset class="space-y-1.5 border-0 p-0 m-0 min-w-0 w-full">
+              <legend class="sr-only">
+                {{ 'LANDING_FEEDBACK.EMAIL_LABEL' | translate }}
+              </legend>
 
-        <!-- Submit -->
-        <button type="submit" class="w-full py-3 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold text-sm hover:shadow-lg hover:shadow-blue-500/25 hover:-translate-y-0.5 transition-all duration-300 active:translate-y-0 flex items-center justify-center gap-2">
-          <mat-icon class="text-[18px] w-[18px] h-[18px]">send</mat-icon>
-          Gửi phản hồi
-        </button>
-      </form>
-    </div>
+              <section class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 min-w-0 w-full">
+                <section class="space-y-1 min-w-0">
+                  <label for="fb-fullname" class="flex items-center gap-1 text-xs font-bold text-slate-700">
+                    <span>{{ 'LANDING_FEEDBACK.NAME_LABEL' | translate }}</span>
+                    <small class="text-[11px] font-normal text-slate-400">
+                      ({{ 'LANDING_FEEDBACK.NAME_OPTIONAL' | translate }})
+                    </small>
+                  </label>
+                  <input
+                    id="fb-fullname"
+                    type="text"
+                    formControlName="fullName"
+                    autocomplete="name"
+                    [placeholder]="'LANDING_FEEDBACK.NAME_PLACEHOLDER' | translate"
+                    class="w-full px-3 py-2 rounded-lg border border-slate-200 bg-slate-50/70 text-xs text-slate-800 placeholder:text-slate-400 outline-none focus:bg-white focus:border-blue-600 transition-colors"
+                  />
+                </section>
+
+                <section class="space-y-1 min-w-0">
+                  <label for="fb-email" class="flex items-center gap-1 text-xs font-bold text-slate-700">
+                    <span>
+                      {{ 'LANDING_FEEDBACK.EMAIL_LABEL' | translate }}
+                      <abbr class="text-rose-500 no-underline ml-0.5" title="Required">*</abbr>
+                    </span>
+                  </label>
+                  <input
+                    id="fb-email"
+                    type="email"
+                    formControlName="email"
+                    autocomplete="email"
+                    [placeholder]="'LANDING_FEEDBACK.EMAIL_PLACEHOLDER' | translate"
+                    class="w-full px-3 py-2 rounded-lg border text-xs text-slate-800 placeholder:text-slate-400 outline-none focus:bg-white transition-colors"
+                    [class.border-rose-400]="hasFieldError('email')"
+                    [class.bg-rose-50/30]="hasFieldError('email')"
+                    [class.focus:border-rose-500]="hasFieldError('email')"
+                    [class.border-slate-200]="!hasFieldError('email')"
+                    [class.bg-slate-50/70]="!hasFieldError('email')"
+                    [class.focus:border-blue-600]="!hasFieldError('email')"
+                    [attr.aria-invalid]="hasFieldError('email')"
+                    aria-describedby="fb-email-error"
+                  />
+                </section>
+              </section>
+
+              @if (hasFieldError('email')) {
+                <p id="fb-email-error" class="feedback-error-text text-[11px] font-medium text-rose-600 leading-snug" role="alert">
+                  @if (feedbackForm.controls.email.errors?.['required']) {
+                    {{ 'LANDING_FEEDBACK.ERRORS.EMAIL_REQUIRED' | translate }}
+                  } @else {
+                    {{ 'LANDING_FEEDBACK.ERRORS.EMAIL_INVALID' | translate }}
+                  }
+                </p>
+              }
+            </fieldset>
+
+            <!-- Nội dung + Ảnh đính kèm -->
+            <fieldset class="space-y-1.5 border-0 p-0 m-0 min-w-0 w-full">
+              <legend class="sr-only">
+                {{ 'LANDING_FEEDBACK.MESSAGE_LABEL' | translate }}
+              </legend>
+
+              <label for="fb-message" class="flex items-center justify-between gap-2 text-xs font-bold text-slate-700">
+                <span>
+                  {{ 'LANDING_FEEDBACK.MESSAGE_LABEL' | translate }}
+                  <abbr class="text-rose-500 no-underline ml-0.5" title="Required">*</abbr>
+                </span>
+                @if (messageLength() > 0) {
+                  <output
+                    for="fb-message"
+                    class="feedback-counter text-[11px] font-semibold tabular-nums"
+                    [class.text-amber-600]="messageLength() >= 450"
+                    [class.text-slate-400]="messageLength() < 450"
+                  >
+                    {{ messageLength() }} / {{ messageMaxLength }}
+                  </output>
+                }
+              </label>
+
+              <textarea
+                id="fb-message"
+                rows="3"
+                formControlName="message"
+                [maxlength]="messageMaxLength"
+                [placeholder]="'LANDING_FEEDBACK.MESSAGE_PLACEHOLDER' | translate"
+                class="w-full px-3 py-2 rounded-lg border text-xs text-slate-800 placeholder:text-slate-400 outline-none focus:bg-white transition-colors resize-none leading-relaxed"
+                [class.border-rose-400]="hasFieldError('message')"
+                [class.bg-rose-50/30]="hasFieldError('message')"
+                [class.focus:border-rose-500]="hasFieldError('message')"
+                [class.border-slate-200]="!hasFieldError('message')"
+                [class.bg-slate-50/70]="!hasFieldError('message')"
+                [class.focus:border-blue-600]="!hasFieldError('message')"
+                [attr.aria-invalid]="hasFieldError('message')"
+                aria-describedby="fb-message-error"
+              ></textarea>
+
+              @if (hasFieldError('message')) {
+                <p id="fb-message-error" class="feedback-error-text text-[11px] font-medium text-rose-600 leading-snug" role="alert">
+                  @if (feedbackForm.controls.message.errors?.['required']) {
+                    {{ 'LANDING_FEEDBACK.ERRORS.MESSAGE_REQUIRED' | translate }}
+                  } @else if (feedbackForm.controls.message.errors?.['minlength']) {
+                    {{ 'LANDING_FEEDBACK.ERRORS.MESSAGE_MIN' | translate: { min: messageMinLength } }}
+                  } @else {
+                    {{ 'LANDING_FEEDBACK.ERRORS.MESSAGE_MAX' | translate: { max: messageMaxLength } }}
+                  }
+                </p>
+              }
+
+              <!-- Đính kèm ảnh (không có mô tả phụ thừa) -->
+              <section class="pt-0.5 space-y-1.5 min-w-0 w-full">
+                <input
+                  #fileInput
+                  id="fb-screenshot"
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  class="sr-only"
+                  (change)="onFileSelected($event)"
+                />
+
+                @if (attachedFile(); as file) {
+                  <figure class="feedback-attachment-card flex items-center gap-2.5 p-2 rounded-xl border border-slate-200 bg-slate-50/70 m-0 w-full max-w-full min-w-0 overflow-hidden">
+                    @if (attachmentPreviewUrl(); as previewUrl) {
+                      <img
+                        [src]="previewUrl"
+                        [alt]="file.name"
+                        class="w-9 h-9 rounded-lg object-cover border border-slate-200 shrink-0 bg-white"
+                      />
+                    } @else {
+                      <span class="w-9 h-9 rounded-lg border border-slate-200 shrink-0 bg-white flex items-center justify-center text-slate-400" aria-hidden="true">
+                        <mat-icon fontSet="material-icons-outlined">image</mat-icon>
+                      </span>
+                    }
+
+                    <figcaption class="flex-1 min-w-0 overflow-hidden flex flex-col">
+                      <span
+                        class="feedback-attachment-name block text-xs font-semibold text-slate-700 truncate"
+                        [title]="file.name"
+                      >
+                        {{ formatAttachmentName(file.name) }}
+                      </span>
+                      <small class="text-[11px] text-slate-400">{{ formatFileSize(file.size) }}</small>
+                    </figcaption>
+
+                    <button
+                      type="button"
+                      class="feedback-btn-sm w-7 h-7 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 flex items-center justify-center shrink-0 transition-colors"
+                      (click)="removeScreenshot()"
+                      [attr.aria-label]="'LANDING_FEEDBACK.ATTACHMENT_REMOVE_ARIA' | translate"
+                      [title]="'LANDING_FEEDBACK.ATTACHMENT_REMOVE_ARIA' | translate"
+                    >
+                      <mat-icon fontSet="material-icons-outlined" aria-hidden="true">delete_outline</mat-icon>
+                    </button>
+                  </figure>
+                } @else {
+                  <button
+                    type="button"
+                    class="feedback-btn-sm inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-dashed border-slate-300 bg-slate-50/70 text-xs font-semibold text-slate-600 hover:border-blue-400 hover:bg-blue-50/50 hover:text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 transition-colors"
+                    (click)="fileInput.click()"
+                  >
+                    <mat-icon fontSet="material-icons-outlined" aria-hidden="true">add_photo_alternate</mat-icon>
+                    <span>{{ 'LANDING_FEEDBACK.ATTACHMENT_ADD' | translate }}</span>
+                  </button>
+                }
+
+                @if (attachmentErrorKey(); as fileErrKey) {
+                  <p class="feedback-error-text text-[11px] font-medium text-rose-600 leading-snug" role="alert">
+                    {{ fileErrKey | translate }}
+                  </p>
+                }
+              </section>
+            </fieldset>
+
+            @if (submitErrorKey(); as errKey) {
+              <aside class="feedback-submit-error flex items-start gap-2 p-2.5 rounded-xl border border-rose-200 bg-rose-50 text-xs text-rose-700" role="alert">
+                <mat-icon fontSet="material-icons-outlined" class="shrink-0 mt-0.5" aria-hidden="true">error_outline</mat-icon>
+                <p class="flex-1 min-w-0 leading-relaxed m-0">
+                  {{ errKey | translate }}
+                </p>
+              </aside>
+            }
+          </section>
+
+          <!-- Footer hành động cố định dưới panel -->
+          <footer class="px-5 py-3 bg-slate-50/70 border-t border-slate-100 shrink-0">
+            <button
+              type="submit"
+              class="feedback-btn-sm w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-sky-500 text-white font-bold text-sm shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 hover:brightness-105 active:scale-[0.99] disabled:opacity-45 disabled:grayscale-[20%] disabled:shadow-none disabled:hover:brightness-100 disabled:hover:shadow-none disabled:active:scale-100 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 flex items-center justify-center gap-2 transition-all"
+              [disabled]="isSubmitDisabled()"
+            >
+              @if (isSubmitting()) {
+                <mat-icon class="feedback-spinner" aria-hidden="true">progress_activity</mat-icon>
+                <span>{{ 'LANDING_FEEDBACK.SUBMITTING_BTN' | translate }}</span>
+              } @else {
+                <mat-icon fontSet="material-icons-outlined" aria-hidden="true">send</mat-icon>
+                <span>{{ 'LANDING_FEEDBACK.SUBMIT_BTN' | translate }}</span>
+              }
+            </button>
+          </footer>
+        </form>
+      }
+    </section>
   }
 
-  <!-- Toggle Button -->
-  <button type="button" class="relative group flex items-center justify-center w-12 h-12" (click)="toggleFeedback()" [attr.aria-expanded]="feedbackOpen()" aria-label="Phản hồi / Hỗ trợ">
-    <!-- Outer pulsing ring (ẩn khi mở panel) -->
+  <!-- Nút FAB mở/đóng Feedback Panel -->
+  <button
+    type="button"
+    class="relative group flex items-center justify-center w-12 h-12 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+    (click)="toggleFeedback()"
+    [attr.aria-expanded]="feedbackOpen()"
+    [attr.aria-label]="
+      (feedbackOpen() ? 'LANDING_FEEDBACK.FAB_CLOSE_ARIA' : 'LANDING_FEEDBACK.FAB_OPEN_ARIA') | translate
+    "
+    [title]="
+      (feedbackOpen() ? 'LANDING_FEEDBACK.FAB_CLOSE_ARIA' : 'LANDING_FEEDBACK.FAB_OPEN_ARIA') | translate
+    "
+  >
     @if (!feedbackOpen()) {
-      <span class="absolute inset-0 rounded-full bg-[#00a3e8] opacity-30 animate-ping transition-opacity duration-300" style="animation-duration: 2s;"></span>
-      <span class="absolute inset-[-5px] rounded-full border border-[#00a3e8]/30 bg-[#00a3e8]/10"></span>
-      <span class="absolute inset-[-10px] rounded-full border border-[#00a3e8]/20 bg-[#00a3e8]/5"></span>
+      <span class="feedback-fab-ping absolute inset-0 rounded-full bg-sky-500 opacity-30 animate-ping" aria-hidden="true"></span>
+      <span class="absolute inset-[-5px] rounded-full border border-sky-500/30 bg-sky-500/10" aria-hidden="true"></span>
+      <span class="absolute inset-[-10px] rounded-full border border-sky-500/20 bg-sky-500/5" aria-hidden="true"></span>
     }
-    <!-- Button core -->
-    <span class="relative w-full h-full rounded-full bg-[#00a3e8] text-white flex items-center justify-center shadow-lg shadow-[#00a3e8]/40 transition-all duration-300">
-      <mat-icon class="text-[24px] w-6 h-6 transition-transform duration-300" [class.rotate-90]="feedbackOpen()">
-        {{ feedbackOpen() ? 'close' : 'receipt_long' }}
+
+    <span class="relative w-full h-full rounded-full bg-gradient-to-br from-blue-600 to-sky-500 text-white flex items-center justify-center shadow-lg shadow-blue-500/35 hover:brightness-105 transition-all duration-300">
+      <mat-icon
+        class="feedback-fab-icon transition-transform duration-300"
+        [class.rotate-90]="feedbackOpen()"
+        aria-hidden="true"
+      >
+        {{ feedbackOpen() ? 'close' : 'rate_review' }}
       </mat-icon>
     </span>
   </button>

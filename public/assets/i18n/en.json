@@ -617,6 +617,63 @@
       }
     }
   },
+  "LANDING_FEEDBACK": {
+    "FAB_OPEN_ARIA": "Open feedback panel",
+    "FAB_CLOSE_ARIA": "Close feedback panel",
+    "DIALOG_ARIA": "AI Smart Kanban feedback form",
+    "TITLE": "Rate your experience",
+    "CLOSE_ARIA": "Close feedback panel",
+    "RATING_LABEL": "Rating",
+    "RATING_GROUP_ARIA": "Select rating from 1 to 5 stars",
+    "RATING_SCORE": "{{score}}/5",
+    "RATINGS": {
+      "VERY_BAD": "1 star - Very poor",
+      "BAD": "2 stars - Poor",
+      "NEUTRAL": "3 stars - Neutral",
+      "GOOD": "4 stars - Satisfied",
+      "EXCELLENT": "5 stars - Excellent"
+    },
+    "NAME_LABEL": "Full name",
+    "NAME_OPTIONAL": "Optional",
+    "NAME_PLACEHOLDER": "Alex Morgan",
+    "EMAIL_LABEL": "Your email",
+    "EMAIL_PLACEHOLDER": "you@company.com",
+    "MESSAGE_LABEL": "Feedback",
+    "MESSAGE_PLACEHOLDER": "Share your experience or suggestions...",
+    "ATTACHMENT_ADD": "Attach image",
+    "ATTACHMENT_REMOVE_ARIA": "Remove attached image",
+    "SUBMIT_BTN": "Send feedback",
+    "SUBMITTING_BTN": "Sending...",
+    "ERRORS": {
+      "RATING_REQUIRED": "Please select a star rating.",
+      "EMAIL_REQUIRED": "Please enter your email address.",
+      "EMAIL_INVALID": "Please enter a valid email address.",
+      "MESSAGE_REQUIRED": "Please enter your feedback message.",
+      "MESSAGE_MIN": "Message must be at least {{min}} characters.",
+      "MESSAGE_MAX": "Message cannot exceed {{max}} characters.",
+      "INVALID_FILE_TYPE": "Only PNG, JPG, or WEBP images are supported.",
+      "FILE_TOO_LARGE": "Image size exceeds the 5MB limit.",
+      "STORAGE_ERROR": "Could not upload the attached image. Please retry or remove the file.",
+      "EMAIL_NOT_CONFIGURED": "The feedback service is temporarily unavailable. Please try again later.",
+      "EMAIL_DELIVERY_FAILED": "Your feedback was saved, but the confirmation email could not be sent right now.",
+      "FUNCTION_UNAVAILABLE": "Unable to reach the server right now. Please check your connection and try again.",
+      "UNKNOWN_ERROR": "Unable to submit feedback right now. Please try again."
+    },
+    "SUCCESS": {
+      "TITLE": "Thank you for your feedback!",
+      "SUBTITLE": "Your rating and message have been recorded.",
+      "TICKET_LABEL": "Reference ID",
+      "RATING_SUMMARY": "Rating",
+      "ADMIN_MAIL_LABEL": "Admin alert",
+      "ADMIN_MAIL_SENT": "Report delivered",
+      "ADMIN_MAIL_PENDING": "Pending",
+      "USER_MAIL_LABEL": "Confirmation email",
+      "USER_MAIL_SENT": "Sent to {{email}}",
+      "USER_MAIL_WARNING": "Feedback saved, but the confirmation email to {{email}} could not be sent right now.",
+      "SEND_ANOTHER": "Send another",
+      "DONE": "Close"
+    }
+  },
   "AI": {
     "QUOTA": {
       "TITLE": "AI QUOTA",
