@@ -447,7 +447,81 @@
     "TAB_SECURITY_F3": "API Key không lộ ra Frontend",
     "TAB_SECURITY_F4": "Service Role Key bảo mật",
     "TAB_SECURITY_F5": "Docker containerized",
-    "TAB_SECURITY_F6": "Mã hóa SHA-256 mọi file"
+    "TAB_SECURITY_F6": "Mã hóa SHA-256 mọi file",
+    "MOCKUP": {
+      "WORKSPACE_NAME": "Không gian làm việc Digit24",
+      "BTN_CREATE": "Tạo",
+      "TODAY": "Hôm nay",
+      "TOPBAR_AI": "WebP Engine",
+      "TOPBAR_STORAGE": "Supabase CDN",
+      "TOPBAR_SECURITY": "RLS Active",
+      "KANBAN": {
+        "COL_TODO": "Cần làm",
+        "COL_PROGRESS": "Đang làm",
+        "COL_DONE": "Hoàn thành",
+        "TASK_1": "Thiết kế hệ thống phân quyền RBAC",
+        "TASK_2": "Tối ưu nén ảnh tự động WebP 80%",
+        "TASK_3": "Kiểm thử bảo mật Supabase RLS",
+        "TASK_4": "Khởi tạo bảng Kanban realtime",
+        "TASK_5": "Kiểm thử Edge Functions",
+        "TASK_6": "Đồng bộ Gantt Timeline dự án",
+        "TASK_7": "Thiết lập Supabase Auth JWT",
+        "SPRINT_PROGRESS": "Sprint Q4"
+      },
+      "AI": {
+        "BEFORE_LABEL": "PNG gốc · 2.4 MB",
+        "AFTER_PENDING": "2.4 MB Raw",
+        "AFTER_RUNNING": "Đang nén...",
+        "AFTER_LABEL": "WebP 80% · 310 KB",
+        "SAVED_TOTAL": "-87% dung lượng",
+        "QUEUE_TITLE": "Hàng đợi Worker",
+        "BTN_OPTIMIZE": "Nén WebP",
+        "BTN_OPTIMIZED": "Đã nén 3/3",
+        "STATUS_READY": "Sẵn sàng tối ưu",
+        "STATUS_RUNNING": "Đang nén WebP 80%...",
+        "STATUS_DONE": "Đã tối ưu · Sạch EXIF",
+        "SUMMARY_VALUE": "7.3 MB → 945 KB (-87%)",
+        "EXIF_STRIPPED": "Sạch EXIF",
+        "THUMB_READY": "Đã tạo Thumb",
+        "LOSSLESS_WEBP": "Chuẩn WebP"
+      },
+      "PROJECT": {
+        "GANTT_TITLE": "Lịch trình Tuần",
+        "DAYS": [
+          "T2",
+          "T3",
+          "T4",
+          "T5",
+          "T6"
+        ],
+        "M1_TITLE": "Kiến trúc UI/UX",
+        "M2_TITLE": "API & Queue Worker",
+        "M3_TITLE": "Kiểm thử E2E",
+        "SUMMARY_TASKS": "12/14 tác vụ",
+        "SUMMARY_OVERDUE": "0 quá hạn"
+      },
+      "STORAGE": {
+        "QUOTA_LABEL": "Hạn mức người dùng",
+        "GROUP_TODAY": "Tải lên hôm nay",
+        "UPLOAD_LIVE": "Đang tối ưu...",
+        "UPLOAD_DONE": "Đã lưu"
+      },
+      "SECURITY": {
+        "MATRIX_TITLE": "Ma trận Phân quyền (RBAC)",
+        "COL_RESOURCE": "Tài nguyên",
+        "COL_OWNER": "Chủ dự án",
+        "COL_MEMBER": "Thành viên",
+        "COL_GUEST": "Khách",
+        "ROW_BOARD": "Chỉnh sửa bảng Kanban",
+        "ROW_STORAGE": "Quản lý Kho lưu trữ",
+        "ROW_RLS": "Cấu hình chính sách RLS",
+        "ROW_KEYS": "Khóa API & Service Key",
+        "STEP_GATEWAY": "API Gateway",
+        "STEP_RLS": "Kiểm tra RLS",
+        "STEP_HASH": "SHA-256 Digest",
+        "VERIFIED": "Đã xác thực"
+      }
+    }
   },
   "CREATE_TASK": {
     "TITLE_PLACEHOLDER": "Tên tác vụ",

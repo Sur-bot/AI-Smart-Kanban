@@ -287,7 +287,81 @@
     "TAB_SECURITY_F3": "API Key never exposed to frontend",
     "TAB_SECURITY_F4": "Secure Service Role Key",
     "TAB_SECURITY_F5": "Docker containerized",
-    "TAB_SECURITY_F6": "SHA-256 encryption for all files"
+    "TAB_SECURITY_F6": "SHA-256 encryption for all files",
+    "MOCKUP": {
+      "WORKSPACE_NAME": "Digit24 Workspace",
+      "BTN_CREATE": "Create",
+      "TODAY": "Today",
+      "TOPBAR_AI": "WebP Engine",
+      "TOPBAR_STORAGE": "Supabase CDN",
+      "TOPBAR_SECURITY": "RLS Active",
+      "KANBAN": {
+        "COL_TODO": "To Do",
+        "COL_PROGRESS": "In Progress",
+        "COL_DONE": "Done",
+        "TASK_1": "Design RBAC permission matrix",
+        "TASK_2": "Auto-compress WebP 80% pipeline",
+        "TASK_3": "Verify Supabase RLS policies",
+        "TASK_4": "Initialize realtime Kanban board",
+        "TASK_5": "Test Edge Functions",
+        "TASK_6": "Sync Project Gantt Timeline",
+        "TASK_7": "Setup Supabase Auth JWT",
+        "SPRINT_PROGRESS": "Sprint Q4"
+      },
+      "AI": {
+        "BEFORE_LABEL": "Original PNG · 2.4 MB",
+        "AFTER_PENDING": "2.4 MB Raw",
+        "AFTER_RUNNING": "Compressing...",
+        "AFTER_LABEL": "WebP 80% · 310 KB",
+        "SAVED_TOTAL": "-87% payload",
+        "QUEUE_TITLE": "Worker Queue",
+        "BTN_OPTIMIZE": "Compress WebP",
+        "BTN_OPTIMIZED": "3/3 Done",
+        "STATUS_READY": "Ready to optimize",
+        "STATUS_RUNNING": "Compressing WebP 80%...",
+        "STATUS_DONE": "Optimized · EXIF Clean",
+        "SUMMARY_VALUE": "7.3 MB → 945 KB (-87%)",
+        "EXIF_STRIPPED": "EXIF Clean",
+        "THUMB_READY": "Thumb Ready",
+        "LOSSLESS_WEBP": "WebP Ready"
+      },
+      "PROJECT": {
+        "GANTT_TITLE": "Weekly Schedule",
+        "DAYS": [
+          "Mon",
+          "Tue",
+          "Wed",
+          "Thu",
+          "Fri"
+        ],
+        "M1_TITLE": "UI/UX Architecture",
+        "M2_TITLE": "API & Queue Worker",
+        "M3_TITLE": "Automated E2E Suite",
+        "SUMMARY_TASKS": "12/14 tasks",
+        "SUMMARY_OVERDUE": "0 overdue"
+      },
+      "STORAGE": {
+        "QUOTA_LABEL": "User Quota",
+        "GROUP_TODAY": "Uploaded Today",
+        "UPLOAD_LIVE": "Optimizing...",
+        "UPLOAD_DONE": "Stored"
+      },
+      "SECURITY": {
+        "MATRIX_TITLE": "Role Permissions Matrix (RBAC)",
+        "COL_RESOURCE": "Resource",
+        "COL_OWNER": "Owner",
+        "COL_MEMBER": "Member",
+        "COL_GUEST": "Guest",
+        "ROW_BOARD": "Edit Kanban board",
+        "ROW_STORAGE": "Manage Storage Quota",
+        "ROW_RLS": "Configure RLS Policies",
+        "ROW_KEYS": "API & Service Role Keys",
+        "STEP_GATEWAY": "API Gateway",
+        "STEP_RLS": "RLS Check",
+        "STEP_HASH": "SHA-256 Digest",
+        "VERIFIED": "Verified"
+      }
+    }
   },
   "CREATE_TASK": {
     "TITLE_PLACEHOLDER": "Task name",
