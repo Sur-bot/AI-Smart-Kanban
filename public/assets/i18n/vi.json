@@ -487,13 +487,7 @@
       },
       "PROJECT": {
         "GANTT_TITLE": "Lịch trình Tuần",
-        "DAYS": [
-          "T2",
-          "T3",
-          "T4",
-          "T5",
-          "T6"
-        ],
+        "DAYS": ["T2", "T3", "T4", "T5", "T6"],
         "M1_TITLE": "Kiến trúc UI/UX",
         "M2_TITLE": "API & Queue Worker",
         "M3_TITLE": "Kiểm thử E2E",
@@ -670,7 +664,118 @@
   },
   "LANDING_TECH": {
     "SUBTITLE": "Nền tảng công nghệ",
-    "TITLE": "Được xây dựng trên những công nghệ hàng đầu"
+    "TITLE": "Xây dựng trên những công nghệ hàng đầu",
+    "DESCRIPTION": "Khám phá đầy đủ 17 công nghệ cốt lõi vận hành AI Smart Kanban qua 4 tầng kiến trúc — từ giao diện Kanban phản ứng tức thì, AI Copilot đến lưu trữ và kiểm thử tự động.",
+    "FILTER_ARIA": "Chuyển đổi tầng kiến trúc công nghệ",
+    "LAYERS_ARIA": "Danh sách công nghệ theo tầng kiến trúc",
+    "FILTERS": {
+      "ALL": "Tất cả"
+    },
+    "GROUPS": {
+      "FRONTEND": {
+        "TITLE": "Frontend & UI",
+        "DESCRIPTION": "Kiến trúc client phản hồi tức thì với kéo thả Kanban mượt mà, Mobile-First và đa ngôn ngữ trực tiếp."
+      },
+      "BACKEND": {
+        "TITLE": "AI & Backend",
+        "DESCRIPTION": "Điều phối nghiệp vụ kết hợp Google Gemini AI cùng REST API hiệu năng cao và hàng đợi xử lý nền."
+      },
+      "DATA": {
+        "TITLE": "Dữ liệu & Lưu trữ",
+        "DESCRIPTION": "Cơ sở dữ liệu quan hệ chuẩn ACID, xác thực OAuth bảo mật và lưu trữ ảnh đối tượng tách biệt."
+      },
+      "DEVOPS": {
+        "TITLE": "Kiểm thử & Hạ tầng",
+        "DESCRIPTION": "Kiểm thử tự động từ Unit đến E2E đa trình duyệt kết hợp Docker Compose và triển khai Edge trên Vercel."
+      }
+    },
+    "ITEMS": {
+      "ANGULAR": {
+        "ALT": "Logo Angular",
+        "ROLE": "Framework SPA cốt lõi",
+        "DESCRIPTION": "Vận hành toàn bộ ứng dụng web với Standalone Components, trạng thái phản ứng Signals và Lazy Loading."
+      },
+      "TYPESCRIPT": {
+        "ALT": "Logo TypeScript",
+        "ROLE": "Kiểu tĩnh chặt chẽ",
+        "DESCRIPTION": "Đảm bảo an toàn kiểu dữ liệu xuyên suốt mô hình nghiệp vụ, hợp đồng API, state store và bộ kiểm thử."
+      },
+      "TAILWIND": {
+        "ALT": "Logo Tailwind CSS",
+        "ROLE": "Utility-First Styling",
+        "DESCRIPTION": "Chuẩn hóa giao diện Mobile-First Responsive, design token nhất quán và SCSS cô lập trên mọi màn hình."
+      },
+      "MATERIAL": {
+        "ALT": "Logo Angular Material và CDK",
+        "ROLE": "UI & Kéo thả Kanban",
+        "DESCRIPTION": "Cung cấp cơ chế kéo thả Kanban mượt mà, hộp thoại, Bottom Sheet cho mobile và hệ thống icon Material."
+      },
+      "RXJS": {
+        "ALT": "Logo RxJS",
+        "ROLE": "Luồng bất đồng bộ",
+        "DESCRIPTION": "Điều phối luồng HTTP bất đồng bộ, bộ chặn xác thực Interceptor, xử lý lỗi và đồng bộ trạng thái."
+      },
+      "I18N": {
+        "ALT": "Biểu tượng đa ngôn ngữ ngx-translate",
+        "ROLE": "Đa ngôn ngữ động (i18n)",
+        "DESCRIPTION": "Chuyển đổi tức thì giữa Tiếng Việt và Tiếng Anh ngay lúc chạy trên cả Landing Page lẫn Workspace."
+      },
+      "GEMINI": {
+        "ALT": "Logo Google Gemini",
+        "ROLE": "Động cơ AI Copilot",
+        "DESCRIPTION": "Phân tích tiến độ dự án, chia nhỏ tác vụ, gợi ý mức ưu tiên và tóm tắt hằng ngày kèm kiểm soát quota."
+      },
+      "NODEJS": {
+        "ALT": "Logo Node.js",
+        "ROLE": "REST API & Phân quyền",
+        "DESCRIPTION": "Xử lý API xác thực, phân quyền thành viên theo vai trò, điều phối AI prompt và cấp Presigned URL tải ảnh."
+      },
+      "REDIS": {
+        "ALT": "Logo Redis và BullMQ",
+        "ROLE": "Hàng đợi & Bộ nhớ đệm",
+        "DESCRIPTION": "Vận hành worker xử lý tác vụ nền với BullMQ, đồng thời lưu đệm Presigned URL và đếm quota tức thì."
+      },
+      "SUPABASE": {
+        "ALT": "Logo Supabase",
+        "ROLE": "Xác thực & Cloud SDK",
+        "DESCRIPTION": "Hỗ trợ xác thực Email, OAuth Google & Facebook, đồng bộ phiên JWT và phân quyền dữ liệu RLS."
+      },
+      "POSTGRESQL": {
+        "ALT": "Logo PostgreSQL",
+        "ROLE": "Cơ sở dữ liệu ACID",
+        "DESCRIPTION": "Lưu trữ bền vững dự án, thẻ Kanban, phiên chat AI và metadata ảnh với giao dịch an toàn, đánh chỉ mục."
+      },
+      "PRISMA": {
+        "ALT": "Logo Prisma ORM",
+        "ROLE": "Mô hình dữ liệu Type-Safe",
+        "DESCRIPTION": "Định nghĩa lược đồ quan hệ cho hạn mức lưu trữ, thông tin tập tin và thực thể dự án kèm migration."
+      },
+      "MINIO": {
+        "ALT": "Logo MinIO S3 Storage",
+        "ROLE": "Lưu trữ đối tượng S3",
+        "DESCRIPTION": "Tách biệt file nhị phân khỏi SQL qua private bucket, upload trực tiếp bằng Presigned URL và ảnh nền LQIP."
+      },
+      "VITEST": {
+        "ALT": "Logo Vitest",
+        "ROLE": "Unit Test tốc độ cao",
+        "DESCRIPTION": "Thực thi kiểm thử đơn vị cho component, guard, interceptor và service trên JSDOM kèm đo phủ V8."
+      },
+      "PLAYWRIGHT": {
+        "ALT": "Logo Playwright",
+        "ROLE": "E2E đa trình duyệt",
+        "DESCRIPTION": "Tự động kiểm thử hành trình người dùng thực trên Chromium và Firefox theo mô hình Page Object Model."
+      },
+      "DOCKER": {
+        "ALT": "Logo Docker",
+        "ROLE": "Hạ tầng Container",
+        "DESCRIPTION": "Chuẩn hóa dịch vụ nền qua Docker Compose để khởi tạo tự động MinIO Object Storage và hàng đợi Redis."
+      },
+      "VERCEL": {
+        "ALT": "Logo Vercel",
+        "ROLE": "Triển khai Edge SPA",
+        "DESCRIPTION": "Phát hành bản build Angular trên hạ tầng biên toàn cầu với cấu hình SPA rewrite tự động và độ trễ thấp."
+      }
+    }
   },
   "AI": {
     "QUOTA": {

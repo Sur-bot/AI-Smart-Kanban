@@ -327,13 +327,7 @@
       },
       "PROJECT": {
         "GANTT_TITLE": "Weekly Schedule",
-        "DAYS": [
-          "Mon",
-          "Tue",
-          "Wed",
-          "Thu",
-          "Fri"
-        ],
+        "DAYS": ["Mon", "Tue", "Wed", "Thu", "Fri"],
         "M1_TITLE": "UI/UX Architecture",
         "M2_TITLE": "API & Queue Worker",
         "M3_TITLE": "Automated E2E Suite",
@@ -509,8 +503,119 @@
     "BUTTON_TITLE": "Try AI Smart Kanban for free"
   },
   "LANDING_TECH": {
-    "SUBTITLE": "Technology Platform",
-    "TITLE": "Built on leading technologies"
+    "SUBTITLE": "Technology Stack",
+    "TITLE": "Built on modern, reliable technologies",
+    "DESCRIPTION": "Explore all 17 core technologies powering AI Smart Kanban across four layers—from reactive UI and Gemini AI Copilot to zero-trust storage and automated testing.",
+    "FILTER_ARIA": "Switch architecture layer",
+    "LAYERS_ARIA": "Technology stack by architecture layer",
+    "FILTERS": {
+      "ALL": "All"
+    },
+    "GROUPS": {
+      "FRONTEND": {
+        "TITLE": "Frontend & UI",
+        "DESCRIPTION": "Reactive client architecture delivering instant Kanban workflows, mobile-first layouts, and real-time localization."
+      },
+      "BACKEND": {
+        "TITLE": "AI & Backend",
+        "DESCRIPTION": "Server orchestration combining Google Gemini intelligence with high-throughput REST APIs and background queues."
+      },
+      "DATA": {
+        "TITLE": "Data & Storage",
+        "DESCRIPTION": "Relational data integrity, multi-provider OAuth security, and decoupled S3-compatible object media storage."
+      },
+      "DEVOPS": {
+        "TITLE": "Testing & Infra",
+        "DESCRIPTION": "Automated unit and cross-browser E2E testing paired with Dockerized services and global Vercel delivery."
+      }
+    },
+    "ITEMS": {
+      "ANGULAR": {
+        "ALT": "Angular logo",
+        "ROLE": "Core SPA Framework",
+        "DESCRIPTION": "Drives the entire web app using Standalone Components, reactive Signal state, and lazy-loaded routes."
+      },
+      "TYPESCRIPT": {
+        "ALT": "TypeScript logo",
+        "ROLE": "Type-Safe Language",
+        "DESCRIPTION": "Enforces strict static typing across domain models, API contracts, state stores, and automated test suites."
+      },
+      "TAILWIND": {
+        "ALT": "Tailwind CSS logo",
+        "ROLE": "Utility-First Styling",
+        "DESCRIPTION": "Delivers responsive mobile-first layouts, consistent design tokens, and lightweight scoped SCSS across viewports."
+      },
+      "MATERIAL": {
+        "ALT": "Angular Material and CDK logo",
+        "ROLE": "UI & Drag-and-Drop",
+        "DESCRIPTION": "Powers smooth Kanban drag-and-drop boards, accessible dialogs, mobile bottom sheets, and Material icons."
+      },
+      "RXJS": {
+        "ALT": "RxJS logo",
+        "ROLE": "Reactive Streams",
+        "DESCRIPTION": "Coordinates asynchronous HTTP pipelines, auth token interceptors, centralized error handling, and workspace sync."
+      },
+      "I18N": {
+        "ALT": "Internationalization globe logo",
+        "ROLE": "Dynamic Localization",
+        "DESCRIPTION": "Switches seamlessly between English and Vietnamese dictionaries at runtime across every page and workspace."
+      },
+      "GEMINI": {
+        "ALT": "Google Gemini logo",
+        "ROLE": "Contextual AI Copilot",
+        "DESCRIPTION": "Analyzes project workloads, breaks down tasks, suggests priorities, and summarizes daily progress with quota control."
+      },
+      "NODEJS": {
+        "ALT": "Node.js logo",
+        "ROLE": "REST API & Permissions",
+        "DESCRIPTION": "Handles authenticated endpoints, role-based workspace access control, AI orchestration, and presigned upload URLs."
+      },
+      "REDIS": {
+        "ALT": "Redis and BullMQ logo",
+        "ROLE": "Queues & Fast Cache",
+        "DESCRIPTION": "Runs asynchronous BullMQ background workers while caching presigned media URLs and real-time quota counters."
+      },
+      "SUPABASE": {
+        "ALT": "Supabase logo",
+        "ROLE": "Auth & Cloud SDK",
+        "DESCRIPTION": "Manages Email verification, Google & Facebook OAuth, JWT session syncing, and Row-Level Security (RLS)."
+      },
+      "POSTGRESQL": {
+        "ALT": "PostgreSQL logo",
+        "ROLE": "ACID Relational DB",
+        "DESCRIPTION": "Persists projects, Kanban tasks, AI chat sessions, and media metadata with transactional safety and indexed queries."
+      },
+      "PRISMA": {
+        "ALT": "Prisma ORM logo",
+        "ROLE": "Type-Safe Data Modeling",
+        "DESCRIPTION": "Defines relational schemas for storage quotas, file metadata, and workspace entities with clean migrations."
+      },
+      "MINIO": {
+        "ALT": "MinIO S3 Storage logo",
+        "ROLE": "S3 Object Storage",
+        "DESCRIPTION": "Isolates binary media from SQL using private buckets, direct presigned browser uploads, and progressive LQIP previews."
+      },
+      "VITEST": {
+        "ALT": "Vitest logo",
+        "ROLE": "Fast Unit Testing",
+        "DESCRIPTION": "Runs component, guard, interceptor, and service unit tests in JSDOM with V8 coverage across happy and error paths."
+      },
+      "PLAYWRIGHT": {
+        "ALT": "Playwright logo",
+        "ROLE": "Cross-Browser E2E",
+        "DESCRIPTION": "Automates end-to-end user flows on Chromium and Firefox using structured Page Object Models."
+      },
+      "DOCKER": {
+        "ALT": "Docker logo",
+        "ROLE": "Container Services",
+        "DESCRIPTION": "Standardizes local and backend infrastructure via Docker Compose for MinIO object storage and Redis queues."
+      },
+      "VERCEL": {
+        "ALT": "Vercel logo",
+        "ROLE": "Edge SPA Hosting",
+        "DESCRIPTION": "Deploys optimized Angular production builds globally with SPA rewrite rules and low-latency edge caching."
+      }
+    }
   },
   "AI": {
     "QUOTA": {

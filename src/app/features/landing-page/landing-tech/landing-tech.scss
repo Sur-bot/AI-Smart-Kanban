@@ -1,39 +1,210 @@
+// ─── Tech Stack Section (Minimalism & Brand-Synchronized Blue/Sky UI) ────
 .tech-section {
-  @apply bg-slate-50 py-20 sm:py-28 border-t border-slate-200;
+  @apply relative scroll-mt-16 py-20 sm:py-28 border-t border-blue-100/70;
+  background: linear-gradient(180deg, #ffffff 0%, #f4f9ff 55%, #eaf3ff 100%);
 }
 
 .tech-container {
-  @apply max-w-7xl mx-auto px-4 sm:px-6;
+  @apply max-w-6xl mx-auto px-4 sm:px-6;
 }
 
+// ─── Section Header (Đồng bộ typography của landing-solutions) ───────────
 .tech-header {
-  @apply text-center mb-14;
+  @apply text-center mb-10 sm:mb-12;
 }
 
-.tech-subtitle {
-  @apply text-sm font-bold text-slate-500 tracking-widest uppercase mb-4;
+.tech-eyebrow {
+  @apply inline-flex items-center justify-center gap-2 px-3.5 py-1 rounded-full
+         border border-blue-100 bg-blue-50/80 text-xs font-bold
+         text-blue-700 tracking-wider uppercase mb-4;
+}
+
+.tech-eyebrow-icon {
+  @apply text-blue-600 flex items-center justify-center shrink-0;
+  width: 1rem;
+  height: 1rem;
+  font-size: 1rem;
+  line-height: 1rem;
 }
 
 .tech-title {
-  @apply text-2xl sm:text-3xl font-bold text-slate-900;
+  @apply text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-4;
 }
 
+.tech-subtitle {
+  @apply text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed;
+}
+
+// ─── Minimalist Segmented Tab Navigation ─────────────────────────────────
+.tech-tabs-nav {
+  @apply flex justify-center mb-10 sm:mb-12;
+}
+
+.tech-tabs-list {
+  @apply w-full sm:w-auto flex flex-wrap lg:flex-nowrap items-center justify-center gap-1
+         p-1.5 rounded-2xl bg-white/95 border border-slate-200/80 shadow-sm list-none m-0;
+}
+
+.tech-tab-item {
+  @apply shrink-0;
+
+  &--all {
+    @apply lg:pl-1.5 lg:ml-0.5 lg:border-l lg:border-slate-200/80;
+  }
+}
+
+.tech-tab-btn {
+  @apply inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl
+         text-xs sm:text-[13px] font-semibold text-slate-600 bg-transparent border border-transparent
+         whitespace-nowrap hover:text-blue-600 hover:bg-blue-50/60
+         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-1
+         transition-all duration-200 cursor-pointer;
+
+  &.is-active {
+    @apply bg-blue-600 text-white shadow-sm shadow-blue-600/20 hover:bg-blue-600 hover:text-white;
+
+    .tech-tab-icon {
+      @apply text-blue-100;
+    }
+
+    .tech-tab-count {
+      @apply bg-white/20 text-white;
+    }
+  }
+}
+
+.tech-tab-icon {
+  @apply text-slate-400 flex items-center justify-center shrink-0 transition-colors;
+  width: 1rem;
+  height: 1rem;
+  font-size: 1rem;
+  line-height: 1rem;
+}
+
+.tech-tab-count {
+  @apply inline-flex items-center justify-center min-w-[20px] h-5 px-1.5
+         rounded-full text-[11px] font-bold
+         bg-slate-100 text-slate-600 transition-colors;
+}
+
+// ─── Architecture Layer Panels ───────────────────────────────────────────
+.tech-layers {
+  @apply flex flex-col gap-10 sm:gap-12;
+}
+
+.tech-layer-group {
+  @apply block;
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.tech-layer-header {
+  @apply flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1.5 sm:gap-4
+         pb-3.5 mb-5 border-b border-slate-200/75;
+}
+
+.tech-layer-title {
+  @apply inline-flex items-center gap-2 text-base sm:text-lg font-bold text-slate-900 m-0 shrink-0;
+}
+
+.tech-layer-icon {
+  @apply text-blue-600 flex items-center justify-center shrink-0;
+  width: 1.125rem;
+  height: 1.125rem;
+  font-size: 1.125rem;
+  line-height: 1.125rem;
+}
+
+.tech-layer-desc {
+  @apply text-sm text-slate-500 m-0 leading-relaxed;
+}
+
+// ─── Minimalist Tech Cards Grid ──────────────────────────────────────────
 .tech-grid {
-  @apply grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 list-none p-0 m-0;
+  @apply grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 list-none p-0 m-0;
+
+  &--cols-2 {
+    @apply lg:grid-cols-2;
+  }
+
+  &--cols-3 {
+    @apply lg:grid-cols-3;
+  }
+}
+
+.tech-grid-item {
+  @apply min-w-0 flex;
 }
 
 .tech-card {
-  @apply flex flex-col items-center gap-3 p-6 rounded-2xl bg-white border border-slate-200 hover:shadow-lg hover:-translate-y-1 transition-all duration-300;
+  @apply w-full flex flex-col gap-3.5 p-5 sm:p-6 rounded-2xl
+         bg-white/95 border border-slate-200/80 shadow-sm
+         hover:shadow-xl hover:shadow-blue-500/10 hover:border-blue-200/90 hover:-translate-y-0.5
+         transition-all duration-300 min-w-0;
+
+  &--featured {
+    @apply border-blue-200/90;
+    background: linear-gradient(155deg, #ffffff 0%, #f0f7ff 100%);
+  }
 }
 
-.tech-icon-wrapper {
-  @apply w-14 h-14 rounded-2xl flex items-center justify-center;
+.tech-card-head {
+  @apply flex items-start gap-3.5 min-w-0;
 }
 
-.tech-icon {
-  @apply w-8 h-8 object-contain;
+.tech-logo-frame {
+  @apply w-11 h-11 rounded-xl border border-slate-100 bg-slate-50/90
+         flex items-center justify-center shrink-0 m-0 p-2;
 }
 
-.tech-name {
-  @apply font-bold text-slate-700 text-sm;
+.tech-logo-img {
+  @apply w-7 h-7 object-contain block;
+}
+
+.tech-logo-fallback {
+  @apply text-blue-600 flex items-center justify-center;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+}
+
+.tech-card-heading {
+  @apply flex-1 min-w-0 flex flex-col gap-0.5;
+}
+
+.tech-card-name {
+  @apply text-base font-bold text-slate-900 leading-snug m-0 break-words;
+}
+
+.tech-card-role {
+  @apply text-xs font-medium text-slate-500 leading-snug m-0 break-words;
+}
+
+.tech-version-pill {
+  @apply shrink-0 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600
+         text-[11px] font-semibold whitespace-nowrap;
+
+  &--featured {
+    @apply bg-blue-50 text-blue-700 border border-blue-100;
+  }
+}
+
+.tech-card-desc {
+  @apply text-sm text-slate-600 leading-relaxed m-0 break-words;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tech-tab-btn,
+  .tech-tab-icon,
+  .tech-tab-count,
+  .tech-card {
+    transition: none;
+  }
+
+  .tech-card:hover {
+    transform: none;
+  }
 }

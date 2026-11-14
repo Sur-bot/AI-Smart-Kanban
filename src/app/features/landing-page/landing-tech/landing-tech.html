@@ -1,29 +1,139 @@
-<!-- ──── Tech Stack Section ──── -->
-<section id="tech" class="tech-section">
-  <div class="tech-container">
+<!-- ──── Tech Stack Section (Minimalism, Đồng bộ Landing UI & Semantic HTML5) ──── -->
+<section
+  id="tech"
+  class="tech-section"
+  aria-labelledby="tech-heading"
+  itemscope
+  itemtype="https://schema.org/SoftwareApplication"
+>
+  <meta itemprop="name" content="AI Smart Kanban" />
+  <meta itemprop="applicationCategory" content="ProjectManagementApplication" />
+  <meta itemprop="operatingSystem" content="Web" />
+
+  <section class="tech-container">
     <header class="tech-header">
-      <h2 class="tech-subtitle">{{ 'LANDING_TECH.SUBTITLE' | translate }}</h2>
-      <p class="tech-title">{{ 'LANDING_TECH.TITLE' | translate }}</p>
+      <p class="tech-eyebrow">
+        <mat-icon fontSet="material-icons-outlined" class="tech-eyebrow-icon" aria-hidden="true">layers</mat-icon>
+        <span>{{ 'LANDING_TECH.SUBTITLE' | translate }}</span>
+      </p>
+
+      <h2 id="tech-heading" class="tech-title">
+        {{ 'LANDING_TECH.TITLE' | translate }}
+      </h2>
+
+      <p class="tech-subtitle">
+        {{ 'LANDING_TECH.DESCRIPTION' | translate }}
+      </p>
     </header>
 
-    <ul class="tech-grid">
-      @for (tech of technologies; track tech.name) {
-        <li class="tech-card" [class]="tech.colSpanClass || ''">
-          <figure class="tech-icon-wrapper m-0" [class]="tech.bgClass">
-            <img
-              [src]="tech.iconPath"
-              [alt]="tech.altText"
-              width="32"
-              height="32"
-              loading="lazy"
-              decoding="async"
-              class="tech-icon"
-              (error)="handleImageError($event)"
-            />
-          </figure>
-          <span class="tech-name">{{ tech.name }}</span>
-        </li>
+    <nav class="tech-tabs-nav" [attr.aria-label]="'LANDING_TECH.FILTER_ARIA' | translate">
+      <ul class="tech-tabs-list" role="tablist">
+        @for (tab of filterTabs(); track tab.id) {
+          <li role="presentation" class="tech-tab-item" [class.tech-tab-item--all]="tab.id === 'all'">
+            <button
+              type="button"
+              role="tab"
+              class="tech-tab-btn"
+              [id]="'tech-tab-' + tab.id"
+              [class.is-active]="activeCategory() === tab.id"
+              [attr.aria-selected]="activeCategory() === tab.id"
+              [attr.title]="tab.labelKey | translate"
+              (click)="selectCategory(tab.id)"
+            >
+              <mat-icon fontSet="material-icons-outlined" class="tech-tab-icon" aria-hidden="true">
+                {{ tab.icon }}
+              </mat-icon>
+              <span>{{ tab.labelKey | translate }}</span>
+              <span class="tech-tab-count">{{ tab.count }}</span>
+            </button>
+          </li>
+        }
+      </ul>
+    </nav>
+
+    <section class="tech-layers" [attr.aria-label]="'LANDING_TECH.LAYERS_ARIA' | translate">
+      @for (group of layerGroups; track group.id) {
+        <section
+          class="tech-layer-group"
+          role="tabpanel"
+          [attr.aria-labelledby]="'tech-group-heading-' + group.id"
+          [hidden]="!isGroupVisible(group.id)"
+        >
+          <header class="tech-layer-header">
+            <h3 [id]="'tech-group-heading-' + group.id" class="tech-layer-title">
+              <mat-icon fontSet="material-icons-outlined" class="tech-layer-icon" aria-hidden="true">
+                {{ group.icon }}
+              </mat-icon>
+              <span>{{ group.titleKey | translate }}</span>
+            </h3>
+            <p class="tech-layer-desc">
+              {{ group.descriptionKey | translate }}
+            </p>
+          </header>
+
+          <ul
+            class="tech-grid"
+            [class.tech-grid--cols-2]="group.gridColumns === 2"
+            [class.tech-grid--cols-3]="group.gridColumns === 3"
+            role="list"
+          >
+            @for (tech of group.items; track tech.id) {
+              <li class="tech-grid-item">
+                <article
+                  class="tech-card"
+                  [class.tech-card--featured]="tech.featured"
+                  itemscope
+                  itemtype="https://schema.org/SoftwareApplication"
+                >
+                  <meta itemprop="applicationCategory" [content]="tech.schemaCategory" />
+
+                  <header class="tech-card-head">
+                    <figure class="tech-logo-frame">
+                      @if (!isIconFailed(tech.id)) {
+                        <img
+                          [src]="tech.iconPath"
+                          [alt]="tech.altTextKey | translate"
+                          width="28"
+                          height="28"
+                          loading="lazy"
+                          decoding="async"
+                          class="tech-logo-img"
+                          (error)="handleImageError(tech.id)"
+                        />
+                      } @else {
+                        <mat-icon
+                          fontSet="material-icons-outlined"
+                          class="tech-logo-fallback"
+                          aria-hidden="true"
+                        >
+                          {{ tech.fallbackIcon }}
+                        </mat-icon>
+                      }
+                    </figure>
+
+                    <hgroup class="tech-card-heading">
+                      <h4 class="tech-card-name" itemprop="name">{{ tech.name }}</h4>
+                      <p class="tech-card-role">{{ tech.roleKey | translate }}</p>
+                    </hgroup>
+
+                    <span
+                      class="tech-version-pill"
+                      [class.tech-version-pill--featured]="tech.featured"
+                      itemprop="softwareVersion"
+                    >
+                      {{ tech.version }}
+                    </span>
+                  </header>
+
+                  <p class="tech-card-desc" itemprop="description">
+                    {{ tech.descriptionKey | translate }}
+                  </p>
+                </article>
+              </li>
+            }
+          </ul>
+        </section>
       }
-    </ul>
-  </div>
+    </section>
+  </section>
 </section>
