@@ -39,7 +39,7 @@
   "LANDING": {
     "SOLUTIONS_SECTION": {
       "TITLE": "Mọi thứ bạn cần, trong một nền tảng",
-      "SUBTITLE": "AI Smart Kanban cung cấp bộ công cụ hoàn chỉnh cho mọi đội nhóm và phòng ban.",
+      "SUBTITLE": "Digit24 cung cấp bộ công cụ hoàn chỉnh cho mọi đội nhóm và phòng ban.",
       "GROUP_PROCESS": "QUY TRÌNH & DỰ ÁN",
       "GROUP_ACTIVITY": "HOẠT ĐỘNG & TÁC VỤ",
       "GROUP_INFRA": "CƠ SỞ HẠ TẦNG & BẢO MẬT",
@@ -656,16 +656,16 @@
     "COPYRIGHT": "© 2026 Digit24. Xây dựng cho tương lai."
   },
   "LANDING_CTA": {
-    "TITLE_1": "Khám phá AI Smart Kanban:",
+    "TITLE_1": "Khám phá Digit24:",
     "TITLE_2": "Giải pháp toàn diện của bạn!",
     "DESCRIPTION": "Thay thế nhiều công cụ rời rạc bằng một nền tảng duy nhất có tất cả: Kanban, Tối ưu ảnh AI, Lưu trữ đám mây và Quản lý dự án.",
     "BUTTON": "Dùng thử miễn phí",
-    "BUTTON_TITLE": "Dùng thử AI Smart Kanban miễn phí"
+    "BUTTON_TITLE": "Dùng thử Digit24 miễn phí"
   },
   "LANDING_TECH": {
     "SUBTITLE": "Nền tảng công nghệ",
     "TITLE": "Xây dựng trên những công nghệ hàng đầu",
-    "DESCRIPTION": "Khám phá đầy đủ 17 công nghệ cốt lõi vận hành AI Smart Kanban qua 4 tầng kiến trúc — từ giao diện Kanban phản ứng tức thì, AI Copilot đến lưu trữ và kiểm thử tự động.",
+    "DESCRIPTION": "Khám phá đầy đủ 17 công nghệ cốt lõi vận hành Digit24 qua 4 tầng kiến trúc — từ giao diện Kanban phản ứng tức thì, AI Copilot đến lưu trữ và kiểm thử tự động.",
     "FILTER_ARIA": "Chuyển đổi tầng kiến trúc công nghệ",
     "LAYERS_ARIA": "Danh sách công nghệ theo tầng kiến trúc",
     "FILTERS": {
@@ -780,7 +780,7 @@
   "LANDING_FEEDBACK": {
     "FAB_OPEN_ARIA": "Mở khung gửi đánh giá",
     "FAB_CLOSE_ARIA": "Đóng khung gửi đánh giá",
-    "DIALOG_ARIA": "Khung gửi đánh giá AI Smart Kanban",
+    "DIALOG_ARIA": "Khung gửi đánh giá Digit24",
     "TITLE": "Đánh giá trải nghiệm của bạn",
     "CLOSE_ARIA": "Đóng khung phản hồi",
     "RATING_LABEL": "Đánh giá",
@@ -850,5 +850,9 @@
     },
     "CHAT_PLACEHOLDER": "Nhập nội dung để chat với AI...",
     "SEND": "Gửi"
+  },
+  "LANDING_SCROLL_TOP": {
+    "ARIA_LABEL": "Cuộn lên đầu trang",
+    "TOOLTIP": "Lên đầu trang"
   }
 }

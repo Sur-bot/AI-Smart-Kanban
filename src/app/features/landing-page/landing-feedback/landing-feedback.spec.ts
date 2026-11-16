@@ -262,4 +262,17 @@ describe('LandingFeedbackComponent', () => {
     component.handleEscapeKey();
     expect(component.feedbackOpen()).toBe(false);
   });
+
+  it('ẩn nút FAB và tự đóng panel khi bị ẩn tạm thời bởi menu Header (suppressed = true)', () => {
+    component.toggleFeedback();
+    fixture.detectChanges();
+    expect(component.feedbackOpen()).toBe(true);
+    expect(rootElement.querySelector('aside > button')).not.toBeNull();
+
+    fixture.componentRef.setInput('suppressed', true);
+    fixture.detectChanges();
+
+    expect(component.feedbackOpen()).toBe(false);
+    expect(rootElement.querySelector('aside > button')).toBeNull();
+  });
 });

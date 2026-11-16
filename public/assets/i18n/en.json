@@ -39,7 +39,7 @@
   "LANDING": {
     "SOLUTIONS_SECTION": {
       "TITLE": "Everything you need in one platform",
-      "SUBTITLE": "AI Smart Kanban provides a complete set of tools for every team and department.",
+      "SUBTITLE": "Digit24 provides a complete set of tools for every team and department.",
       "GROUP_PROCESS": "PROCESS & PROJECTS",
       "GROUP_ACTIVITY": "ACTIVITY & TASKS",
       "GROUP_INFRA": "INFRASTRUCTURE & SECURITY",
@@ -496,16 +496,16 @@
     "COPYRIGHT": "© 2026 Digit24. Building for the future."
   },
   "LANDING_CTA": {
-    "TITLE_1": "Discover AI Smart Kanban:",
+    "TITLE_1": "Discover Digit24:",
     "TITLE_2": "Your all-in-one solution!",
     "DESCRIPTION": "Replace disconnected tools with a single platform that has it all: Kanban, AI Image Optimization, Cloud Storage, and Project Management.",
     "BUTTON": "Try it for free",
-    "BUTTON_TITLE": "Try AI Smart Kanban for free"
+    "BUTTON_TITLE": "Try Digit24 for free"
   },
   "LANDING_TECH": {
     "SUBTITLE": "Technology Stack",
     "TITLE": "Built on modern, reliable technologies",
-    "DESCRIPTION": "Explore all 17 core technologies powering AI Smart Kanban across four layers—from reactive UI and Gemini AI Copilot to zero-trust storage and automated testing.",
+    "DESCRIPTION": "Explore all 17 core technologies powering Digit24 across four layers—from reactive UI and Gemini AI Copilot to zero-trust storage and automated testing.",
     "FILTER_ARIA": "Switch architecture layer",
     "LAYERS_ARIA": "Technology stack by architecture layer",
     "FILTERS": {
@@ -620,7 +620,7 @@
   "LANDING_FEEDBACK": {
     "FAB_OPEN_ARIA": "Open feedback panel",
     "FAB_CLOSE_ARIA": "Close feedback panel",
-    "DIALOG_ARIA": "AI Smart Kanban feedback form",
+    "DIALOG_ARIA": "Digit24 feedback form",
     "TITLE": "Rate your experience",
     "CLOSE_ARIA": "Close feedback panel",
     "RATING_LABEL": "Rating",
@@ -690,5 +690,9 @@
     },
     "CHAT_PLACEHOLDER": "Type to chat with AI...",
     "SEND": "Send"
+  },
+  "LANDING_SCROLL_TOP": {
+    "ARIA_LABEL": "Scroll to top",
+    "TOOLTIP": "Back to top"
   }
 }

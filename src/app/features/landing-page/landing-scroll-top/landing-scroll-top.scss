@@ -1,0 +1,22 @@
+@keyframes scrollTopFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.scroll-top-btn {
+  animation: scrollTopFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.scroll-top-icon {
+  width: 1.375rem;
+  height: 1.375rem;
+  font-size: 1.375rem;
+  line-height: 1.375rem;
+}
+

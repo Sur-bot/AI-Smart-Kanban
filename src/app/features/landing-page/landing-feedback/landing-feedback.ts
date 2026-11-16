@@ -3,7 +3,9 @@ import {
   DestroyRef,
   HostListener,
   computed,
+  effect,
   inject,
+  input,
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -45,6 +47,8 @@ export class LandingFeedbackComponent {
   readonly ratingOptions = FEEDBACK_RATING_OPTIONS;
   readonly messageMinLength = FEEDBACK_MESSAGE_MIN_LENGTH;
   readonly messageMaxLength = FEEDBACK_MESSAGE_MAX_LENGTH;
+
+  readonly suppressed = input<boolean>(false);
 
   /** Trạng thái đóng/mở panel phản hồi */
   readonly feedbackOpen = signal(false);
@@ -95,6 +99,12 @@ export class LandingFeedbackComponent {
   );
 
   constructor() {
+    effect(() => {
+      if (this.suppressed() && this.feedbackOpen()) {
+        this.closeFeedback();
+      }
+    });
+
     this.feedbackForm.controls.message.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((value) => {
