@@ -30,6 +30,42 @@
   @apply flex flex-col gap-5 p-5 rounded-[2rem];
 }
 
+.solutions-label-primary { color: #00467a; }
+
+.solutions-col-primary-1,
+.solutions-col-primary-2,
+.solutions-col-primary-3 {
+  @apply border shadow-lg;
+}
+
+.solutions-col-primary-1 {
+  background-color: #d6e8fc;
+  @apply border-blue-300/70 shadow-blue-900/5;
+}
+
+.solutions-col-primary-2 {
+  background-color: #d2eefc;
+  @apply border-sky-300/70 shadow-sky-900/5;
+}
+
+.solutions-col-primary-3 {
+  background-color: #d4f1f9;
+  @apply border-cyan-300/70 shadow-cyan-900/5;
+}
+
+.solutions-card-header-1 { background-color: #e3effd; }
+.solutions-card-header-2 { background-color: #e0f2fe; }
+.solutions-card-header-3 { background-color: #e0f4fa; }
+
+.solutions-icon-bg-1 { @apply bg-gradient-to-br from-blue-100 to-blue-50; }
+.solutions-icon-bg-2 { @apply bg-gradient-to-br from-sky-100 to-blue-50; }
+.solutions-icon-bg-3 { @apply bg-gradient-to-br from-cyan-100 to-sky-50; }
+
+.solutions-icon-deep { color: #00629a; }
+.solutions-icon-blue { @apply text-blue-600; }
+.solutions-icon-sky { @apply text-sky-600; }
+.solutions-icon-cyan { color: #0891b2; }
+
 // ─── Group Label ─────────────────────────────────────────────────
 .solutions-group-label {
   @apply text-sm font-bold tracking-wide uppercase text-center py-1;

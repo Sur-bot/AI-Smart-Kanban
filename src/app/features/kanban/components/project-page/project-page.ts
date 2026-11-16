@@ -62,7 +62,7 @@ export class ProjectPageComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.titleService.setTitle('Dự án - AI Smart Kanban');
+    this.titleService.setTitle('Dự án - Digit24');
     if (!this.taskStore.isProjectsInitialized()) {
       this.taskStore.loadProjects();
     }

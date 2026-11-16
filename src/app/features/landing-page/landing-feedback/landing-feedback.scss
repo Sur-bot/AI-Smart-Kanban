@@ -1,8 +1,8 @@
-// ─── Feedback Panel: Slide-up animation ───
+// ─── Feedback Panel: Keyframes, Brand Accent Bar & Material Icon Sizing ───
 @keyframes feedbackSlideUp {
   from {
     opacity: 0;
-    transform: translateY(20px) scale(0.95);
+    transform: translateY(16px) scale(0.96);
   }
   to {
     opacity: 1;
@@ -10,6 +10,56 @@
   }
 }
 
+@keyframes feedbackSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .feedback-panel {
-  animation: feedbackSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: feedbackSlideUp 0.26s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.feedback-icon-btn mat-icon {
+  width: 1rem;
+  height: 1rem;
+  font-size: 1rem;
+  line-height: 1rem;
+}
+
+.feedback-star-btn mat-icon {
+  width: 1.625rem;
+  height: 1.625rem;
+  font-size: 1.625rem;
+  line-height: 1.625rem;
+}
+
+.feedback-btn-sm mat-icon,
+.feedback-submit-error mat-icon {
+  width: 1rem;
+  height: 1rem;
+  font-size: 1rem;
+  line-height: 1rem;
+}
+
+.feedback-success-icon mat-icon {
+  width: 1.625rem;
+  height: 1.625rem;
+  font-size: 1.625rem;
+  line-height: 1.625rem;
+}
+
+.feedback-spinner {
+  animation: feedbackSpin 0.9s linear infinite;
+}
+
+.feedback-fab-ping {
+  animation-duration: 2s;
+}
+
+.feedback-fab-icon {
+  width: 1.375rem;
+  height: 1.375rem;
+  font-size: 1.375rem;
+  line-height: 1.375rem;
 }

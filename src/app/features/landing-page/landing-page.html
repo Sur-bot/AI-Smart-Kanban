@@ -1,8 +1,4 @@
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- Landing Page — AI Smart Kanban (Bitrix24-inspired, Light) -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-
-<app-landing-header></app-landing-header>
+<app-landing-header #headerWidget></app-landing-header>
 
 <main>
   <app-landing-hero></app-landing-hero>
@@ -12,4 +8,10 @@
 </main>
 
 <app-landing-footer></app-landing-footer>
-<app-landing-feedback></app-landing-feedback>
+<app-landing-scroll-top
+  [suppressed]="feedbackWidget.feedbackOpen() || headerWidget.isNavOverlayOpen()"
+></app-landing-scroll-top>
+<app-landing-feedback
+  #feedbackWidget
+  [suppressed]="headerWidget.isNavOverlayOpen()"
+></app-landing-feedback>

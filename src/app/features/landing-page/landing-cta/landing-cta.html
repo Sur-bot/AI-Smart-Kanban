@@ -1,21 +1,37 @@
-<!-- ──── Final CTA Section ──── -->
-<section class="cta-section">
-  <div class="cta-bg-wrapper" aria-hidden="true">
-    <div class="cta-bg-circle-1"></div>
-    <div class="cta-bg-circle-2"></div>
-  </div>
+<section
+  class="cta-section"
+  aria-labelledby="cta-heading"
+  itemscope
+  itemtype="https://schema.org/WebPageElement"
+>
+  <meta itemprop="name" content="Digit24" />
 
-  <div class="cta-content-wrapper">
-    <h2 class="cta-title">
-      {{ 'LANDING_CTA.TITLE_1' | translate }} <br class="hidden sm:block"/>
-      {{ 'LANDING_CTA.TITLE_2' | translate }}
-    </h2>
-    <p class="cta-description">
-      {{ 'LANDING_CTA.DESCRIPTION' | translate }}
-    </p>
-    <a routerLink="/register" class="cta-button" [title]="'LANDING_CTA.BUTTON_TITLE' | translate">
-      {{ 'LANDING_CTA.BUTTON' | translate }}
-      <mat-icon fontSet="material-icons-outlined">arrow_forward</mat-icon>
-    </a>
-  </div>
+  <figure class="cta-bg-wrapper" aria-hidden="true">
+    <span class="cta-bg-circle-1"></span>
+    <span class="cta-bg-circle-2"></span>
+  </figure>
+
+  <article class="cta-content-wrapper">
+    <header>
+      <h2 id="cta-heading" class="cta-title" itemprop="headline">
+        {{ 'LANDING_CTA.TITLE_1' | translate }} <br class="hidden sm:block" />
+        {{ 'LANDING_CTA.TITLE_2' | translate }}
+      </h2>
+      <p class="cta-description" itemprop="description">
+        {{ 'LANDING_CTA.DESCRIPTION' | translate }}
+      </p>
+    </header>
+    <nav aria-label="Hành động đăng ký Digit24">
+      <a
+        routerLink="/register"
+        class="cta-button"
+        [title]="'LANDING_CTA.BUTTON_TITLE' | translate"
+        [attr.aria-label]="'LANDING_CTA.BUTTON_TITLE' | translate"
+        itemprop="url"
+      >
+        <span>{{ 'LANDING_CTA.BUTTON' | translate }}</span>
+        <mat-icon fontSet="material-icons-outlined" aria-hidden="true">arrow_forward</mat-icon>
+      </a>
+    </nav>
+  </article>
 </section>
