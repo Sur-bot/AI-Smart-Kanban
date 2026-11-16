@@ -1,8 +1,5 @@
 import { TechLayerGroup } from './landing-tech.types';
 
-/**
- * Danh sách đầy đủ 4 tầng kiến trúc và 17 công nghệ cốt lõi của AI Smart Kanban.
- */
 export const TECH_LAYER_GROUPS: readonly TechLayerGroup[] = [
   {
     id: 'frontend',

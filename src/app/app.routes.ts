@@ -6,7 +6,7 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () => import('./features/landing-page/landing-page').then(m => m.LandingPageComponent),
-    title: 'AI Smart Kanban - Quản lý thông minh',
+    title: 'Digit24 - Không gian làm việc trực tuyến',
     pathMatch: 'full'
   },
 
@@ -14,7 +14,7 @@ export const routes: Routes = [
   {
     path: 'image-storage',
     loadComponent: () => import('./features/image-storage/components/image-storage-page/image-storage-page').then(m => m.ImageStoragePageComponent),
-    title: 'Lưu trữ hình ảnh - AI Smart Kanban',
+    title: 'Lưu trữ hình ảnh - Digit24',
     canActivate: [authGuard]
   },
 
@@ -22,14 +22,14 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () => import('./layout/main-layout/main-layout').then(m => m.MainLayoutComponent),
-    title: 'AI Smart Kanban',
+    title: 'Digit24',
     canActivate: [authGuard],
     children: [
       // Trang Tác vụ (Tasks Page) - Mặc định cho kanban
       {
         path: 'kanban',
         loadComponent: () => import('./features/kanban/components/tasks-page/tasks-page').then(m => m.TasksPageComponent),
-        title: 'Tác vụ của tôi - AI Smart Kanban'
+        title: 'Tác vụ của tôi - Digit24'
       },
 
       // Redirect kanban/tasks cũ về kanban
@@ -42,7 +42,7 @@ export const routes: Routes = [
       {
         path: 'kanban/projects',
         loadComponent: () => import('./features/kanban/components/project-page/project-page').then(m => m.ProjectPageComponent),
-        title: 'Dự án - AI Smart Kanban'
+        title: 'Dự án - Digit24'
       },
 
       // Default route - Redirect từ '' sang 'kanban'
@@ -81,14 +81,14 @@ export const routes: Routes = [
   {
     path: 'auth/verify-pending',
     loadComponent: () => import('./features/auth/verify-pending/verify-pending.component').then(m => m.VerifyPendingComponent),
-    title: 'Xác nhận Email - AI Smart Kanban'
+    title: 'Xác nhận Email - Digit24'
   },
 
   // Callback page — Supabase redirect về đây sau khi user click link trong email
   {
     path: 'auth/callback',
     loadComponent: () => import('./features/auth/auth-callback/auth-callback.component').then(m => m.AuthCallbackComponent),
-    title: 'Đang kích hoạt tài khoản... - AI Smart Kanban'
+    title: 'Đang kích hoạt tài khoản... - Digit24'
   },
 
   // ─── 404 Not Found ──────────────────────────────────────────────────────────
@@ -96,6 +96,6 @@ export const routes: Routes = [
   {
     path: '**',
     loadComponent: () => import('./shared/components/not-found/not-found.component').then(m => m.NotFoundComponent),
-    title: 'Trang không tìm thấy - AI Smart Kanban'
+    title: 'Trang không tìm thấy - Digit24'
   }
 ];

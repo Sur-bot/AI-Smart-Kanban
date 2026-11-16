@@ -16,7 +16,7 @@ describe('FeedbackService', () => {
     message: 'Giao dien Kanban rat muot va AI Copilot goi y rat hop ly.',
     screenshotFile: null,
     locale: 'vi',
-    pageUrl: 'https://ai-smart-kanban.vercel.app/',
+    pageUrl: 'https://digit24.vercel.app/',
   };
 
   beforeEach(() => {

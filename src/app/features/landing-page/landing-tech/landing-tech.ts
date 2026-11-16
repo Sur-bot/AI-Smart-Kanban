@@ -9,10 +9,6 @@ import {
   TechLayerGroup,
 } from './landing-tech.types';
 
-/**
- * Thành phần hiển thị hệ sinh thái công nghệ của AI Smart Kanban
- * theo phong cách Minimalism đồng bộ UI toàn Landing Page, chuẩn Semantic HTML5 và GEO.
- */
 @Component({
   selector: 'app-landing-tech',
   imports: [MatIconModule, TranslatePipe],

@@ -1,6 +1,3 @@
-/**
- * Định danh các tầng kiến trúc công nghệ trong hệ thống AI Smart Kanban.
- */
 export type TechCategoryId = 'frontend' | 'backend' | 'data' | 'devops';
 
 /**

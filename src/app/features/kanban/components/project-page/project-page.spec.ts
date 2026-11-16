@@ -68,7 +68,7 @@ describe('ProjectPageComponent', () => {
 
   it('should create and load projects on init', () => {
     expect(component).toBeTruthy();
-    expect(mockTitleService.setTitle).toHaveBeenCalledWith('Dự án - AI Smart Kanban');
+    expect(mockTitleService.setTitle).toHaveBeenCalledWith('Dự án - Digit24');
     expect(mockTaskStore.loadProjects).toHaveBeenCalled();
   });
 

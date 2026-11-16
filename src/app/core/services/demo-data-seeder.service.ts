@@ -35,7 +35,7 @@ export class DemoDataSeederService {
       // 3. Tạo một số Task mẫu
       const tasks = [
         {
-          title: 'Khám phá AI Smart Kanban',
+          title: 'Khám phá Digit24',
           description: 'Thử kéo thả thẻ công việc này sang cột Đang làm',
           status_id: todoStatusId,
           project_id: project.id,
