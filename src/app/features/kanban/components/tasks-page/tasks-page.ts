@@ -46,9 +46,9 @@ export class TasksPageComponent implements OnInit {
     effect(() => {
       const project = this.taskStore.currentProject();
       if (project) {
-        this.titleService.setTitle(`${project.name} - AI Smart Kanban`);
+        this.titleService.setTitle(`${project.name} - Digit24`);
       } else {
-        this.titleService.setTitle('Tác vụ của tôi - AI Smart Kanban');
+        this.titleService.setTitle('Tác vụ của tôi - Digit24');
       }
     });
   }

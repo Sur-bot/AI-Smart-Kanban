@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -8,5 +8,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [RouterModule, MatIconModule, TranslatePipe],
   templateUrl: './landing-cta.html',
   styleUrl: './landing-cta.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LandingCtaComponent {}

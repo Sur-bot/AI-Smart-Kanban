@@ -1,30 +1,30 @@
 <section class="hero-section">
-  <div class="hero-bg-circle-top" aria-hidden="true"></div>
-  <div class="hero-bg-circle-bottom" aria-hidden="true"></div>
+  <span class="hero-bg-circle-top" aria-hidden="true"></span>
+  <span class="hero-bg-circle-bottom" aria-hidden="true"></span>
 
   <div class="hero-header-container">
-    <div class="hero-title-wrapper">
+    <header class="hero-title-wrapper">
       <h1 class="hero-title">
         {{ 'LANDING_HERO.HEADLINE' | translate }}
       </h1>
-    </div>
+    </header>
 
     <div class="hero-features-container" id="features">
       <div class="hero-features-grid">
-        <div class="relative lg:col-span-2 order-2 sm:order-1 w-full">
+        <div class="relative lg:col-span-12 order-2 sm:order-1 w-full">
           <!-- Mobile Carousel Navigation -->
-          <nav class="flex sm:hidden items-center justify-between px-1 py-1 text-[#0046A4]">
-            <button (click)="prevTab()" type="button" class="p-2 hover:bg-blue-50 rounded-full transition-colors flex items-center justify-center shrink-0" aria-label="Previous tab">
+          <nav class="flex sm:hidden items-center justify-between px-1 py-1 text-[#0046A4]" [attr.aria-label]="'LANDING_HERO.TAB_NAV_ARIA' | translate">
+            <button (click)="prevTab()" type="button" class="p-2 hover:bg-blue-50 rounded-full transition-colors flex items-center justify-center shrink-0" aria-label="Previous tab" title="Previous tab">
               <mat-icon fontSet="material-icons-outlined" class="w-6 h-6 text-[24px]">arrow_back_ios_new</mat-icon>
             </button>
-            
+
             @if (tabs().length > 0) {
-              <h3 class="text-xl font-extrabold text-center flex-1 px-2 line-clamp-1">
+              <h2 class="text-xl font-extrabold text-center flex-1 px-2 line-clamp-1">
                 {{ tabs()[activeTab()].labelKey | translate }}
-              </h3>
+              </h2>
             }
-            
-            <button (click)="nextTab()" type="button" class="p-2 hover:bg-blue-50 rounded-full transition-colors flex items-center justify-center shrink-0" aria-label="Next tab">
+
+            <button (click)="nextTab()" type="button" class="p-2 hover:bg-blue-50 rounded-full transition-colors flex items-center justify-center shrink-0" aria-label="Next tab" title="Next tab">
               <mat-icon fontSet="material-icons-outlined" class="w-6 h-6 text-[24px]">arrow_forward_ios</mat-icon>
             </button>
           </nav>
@@ -43,7 +43,9 @@
                 (mouseenter)="onMouseEnter(i)"
                 (mouseleave)="onMouseLeave()"
                 [attr.aria-selected]="activeTab() === i"
-                role="tab">
+                [title]="tab.labelKey | translate"
+                role="tab"
+              >
                 <mat-icon fontSet="material-icons-outlined" class="text-[20px] w-5 h-5">{{ tab.icon }}</mat-icon>
                 <span class="hidden sm:inline">{{ tab.labelKey | translate }}</span>
               </button>
@@ -51,7 +53,8 @@
           </nav>
         </div>
 
-        <div class="space-y-1 order-3 sm:order-2 w-full">
+        <!-- Left Column: Feature Checklist + CTA -->
+        <article class="lg:col-span-5 space-y-1 order-3 sm:order-2 w-full">
           <ul class="hero-feature-list">
             @if (tabs().length > 0) {
               @for (featureKey of tabs()[activeTab()].featureKeys; track featureKey) {
@@ -63,7 +66,7 @@
             }
           </ul>
 
-          <div class="pt-8 flex justify-center sm:justify-start">
+          <footer class="pt-8 flex justify-center sm:justify-start">
             <a
               routerLink="/register"
               class="hero-cta-btn"
@@ -71,53 +74,641 @@
             >
               {{ 'LANDING_HERO.CTA' | translate }}
             </a>
-          </div>
-        </div>
+          </footer>
+        </article>
 
-        <figure class="hero-mockup-wrapper relative order-1 sm:order-3 w-full m-0">
-          <figcaption class="hero-mockup-header">
-            <span class="w-3 h-3 rounded-full bg-red-400" aria-hidden="true"></span>
-            <span class="w-3 h-3 rounded-full bg-amber-400" aria-hidden="true"></span>
-            <span class="w-3 h-3 rounded-full bg-green-400" aria-hidden="true"></span>
-            <span class="hero-mockup-url">
-              {{ 'LANDING_HERO.BROWSER_URL' | translate }}
-            </span>
-          </figcaption>
-          <div class="hero-mockup-body">
-            <div
-              class="hero-image-skeleton"
-              [class.is-hidden]="isTabLoaded(activeTab())"
-              aria-hidden="true"
-            >
-              <mat-icon fontSet="material-icons-outlined" class="text-slate-300 !w-10 !h-10 !text-[40px]">image</mat-icon>
+        <!-- Right Column: Board-Only Camera-Focused Animated Demo (No Left Sidebar) -->
+        <figure class="hero-mockup-wrapper relative lg:col-span-7 order-1 sm:order-3 w-full m-0 select-none pointer-events-none">
+          <div class="hero-camera-viewport">
+            <!-- Camera Stage: Zoom In 1.18x theo con trỏ chuột -> Zoom Out về 1.0x trước khi đổi Tab -->
+            <div class="hero-camera-stage" [style.transform]="cameraTransform()">
+              <!-- Authentic App Topbar -->
+              <figcaption class="hero-mockup-header">
+                <div class="flex items-center gap-2 min-w-0">
+                  <span class="w-4 h-4 rounded-full border-[2.5px] border-[#00629A] flex items-center justify-center shrink-0" aria-hidden="true">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#3FC0F0]"></span>
+                  </span>
+                  <span class="text-[11px] font-bold text-[#00629A] hidden sm:inline shrink-0">Digit24</span>
+                  <span class="text-slate-300 hidden sm:inline shrink-0">/</span>
+                  <span class="text-xs font-bold text-slate-800 truncate">
+                    {{ tabs()[activeTab()].labelKey | translate }}
+                  </span>
+                </div>
+
+                <div class="flex items-center gap-2 shrink-0">
+                  <div class="hidden sm:flex items-center -space-x-1.5" aria-hidden="true">
+                    @for (m of teamAvatars; track m.initials) {
+                      <span
+                        class="w-5 h-5 rounded-full border border-white text-[9px] font-bold flex items-center justify-center"
+                        [class]="m.bg"
+                      >{{ m.initials }}</span>
+                    }
+                  </div>
+                  @if (tabs()[activeTab()].showCreateBtn) {
+                    <span class="inline-flex items-center gap-0.5 px-2.5 py-1 rounded-md bg-[#00629A] text-white text-[10px] font-bold">
+                      <mat-icon class="!w-3 !h-3 !text-[12px] leading-none">add</mat-icon>
+                      {{ 'LANDING_HERO.MOCKUP.BTN_CREATE' | translate }}
+                    </span>
+                  } @else if (tabs()[activeTab()].topbarBadgeKey; as badgeKey) {
+                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-[#E0F7F2] border border-emerald-200 text-emerald-800 text-[10px] font-bold">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500" aria-hidden="true"></span>
+                      {{ badgeKey | translate }}
+                    </span>
+                  }
+                </div>
+              </figcaption>
+
+              <!-- Synced 60fps Timeline Hairline -->
+              <div class="w-full h-[2px] bg-slate-200/80 overflow-hidden" aria-hidden="true">
+                <span
+                  class="block h-full bg-gradient-to-r from-[#00629A] via-[#3FC0F0] to-emerald-500 origin-left will-change-transform"
+                  [style.transform]="'scaleX(' + normalizedT() + ')'"
+                ></span>
+              </div>
+
+              <!-- Workspace Viewport (Full Width, Seamless Scene Fade) -->
+              <section class="hero-scene-viewport p-2.5 sm:p-3 flex flex-col justify-between min-w-0 relative" [attr.aria-label]="tabs()[activeTab()].labelKey | translate">
+                @switch (tabs()[activeTab()].tabKey) {
+
+                  <!-- ════════ CẢNH 1: KANBAN BOARD WITH REALISTIC DRAG & DROP ════════ -->
+                  @case ('TAB_KANBAN') {
+                    <div class="hero-scene-enter relative flex-1 flex flex-col">
+                      <ul class="grid grid-cols-3 gap-2 flex-1 list-none p-0 m-0 relative">
+                        <!-- Cột 1: Cần làm -->
+                        <li class="flex flex-col gap-1.5 min-w-0">
+                          <header class="bg-white border border-slate-200 border-t-2 border-t-[#00629A] rounded-md px-2 py-1 flex items-center justify-between">
+                            <span class="text-[10px] font-bold text-slate-700 truncate">{{ 'LANDING_HERO.MOCKUP.KANBAN.COL_TODO' | translate }}</span>
+                            <span class="text-[10px] font-semibold text-slate-500 tabular-nums">2</span>
+                          </header>
+
+                          <article class="real-task-card">
+                            <span class="real-task-stripe bg-rose-500" aria-hidden="true"></span>
+                            <div class="flex-1 p-2 flex flex-col gap-1 min-w-0">
+                              <p class="text-[9px] sm:text-[11px] font-medium text-slate-800 line-clamp-2 leading-snug m-0">
+                                {{ 'LANDING_HERO.MOCKUP.KANBAN.TASK_1' | translate }}
+                              </p>
+                              <footer class="flex items-center justify-between pt-0.5 text-[9px] text-slate-400">
+                                <span class="self-start px-1.5 py-0.2 rounded text-[8px] sm:text-[9px] font-semibold bg-[#E3EFFD] text-[#00629A]">RBAC</span>
+                                <span class="w-4 h-4 rounded-full bg-[#00629A] text-white font-bold flex items-center justify-center text-[8px]">NA</span>
+                              </footer>
+                            </div>
+                          </article>
+
+                          <article class="real-task-card">
+                            <span class="real-task-stripe bg-amber-400" aria-hidden="true"></span>
+                            <div class="flex-1 p-2 flex flex-col gap-1 min-w-0">
+                              <p class="text-[9px] sm:text-[11px] font-medium text-slate-800 line-clamp-2 leading-snug m-0">
+                                {{ 'LANDING_HERO.MOCKUP.KANBAN.TASK_5' | translate }}
+                              </p>
+                              <footer class="flex items-center justify-between pt-0.5 text-[9px] text-slate-400">
+                                <span class="w-4 h-4 rounded-full bg-amber-500 text-white font-bold flex items-center justify-center text-[8px]">TM</span>
+                                <span class="inline-flex items-center gap-0.5 tabular-nums">
+                                  <mat-icon fontSet="material-icons-outlined" class="!w-3 !h-3 !text-[11px]">check_box</mat-icon>
+                                  1/3
+                                </span>
+                              </footer>
+                            </div>
+                          </article>
+                        </li>
+
+                        <!-- Cột 2: Đang làm -->
+                        <li class="flex flex-col gap-1.5 min-w-0">
+                          <header class="bg-white border border-slate-200 border-t-2 border-t-[#3FC0F0] rounded-md px-2 py-1 flex items-center justify-between">
+                            <span class="text-[10px] font-bold text-slate-700 truncate">{{ 'LANDING_HERO.MOCKUP.KANBAN.COL_PROGRESS' | translate }}</span>
+                            <span class="text-[10px] font-semibold text-[#00629A] tabular-nums">{{ isKanbanTaskPromoted() ? 2 : 3 }}</span>
+                          </header>
+
+                          <article class="real-task-card">
+                            <span class="real-task-stripe bg-[#00629A]" aria-hidden="true"></span>
+                            <div class="flex-1 p-2 flex flex-col gap-1 min-w-0">
+                              <p class="text-[9px] sm:text-[11px] font-medium text-slate-800 line-clamp-2 leading-snug m-0">
+                                {{ 'LANDING_HERO.MOCKUP.KANBAN.TASK_3' | translate }}
+                              </p>
+                              <footer class="flex items-center justify-between pt-0.5 text-[9px] text-slate-400">
+                                <span class="px-1.5 py-0.2 rounded text-[8px] sm:text-[9px] font-semibold bg-[#EBEAFC] text-indigo-700">RLS</span>
+                                <span class="w-4 h-4 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-[8px]">TM</span>
+                              </footer>
+                            </div>
+                          </article>
+
+                          <article class="real-task-card">
+                            <span class="real-task-stripe bg-cyan-500" aria-hidden="true"></span>
+                            <div class="flex-1 p-2 flex flex-col gap-1 min-w-0">
+                              <p class="text-[9px] sm:text-[11px] font-medium text-slate-800 line-clamp-2 leading-snug m-0">
+                                {{ 'LANDING_HERO.MOCKUP.KANBAN.TASK_6' | translate }}
+                              </p>
+                              <footer class="flex items-center justify-between pt-0.5 text-[9px] text-slate-400">
+                                <span class="w-4 h-4 rounded-full bg-[#00629A] text-white font-bold flex items-center justify-center text-[8px]">NA</span>
+                                <span class="inline-flex items-center gap-0.5 tabular-nums">
+                                  <mat-icon fontSet="material-icons-outlined" class="!w-3 !h-3 !text-[11px]">chat_bubble</mat-icon>
+                                  2
+                                </span>
+                              </footer>
+                            </div>
+                          </article>
+
+                          @if (!isKanbanDragging() && !isKanbanTaskPromoted()) {
+                            <div class="relative">
+                              <article class="real-task-card border-[#3FC0F0]">
+                                <span class="real-task-stripe bg-[#3FC0F0]" aria-hidden="true"></span>
+                                <div class="flex-1 p-2 flex flex-col gap-1 min-w-0">
+                                  <p class="text-[9px] sm:text-[11px] font-medium text-slate-800 line-clamp-2 leading-snug m-0">
+                                    {{ 'LANDING_HERO.MOCKUP.KANBAN.TASK_2' | translate }}
+                                  </p>
+                                  <footer class="flex items-center justify-between pt-0.5 text-[9px] text-[#00629A]">
+                                    <span class="w-4 h-4 rounded-full bg-[#3FC0F0] text-[#1A1B1F] font-bold flex items-center justify-center text-[8px]">LH</span>
+                                    <span class="font-semibold">WebP</span>
+                                  </footer>
+                                </div>
+                              </article>
+                              @if (hoveredTab() === null) {
+                                <ng-container *ngTemplateOutlet="demoCursor; context: { frame: choreography() }" />
+                              }
+                            </div>
+                          } @else if (isKanbanDragging()) {
+                            <!-- Placeholder khe thả khi đang kéo -->
+                            <div class="rounded-lg border-2 border-dashed border-[#3FC0F0]/70 bg-[#E3EFFD]/40 min-h-[54px] sm:min-h-[62px]" aria-hidden="true"></div>
+                          }
+                        </li>
+
+                        <!-- Cột 3: Hoàn thành -->
+                        <li class="flex flex-col gap-1.5 min-w-0">
+                          <header class="bg-white border border-slate-200 border-t-2 border-t-emerald-500 rounded-md px-2 py-1 flex items-center justify-between">
+                            <span class="text-[10px] font-bold text-slate-700 truncate">{{ 'LANDING_HERO.MOCKUP.KANBAN.COL_DONE' | translate }}</span>
+                            <span class="text-[10px] font-semibold text-emerald-700 tabular-nums">{{ isKanbanTaskPromoted() ? 3 : 2 }}</span>
+                          </header>
+
+                          <article class="real-task-card">
+                            <span class="real-task-stripe bg-emerald-500" aria-hidden="true"></span>
+                            <div class="flex-1 p-2 flex flex-col gap-1 min-w-0">
+                              <p class="text-[9px] sm:text-[11px] font-medium text-slate-400 line-through line-clamp-2 leading-snug m-0">
+                                {{ 'LANDING_HERO.MOCKUP.KANBAN.TASK_4' | translate }}
+                              </p>
+                              <footer class="flex items-center justify-between pt-0.5 text-[9px] text-emerald-600">
+                                <span class="w-4 h-4 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-[8px]">NA</span>
+                                <span class="inline-flex items-center gap-0.5 tabular-nums">
+                                  <mat-icon fontSet="material-icons-outlined" class="!w-3 !h-3 !text-[11px]">check_box</mat-icon>
+                                  4/4
+                                </span>
+                              </footer>
+                            </div>
+                          </article>
+
+                          <article class="real-task-card">
+                            <span class="real-task-stripe bg-emerald-400" aria-hidden="true"></span>
+                            <div class="flex-1 p-2 flex flex-col gap-1 min-w-0">
+                              <p class="text-[9px] sm:text-[11px] font-medium text-slate-400 line-through line-clamp-2 leading-snug m-0">
+                                {{ 'LANDING_HERO.MOCKUP.KANBAN.TASK_7' | translate }}
+                              </p>
+                              <footer class="flex items-center justify-between pt-0.5 text-[9px] text-emerald-600">
+                                <span class="w-4 h-4 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-[8px]">LH</span>
+                                <span class="font-semibold">JWT</span>
+                              </footer>
+                            </div>
+                          </article>
+
+                          @if (isKanbanTaskPromoted()) {
+                            <div class="relative">
+                              <article class="real-task-card border-emerald-400">
+                                <span class="real-task-stripe bg-emerald-500" aria-hidden="true"></span>
+                                <div class="flex-1 p-2 flex flex-col gap-1 min-w-0">
+                                  <p class="text-[9px] sm:text-[11px] font-medium text-slate-800 line-clamp-2 leading-snug m-0">
+                                    {{ 'LANDING_HERO.MOCKUP.KANBAN.TASK_2' | translate }}
+                                  </p>
+                                  <footer class="flex items-center justify-between pt-0.5 text-[9px] text-emerald-700">
+                                    <span class="px-1.5 py-0.2 rounded bg-[#E0F7F2] font-bold">Done</span>
+                                    <mat-icon fontSet="material-icons-outlined" class="!w-3.5 !h-3.5 !text-[13px] text-emerald-600">task_alt</mat-icon>
+                                  </footer>
+                                </div>
+                              </article>
+                              @if (hoveredTab() === null) {
+                                <ng-container *ngTemplateOutlet="demoCursor; context: { frame: choreography() }" />
+                              }
+                            </div>
+                          }
+                        </li>
+                      </ul>
+
+                      <!-- Floating Lifted Card with attached Cursor (0px offset across all viewports) -->
+                      @if (isKanbanDragging()) {
+                        <div
+                          class="absolute top-[56%] sm:top-[48%] w-[31%] z-20 will-change-transform"
+                          [style.left.%]="kanbanDragLeftPercent()"
+                          [style.transform]="'translate3d(0, ' + kanbanDragLiftY() + 'px, 0) rotate(2deg) scale(1.03)'"
+                          aria-hidden="true"
+                        >
+                          <article class="real-task-card border-[#00629A] shadow-xl">
+                            <span class="real-task-stripe bg-[#3FC0F0]"></span>
+                            <div class="flex-1 p-2 flex flex-col gap-1 min-w-0 bg-white">
+                              <p class="text-[9px] sm:text-[11px] font-medium text-slate-800 line-clamp-2 leading-snug m-0">
+                                {{ 'LANDING_HERO.MOCKUP.KANBAN.TASK_2' | translate }}
+                              </p>
+                              <footer class="flex items-center justify-between pt-0.5 text-[9px] text-[#00629A]">
+                                <span class="w-4 h-4 rounded-full bg-[#3FC0F0] text-[#1A1B1F] font-bold flex items-center justify-center text-[8px]">LH</span>
+                                <span class="font-semibold">WebP</span>
+                              </footer>
+                            </div>
+                          </article>
+                          @if (hoveredTab() === null) {
+                            <ng-container *ngTemplateOutlet="demoCursor; context: { frame: choreography() }" />
+                          }
+                        </div>
+                      }
+                    </div>
+                  }
+
+                  <!-- ════════ CẢNH 2: AI WEBP QUEUE OPTIMIZER ════════ -->
+                  @case ('TAB_AI') {
+                    <div class="hero-scene-enter grid grid-cols-12 gap-2 sm:gap-3 flex-1 items-stretch">
+                      <div class="col-span-7 relative rounded-lg overflow-hidden border border-slate-200 bg-white min-h-[160px] sm:min-h-[240px] lg:min-h-[280px] flex flex-col">
+                        <img
+                          src="/assets/images/main-bg-6.jpg"
+                          alt="WebP optimized workspace cover"
+                          width="480"
+                          height="300"
+                          decoding="async"
+                          class="w-full h-full object-cover flex-1 transition-all duration-500"
+                          [class.saturate-75]="!isAiCompleted()"
+                          [class.contrast-95]="!isAiCompleted()"
+                        />
+
+                        <span class="absolute top-2 left-2 px-1.5 py-0.5 rounded bg-white/95 border border-slate-200 text-[9px] font-semibold text-slate-700 z-10">
+                          {{ 'LANDING_HERO.MOCKUP.AI.BEFORE_LABEL' | translate }}
+                        </span>
+
+                        <div class="absolute bottom-2 inset-x-2 rounded-md bg-white/95 border border-slate-200 px-2.5 py-1.5 flex items-center justify-between gap-2 z-10">
+                          <span
+                            class="text-[9px] sm:text-[10px] font-bold truncate"
+                            [class.text-emerald-700]="isAiCompleted()"
+                            [class.text-[#00629A]]="isAiOptimizing() && !isAiCompleted()"
+                            [class.text-slate-600]="!isAiOptimizing()"
+                          >
+                            {{
+                              (isAiCompleted()
+                                ? 'LANDING_HERO.MOCKUP.AI.STATUS_DONE'
+                                : isAiOptimizing()
+                                  ? 'LANDING_HERO.MOCKUP.AI.STATUS_RUNNING'
+                                  : 'LANDING_HERO.MOCKUP.AI.STATUS_READY'
+                              ) | translate
+                            }}
+                          </span>
+                          <span
+                            class="px-1.5 py-0.5 rounded text-[9px] font-bold shrink-0 transition-colors duration-300"
+                            [class.bg-[#E0F7F2]]="isAiCompleted()"
+                            [class.text-emerald-800]="isAiCompleted()"
+                            [class.bg-[#E3EFFD]]="isAiOptimizing() && !isAiCompleted()"
+                            [class.text-[#00629A]]="isAiOptimizing() && !isAiCompleted()"
+                            [class.bg-slate-100]="!isAiOptimizing()"
+                            [class.text-slate-600]="!isAiOptimizing()"
+                          >
+                            {{
+                              (isAiCompleted()
+                                ? 'LANDING_HERO.MOCKUP.AI.AFTER_LABEL'
+                                : isAiOptimizing()
+                                  ? 'LANDING_HERO.MOCKUP.AI.AFTER_RUNNING'
+                                  : 'LANDING_HERO.MOCKUP.AI.AFTER_PENDING'
+                              ) | translate
+                            }}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div class="col-span-5 bg-white border border-slate-200 rounded-lg p-2 sm:p-2.5 flex flex-col justify-between gap-2 min-w-0">
+                        <header class="flex items-center justify-between gap-1.5 border-b border-slate-100 pb-1.5">
+                          <span class="text-[10px] sm:text-[11px] font-bold text-slate-800 truncate">{{ 'LANDING_HERO.MOCKUP.AI.QUEUE_TITLE' | translate }}</span>
+                          <span
+                            class="relative inline-flex items-center gap-1 px-2 py-1 rounded text-[9px] font-bold shrink-0 transition-all duration-150"
+                            [class.bg-[#E0F7F2]]="isAiCompleted()"
+                            [class.text-emerald-800]="isAiCompleted()"
+                            [class.bg-[#00629A]]="!isAiCompleted()"
+                            [class.text-white]="!isAiCompleted()"
+                            [class.scale-95]="choreography().pressed"
+                          >
+                            <mat-icon fontSet="material-icons-outlined" class="!w-3 !h-3 !text-[12px]">
+                              {{ isAiCompleted() ? 'check_circle' : 'auto_awesome' }}
+                            </mat-icon>
+                            <span>{{ (isAiCompleted() ? 'LANDING_HERO.MOCKUP.AI.BTN_OPTIMIZED' : 'LANDING_HERO.MOCKUP.AI.BTN_OPTIMIZE') | translate }}</span>
+                            @if (hoveredTab() === null) {
+                              <ng-container *ngTemplateOutlet="demoCursor; context: { frame: choreography() }" />
+                            }
+                          </span>
+                        </header>
+
+                        <ul class="flex flex-col gap-2 list-none p-0 m-0 flex-1 justify-evenly">
+                          @for (job of aiJobs; track job.id; let idx = $index) {
+                            @let jobPct = getAiJobProgress(idx);
+                            <li
+                              class="p-2 rounded-md border transition-colors flex flex-col gap-1.5"
+                              [class.border-[#3FC0F0]]="isAiOptimizing() && activeAiJobIndex() === idx && !isAiCompleted()"
+                              [class.bg-[#E3EFFD]/45]="isAiOptimizing() && activeAiJobIndex() === idx && !isAiCompleted()"
+                              [class.border-emerald-200]="jobPct >= 100"
+                              [class.bg-[#E0F7F2]/35]="jobPct >= 100"
+                              [class.border-slate-100]="!isAiOptimizing() || (activeAiJobIndex() !== idx && jobPct < 100)"
+                            >
+                              <div class="flex items-center justify-between gap-1 text-[10px]">
+                                <span class="font-semibold text-slate-800 truncate">{{ job.fileName }}</span>
+                                <span
+                                  class="font-mono text-[9px] font-bold tabular-nums shrink-0"
+                                  [class.text-emerald-700]="jobPct >= 100"
+                                  [class.text-[#00629A]]="isAiOptimizing() && jobPct < 100"
+                                  [class.text-slate-400]="!isAiOptimizing()"
+                                >
+                                  {{ jobPct >= 100 ? job.optimizedSize : job.originalSize }}
+                                </span>
+                              </div>
+                              <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                                <span
+                                  class="block h-full origin-left will-change-transform transition-colors duration-300"
+                                  [class.bg-emerald-500]="jobPct >= 100"
+                                  [class.bg-[#00629A]]="jobPct < 100"
+                                  [style.transform]="'scaleX(' + jobPct / 100 + ')'"
+                                ></span>
+                              </div>
+                              <div class="flex items-center justify-between text-[8px] sm:text-[9px] text-slate-500">
+                                <span class="truncate">{{ job.badgeKey | translate }}</span>
+                                <span class="font-mono font-bold tabular-nums" [class.text-emerald-700]="jobPct >= 100">
+                                  {{ jobPct >= 100 ? ('-' + job.savedPercent + '%') : (jobPct + '%') }}
+                                </span>
+                              </div>
+                            </li>
+                          }
+                        </ul>
+
+                        <p class="text-[9px] sm:text-[10px] text-slate-600 flex items-center justify-between border-t border-slate-100 pt-1.5 m-0">
+                          <span class="font-mono font-semibold truncate">{{ 'LANDING_HERO.MOCKUP.AI.SUMMARY_VALUE' | translate }}</span>
+                          <span
+                            class="font-mono font-bold shrink-0"
+                            [class.text-emerald-700]="isAiCompleted()"
+                            [class.text-slate-400]="!isAiCompleted()"
+                          >{{ isAiCompleted() ? '-87%' : '...' }}</span>
+                        </p>
+                      </div>
+                    </div>
+                  }
+
+                  <!-- ════════ CẢNH 3: WEEKLY GANTT TIMELINE ════════ -->
+                  @case ('TAB_PROJECT') {
+                    <div class="hero-scene-enter bg-white border border-slate-200 rounded-lg flex-1 flex flex-col overflow-hidden">
+                      <header class="grid grid-cols-12 border-b border-slate-200 bg-slate-50 text-[10px] font-bold text-slate-500">
+                        <span class="col-span-4 px-2.5 py-1.5 border-r border-slate-200 truncate">
+                          {{ 'LANDING_HERO.MOCKUP.PROJECT.GANTT_TITLE' | translate }}
+                        </span>
+                        <div class="col-span-8 grid grid-cols-5 text-center">
+                          @for (dayIdx of ganttDayKeys; track dayIdx) {
+                            <span
+                              class="py-1.5 border-r last:border-r-0 border-slate-100 transition-colors duration-200"
+                              [class.text-[#00629A]]="activeGanttDayIndex() === dayIdx"
+                              [class.bg-[#E3EFFD]/70]="activeGanttDayIndex() === dayIdx"
+                            >
+                              {{ ('LANDING_HERO.MOCKUP.PROJECT.DAYS.' + dayIdx) | translate }}
+                            </span>
+                          }
+                        </div>
+                      </header>
+
+                      <div class="relative flex-1 flex flex-col justify-evenly divide-y divide-slate-100">
+                        <div class="grid grid-cols-12 absolute inset-0 pointer-events-none z-20" aria-hidden="true">
+                          <div class="col-span-4"></div>
+                          <div class="col-span-8 relative">
+                            <!-- Mốc Hôm nay cố định ở giữa tuần (Thứ 4) -->
+                            <span
+                              class="absolute top-0 bottom-0 w-px bg-[#00629A]/85"
+                              [style.left.%]="ganttTodayPercent"
+                            >
+                              <span class="absolute top-1 -translate-x-1/2 px-1 py-0.2 rounded bg-[#00629A] text-white text-[8px] font-bold whitespace-nowrap">
+                                {{ 'LANDING_HERO.MOCKUP.TODAY' | translate }}
+                              </span>
+                            </span>
+
+                            @if (hoveredTab() === null) {
+                              <ng-container *ngTemplateOutlet="demoCursor; context: { frame: choreography() }" />
+                            }
+                          </div>
+                        </div>
+
+                        @for (bar of ganttBars; track bar.id) {
+                          <div class="grid grid-cols-12 items-center py-2 sm:py-3.5 relative z-10">
+                            <span class="col-span-4 px-2 sm:px-3 text-[9px] sm:text-[11px] font-semibold text-slate-700 truncate">
+                              {{ bar.titleKey | translate }}
+                            </span>
+                            <div class="col-span-8 relative h-6 sm:h-7 flex items-center">
+                              <div
+                                class="relative h-6 sm:h-7 rounded-md border px-1.5 flex items-center gap-1.5 text-[9px] sm:text-[10px] font-bold transition-shadow duration-150"
+                                [class]="bar.barClass"
+                                [class.border-[#00629A]]="isGanttBarResizing(bar)"
+                                [class.shadow-sm]="isGanttBarResizing(bar)"
+                                [style.margin-left.%]="bar.startColPercent"
+                                [style.width.%]="getGanttBarWidth(bar)"
+                              >
+                                <span class="w-4 h-4 rounded-full text-[8px] font-bold flex items-center justify-center shrink-0" [class]="bar.avatarBg">
+                                  {{ bar.assignee }}
+                                </span>
+                                <span class="truncate pr-1">{{ bar.titleKey | translate }}</span>
+                                @if (bar.id === ganttActiveBarId) {
+                                  <span
+                                    class="absolute right-0.5 top-1/2 -translate-y-1/2 w-1 h-3.5 rounded-full transition-colors duration-150"
+                                    [class.bg-[#00629A]]="isGanttBarResizing(bar)"
+                                    [class.bg-indigo-400/70]="!isGanttBarResizing(bar)"
+                                    aria-hidden="true"
+                                  ></span>
+                                }
+                              </div>
+                            </div>
+                          </div>
+                        }
+                      </div>
+
+                      <footer class="border-t border-slate-200 bg-slate-50/70 px-3 py-1.5 flex items-center justify-between text-[10px] text-slate-600">
+                        <span class="font-semibold">{{ 'LANDING_HERO.MOCKUP.PROJECT.SUMMARY_TASKS' | translate }}</span>
+                        <span class="px-1.5 py-0.2 rounded bg-[#E0F7F2] text-emerald-800 font-bold">
+                          {{ 'LANDING_HERO.MOCKUP.PROJECT.SUMMARY_OVERDUE' | translate }}
+                        </span>
+                      </footer>
+                    </div>
+                  }
+
+                  <!-- ════════ CẢNH 4: STORAGE CENTER (REAL GALLERY) ════════ -->
+                  @case ('TAB_STORAGE') {
+                    <div class="hero-scene-enter relative flex-1 flex flex-col gap-2.5">
+                      <header class="bg-white border border-slate-200 rounded-lg px-3 py-2 flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-2 min-w-0 flex-1">
+                          <mat-icon fontSet="material-icons-outlined" class="!w-5 !h-5 !text-[20px] text-[#00629A] shrink-0">cloud_queue</mat-icon>
+                          <div class="min-w-0 flex-1">
+                            <div class="flex items-center justify-between text-[10px] mb-1">
+                              <span class="font-bold text-slate-700 truncate">{{ 'LANDING_HERO.MOCKUP.STORAGE.QUOTA_LABEL' | translate }}</span>
+                              <span class="font-mono font-bold text-[#00629A] tabular-nums shrink-0">{{ storageQuotaMB() }} / 500 MB</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                              <span
+                                class="block h-full bg-gradient-to-r from-[#00629A] to-[#3FC0F0] rounded-full origin-left will-change-transform"
+                                [style.transform]="'scaleX(' + (storageQuotaMB() / 500) + ')'"
+                              ></span>
+                            </div>
+                          </div>
+                        </div>
+                        <span class="px-2 py-0.5 rounded bg-[#E3EFFD] text-[#00629A] text-[10px] font-bold shrink-0">
+                          {{ (progress() >= 82 ? 'LANDING_HERO.MOCKUP.STORAGE.UPLOAD_DONE' : 'LANDING_HERO.MOCKUP.STORAGE.UPLOAD_LIVE') | translate }}
+                        </span>
+                      </header>
+
+                      <div class="bg-white border border-slate-200 rounded-lg p-2.5 flex-1 flex flex-col gap-2">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-1">
+                          <span class="text-[11px] font-bold text-slate-700">{{ 'LANDING_HERO.MOCKUP.STORAGE.GROUP_TODAY' | translate }}</span>
+                          <span class="text-[10px] text-slate-400 tabular-nums">3 WebP</span>
+                        </div>
+
+                        <ul class="grid grid-cols-3 gap-1.5 sm:gap-2.5 flex-1 list-none p-0 m-0">
+                          @for (item of storageThumbs; track item.id; let idx = $index) {
+                            <li
+                              class="rounded-md border overflow-hidden flex flex-col bg-slate-50 transition-all duration-300"
+                              [class.border-[#00629A]]="activeStorageIndex() === idx"
+                              [class.shadow-md]="activeStorageIndex() === idx"
+                              [class.border-slate-200]="activeStorageIndex() !== idx"
+                            >
+                              <div class="relative flex-1 min-h-[82px] sm:min-h-[125px] lg:min-h-[155px] overflow-hidden bg-slate-200">
+                                <img
+                                  [src]="item.imageSrc"
+                                  [alt]="item.fileName"
+                                  width="180"
+                                  height="110"
+                                  decoding="async"
+                                  class="w-full h-full object-cover"
+                                />
+                                <span class="absolute top-1 right-1 px-1 py-0.2 rounded bg-white/90 text-[8px] font-bold text-emerald-700">
+                                  {{ item.savedTag }}
+                                </span>
+                              </div>
+                              <div class="px-1.5 py-1 bg-white flex items-center justify-between gap-1 text-[9px]">
+                                <span class="font-medium text-slate-700 truncate">{{ item.fileName }}</span>
+                                <span class="font-mono text-slate-400 shrink-0">{{ item.webpSize }}</span>
+                              </div>
+                            </li>
+                          }
+                        </ul>
+                      </div>
+
+                      @if (hoveredTab() === null) {
+                        <ng-container *ngTemplateOutlet="demoCursor; context: { frame: choreography() }" />
+                      }
+                    </div>
+                  }
+
+                  <!-- ════════ CẢNH 5: RBAC MATRIX & AUDIT PIPELINE ════════ -->
+                  @case ('TAB_SECURITY') {
+                    <div class="hero-scene-enter relative flex-1 flex flex-col gap-2.5 sm:gap-3">
+                      <div class="bg-white border border-slate-200 rounded-lg flex-1 flex flex-col">
+                        <header class="px-3 py-1.5 sm:py-2 bg-slate-50 border-b border-slate-200 rounded-t-lg flex items-center justify-between">
+                          <span class="text-[11px] font-bold text-slate-700">{{ 'LANDING_HERO.MOCKUP.SECURITY.MATRIX_TITLE' | translate }}</span>
+                          <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#E0F7F2] text-emerald-800">
+                            {{ 'LANDING_HERO.MOCKUP.SECURITY.VERIFIED' | translate }}
+                          </span>
+                        </header>
+                        <table class="w-full text-left border-collapse text-[10px] flex-1">
+                          <thead>
+                            <tr class="border-b border-slate-100 text-slate-500">
+                              <th class="py-1.5 px-2.5 font-semibold">{{ 'LANDING_HERO.MOCKUP.SECURITY.COL_RESOURCE' | translate }}</th>
+                              <th class="py-1.5 px-2 text-center font-semibold">{{ 'LANDING_HERO.MOCKUP.SECURITY.COL_OWNER' | translate }}</th>
+                              <th class="py-1.5 px-2 text-center font-semibold">{{ 'LANDING_HERO.MOCKUP.SECURITY.COL_MEMBER' | translate }}</th>
+                              <th class="py-1.5 px-2 text-center font-semibold">{{ 'LANDING_HERO.MOCKUP.SECURITY.COL_GUEST' | translate }}</th>
+                            </tr>
+                          </thead>
+                          <tbody class="divide-y divide-slate-100">
+                            @for (row of rbacRows; track row.resourceKey; let idx = $index) {
+                              <tr class="transition-colors duration-300" [class.bg-[#E3EFFD]/45]="isStepVerified(row.revealAt)">
+                                <td class="py-1.5 sm:py-2 px-2.5 font-medium text-slate-700 truncate">{{ row.resourceKey | translate }}</td>
+                                <td class="py-1.5 sm:py-2 px-2 text-center">
+                                  <span class="relative inline-flex items-center justify-center">
+                                    <mat-icon fontSet="material-icons-outlined" class="!w-3.5 !h-3.5 !text-[14px] text-emerald-600 align-middle">check_circle</mat-icon>
+                                    @if (hoveredTab() === null && idx === 2 && securityPhase() === 'row') {
+                                      <ng-container *ngTemplateOutlet="demoCursor; context: { frame: choreography() }" />
+                                    }
+                                  </span>
+                                </td>
+                                <td class="py-1.5 sm:py-2 px-2 text-center">
+                                  <mat-icon
+                                    fontSet="material-icons-outlined"
+                                    class="!w-3.5 !h-3.5 !text-[14px] align-middle"
+                                    [class.text-emerald-600]="row.member"
+                                    [class.text-slate-300]="!row.member"
+                                  >{{ row.member ? 'check_circle' : 'remove' }}</mat-icon>
+                                </td>
+                                <td class="py-1.5 sm:py-2 px-2 text-center">
+                                  <mat-icon fontSet="material-icons-outlined" class="!w-3.5 !h-3.5 !text-[14px] text-slate-300 align-middle">remove</mat-icon>
+                                </td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+
+                      <ul class="grid grid-cols-3 gap-2 list-none p-0 m-0">
+                        @for (step of securitySteps; track step.id) {
+                          <li
+                            class="relative rounded-lg border p-2 sm:p-2.5 flex flex-col gap-1 transition-colors duration-300"
+                            [class.bg-[#E0F7F2]/60]="isStepVerified(step.unlockAt)"
+                            [class.border-emerald-300]="isStepVerified(step.unlockAt)"
+                            [class.bg-white]="!isStepVerified(step.unlockAt)"
+                            [class.border-slate-200]="!isStepVerified(step.unlockAt)"
+                          >
+                            <div class="flex items-center justify-between gap-1">
+                              <span class="text-[10px] font-bold text-slate-800 truncate">{{ step.labelKey | translate }}</span>
+                              <mat-icon
+                                fontSet="material-icons-outlined"
+                                class="!w-3.5 !h-3.5 !text-[14px] shrink-0"
+                                [class.text-emerald-600]="isStepVerified(step.unlockAt)"
+                                [class.text-slate-400]="!isStepVerified(step.unlockAt)"
+                              >{{ step.icon }}</mat-icon>
+                            </div>
+                            <code class="text-[9px] font-mono text-slate-600 truncate">{{ step.detail }}</code>
+                            @if (hoveredTab() === null && step.id === 's3' && securityPhase() === 'card') {
+                              <ng-container *ngTemplateOutlet="demoCursor; context: { frame: choreography() }" />
+                            }
+                          </li>
+                        }
+                      </ul>
+                    </div>
+                  }
+                }
+              </section>
             </div>
-            @for (tab of tabs(); track tab.labelKey; let i = $index) {
-              @if (shouldRenderTab(i)) {
-                <img
-                  [src]="tab.imageUrl"
-                  [alt]="tab.imageAltKey | translate"
-                  width="960"
-                  height="540"
-                  [attr.fetchpriority]="i === 0 ? 'high' : 'low'"
-                  [attr.loading]="i === 0 ? 'eager' : 'lazy'"
-                  [attr.decoding]="i === 0 ? 'sync' : 'async'"
-                  (load)="onImageLoad(i)"
-                  class="absolute inset-0 z-10 w-full h-full object-cover transition-all duration-500 ease-out"
-                  [class.opacity-100]="activeTab() === i && isTabLoaded(i)"
-                  [class.scale-100]="activeTab() === i && isTabLoaded(i)"
-                  [class.opacity-0]="activeTab() !== i || !isTabLoaded(i)"
-                  [class.scale-[1.02]]="!isTabLoaded(i)"
-                  [class.pointer-events-none]="activeTab() !== i"
-                />
-              }
-            }
           </div>
         </figure>
+
+        <!-- Minimalist White Pointer Cursor Template (Shared across scenes) -->
+        <ng-template #demoCursor let-frame="frame">
+          <span
+            class="hero-demo-cursor"
+            [class.is-pressed]="frame.pressed"
+            [style.left.%]="frame.cursorX"
+            [style.top.%]="frame.cursorY"
+            aria-hidden="true"
+          >
+            @if (frame.pulse) {
+              <span class="hero-cursor-ripple"></span>
+            }
+            <svg
+              class="hero-cursor-svg"
+              width="16"
+              height="16"
+              viewBox="0 0 20 20"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M2.5 2L16.5 9.6L10.3 11.2L8.2 17.5L2.5 2Z"
+                fill="#FFFFFF"
+                stroke="#1A1B1F"
+                stroke-width="1.35"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+        </ng-template>
       </div>
     </div>
   </div>
 
-  <div class="hero-badges-section">
+  <aside class="hero-badges-section" aria-label="Huy hiệu nổi bật">
     <div class="hero-badges-container">
       <div class="hero-badge-item">
         <mat-icon fontSet="material-icons-outlined" class="hero-badge-icon">cloud_done</mat-icon>
@@ -126,7 +717,7 @@
           <span class="hero-badge-subtitle">{{ 'LANDING_HERO.BADGE1_SUB' | translate }}</span>
         </div>
       </div>
-      <div class="hidden sm:block w-px h-10 bg-white/30"></div>
+      <span class="hidden sm:block w-px h-10 bg-white/30" aria-hidden="true"></span>
       <div class="hero-badge-item">
         <mat-icon fontSet="material-icons-outlined" class="hero-badge-icon">speed</mat-icon>
         <div class="hero-badge-text">
@@ -135,5 +726,5 @@
         </div>
       </div>
     </div>
-  </div>
+  </aside>
 </section>

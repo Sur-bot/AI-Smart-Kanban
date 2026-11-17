@@ -32,7 +32,7 @@ export const guestMockInterceptor: HttpInterceptorFn = (req, next) => {
     if (req.url.includes('/users/me') && req.method === 'GET') {
       return of(new HttpResponse({
         status: 200,
-        body: { id: 'user-1', name: 'Nguyễn Văn A (Guest)', email: 'guest@aismartkanban.local', avatar_url: 'https://i.pravatar.cc/150?u=a042581f4e29026024d' }
+        body: { id: 'user-1', name: 'Nguyễn Văn A (Guest)', email: 'guest@digit24.local', avatar_url: 'https://i.pravatar.cc/150?u=a042581f4e29026024d' }
       })).pipe(delay(100));
     }
 

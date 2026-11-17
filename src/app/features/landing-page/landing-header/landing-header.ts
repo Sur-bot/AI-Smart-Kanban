@@ -1,4 +1,4 @@
-import { Component, signal, HostListener, OnInit, inject } from '@angular/core';
+import { Component, computed, signal, HostListener, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -24,6 +24,10 @@ export class LandingHeaderComponent implements OnInit {
   isLangPopupOpen = signal(false);
   isMobileMenuOpen = signal(false);
   currentLang = signal('vi');
+
+  readonly isNavOverlayOpen = computed(
+    () => this.activeDropdown() !== null || this.isMobileMenuOpen()
+  );
 
   // ─── Language Options ────────────────────────────────────────
   languages = [

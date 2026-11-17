@@ -7,6 +7,7 @@ import { LandingTechComponent } from './landing-tech/landing-tech';
 import { LandingCtaComponent } from './landing-cta/landing-cta';
 import { LandingFooterComponent } from './landing-footer/landing-footer';
 import { LandingFeedbackComponent } from './landing-feedback/landing-feedback';
+import { LandingScrollTopComponent } from './landing-scroll-top/landing-scroll-top';
 
 @Component({
   selector: 'app-landing-page',
@@ -17,6 +18,7 @@ import { LandingFeedbackComponent } from './landing-feedback/landing-feedback';
     LandingTechComponent,
     LandingCtaComponent,
     LandingFooterComponent,
+    LandingScrollTopComponent,
     LandingFeedbackComponent,
   ],
   templateUrl: './landing-page.html',

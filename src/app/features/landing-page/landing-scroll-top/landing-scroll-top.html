@@ -1,0 +1,27 @@
+<aside
+  class="fixed bottom-24 right-4 sm:bottom-28 sm:right-8 z-[90] pointer-events-none"
+  [attr.aria-label]="'LANDING_SCROLL_TOP.ARIA_LABEL' | translate"
+>
+  @if (isVisible()) {
+    <button
+      type="button"
+      class="scroll-top-btn pointer-events-auto relative group flex items-center justify-center w-12 h-12 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 cursor-pointer"
+      (click)="scrollToTop()"
+      [title]="'LANDING_SCROLL_TOP.TOOLTIP' | translate"
+      [attr.aria-label]="'LANDING_SCROLL_TOP.ARIA_LABEL' | translate"
+    >
+      <span
+        class="absolute inset-[-5px] rounded-full border border-sky-500/30 bg-sky-500/10 group-hover:border-sky-500/45 group-hover:bg-sky-500/15 transition-colors duration-300"
+        aria-hidden="true"
+      ></span>
+
+      <span
+        class="relative w-full h-full rounded-full bg-gradient-to-br from-blue-600 to-sky-500 text-white flex items-center justify-center shadow-lg shadow-blue-500/35 hover:brightness-105 transition-all duration-300"
+      >
+        <mat-icon class="scroll-top-icon" aria-hidden="true">
+          arrow_upward
+        </mat-icon>
+      </span>
+    </button>
+  }
+</aside>

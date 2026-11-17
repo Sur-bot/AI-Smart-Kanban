@@ -8,11 +8,11 @@
   }
 }
 
-// ─── Animation: Slide-in cho feature items ───
+// ─── Animation: Slide-in cho feature items (giữ rõ 100% độ tương phản) ───
 @keyframes slideIn {
   from {
-    opacity: 0;
-    transform: translateX(-12px);
+    opacity: 0.88;
+    transform: translateX(-6px);
   }
   to {
     opacity: 1;
@@ -21,14 +21,7 @@
 }
 
 .animate-slide-in {
-  animation: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  opacity: 0;
-
-  @for $i from 1 through 8 {
-    &:nth-child(#{$i}) {
-      animation-delay: #{($i - 1) * 60}ms;
-    }
-  }
+  animation: slideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 // ─── Hero Tab Navigation ─────────────────────────────────────
@@ -108,11 +101,11 @@
 }
 
 .hero-features-container {
-  @apply max-w-6xl mx-auto;
+  @apply max-w-7xl mx-auto;
 }
 
 .hero-features-grid {
-  @apply grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[360px];
+  @apply grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-center min-h-[380px];
 }
 
 .hero-feature-list {
@@ -120,7 +113,7 @@
 }
 
 .hero-feature-item {
-  @apply flex items-start gap-3 text-slate-700 text-base sm:text-lg animate-slide-in;
+  @apply flex items-start gap-3 text-slate-800 font-medium text-base sm:text-lg animate-slide-in;
 }
 
 .hero-cta-btn {
@@ -128,31 +121,80 @@
 }
 
 .hero-mockup-wrapper {
-  @apply rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-200/50 overflow-hidden;
+  @apply rounded-xl border border-slate-200 bg-[#F4F7FA] overflow-hidden;
 }
 
-.hero-mockup-header {
-  @apply flex items-center gap-2 px-4 py-3 bg-slate-50 border-b border-slate-200;
+.hero-camera-viewport {
+  @apply relative w-full overflow-hidden;
 }
 
-.hero-mockup-url {
-  @apply ml-4 flex-1 h-7 bg-slate-100 rounded-md flex items-center px-3 text-xs text-slate-400 font-mono;
+.hero-camera-stage {
+  @apply relative w-full flex flex-col min-h-[270px] sm:min-h-[350px] lg:min-h-[395px] bg-[#F4F7FA];
+  transform-origin: 50% 50%;
+  will-change: transform;
 }
 
-.hero-mockup-body {
-  @apply aspect-video relative overflow-hidden bg-slate-100;
+.hero-scene-viewport {
+  @apply flex-1;
 }
 
-.hero-image-skeleton {
-  @apply absolute inset-0 flex items-center justify-center bg-gradient-to-r from-slate-100 via-slate-200/80 to-slate-100 animate-pulse z-0 pointer-events-none transition-opacity duration-300 ease-out opacity-100;
-
-  &.is-hidden {
-    @apply opacity-0 animate-none;
+@keyframes sceneEnter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }
 
-.hero-mockup-card {
-  @apply bg-white rounded-xl border border-slate-200 p-3 flex flex-col gap-2.5 shadow-sm;
+.hero-scene-enter {
+  animation: sceneEnter 320ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.hero-demo-cursor {
+  @apply absolute z-40 pointer-events-none;
+  transform: translate3d(-2px, -1.6px, 0) scale(1);
+  transition: transform 120ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: left, top, transform;
+
+  &.is-pressed {
+    transform: translate3d(-2px, -1.6px, 0) scale(0.86);
+  }
+}
+
+.hero-cursor-svg {
+  @apply block w-4 h-4;
+  filter: drop-shadow(0 2px 4px rgba(15, 23, 42, 0.28));
+}
+
+@keyframes cursorRipple {
+  0% {
+    opacity: 0.75;
+    transform: translate(-50%, -50%) scale(0.35);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.9);
+  }
+}
+
+.hero-cursor-ripple {
+  @apply absolute left-[2px] top-[1.6px] w-4 h-4 rounded-full border border-[#00629A] bg-[#3FC0F0]/25;
+  animation: cursorRipple 460ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-mockup-header {
+  @apply flex items-center justify-between gap-2 px-3 py-2 bg-white border-b border-slate-200;
+}
+
+.real-task-card {
+  @apply flex bg-white rounded-lg border border-slate-200/90 shadow-sm overflow-hidden;
+}
+
+.real-task-stripe {
+  @apply w-[3px] shrink-0;
 }
 
 .hero-badges-section {

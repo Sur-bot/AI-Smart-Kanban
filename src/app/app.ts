@@ -11,7 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
   standalone: true
 })
 export class App {
-  protected readonly title = signal('ai-smart-kanban');
+  protected readonly title = signal('digit24');
 
   constructor(private translate: TranslateService) {
     this.translate.use('vi');
