@@ -6,6 +6,8 @@
     "start": "ng serve",
     "prebuild": "node scripts/set-env.mjs",
     "build": "ng build",
+    "prebuild:preview": "node scripts/set-env.mjs",
+    "build:preview": "ng build --configuration preview",
     "watch": "ng build --watch --configuration development",
     "pretest": "node scripts/set-env.mjs --mode=test",
     "test": "ng test",
