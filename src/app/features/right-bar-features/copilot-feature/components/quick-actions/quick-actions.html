@@ -1,0 +1,15 @@
+<div class="px-3 py-2 w-full overflow-hidden">
+  <div class="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-2">
+    {{ 'AI.QUICK_ACTIONS.TITLE' | translate }}
+  </div>
+  
+  <!-- Horizontal scroll container -->
+  <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide snap-x" style="scrollbar-width: none;">
+    <button *ngFor="let action of actions" 
+            (click)="onSelect.emit(action.prompt)"
+            class="snap-start shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs font-medium text-gray-700 dark:text-gray-300 hover:bg-primary-50 hover:text-primary-600 hover:border-primary-200 dark:hover:bg-primary-900/30 dark:hover:text-primary-400 dark:hover:border-primary-800 transition-colors shadow-sm">
+      <mat-icon class="w-3.5 h-3.5 text-[14px] leading-4">{{ action.icon }}</mat-icon>
+      <span>{{ action.labelKey | translate }}</span>
+    </button>
+  </div>
+</div>

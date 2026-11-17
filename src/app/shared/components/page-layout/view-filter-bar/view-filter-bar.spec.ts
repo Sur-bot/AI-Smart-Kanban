@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ViewFilterBarComponent } from './view-filter-bar';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { RightBarService } from '../../../../core/services/right-bar.service';
+import { RightBarService } from '@core/services/right-bar.service';
 
 describe('ViewFilterBarComponent', () => {
   let component: ViewFilterBarComponent;

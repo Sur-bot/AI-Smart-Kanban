@@ -1,10 +1,10 @@
 import { Component, inject, HostListener, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { TaskStore } from '../../../core/state/task.store';
-import { Project } from '../../../core/models/task.model';
+import { TaskStore } from '@core/state/task.store';
+import { Project } from '@core/models/task.model';
 import { MatDialog } from '@angular/material/dialog';
-import { CreateProjectModalComponent } from '../../../features/kanban/components/create-project-modal/create-project-modal';
+import { CreateProjectModalComponent } from '@features/kanban/modals/create-project-modal/create-project-modal';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({

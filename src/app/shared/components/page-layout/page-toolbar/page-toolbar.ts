@@ -4,11 +4,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { NgStyle } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { CreateTaskModalComponent } from '../../create-task-modal/create-task-modal';
-import { CreateButtonComponent } from '../../create-button/create-button';
-import { ProjectDrawerModalComponent } from '../../../../features/kanban/components/project-drawer-modal/project-drawer-modal';
-import { TaskStore } from '../../../../core/state/task.store';
-import { RightBarService } from '../../../../core/services/right-bar.service';
+import { CreateTaskModalComponent } from '@features/kanban/modals/create-task-modal/create-task-modal';
+import { CreateButtonComponent } from '@shared/components/create-button/create-button';
+import { ProjectDrawerModalComponent } from '@features/kanban/modals/project-drawer-modal/project-drawer-modal';
+import { TaskStore } from '@core/state/task.store';
+import { RightBarService } from '@core/services/right-bar.service';
 
 const TASK_FILTERS = [
   { id: 'in_progress', label: 'Đang tiến hành' },

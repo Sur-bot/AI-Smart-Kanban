@@ -12,8 +12,8 @@ import {
   TelephonyFeatureComponent,
   AppsFeatureComponent,
   SettingsFeatureComponent
-} from '../../../../features/right-bar-features';
-import { RIGHT_BAR_FEATURES, RightBarFeature } from '../../../../core/config/right-bar.config';
+} from '@features/right-bar-features';
+import { RIGHT_BAR_FEATURES, RightBarFeature } from '@core/config/right-bar.config';
 
 @Component({
   selector: 'app-right-bar-popup',

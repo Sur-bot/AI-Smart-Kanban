@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { JobRole, getJobRole } from '../../../core/constants/job-roles';
+import { JobRole, getJobRole } from '@core/constants/job-roles';
 
 @Component({
   selector: 'app-job-role-badge',

@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DataTableComponent } from './data-table';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { TaskStore } from '../../../../core/state/task.store';
-import { PermissionService } from '../../../../core/services/permission.service';
-import { TaskItem } from '../../../../core/models/task.model';
+import { TaskStore } from '@core/state/task.store';
+import { PermissionService } from '@core/services/permission.service';
+import { TaskItem } from '@core/models/task.model';
 import { provideTranslateService } from '@ngx-translate/core';
 
 describe('DataTableComponent', () => {

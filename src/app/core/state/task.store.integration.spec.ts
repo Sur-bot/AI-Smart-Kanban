@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TaskStore } from './task.store';
-import { TaskService } from '../services/task.service';
-import { ProjectService } from '../services/project.service';
-import { PermissionService } from '../services/permission.service';
-import { AuthService } from '../auth/auth.service';
-import { MemberService } from '../services/member.service';
-import { environment } from '../../../environments/environment';
+import { TaskService } from '@core/services/task.service';
+import { ProjectService } from '@core/services/project.service';
+import { PermissionService } from '@core/services/permission.service';
+import { AuthService } from '@core/auth/auth.service';
+import { MemberService } from '@core/services/member.service';
+import { environment } from '@env/environment';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { PLATFORM_ID } from '@angular/core';
 import { of } from 'rxjs';

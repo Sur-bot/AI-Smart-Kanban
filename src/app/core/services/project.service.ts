@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { Project, ProjectMember, ProjectMemberRole, TaskStatus, CreateProjectPayload } from '../models/task.model';
+import { environment } from '@env/environment';
+import { Project, ProjectMember, ProjectMemberRole, TaskStatus, CreateProjectPayload } from '@core/models/task.model';
 
 @Injectable({
   providedIn: 'root'

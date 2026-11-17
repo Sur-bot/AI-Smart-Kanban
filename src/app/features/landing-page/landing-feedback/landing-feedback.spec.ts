@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   FeedbackService,
   FeedbackSubmissionError,
-} from '../../../core/services/feedback.service';
+} from '@core/services/feedback.service';
 import { LandingFeedbackComponent } from './landing-feedback';
 
 describe('LandingFeedbackComponent', () => {

@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule, DatePipe, SlicePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { TaskItem, TaskLabel, UserSummary } from '../../../../core/models/task.model';
-import { PermissionService } from '../../../../core/services/permission.service';
+import { TaskItem, TaskLabel, UserSummary } from '@core/models/task.model';
+import { PermissionService } from '@core/services/permission.service';
 
 @Component({
   selector: 'app-task-card',

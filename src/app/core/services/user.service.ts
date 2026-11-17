@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { UserSummary } from '../models/task.model';
+import { environment } from '@env/environment';
+import { UserSummary } from '@core/models/task.model';
 
 export interface UserSearchResult extends UserSummary {
   is_member?: boolean;

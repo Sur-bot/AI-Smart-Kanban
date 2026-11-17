@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { PreferencesService } from './preferences.service';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '@core/auth/auth.service';
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 
 describe('PreferencesService', () => {

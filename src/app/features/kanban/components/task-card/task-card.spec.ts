@@ -1,6 +1,6 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { TaskCardComponent } from './task-card';
-import { PermissionService } from '../../../../core/services/permission.service';
+import { PermissionService } from '@core/services/permission.service';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 describe('TaskCardComponent (System)', () => {

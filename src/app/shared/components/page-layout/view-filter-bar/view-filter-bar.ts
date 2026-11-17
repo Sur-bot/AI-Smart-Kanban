@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { TaskViewMode, ViewTab } from '../../../../shared/models/task-list.model';
-import { RightBarService } from '../../../../core/services/right-bar.service';
+import { TaskViewMode, ViewTab } from '@shared/models/task-list.model';
+import { RightBarService } from '@core/services/right-bar.service';
 
 export interface QuickFilter {
   id: string;

@@ -1,5 +1,5 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '@core/auth/auth.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 

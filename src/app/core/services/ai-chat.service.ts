@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { environment } from '@env/environment';
 import {
   AiChatRequest,
   AiChatResponse,
@@ -10,7 +10,7 @@ import {
   AiQuotaInfo,
   AiSessionListResponse,
   AiChatSession
-} from '../models/ai.model';
+} from '@core/models/ai.model';
 
 /**
  * Service giao tiếp với AI CoPilot Backend API.

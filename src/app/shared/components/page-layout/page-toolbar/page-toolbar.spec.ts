@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PageToolbarComponent } from './page-toolbar';
 import { provideRouter } from '@angular/router';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { TaskStore } from '../../../../core/state/task.store';
+import { TaskStore } from '@core/state/task.store';
 import { provideTranslateService } from '@ngx-translate/core';
 
 // Mock ResizeObserver for JSDOM

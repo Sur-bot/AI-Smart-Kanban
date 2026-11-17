@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RightBarIconButtonComponent } from './components/right-bar-icon-button/right-bar-icon-button';
-import { RIGHT_BAR_FEATURES, RightBarFeature } from '../../core/config/right-bar.config';
+import { RIGHT_BAR_FEATURES, RightBarFeature } from '@core/config/right-bar.config';
 
 @Component({
   selector: 'app-right-bar',

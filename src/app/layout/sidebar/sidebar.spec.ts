@@ -3,8 +3,8 @@ import { SidebarComponent } from './sidebar';
 import { provideRouter } from '@angular/router';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { provideTranslateService } from '@ngx-translate/core';
-import { MenuItem } from '../../core/config/menu.config';
-import { TaskStore } from '../../core/state/task.store';
+import { MenuItem } from '@core/config/menu.config';
+import { TaskStore } from '@core/state/task.store';
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;

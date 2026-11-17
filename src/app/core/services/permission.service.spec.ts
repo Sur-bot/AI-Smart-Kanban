@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClient } from '@angular/common/http';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { PermissionService } from './permission.service';
-import { ProjectMemberRole } from '../models/task.model';
+import { ProjectMemberRole } from '@core/models/task.model';
 
 // ─── Mock HttpClient (inject nhưng không dùng trong unit test) ────────────────
 const httpSpy = { get: vi.fn(), post: vi.fn(), patch: vi.fn(), delete: vi.fn() };

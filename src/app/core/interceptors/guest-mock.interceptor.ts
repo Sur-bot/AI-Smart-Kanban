@@ -2,7 +2,7 @@ import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '@core/auth/auth.service';
 import { GUEST_TASKS, GUEST_PROJECT, GUEST_STATUSES } from './guest-mock.data';
 
 export const guestMockInterceptor: HttpInterceptorFn = (req, next) => {

@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { Router, RouterLink } from '@angular/router';
-import { BITRIX_SIDEBAR_MENU, MenuItem } from '../../../core/config/menu.config';
-import { ProjectSwitcherComponent } from '../project-switcher/project-switcher';
-import { CollaborationComponent } from '../collaboration/collaboration';
+import { BITRIX_SIDEBAR_MENU, MenuItem } from '@core/config/menu.config';
+import { ProjectSwitcherComponent } from '@layout/sidebar/project-switcher/project-switcher';
+import { CollaborationComponent } from '@layout/sidebar/collaboration/collaboration';
 
 @Component({
   selector: 'app-expand-menu-sheet',

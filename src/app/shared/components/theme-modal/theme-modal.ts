@@ -2,7 +2,7 @@ import { Component, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { ThemeService, ThemeBackground } from '../../../core/services/theme.service';
+import { ThemeService, ThemeBackground } from '@core/services/theme.service';
 
 @Component({
   selector: 'app-theme-modal',

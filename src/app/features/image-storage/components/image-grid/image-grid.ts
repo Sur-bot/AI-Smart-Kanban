@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { ImageFile } from '../../models/image.model';
+import { ImageFile } from '@features/image-storage/models/image.model';
 
 export interface ImageGroup {
   label: string;

@@ -15,7 +15,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {
   FeedbackService,
   FeedbackSubmissionError,
-} from '../../../core/services/feedback.service';
+} from '@core/services/feedback.service';
 import {
   FEEDBACK_ATTACHMENT_NAME_MAX_DISPLAY,
   FEEDBACK_MESSAGE_MAX_LENGTH,

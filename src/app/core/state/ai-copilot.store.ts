@@ -1,7 +1,7 @@
 import { Injectable, inject, computed, signal } from '@angular/core';
 import { finalize } from 'rxjs/operators';
-import { AiChatService } from '../services/ai-chat.service';
-import { AuthService } from '../auth/auth.service';
+import { AiChatService } from '@core/services/ai-chat.service';
+import { AuthService } from '@core/auth/auth.service';
 import { TaskStore } from './task.store';
 import { TranslateService } from '@ngx-translate/core';
 import {
@@ -12,7 +12,7 @@ import {
   AiContextPayload,
   AiTaskContext,
   AiProjectContext
-} from '../models/ai.model';
+} from '@core/models/ai.model';
 
 /**
  * Signal-based Store quản lý toàn bộ state của AI CoPilot.

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FooterComponent } from './footer';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { ThemeModalComponent } from '../../shared/components/theme-modal/theme-modal';
+import { ThemeModalComponent } from '@shared/components/theme-modal/theme-modal';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { provideTranslateService } from '@ngx-translate/core';
 

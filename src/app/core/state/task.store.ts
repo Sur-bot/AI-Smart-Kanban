@@ -1,9 +1,9 @@
 import { Injectable, computed, inject, signal, effect } from '@angular/core';
-import { TaskService } from '../services/task.service';
-import { ProjectService } from '../services/project.service';
-import { AuthService } from '../auth/auth.service';
-import { PermissionService } from '../services/permission.service';
-import { MemberService } from '../services/member.service';
+import { TaskService } from '@core/services/task.service';
+import { ProjectService } from '@core/services/project.service';
+import { AuthService } from '@core/auth/auth.service';
+import { PermissionService } from '@core/services/permission.service';
+import { MemberService } from '@core/services/member.service';
 import {
   TaskItem,
   TaskDetail,
@@ -14,7 +14,7 @@ import {
   UpdateTaskPayload,
   CreateProjectPayload,
   TaskPipelineStatus
-} from '../models/task.model';
+} from '@core/models/task.model';
 
 /** Shape of error responses returned by the backend API. */
 interface ApiError {

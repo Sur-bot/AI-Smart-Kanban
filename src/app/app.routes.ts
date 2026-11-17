@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
-import { authGuard, guestGuard } from './core/auth/auth.guard';
+import { authGuard, guestGuard } from '@core/auth/auth.guard';
 
 export const routes: Routes = [
   // 1. Landing Page (Trang chủ)
   {
     path: '',
-    loadComponent: () => import('./features/landing-page/landing-page').then(m => m.LandingPageComponent),
+    loadComponent: () => import('@features/landing-page/landing-page').then(m => m.LandingPageComponent),
     title: 'Digit24 - Không gian làm việc trực tuyến',
     pathMatch: 'full'
   },
@@ -13,7 +13,7 @@ export const routes: Routes = [
   // 2. Trang Lưu trữ Hình ảnh
   {
     path: 'image-storage',
-    loadComponent: () => import('./features/image-storage/components/image-storage-page/image-storage-page').then(m => m.ImageStoragePageComponent),
+    loadComponent: () => import('@features/image-storage/pages/image-storage-page/image-storage-page').then(m => m.ImageStoragePageComponent),
     title: 'Lưu trữ hình ảnh - Digit24',
     canActivate: [authGuard]
   },
@@ -21,14 +21,14 @@ export const routes: Routes = [
   // 3. Bộ cấu trúc chính với Layout (Dashboard)
   {
     path: '',
-    loadComponent: () => import('./layout/main-layout/main-layout').then(m => m.MainLayoutComponent),
+    loadComponent: () => import('@layout/main-layout/main-layout').then(m => m.MainLayoutComponent),
     title: 'Digit24',
     canActivate: [authGuard],
     children: [
       // Trang Tác vụ (Tasks Page) - Mặc định cho kanban
       {
         path: 'kanban',
-        loadComponent: () => import('./features/kanban/components/tasks-page/tasks-page').then(m => m.TasksPageComponent),
+        loadComponent: () => import('@features/kanban/pages/tasks-page/tasks-page').then(m => m.TasksPageComponent),
         title: 'Tác vụ của tôi - Digit24'
       },
 
@@ -41,7 +41,7 @@ export const routes: Routes = [
 
       {
         path: 'kanban/projects',
-        loadComponent: () => import('./features/kanban/components/project-page/project-page').then(m => m.ProjectPageComponent),
+        loadComponent: () => import('@features/kanban/pages/project-page/project-page').then(m => m.ProjectPageComponent),
         title: 'Dự án - Digit24'
       },
 
@@ -56,7 +56,7 @@ export const routes: Routes = [
   // 2. Tuyến đường cho trang Đăng ký (Register - Giao diện độc lập)
   {
     path: 'register',
-    loadComponent: () => import('./features/auth/register/register.component').then(m => m.RegisterComponent),
+    loadComponent: () => import('@features/auth/pages/register/register').then(m => m.RegisterComponent),
     title: 'Tạo tài khoản - Digit24',
     canActivate: [guestGuard]
   },
@@ -64,7 +64,7 @@ export const routes: Routes = [
   // Tuyến đường cho trang Đăng nhập (Login - Giao diện độc lập)
   {
     path: 'login',
-    loadComponent: () => import('./features/auth/login/login.component').then(m => m.LoginComponent),
+    loadComponent: () => import('@features/auth/pages/login/login').then(m => m.LoginComponent),
     title: 'Đăng nhập - Digit24',
     canActivate: [guestGuard]
   },
@@ -72,7 +72,7 @@ export const routes: Routes = [
   // Tuyến đường Xác minh Email (Cũ - giữ để tương thích)
   {
     path: 'verify-email',
-    loadComponent: () => import('./features/auth/verify-email/verify-email.component').then(m => m.VerifyEmailComponent),
+    loadComponent: () => import('@features/auth/pages/verify-email/verify-email').then(m => m.VerifyEmailComponent),
     title: 'Xác minh Email - Digit24'
   },
 
@@ -80,14 +80,14 @@ export const routes: Routes = [
   // Màn hình chờ sau khi đăng ký — hiển thị hướng dẫn kiểm tra email
   {
     path: 'auth/verify-pending',
-    loadComponent: () => import('./features/auth/verify-pending/verify-pending.component').then(m => m.VerifyPendingComponent),
+    loadComponent: () => import('@features/auth/pages/verify-pending/verify-pending').then(m => m.VerifyPendingComponent),
     title: 'Xác nhận Email - Digit24'
   },
 
   // Callback page — Supabase redirect về đây sau khi user click link trong email
   {
     path: 'auth/callback',
-    loadComponent: () => import('./features/auth/auth-callback/auth-callback.component').then(m => m.AuthCallbackComponent),
+    loadComponent: () => import('@features/auth/pages/auth-callback/auth-callback').then(m => m.AuthCallbackComponent),
     title: 'Đang kích hoạt tài khoản... - Digit24'
   },
 
@@ -95,7 +95,7 @@ export const routes: Routes = [
   // Phải đặt CUỐI CÙNG — Angular khớp route theo thứ tự từ trên xuống
   {
     path: '**',
-    loadComponent: () => import('./shared/components/not-found/not-found.component').then(m => m.NotFoundComponent),
+    loadComponent: () => import('@shared/components/not-found/not-found').then(m => m.NotFoundComponent),
     title: 'Trang không tìm thấy - Digit24'
   }
 ];

@@ -1,4 +1,4 @@
-import { TaskItem, TaskStatus, TaskLabel, UserSummary, Project } from '../models/task.model';
+import { TaskItem, TaskStatus, TaskLabel, UserSummary, Project } from '@core/models/task.model';
 
 export const GUEST_USERS: UserSummary[] = [
   { id: 'user-1', name: 'Nguyễn Văn A', email: 'nguyenvana@example.com', avatar_url: 'https://i.pravatar.cc/150?u=a042581f4e29026024d' },

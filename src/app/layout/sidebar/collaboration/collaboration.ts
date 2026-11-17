@@ -1,12 +1,12 @@
 import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { MenuItem } from '../../../core/config/menu.config';
+import { MenuItem } from '@core/config/menu.config';
 import { MatIconModule } from '@angular/material/icon';
-import { PermissionService } from '../../../core/services/permission.service';
-import { TaskStore } from '../../../core/state/task.store';
+import { PermissionService } from '@core/services/permission.service';
+import { TaskStore } from '@core/state/task.store';
 import { MatDialog } from '@angular/material/dialog';
-import { MemberManagementModalComponent } from '../../../features/kanban/components/member-management-modal/member-management-modal';
+import { MemberManagementModalComponent } from '@features/kanban/modals/member-management-modal/member-management-modal';
 
 @Component({
   selector: 'app-collaboration',

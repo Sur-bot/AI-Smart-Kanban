@@ -1,4 +1,4 @@
-import { environment } from '../../../../environments/environment';
+import { environment } from '@env/environment';
 
 export const SUPABASE_STORAGE_BASE = `${environment.supabase.url}/storage/v1/object/public/landing-assets/Solutions/`;
 

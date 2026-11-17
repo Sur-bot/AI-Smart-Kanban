@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LangPopupComponent } from './lang-popup/lang-popup';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { ThemeModalComponent } from '../../shared/components/theme-modal/theme-modal';
+import { ThemeModalComponent } from '@shared/components/theme-modal/theme-modal';
 @Component({
   selector: 'app-footer',
   standalone: true,

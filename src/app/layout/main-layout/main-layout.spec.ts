@@ -3,8 +3,8 @@ import { MainLayoutComponent } from './main-layout';
 import { provideRouter } from '@angular/router';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { provideTranslateService } from '@ngx-translate/core';
-import { TaskStore } from '../../core/state/task.store';
-import { RightBarService } from '../../core/services/right-bar.service';
+import { TaskStore } from '@core/state/task.store';
+import { RightBarService } from '@core/services/right-bar.service';
 
 // Mock ResizeObserver for JSDOM
 class MockResizeObserver {

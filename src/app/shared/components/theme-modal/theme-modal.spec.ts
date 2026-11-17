@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ThemeModalComponent } from './theme-modal';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { MatDialogRef } from '@angular/material/dialog';
-import { ThemeService } from '../../../core/services/theme.service';
+import { ThemeService } from '@core/services/theme.service';
 
 describe('ThemeModalComponent', () => {
   let component: ThemeModalComponent;

@@ -1,15 +1,15 @@
 import { Injectable, inject } from '@angular/core';
 import { SupabaseClient } from '@supabase/supabase-js';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '@core/auth/auth.service';
 import {
   FEEDBACK_ALLOWED_IMAGE_TYPES,
   FEEDBACK_MAX_FILE_SIZE_BYTES,
-} from '../../features/landing-page/landing-feedback/landing-feedback.data';
+} from '@features/landing-page/landing-feedback/landing-feedback.data';
 import {
   CreateFeedbackPayload,
   FeedbackErrorCode,
   FeedbackSubmissionResult,
-} from '../../features/landing-page/landing-feedback/landing-feedback.types';
+} from '@features/landing-page/landing-feedback/landing-feedback.types';
 
 /**
  * Lỗi có cấu trúc khi gửi phản hồi qua Supabase Storage / Edge Function.

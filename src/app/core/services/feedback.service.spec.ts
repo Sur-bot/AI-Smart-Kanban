@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '@core/auth/auth.service';
 import { FeedbackService, FeedbackSubmissionError } from './feedback.service';
-import { CreateFeedbackPayload } from '../../features/landing-page/landing-feedback/landing-feedback.types';
+import { CreateFeedbackPayload } from '@features/landing-page/landing-feedback/landing-feedback.types';
 
 describe('FeedbackService', () => {
   let service: FeedbackService;

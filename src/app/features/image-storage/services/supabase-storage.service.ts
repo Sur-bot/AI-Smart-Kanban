@@ -1,9 +1,9 @@
 import { Injectable, inject, effect } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, map, switchMap, catchError, throwError, of, tap } from 'rxjs';
-import { ImageFile, StorageQuota } from '../models/image.model';
-import { environment } from '../../../../environments/environment';
-import { AuthService } from '../../../core/auth/auth.service';
+import { ImageFile, StorageQuota } from '@features/image-storage/models/image.model';
+import { environment } from '@env/environment';
+import { AuthService } from '@core/auth/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class SupabaseStorageService {

@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, HostBinding, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { BITRIX_SIDEBAR_MENU, MenuItem } from '../../core/config/menu.config';
+import { BITRIX_SIDEBAR_MENU, MenuItem } from '@core/config/menu.config';
 import { CollaborationComponent } from './collaboration/collaboration';
 import { ImageStorageBtnComponent } from './image-storage-btn/image-storage-btn';
 import { ProjectSwitcherComponent } from './project-switcher/project-switcher';

@@ -5,7 +5,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 
 import { NavDropdownConfig, NavItem } from './landing-header.types';
-import { NavDropdownComponent } from '../nav-dropdown/nav-dropdown.component';
+import { NavDropdownComponent } from '@features/landing-page/nav-dropdown/nav-dropdown';
 
 @Component({
   selector: 'app-landing-header',

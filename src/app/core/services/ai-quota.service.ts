@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { AiQuotaInfo } from '../models/ai.model';
+import { environment } from '@env/environment';
+import { AiQuotaInfo } from '@core/models/ai.model';
 
 /**
  * Service quản lý AI Quota phía frontend.

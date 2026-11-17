@@ -3,12 +3,12 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { signal } from '@angular/core';
 import { of, throwError } from 'rxjs';
 import { TaskStore } from './task.store';
-import { TaskService } from '../services/task.service';
-import { ProjectService } from '../services/project.service';
-import { AuthService } from '../auth/auth.service';
-import { PermissionService } from '../services/permission.service';
-import { MemberService } from '../services/member.service';
-import { TaskItem, Project } from '../models/task.model';
+import { TaskService } from '@core/services/task.service';
+import { ProjectService } from '@core/services/project.service';
+import { AuthService } from '@core/auth/auth.service';
+import { PermissionService } from '@core/services/permission.service';
+import { MemberService } from '@core/services/member.service';
+import { TaskItem, Project } from '@core/models/task.model';
 
 // ─── Factory Helpers ──────────────────────────────────────────────────────────
 

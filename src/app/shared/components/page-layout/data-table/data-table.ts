@@ -3,15 +3,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { TaskItem, Project } from '../../../../core/models/task.model';
-import { PermissionService } from '../../../../core/services/permission.service';
-import { TaskStore } from '../../../../core/state/task.store';
-import { DueDatePickerComponent } from '../../due-date-picker/due-date-picker';
-import { ProjectPopoverComponent } from '../../project-popover/project-popover';
-import { TagPopoverComponent } from '../../tag-popover/tag-popover';
-import { JobRoleBadgeComponent } from '../../job-role-badge/job-role-badge';
+import { TaskItem, Project } from '@core/models/task.model';
+import { PermissionService } from '@core/services/permission.service';
+import { TaskStore } from '@core/state/task.store';
+import { DueDatePickerComponent } from '@shared/components/due-date-picker/due-date-picker';
+import { ProjectPopoverComponent } from '@features/kanban/components/project-popover/project-popover';
+import { TagPopoverComponent } from '@features/kanban/components/tag-popover/tag-popover';
+import { JobRoleBadgeComponent } from '@shared/components/job-role-badge/job-role-badge';
 import { OverlayModule, ConnectedPosition, CdkOverlayOrigin } from '@angular/cdk/overlay';
-import { UndoService } from '../../../../core/services/undo.service';
+import { UndoService } from '@core/services/undo.service';
 
 export interface TableColumn {
   id: string;

@@ -1,14 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { HeaderComponent } from '../header/header';
-import { SidebarComponent } from '../sidebar/sidebar';
-import { FooterComponent } from '../footer/footer';
+import { HeaderComponent } from '@layout/header/header';
+import { SidebarComponent } from '@layout/sidebar/sidebar';
+import { FooterComponent } from '@layout/footer/footer';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { RightBarComponent } from '../right-bar/right-bar';
-import { RightBarPopupComponent } from '../right-bar/components/right-bar-popup/right-bar-popup';
-import { RightBarService } from '../../core/services/right-bar.service';
-import { ThemeService } from '../../core/services/theme.service';
-import { TaskStore } from '../../core/state/task.store';
+import { RightBarComponent } from '@layout/right-bar/right-bar';
+import { RightBarPopupComponent } from '@layout/right-bar/components/right-bar-popup/right-bar-popup';
+import { RightBarService } from '@core/services/right-bar.service';
+import { ThemeService } from '@core/services/theme.service';
+import { TaskStore } from '@core/state/task.store';
 @Component({
   selector: 'app-main-layout',
   templateUrl: './main-layout.html',
