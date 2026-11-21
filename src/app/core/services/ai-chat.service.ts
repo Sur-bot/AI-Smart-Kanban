@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '@env/environment';
+import { APP_CONFIG } from '@core/config/app-config.token';
 import {
   AiChatRequest,
   AiChatResponse,
@@ -9,21 +9,15 @@ import {
   AiActionConfirmResponse,
   AiQuotaInfo,
   AiSessionListResponse,
-  AiChatSession
+  AiChatSession,
 } from '@core/models/ai.model';
 
-/**
- * Service giao tiếp với AI CoPilot Backend API.
- * Mọi request đều đi qua backend (Proxy Pattern) — không gọi Gemini trực tiếp.
- */
 @Injectable({ providedIn: 'root' })
 export class AiChatService {
   private http = inject(HttpClient);
-  private apiUrl = `${environment.apiUrl}/ai`;
+  private readonly appConfig = inject(APP_CONFIG);
+  private apiUrl = `${this.appConfig.apiUrl}/ai`;
 
-  /**
-   * Gửi tin nhắn tới AI và nhận phản hồi.
-   */
   sendMessage(payload: AiChatRequest): Observable<AiChatResponse> {
     return this.http.post<AiChatResponse>(
       `${this.apiUrl}/chat`,
@@ -32,10 +26,6 @@ export class AiChatService {
     );
   }
 
-  /**
-   * Xác nhận thực thi hành động mà AI đề xuất.
-   * User đã review và đồng ý qua Confirmation Dialog.
-   */
   confirmAction(payload: AiActionConfirmRequest): Observable<AiActionConfirmResponse> {
     return this.http.post<AiActionConfirmResponse>(
       `${this.apiUrl}/actions/confirm`,
@@ -44,9 +34,6 @@ export class AiChatService {
     );
   }
 
-  /**
-   * Từ chối hành động AI đề xuất.
-   */
   rejectAction(actionId: string, sessionId: string): Observable<{ success: boolean }> {
     return this.http.post<{ success: boolean }>(
       `${this.apiUrl}/actions/reject`,
@@ -55,9 +42,6 @@ export class AiChatService {
     );
   }
 
-  /**
-   * Lấy thông tin quota AI của user hiện tại.
-   */
   getQuota(): Observable<AiQuotaInfo> {
     return this.http.get<AiQuotaInfo>(
       `${this.apiUrl}/quota`,
@@ -65,9 +49,6 @@ export class AiChatService {
     );
   }
 
-  /**
-   * Lấy danh sách chat sessions.
-   */
   getSessions(): Observable<AiSessionListResponse> {
     return this.http.get<AiSessionListResponse>(
       `${this.apiUrl}/sessions`,
@@ -75,9 +56,6 @@ export class AiChatService {
     );
   }
 
-  /**
-   * Lấy chi tiết một session (bao gồm messages).
-   */
   getSession(sessionId: string): Observable<AiChatSession> {
     return this.http.get<AiChatSession>(
       `${this.apiUrl}/sessions/${sessionId}`,
@@ -85,9 +63,6 @@ export class AiChatService {
     );
   }
 
-  /**
-   * Xóa một chat session.
-   */
   deleteSession(sessionId: string): Observable<{ success: boolean }> {
     return this.http.delete<{ success: boolean }>(
       `${this.apiUrl}/sessions/${sessionId}`,

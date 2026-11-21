@@ -1,15 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { inject } from '@angular/core';
-import { Observable } from 'rxjs';
-import { environment } from '@env/environment';
+import { APP_CONFIG } from '@core/config/app-config.token';
 
-/**
- * Service giao tiếp với AI API Backend.
- * TODO: Implement các tính năng AI (phân tích task, gợi ý, tóm tắt...)
- */
 @Injectable({ providedIn: 'root' })
 export class AiApiService {
   private http = inject(HttpClient);
-  private apiUrl = `${environment.apiUrl}/ai`;
+  private readonly appConfig = inject(APP_CONFIG);
+  private apiUrl = `${this.appConfig.apiUrl}/ai`;
 }

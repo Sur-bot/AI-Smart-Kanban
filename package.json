@@ -4,6 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:preview": "ng serve --configuration preview",
+    "start:prod": "ng serve --configuration local-prod",
+    "check:db": "node scripts/check-db-config.mjs",
     "prebuild": "node scripts/set-env.mjs",
     "build": "ng build",
     "prebuild:preview": "node scripts/set-env.mjs",

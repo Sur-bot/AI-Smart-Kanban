@@ -1,15 +1,16 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { createClient, SupabaseClient, Session, User, AuthChangeEvent } from '@supabase/supabase-js';
 import { Router } from '@angular/router';
-import { environment } from '@env/environment';
+import { APP_CONFIG } from '@core/config/app-config.token';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private router = inject(Router);
+  private readonly appConfig = inject(APP_CONFIG);
 
   private supabase: SupabaseClient = createClient(
-    environment.supabase.url,
-    environment.supabase.anonKey
+    this.appConfig.supabase.url,
+    this.appConfig.supabase.anonKey
   );
 
   private _session = signal<Session | null>(null);
@@ -123,9 +124,6 @@ export class AuthService {
     if (error) throw error;
   }
 
-  /**
-   * Láº¥y instance Supabase client Ä‘á»ƒ dÃ¹ng trong cÃ¡c service khÃ¡c (query DB, storage...).
-   */
   getClient(): SupabaseClient {
     return this.supabase;
   }

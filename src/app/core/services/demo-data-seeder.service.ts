@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '@env/environment';
+import { APP_CONFIG } from '@core/config/app-config.token';
 import { firstValueFrom } from 'rxjs';
 
 export interface DemoSeedResponse {
@@ -15,12 +15,9 @@ export interface DemoSeedResponse {
 })
 export class DemoDataSeederService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = (environment.apiUrl || 'http://localhost:3000/api').replace(/\/+$/, '');
+  private readonly appConfig = inject(APP_CONFIG);
+  private readonly apiUrl = this.appConfig.apiUrl;
 
-  /**
-   * Ủy thác việc khởi tạo dữ liệu mẫu (dự án, cột trạng thái và tác vụ demo)
-   * sang Backend REST API `POST /api/demo/seed` để đảm bảo nguyên tử và chống trùng lặp.
-   */
   async seedForGuest(): Promise<DemoSeedResponse | null> {
     try {
       return await firstValueFrom(

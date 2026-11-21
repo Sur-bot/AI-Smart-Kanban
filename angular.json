@@ -75,6 +75,17 @@
                   "with": "src/environments/environment.development.ts"
                 }
               ]
+            },
+            "local-prod": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -84,6 +95,12 @@
           "configurations": {
             "production": {
               "buildTarget": "ai-smart-kanban:build:production"
+            },
+            "local-prod": {
+              "buildTarget": "ai-smart-kanban:build:local-prod"
+            },
+            "preview": {
+              "buildTarget": "ai-smart-kanban:build:development"
             },
             "development": {
               "buildTarget": "ai-smart-kanban:build:development"

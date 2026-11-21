@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '@env/environment';
+import { APP_CONFIG } from '@core/config/app-config.token';
 import { Project, ProjectMember, ProjectMemberRole, TaskStatus, CreateProjectPayload } from '@core/models/task.model';
 
 @Injectable({
@@ -9,7 +9,8 @@ import { Project, ProjectMember, ProjectMemberRole, TaskStatus, CreateProjectPay
 })
 export class ProjectService {
   private http = inject(HttpClient);
-  private apiUrl = `${environment.apiUrl}/projects`;
+  private readonly appConfig = inject(APP_CONFIG);
+  private apiUrl = `${this.appConfig.apiUrl}/projects`;
 
   getProjects(workspaceId?: string): Observable<Project[]> {
     const params: Record<string, string> = {};
@@ -37,8 +38,6 @@ export class ProjectService {
     return this.http.get<TaskStatus[]>(`${this.apiUrl}/${projectId}/statuses`, { withCredentials: true });
   }
 
-  // ─── Member management ────────────────────────────────
-
   getMembers(projectId: string): Observable<ProjectMember[]> {
     return this.http.get<ProjectMember[]>(`${this.apiUrl}/${projectId}/members`, { withCredentials: true });
   }
@@ -64,6 +63,6 @@ export class ProjectService {
   }
 
   joinByInviteToken(token: string): Observable<Project> {
-    return this.http.post<Project>(`${environment.apiUrl}/projects/join`, { token }, { withCredentials: true });
+    return this.http.post<Project>(`${this.apiUrl}/join`, { token }, { withCredentials: true });
   }
 }

@@ -1,7 +1,7 @@
-﻿import { Injectable, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '@env/environment';
+import { APP_CONFIG } from '@core/config/app-config.token';
 import { ProjectMember, ProjectMemberRole, JobRoleId } from '@core/models/task.model';
 
 export interface AddMemberPayload {
@@ -13,16 +13,15 @@ export interface AddMemberPayload {
 @Injectable({ providedIn: 'root' })
 export class MemberService {
   private http = inject(HttpClient);
-  private apiUrl = environment.apiUrl || 'http://localhost:3000/api';
+  private readonly appConfig = inject(APP_CONFIG);
+  private apiUrl = this.appConfig.apiUrl;
 
-  /** Get all members of a project */
   getMembers(projectId: string): Observable<ProjectMember[]> {
     return this.http.get<ProjectMember[]>(
       `${this.apiUrl}/projects/${projectId}/members`
     );
   }
 
-  /** Add a new member to a project */
   addMember(projectId: string, payload: AddMemberPayload): Observable<ProjectMember> {
     return this.http.post<ProjectMember>(
       `${this.apiUrl}/projects/${projectId}/members`,
@@ -30,14 +29,12 @@ export class MemberService {
     );
   }
 
-  /** Remove a member from a project */
   removeMember(projectId: string, memberId: string): Observable<{ success: boolean }> {
     return this.http.delete<{ success: boolean }>(
       `${this.apiUrl}/projects/${projectId}/members/${memberId}`
     );
   }
 
-  /** Change a member role (admin/member/viewer) */
   updateRole(projectId: string, memberId: string, role: ProjectMemberRole): Observable<ProjectMember> {
     return this.http.patch<ProjectMember>(
       `${this.apiUrl}/projects/${projectId}/members/${memberId}/role`,
@@ -45,7 +42,6 @@ export class MemberService {
     );
   }
 
-  /** Update a member job role (PM, FE, BE, QA...) */
   updateJobRole(projectId: string, memberId: string, jobRole: JobRoleId | null): Observable<ProjectMember> {
     return this.http.patch<ProjectMember>(
       `${this.apiUrl}/projects/${projectId}/members/${memberId}/job-role`,
@@ -53,7 +49,6 @@ export class MemberService {
     );
   }
 
-  /** Leave a project (self-removal) */
   leaveProject(projectId: string): Observable<{ success: boolean }> {
     return this.http.post<{ success: boolean }>(
       `${this.apiUrl}/projects/${projectId}/members/leave`,
@@ -61,7 +56,6 @@ export class MemberService {
     );
   }
 
-  /** Transfer project ownership */
   transferOwnership(projectId: string, newOwnerUserId: string): Observable<{ success: boolean }> {
     return this.http.post<{ success: boolean }>(
       `${this.apiUrl}/projects/${projectId}/transfer-ownership`,
