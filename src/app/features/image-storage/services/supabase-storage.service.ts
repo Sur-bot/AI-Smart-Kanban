@@ -77,7 +77,7 @@ export class SupabaseStorageService {
 
   loadImages(): void {
     if (this.authService.isGuestMode()) { this.imagesSubject.next([]); this.loadQuota(); return; }
-    this.http.get<any[]>(`${this.apiUrl}/storage/files`, { headers: this.getHeaders() }).subscribe({
+    this.http.get<any[]>(`${this.apiUrl}/storage/files`).subscribe({
       next: data => {
         if (data) {
           this.imagesSubject.next(data.map(item => ({
@@ -97,7 +97,8 @@ export class SupabaseStorageService {
   }
 
   /**
-   * Upload single file. Side-effect-free: no loadQuota(), no process-image call.
+   * Upload single file: (1) đẩy binary lên Supabase Storage,
+   * (2) đăng ký metadata qua Backend REST API (`POST /api/storage/files`).
    * Caller collects results and calls flushUploadedImages() + batchProcessImages() at end.
    */
   uploadImage(file: File): Observable<ImageFile> {
@@ -110,15 +111,18 @@ export class SupabaseStorageService {
     return this.http.post(`${this.supabaseUrl}/storage/v1/object/${this.bucketName}/${storagePath}`, file, { headers: uploadHeaders }).pipe(
       catchError(err => { console.error('[Upload] Storage error:', err.status); return throwError(() => err); }),
       switchMap(() => {
-        const payload: Record<string, any> = {
-          id: fileId, original_name: file.name, storage_key: storagePath,
-          mime_type: file.type || 'image/png', extension: fileExt, size_bytes: file.size,
-          hash_sha256: `pending-${fileId}`, status: 'READY',
+        const payload = {
+          id: fileId,
+          original_name: file.name,
+          storage_key: storagePath,
+          mime_type: file.type || 'image/png',
+          extension: fileExt,
+          size_bytes: file.size,
+          hash_sha256: `pending-${fileId}`,
         };
-        if (userId) payload['user_id'] = userId;
-        return this.http.post<any[]>(`${this.supabaseUrl}/rest/v1/storage_files`, payload,
-          { headers: this.getHeaders().set('Prefer', 'return=representation') }
-        ).pipe(catchError(err => { console.error('[Upload] DB error:', err.status); return throwError(() => err); }));
+        return this.http.post<any>(`${this.apiUrl}/storage/files`, payload).pipe(
+          catchError(err => { console.error('[Upload] Backend metadata error:', err.status); return throwError(() => err); })
+        );
       }),
       map(response => {
         const item = Array.isArray(response) ? response[0] : response;
@@ -165,12 +169,7 @@ export class SupabaseStorageService {
     this.imagesSubject.next(updatedLocalList);
     this.loadQuota();
 
-    const requestOptions = {
-      headers: this.getHeaders(),
-      body: { ids }
-    };
-
-    return this.http.delete<void>(`${this.apiUrl}/jobs/images/bulk`, requestOptions).pipe(
+    return this.http.delete<void>(`${this.apiUrl}/jobs/images/bulk`, { body: { ids } }).pipe(
       tap(() => this.loadQuota()),
       map(() => void 0),
       catchError(err => { console.error('[Bulk Delete] error:', err.status); return throwError(() => err); })
