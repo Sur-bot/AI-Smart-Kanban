@@ -7,11 +7,13 @@ import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { routes } from './app.routes';
 import { authInterceptor } from '@core/auth/auth.interceptor';
 import { errorInterceptor } from '@core/interceptors/error.interceptor';
+import { provideAppConfig } from '@core/config/app-config.token';
 
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
+    provideAppConfig(),
     provideRouter(routes),
     provideAnimationsAsync(),
     provideHttpClient(

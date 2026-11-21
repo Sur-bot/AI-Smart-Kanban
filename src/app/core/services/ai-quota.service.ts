@@ -1,21 +1,15 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '@env/environment';
+import { APP_CONFIG } from '@core/config/app-config.token';
 import { AiQuotaInfo } from '@core/models/ai.model';
 
-/**
- * Service quản lý AI Quota phía frontend.
- * Cung cấp API lấy thông tin quota và kiểm tra giới hạn.
- */
 @Injectable({ providedIn: 'root' })
 export class AiQuotaService {
   private http = inject(HttpClient);
-  private apiUrl = `${environment.apiUrl}/ai`;
+  private readonly appConfig = inject(APP_CONFIG);
+  private apiUrl = `${this.appConfig.apiUrl}/ai`;
 
-  /**
-   * Lấy thông tin quota AI hiện tại của user.
-   */
   getQuota(): Observable<AiQuotaInfo> {
     return this.http.get<AiQuotaInfo>(
       `${this.apiUrl}/quota`,

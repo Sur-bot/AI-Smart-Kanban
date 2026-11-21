@@ -2,18 +2,19 @@ import { Injectable, inject, effect } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, map, switchMap, catchError, throwError, of, tap } from 'rxjs';
 import { ImageFile, StorageQuota } from '@features/image-storage/models/image.model';
-import { environment } from '@env/environment';
+import { APP_CONFIG } from '@core/config/app-config.token';
 import { AuthService } from '@core/auth/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class SupabaseStorageService {
   private http = inject(HttpClient);
   private authService = inject(AuthService);
+  private readonly appConfig = inject(APP_CONFIG);
 
-  private supabaseUrl = environment.supabase.url;
-  private supabaseAnonKey = environment.supabase.anonKey;
+  private supabaseUrl = this.appConfig.supabase.url;
+  private supabaseAnonKey = this.appConfig.supabase.anonKey;
   private bucketName = 'ai-kanban-storage';
-  private apiUrl = environment.apiUrl || 'http://localhost:3000/api';
+  private apiUrl = this.appConfig.apiUrl;
 
   private readonly imagesSubject = new BehaviorSubject<ImageFile[]>([]);
   readonly images$: Observable<ImageFile[]> = this.imagesSubject.asObservable();
@@ -96,11 +97,6 @@ export class SupabaseStorageService {
     });
   }
 
-  /**
-   * Upload single file: (1) đẩy binary lên Supabase Storage,
-   * (2) đăng ký metadata qua Backend REST API (`POST /api/storage/files`).
-   * Caller collects results and calls flushUploadedImages() + batchProcessImages() at end.
-   */
   uploadImage(file: File): Observable<ImageFile> {
     const userId = this.authService.user()?.id || null;
     const fileExt = file.name.split('.').pop()?.toLowerCase() || 'png';
@@ -137,14 +133,12 @@ export class SupabaseStorageService {
     );
   }
 
-  /** Commit a batch of newly uploaded images to state in one shot + refresh quota. */
   flushUploadedImages(newImages: ImageFile[]): void {
     if (!newImages.length) return;
     this.imagesSubject.next([...newImages, ...this.imagesSubject.value]);
     this.loadQuota();
   }
 
-  /** Queue all completed upload jobs to BullMQ via a single HTTP call (addBulk). */
   batchProcessImages(jobs: { fileId: string; storageKey: string; userId: string | null }[]): void {
     if (!jobs.length) return;
     this.http.post(`${this.apiUrl}/storage/batch-process`, { jobs }).subscribe({

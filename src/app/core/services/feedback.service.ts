@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import { environment } from '@env/environment';
+import { APP_CONFIG } from '@core/config/app-config.token';
 import {
   FEEDBACK_ALLOWED_IMAGE_TYPES,
   FEEDBACK_MAX_FILE_SIZE_BYTES,
@@ -12,9 +12,6 @@ import {
   FeedbackSubmissionResult,
 } from '@features/landing-page/landing-feedback/landing-feedback.types';
 
-/**
- * Lỗi có cấu trúc khi gửi phản hồi qua Backend REST API (`POST /api/feedback`).
- */
 export class FeedbackSubmissionError extends Error {
   constructor(
     public readonly code: FeedbackErrorCode,
@@ -42,11 +39,9 @@ const KNOWN_ERROR_CODES = new Set<FeedbackErrorCode>([
 @Injectable({ providedIn: 'root' })
 export class FeedbackService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = (environment.apiUrl || 'http://localhost:3000/api').replace(/\/+$/, '');
+  private readonly appConfig = inject(APP_CONFIG);
+  private readonly apiUrl = this.appConfig.apiUrl;
 
-  /**
-   * Kiểm tra file ảnh chụp đính kèm tại client trước khi tạo preview và gửi lên Backend.
-   */
   validateScreenshotFile(file: File): void {
     if (!FEEDBACK_ALLOWED_IMAGE_TYPES.includes(file.type)) {
       throw new FeedbackSubmissionError('VALIDATION_ERROR', 'INVALID_FILE_TYPE');
@@ -57,11 +52,6 @@ export class FeedbackService {
     }
   }
 
-  /**
-   * Gửi phản hồi (kèm ảnh chụp đính kèm nếu có) tới Backend REST API `POST /api/feedback`.
-   * Backend chịu trách nhiệm upload ảnh bằng service_role, ghi bảng `public.feedbacks`
-   * và gửi email báo cáo cho admin + email xác nhận cho người dùng.
-   */
   async submitFeedback(payload: CreateFeedbackPayload): Promise<FeedbackSubmissionResult> {
     let screenshot: { base64: string; mimeType: string; fileName: string } | undefined;
 
