@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { SupabaseClient } from '@supabase/supabase-js';
-import { AuthService } from '@core/auth/auth.service';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
+import { environment } from '@env/environment';
 import {
   FEEDBACK_ALLOWED_IMAGE_TYPES,
   FEEDBACK_MAX_FILE_SIZE_BYTES,
@@ -12,7 +13,7 @@ import {
 } from '@features/landing-page/landing-feedback/landing-feedback.types';
 
 /**
- * Lỗi có cấu trúc khi gửi phản hồi qua Supabase Storage / Edge Function.
+ * Lỗi có cấu trúc khi gửi phản hồi qua Backend REST API (`POST /api/feedback`).
  */
 export class FeedbackSubmissionError extends Error {
   constructor(
@@ -24,23 +25,27 @@ export class FeedbackSubmissionError extends Error {
   }
 }
 
-interface EdgeFunctionErrorBody {
+interface FeedbackApiErrorBody {
   code?: FeedbackErrorCode;
   error?: string;
 }
 
+const KNOWN_ERROR_CODES = new Set<FeedbackErrorCode>([
+  'VALIDATION_ERROR',
+  'STORAGE_ERROR',
+  'EMAIL_NOT_CONFIGURED',
+  'EMAIL_DELIVERY_FAILED',
+  'FUNCTION_UNAVAILABLE',
+  'UNKNOWN_ERROR',
+]);
+
 @Injectable({ providedIn: 'root' })
 export class FeedbackService {
-  private readonly authService = inject(AuthService);
-  private readonly bucketName = 'feedback-attachments';
-  private readonly edgeFunctionName = 'submit-feedback';
-
-  private get supabase(): SupabaseClient {
-    return this.authService.getClient();
-  }
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = (environment.apiUrl || 'http://localhost:3000/api').replace(/\/+$/, '');
 
   /**
-   * Kiểm tra file ảnh chụp đính kèm trước khi tạo preview và upload lên Supabase Storage.
+   * Kiểm tra file ảnh chụp đính kèm tại client trước khi tạo preview và gửi lên Backend.
    */
   validateScreenshotFile(file: File): void {
     if (!FEEDBACK_ALLOWED_IMAGE_TYPES.includes(file.type)) {
@@ -53,131 +58,106 @@ export class FeedbackService {
   }
 
   /**
-   * Thực thi flow thật: (1) upload ảnh chụp lên Supabase Storage (nếu có),
-   * (2) gọi Supabase Edge Function `submit-feedback` để ghi bảng `public.feedbacks`
-   * và gửi đồng thời email báo cáo cho admin + email xác nhận cho người dùng.
+   * Gửi phản hồi (kèm ảnh chụp đính kèm nếu có) tới Backend REST API `POST /api/feedback`.
+   * Backend chịu trách nhiệm upload ảnh bằng service_role, ghi bảng `public.feedbacks`
+   * và gửi email báo cáo cho admin + email xác nhận cho người dùng.
    */
   async submitFeedback(payload: CreateFeedbackPayload): Promise<FeedbackSubmissionResult> {
-    let screenshotPath: string | null = null;
+    let screenshot: { base64: string; mimeType: string; fileName: string } | undefined;
 
     if (payload.screenshotFile) {
       this.validateScreenshotFile(payload.screenshotFile);
-      screenshotPath = await this.uploadScreenshot(payload.screenshotFile);
+      const base64 = await this.readFileAsBase64(payload.screenshotFile);
+      screenshot = {
+        base64,
+        mimeType: payload.screenshotFile.type,
+        fileName: payload.screenshotFile.name,
+      };
     }
 
-    const { data, error } = await this.supabase.functions.invoke<FeedbackSubmissionResult>(
-      this.edgeFunctionName,
-      {
-        body: {
+    try {
+      const data = await firstValueFrom(
+        this.http.post<FeedbackSubmissionResult>(`${this.apiUrl}/feedback`, {
           rating: payload.rating,
           fullName: payload.fullName.trim(),
           email: payload.email.trim(),
           message: payload.message.trim(),
-          screenshotPath,
           locale: payload.locale,
           pageUrl: payload.pageUrl,
-        },
+          ...(screenshot ? { screenshot } : {}),
+        })
+      );
+
+      if (!data || !data.feedbackId) {
+        throw new FeedbackSubmissionError('UNKNOWN_ERROR', 'EMPTY_RESPONSE');
       }
-    );
 
-    if (error) {
-      throw await this.mapFunctionError(error);
-    }
-
-    if (!data || !data.feedbackId) {
-      throw new FeedbackSubmissionError('UNKNOWN_ERROR', 'EMPTY_RESPONSE');
-    }
-
-    return {
-      ...data,
-      screenshotPath: data.screenshotPath ?? screenshotPath,
-    };
-  }
-
-  private async uploadScreenshot(file: File): Promise<string> {
-    const ext = this.resolveFileExtension(file);
-    const year = new Date().getUTCFullYear();
-    const storagePath = `${year}/${crypto.randomUUID()}.${ext}`;
-
-    const { error } = await this.supabase.storage
-      .from(this.bucketName)
-      .upload(storagePath, file, {
-        contentType: file.type,
-        cacheControl: '3600',
-        upsert: false,
-      });
-
-    if (error) {
-      console.warn('[FeedbackService] Screenshot upload error:', error.message);
-      throw new FeedbackSubmissionError(
-        'STORAGE_ERROR',
-        error.message || 'SCREENSHOT_UPLOAD_FAILED'
-      );
-    }
-
-    return storagePath;
-  }
-
-  private resolveFileExtension(file: File): string {
-    const mimeExtensionMap: Record<string, string> = {
-      'image/png': 'png',
-      'image/jpeg': 'jpg',
-      'image/webp': 'webp',
-    };
-    return mimeExtensionMap[file.type] ?? 'png';
-  }
-
-  private async mapFunctionError(error: unknown): Promise<FeedbackSubmissionError> {
-    const errRecord = error as { name?: string; message?: string; context?: unknown };
-    const parsedBody = await this.extractErrorBody(errRecord.context);
-
-    if (parsedBody?.code) {
-      console.warn('[FeedbackService] Backend error:', parsedBody.code, parsedBody.error || errRecord.message);
-      return new FeedbackSubmissionError(
-        parsedBody.code,
-        parsedBody.error || errRecord.message || parsedBody.code
-      );
-    }
-
-    if (
-      errRecord.name === 'FunctionsFetchError' ||
-      errRecord.name === 'FunctionsRelayError'
-    ) {
-      console.warn('[FeedbackService] Edge Function unreachable:', errRecord.message);
-      return new FeedbackSubmissionError(
-        'FUNCTION_UNAVAILABLE',
-        errRecord.message || 'Edge Function is unavailable'
-      );
-    }
-
-    console.warn('[FeedbackService] Unknown submission error:', errRecord.message);
-    return new FeedbackSubmissionError(
-      'UNKNOWN_ERROR',
-      errRecord.message || 'Failed to submit feedback'
-    );
-  }
-
-  private async extractErrorBody(context: unknown): Promise<EdgeFunctionErrorBody | null> {
-    if (!context || typeof context !== 'object') {
-      return null;
-    }
-
-    const maybeResponse = context as { json?: () => Promise<unknown> };
-    if (typeof maybeResponse.json === 'function') {
-      try {
-        const body = await maybeResponse.json();
-        if (body && typeof body === 'object') {
-          return body as EdgeFunctionErrorBody;
-        }
-      } catch {
-        return null;
+      return data;
+    } catch (error) {
+      if (error instanceof FeedbackSubmissionError) {
+        throw error;
       }
+      throw this.mapHttpError(error);
+    }
+  }
+
+  private async readFileAsBase64(file: File): Promise<string> {
+    if (typeof file.arrayBuffer === 'function') {
+      const buffer = await file.arrayBuffer();
+      const bytes = new Uint8Array(buffer);
+      let binary = '';
+      const chunkSize = 0x8000;
+      for (let i = 0; i < bytes.length; i += chunkSize) {
+        binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
+      }
+      return btoa(binary);
     }
 
-    if ('code' in context || 'error' in context) {
-      return context as EdgeFunctionErrorBody;
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = String(reader.result ?? '');
+        const commaIndex = result.indexOf(',');
+        resolve(commaIndex >= 0 ? result.slice(commaIndex + 1) : result);
+      };
+      reader.onerror = () =>
+        reject(new FeedbackSubmissionError('STORAGE_ERROR', 'SCREENSHOT_READ_FAILED'));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  private mapHttpError(error: unknown): FeedbackSubmissionError {
+    if (error instanceof HttpErrorResponse) {
+      const body =
+        error.error && typeof error.error === 'object'
+          ? (error.error as FeedbackApiErrorBody)
+          : null;
+
+      if (body?.code && KNOWN_ERROR_CODES.has(body.code)) {
+        console.warn('[FeedbackService] Backend error:', body.code, body.error || error.message);
+        return new FeedbackSubmissionError(
+          body.code,
+          body.error || error.message || body.code
+        );
+      }
+
+      if (error.status === 0 || error.status === 502 || error.status === 503 || error.status === 504) {
+        console.warn('[FeedbackService] Backend API unreachable:', error.message);
+        return new FeedbackSubmissionError(
+          'FUNCTION_UNAVAILABLE',
+          error.message || 'Backend API is unavailable'
+        );
+      }
+
+      console.warn('[FeedbackService] HTTP submission error:', error.status, error.message);
+      return new FeedbackSubmissionError(
+        'UNKNOWN_ERROR',
+        body?.error || error.message || 'Failed to submit feedback'
+      );
     }
 
-    return null;
+    const message = error instanceof Error ? error.message : 'Failed to submit feedback';
+    console.warn('[FeedbackService] Unknown submission error:', message);
+    return new FeedbackSubmissionError('UNKNOWN_ERROR', message);
   }
 }
