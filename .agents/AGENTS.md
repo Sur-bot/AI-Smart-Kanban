@@ -166,10 +166,13 @@ Luôn dùng `<mat-icon>` của Angular Material cho các tác vụ thêm-xóa-s�
 
 ## Quy tắc Quản lý Lỗi Tự động & Bảo mật Môi trường
 
-1. **Chốt chặn Bảo mật (`scripts/verify-health.mjs` & `.agents/hooks.json`):**
+1. **Quy trình Phát triển Phần mềm 10 Giai đoạn (`.agents/skills/sdlc-workflow/SKILL.md`):**
+   - Tuân thủ 5 nguyên tắc làm việc cốt lõi: không làm vượt bước, không tự ý quyết định thay người dùng, không sửa code mù quáng, không tuyên bố hoàn thành khi chưa kiểm chứng (phân biệt rõ 6 mức độ hoàn thành), và không lạm dụng công nghệ.
+   - Báo cáo chốt giai đoạn theo mẫu 7 mục và luôn ưu tiên: `HIỂU ĐÚNG → THIẾT KẾ ĐÚNG → LÀM TỪNG PHẦN → KIỂM TRA → TRIỂN KHAI → BẢO TRÌ`.
+2. **Chốt chặn Bảo mật (`scripts/verify-health.mjs` & `.agents/hooks.json`):**
    - Tuyệt đối không commit hoặc `git add -f` các file trong `src/environments/*.ts`, `.env*`, `docs/audit-report.md`, và `docker-compose*.yml` lên GitHub Public.
    - Luôn chạy `npm run verify:health` trước khi tạo commit.
-2. **Chuẩn Phân tích & Kiểm thử Lỗi (`.agents/skills/error-management/SKILL.md`):**
+3. **Chuẩn Phân tích & Kiểm thử Lỗi (`.agents/skills/error-management/SKILL.md`):**
    - Mọi lỗi phát sinh phải được giải thích theo 3 mục: **Lỗi là gì? → Vì sao lỗi? → Cách khắc phục (Đề xuất)**.
    - Khi mock các dịch vụ bên ngoài trong Unit Test (`*.spec.ts`), phải viết test cho cả **Happy Path** và **Error Path** để không bỏ lọt nhánh xử lý lỗi.
    - Ghi nhận các lỗi mới và kết quả khắc phục vào sổ theo dõi nội bộ `docs/audit-report.md`.
